@@ -3,98 +3,79 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Arnav Mishra | Portfolio</title>
+    <title>Arnav Mishra | Home</title>
     <style>
-        body { background-color: #000; color: #fff; font-family: 'Segoe UI', sans-serif; margin: 0; padding: 0; }
-        .container { max-width: 500px; margin: 0 auto; padding: 40px 20px; }
-        .card { background: #0a0a0a; border: 1px solid #222; border-radius: 30px; padding: 30px; margin-bottom: 30px; text-align: center; }
-        .profile-img { width: 120px; height: 120px; border-radius: 50%; border: 2px solid #00a3ff; box-shadow: 0 0 20px rgba(0, 163, 255, 0.4); }
-        h1 { font-size: 1.8rem; letter-spacing: 2px; text-transform: uppercase; margin: 20px 0 10px; text-shadow: 2px 0 #00a3ff, -2px 0 #ff00c1; }
-        .status-box { background: #111; border-left: 3px solid #00a3ff; padding: 15px; text-align: left; margin: 20px 0; border-radius: 10px; }
-        .btn { display: block; padding: 15px; margin: 10px 0; border-radius: 12px; text-decoration: none; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; font-size: 0.85rem; transition: 0.3s; }
-        .btn-blue { background: #00a3ff; color: #fff; }
-        .btn-outline { border: 1px solid #333; color: #fff; background: #000; }
-        .poem-box { background: #111; padding: 20px; border-radius: 15px; text-align: left; line-height: 1.8; font-family: 'Georgia', serif; white-space: pre-line; color: #eee; border: 1px solid #222; }
-        .section-title { color: #00a3ff; text-transform: uppercase; font-size: 0.8rem; letter-spacing: 2px; margin: 40px 0 20px; text-align: center; }
+        body { background-color: #000; color: #fff; font-family: 'Segoe UI', sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; }
+        .container { max-width: 400px; width: 100%; padding: 20px; }
+        
+        /* Fixed Photo Style */
+        .profile-container { position: relative; width: 130px; height: 130px; margin: 0 auto 20px; }
+        .profile-glow { position: absolute; top: 0; left: 0; right: 0; bottom: 0; border-radius: 50%; box-shadow: 0 0 25px rgba(0, 163, 255, 0.5); animation: pulse 3s infinite; }
+        .profile-img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 2px solid #fff; position: relative; z-index: 2; background: #222; }
+        
+        /* Improved Name Style */
+        h1 { 
+            font-size: 2rem; text-transform: uppercase; font-weight: 900; letter-spacing: 2px; text-align: center; margin: 0;
+            background: linear-gradient(to right, #fff, #00a3ff); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 0 10px rgba(0, 163, 255, 0.4));
+        }
+
+        .bio { color: #888; text-align: center; margin-bottom: 30px; font-size: 0.9rem; }
+        
+        /* Socrates Quote Box */
+        .quote-box { background: #111; border-left: 3px solid #00a3ff; padding: 20px; margin-bottom: 30px; border-radius: 8px; font-style: italic; color: #ddd; font-size: 0.9rem; line-height: 1.5; }
+
+        /* Buttons */
+        .btn-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px; }
+        .btn { display: block; padding: 12px; text-align: center; background: #0a0a0a; border: 1px solid #333; color: #fff; text-decoration: none; border-radius: 8px; font-size: 0.8rem; transition: 0.2s; }
+        .btn:active { transform: scale(0.98); background: #222; }
+        
+        .main-btn { 
+            display: block; width: 100%; padding: 16px; margin-top: 20px; 
+            background: linear-gradient(45deg, #00a3ff, #005f99); 
+            color: #fff; text-align: center; text-decoration: none; 
+            border-radius: 12px; font-weight: bold; letter-spacing: 1px;
+            box-shadow: 0 4px 15px rgba(0, 163, 255, 0.3);
+        }
+
+        /* Footer Style */
+        .footer { text-align: center; margin-top: 40px; color: #333; font-size: 0.7rem; letter-spacing: 1px; }
+
+        @keyframes pulse { 0% { box-shadow: 0 0 20px rgba(0, 163, 255, 0.4); } 50% { box-shadow: 0 0 40px rgba(0, 163, 255, 0.7); } 100% { box-shadow: 0 0 20px rgba(0, 163, 255, 0.4); } }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <div class="card">
+    <div class="profile-container">
+        <div class="profile-glow"></div>
         <img src="https://imarnavin.wordpress.com/wp-content/uploads/2026/01/image_editor_output_image-900633096-17689630363507786449788545237875.jpg" class="profile-img">
-        <h1>Arnav Mishra</h1>
-        <p style="color: #aaa;">Building ideas from scratch.</p>
-        
-        <div class="status-box">
-            <div style="color: #00a3ff; font-size: 0.7rem; font-weight: bold; margin-bottom: 5px;">CURRENT FOCUS</div>
-            <div style="color: #ccc; font-size: 0.85rem;">🚀 <b>Project:</b> Stealth Startup Mode</div>
-            <div style="color: #ccc; font-size: 0.85rem;">📚 <b>Academia:</b> Class 12 (PCM)</div>
-        </div>
-
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-            <a href="https://www.linkedin.com/in/arnav-mishra-1a6934371" class="btn btn-outline">LinkedIn</a>
-            <a href="https://x.com/ArnavMishra142" class="btn btn-outline">X</a>
-        </div>
-        <a href="https://www.chess.com/member/Arnavm142" class="btn btn-blue" style="margin-top: 20px;">♟️ Play Chess</a>
     </div>
 
-    <div class="section-title">Sonic Fuel</div>
-    <div class="card" style="border-top: 4px solid #1DB954;">
-        <h2 style="margin: 0; color: #fff;">KR$NA</h2>
-        <p style="color: #eee; font-style: italic; font-size: 0.9rem; margin: 15px 0;">"His lyrics just hit different."</p>
-        <p style="color: #bbb; font-size: 0.85rem; line-height: 1.5;">Lyrical warfare for the grind. No sugar-coating, just straight facts.</p>
-        <a href="#" class="btn" style="background: #1DB954; color: #000;">Listen on Spotify</a>
+    <h1>Arnav Mishra</h1>
+    <p class="bio">Building ideas from scratch.</p>
+
+    <div class="quote-box">
+        "The secret of change is to focus all of your energy, not on fighting the old, but on building the new."
+        <br><span style="color: #666; font-size: 0.8rem; margin-top: 5px; display: block;">— Socrates</span>
     </div>
 
-    <div class="section-title">Projects</div>
-    <div class="card" style="border-top: 4px solid #d32f2f;">
-        <h2 style="margin: 0; color: #fff;">Zomato Analysis</h2>
-        <p style="color: #bbb; font-size: 0.85rem; margin: 15px 0;">Market positioning and SWOT analysis for hyperlocal delivery.</p>
-        <a href="https://docs.google.com/spreadsheets/d/11k2QyICWavfXFuUGXRBGnRJ7l7zsblQB/edit?usp=drivesdk" class="btn btn-outline" style="border-color: #d32f2f;">View Project ➜</a>
+    <div class="btn-grid">
+        <a href="https://www.linkedin.com/in/arnav-mishra-1a6934371" class="btn">LinkedIn</a>
+        <a href="https://x.com/ArnavMishra142" class="btn">X / Twitter</a>
+        <a href="https://www.instagram.com/arnav_9.11" class="btn">Instagram</a>
+        <a href="https://www.chess.com/member/Arnavm142" class="btn">♟️ Chess</a>
     </div>
 
-    <div class="section-title">Original Verse</div>
-    <h3 style="color: #ff4b2b; text-align: center;">Jang-kaal</h3>
-    <div class="poem-box">
-Tu jang ka ailan kar 
-Dushmano PE vaar kar
-Papiyo ka naas kar....
+    <a href="about.html" class="main-btn">
+        ENTER MY WORLD ➜<br>
+        <span style="font-size: 0.7rem; opacity: 0.8; font-weight: normal;">(Work, Poetry, Music)</span>
+    </a>
 
-Moh dya ka tyag kar 
-Ab jism se na pyar kar 
-Mastko ke unke Aaj
-Deh se ajaad kar....
-
-Dikha de pure vishwa ko
-Parlaya ke raudra drishya ko
-Jaha par keval dharm ho
-Na dharm me koi sharm ho
-Jo dharm me kare sharam
-Un adharmiyo ka naas kar...
+    <div class="footer">
+        © 2026 ARNAV MISHRA
     </div>
 
-    <h3 style="color: #654ea3; text-align: center; margin-top: 40px;">Anjaan</h3>
-    <div class="poem-box">
-Mai antt hun mai ankurit 
-Yugo yugo ka hal hai
-Mai hinn hun ,mai hun priye
-Mera hi maah saal hai
-
-Na saksh hun, na aatma 
-Na devta ,pramatama 
-Mai bhoot hun , mai kaal sa
-Divr hun mai bhaal sa
-
-Kurn sa mai dheema bhi
-Brahamand sa na sheema bhi
-Krishna se bhi vanchit mai 
-Bhole se na mai saar hun...
-    </div>
-
-    <div style="text-align: center; margin-top: 60px; color: #444; font-size: 0.7rem; letter-spacing: 1px;">
-        © 2026 ARNAV MISHRA | 
-    </div>
 </div>
 
 </body>
