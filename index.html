@@ -5,8 +5,87 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Arnav Mishra | Work & Mind</title>
     
-    <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://unpkg.com/@chrisoakman/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.css">
+
+    <style>
+        /* --- 1. GLOBAL STYLES (Clean Font) --- */
+        body {
+            background-color: #000;
+            color: #fff;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            margin: 0; padding: 0;
+            overflow-x: hidden; /* No Horizontal Scroll */
+        }
+
+        /* --- 2. LAYOUT --- */
+        .main-wrapper {
+            padding: 20px;
+            max-width: 600px;
+            margin: 0 auto;
+            padding-bottom: 80px;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* --- 3. PROFILE --- */
+        .profile-container { position: relative; width: 100px; height: 100px; margin: 0 auto; margin-top: 20px;}
+        .profile-img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 2px solid #333; filter: grayscale(100%); }
+        .profile-glow { position: absolute; top: -5px; left: -5px; right: -5px; bottom: -5px; border-radius: 50%; background: linear-gradient(45deg, #00a3ff, #ff0099); z-index: -1; animation: spin 4s linear infinite; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        .name { text-align: center; font-size: 1.8rem; margin-top: 15px; font-weight: bold; letter-spacing: 1px; text-transform: uppercase; }
+        .bio-wrap { display: flex; justify-content: center; margin-bottom: 25px; margin-top: 5px; }
+        .bio { color: #00a3ff; font-size: 0.9rem; letter-spacing: 2px; }
+
+        /* --- 4. BUTTONS & LINKS --- */
+        .btn-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 20px; }
+        .btn { background: #111; border: 1px solid #333; color: #fff; padding: 12px; text-align: center; text-decoration: none; border-radius: 8px; font-size: 0.9rem; transition: 0.3s; }
+        
+        /* Main Action Buttons */
+        .main-btn { 
+            background: #00a3ff; color: #fff; border: none; padding: 15px; width: 100%; 
+            font-weight: bold; margin-top: 25px; cursor: pointer; border-radius: 8px; font-size: 1rem; 
+            box-shadow: 0 4px 15px rgba(0, 163, 255, 0.3);
+        }
+        .game-btn { 
+            background: linear-gradient(45deg, #4CAF50, #2E7D32); /* Green */
+            color: white; border: none; padding: 15px; width: 100%; 
+            font-weight: bold; margin-top: 15px; cursor: pointer; border-radius: 8px; font-size: 1rem; 
+        }
+
+        /* Chess Link Button */
+        .chess-btn-container { margin-top: 20px; }
+        .chess-btn { background: #0a0a0a; border: 1px solid #333; display: flex; align-items: center; padding: 10px 15px; border-radius: 12px; text-decoration: none; color: #fff; gap: 15px; }
+        .chess-icon { font-size: 2rem; color: #fff; }
+
+        /* --- 5. CARDS (About Section) --- */
+        .card { background: #111; border: 1px solid #333; border-radius: 12px; padding: 20px; margin-bottom: 20px; margin-top: 20px; }
+        .back-btn { background: transparent; border: none; color: #888; cursor: pointer; font-size: 0.9rem; margin-bottom: 15px; display: flex; align-items: center; gap: 5px; }
+
+        /* --- 6. GAME SCREEN (Full Screen Fix) --- */
+        #games-view {
+            display: none; /* Hidden by default */
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: #111; z-index: 5000;
+            flex-direction: column; align-items: center; justify-content: center;
+            overflow: hidden;
+        }
+        .game-container {
+            width: 100%; max-width: 400px; padding: 10px;
+            touch-action: none; /* Prevents scroll while playing */
+        }
+        
+        /* Chess.com Theme Colors */
+        .white-1e1d7 { background-color: #eeeed2 !important; color: #769656 !important; }
+        .black-3c85d { background-color: #769656 !important; color: #eeeed2 !important; }
+        .highlight1-32417, .highlight2-9c5d2 { box-shadow: inset 0 0 3px 3px rgba(255, 255, 0, 0.6) !important; }
+
+        /* --- 7. MUSIC POPUP --- */
+        #music-popup { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 9999; align-items: center; justify-content: center; backdrop-filter: blur(5px); }
+        #music-popup.active { display: flex; }
+        .popup-content { text-align: center; color: #fff; }
+        .popup-content span { color: #00a3ff; font-weight: bold; }
+    </style>
 </head>
 <body>
 
@@ -16,6 +95,15 @@
 
 <audio id="global-bg-music" loop><source src="co2.mp3" type="audio/mpeg"></audio>
 <audio id="game-bg-music" loop><source src="chess-music.mp3" type="audio/mpeg"></audio>
+
+
+<div id="music-popup" onclick="closePopup()">
+    <div class="popup-content">
+        <p>Welcome to my world. ✨<br><br>Tap the <span>Top Right corner</span> to enable the vibe.</p>
+        <small>(Tap anywhere to continue)</small>
+    </div>
+</div>
+
 
 <div class="main-wrapper">
 
@@ -44,7 +132,10 @@
         <div class="chess-btn-container">
             <a href="https://wa.me/916393349498?text=Hi%20Arnav!%20%E2%99%9F%20Checkmate.%20Just%20explored%20your%20world%20and%20the%20vibe%20is%20crazy!%20%F0%9F%94%A5" target="_blank" class="chess-btn">
                 <span class="chess-icon">♞</span>
-                <div style="text-align: left;"><div style="font-size: 0.7rem; color: #888;">MAKE A MOVE</div><div style="font-size: 1rem;">Say Hello 👋</div></div>
+                <div style="text-align: left;">
+                    <div style="font-size: 0.7rem; color: #888;">MAKE A MOVE</div>
+                    <div style="font-size: 1rem;">Say Hello 👋</div>
+                </div>
             </a>
         </div>
         <p style="text-align: center; margin-top: 30px; color: #333; font-size: 0.6rem;">© 2026 ARNAV MISHRA</p>
@@ -75,42 +166,168 @@
         </div>
 
         <h2>Original Verse</h2>
-        
         <div class="card">
             <h3 style="color: #ff4b2b; margin-top: 0;">🔥 Jang-kaal (Teaser)</h3>
-            
-            <div id="typewriter-output" class="lyrics typing-effect" style="border-color: #ff4b2b; min-height: 80px; color: #ffcccb; margin-bottom: 15px;"></div>
-
+            <div id="typewriter-output" style="border-left: 2px solid #ff4b2b; padding-left: 10px; min-height: 60px; color: #ffcccb; margin-bottom: 15px; font-family: monospace;"></div>
             <button onclick="readMoreVerses()" style="width: 100%; background: #ff4b2b; color: white; border: none; padding: 10px; border-radius: 8px; font-weight: bold; cursor: pointer;">
-                READ FULL VERSE ➜
-            </button>
-        </div>
-
-        <div class="card">
-            <h3 style="color: #654ea3; margin-top: 0;">🌌 Anjaan (Snippet)</h3>
-            <div class="lyrics" style="border-color: #654ea3; max-height: 80px; overflow: hidden; opacity: 0.7;">
-                Mai antt hun mai ankurit, Yugo yugo ka hal hai...<br>
-                Mai hinn hun ,mai hun priye...
-            </div>
-             <button onclick="readMoreVerses()" style="width: 100%; background: #654ea3; color: white; border: none; padding: 10px; border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 10px;">
                 READ FULL VERSE ➜
             </button>
         </div>
     </div>
 
-        <div id="games-view" style="display: none;">
+    <div id="games-view">
         <div style="position: absolute; top: 20px; left: 20px; z-index: 2001;">
-            <button onclick="switchToHome()" class="back-btn" style="color: #fff; font-size: 1rem; background: rgba(0,0,0,0.5); padding: 5px 10px; border-radius: 5px;">← Exit Arena</button>
+            <button onclick="switchToHome()" class="back-btn" style="color: #fff; background: rgba(0,0,0,0.5); padding: 5px 15px; border-radius: 8px;">← Exit Arena</button>
         </div>
 
         <h2 style="text-align: center; color: #fff; margin-bottom: 5px; font-size: 1.5rem; margin-top: 40px;">♟️ ARNAV GOAT AI</h2>
-        <p style="text-align: center; color: #888; font-size: 0.8rem; margin-bottom: 20px;">
-            Can you beat ..arnav goat ai
-        </p>
+        <p style="text-align: center; color: #888; font-size: 0.8rem; margin-bottom: 20px;">Can you beat ..arnav goat ai</p>
         
         <div class="game-container">
             <div id="myBoard" style="width: 100%"></div>
-            <div id="status" class="game-status" style="margin-top: 15px; color: #eeeed2;">White to move</div>
+            <div id="status" style="margin-top: 15px; color: #eeeed2; text-align: center; font-family: monospace;">White to move</div>
         </div>
-        </div>
+    </div>
+
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://unpkg.com/@chrisoakman/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.3/chess.min.js"></script>
+
+<script>
+    // --- VARIABLES ---
+    var globalAudio = document.getElementById("global-bg-music");
+    var gameAudio = document.getElementById("game-bg-music");
+    var btn = document.getElementById("mute-btn");
+    var currentMode = 'home';
+    var isMuted = true;
+    var board = null;
+    var game = null;
+    var typingInterval;
+
+    // --- 1. POPUP & READ MORE ---
+    function readMoreVerses() {
+        if(confirm("Do you want to visit Instagram to read the full masterpiece? ✍️\n(Click OK to visit)")) {
+            window.open("https://www.instagram.com/arnav_9.11", "_blank");
+        }
+    }
+
+    // --- 2. MUSIC TOGGLE ---
+    function toggleMusic() {
+        var activeAudio = (currentMode === 'game') ? gameAudio : globalAudio;
+        if (activeAudio.paused) {
+            activeAudio.play().catch(e => console.log(e));
+            isMuted = false;
+            btn.innerHTML = "🎵"; btn.style.borderColor = "#00a3ff";
+        } else {
+            activeAudio.pause();
+            isMuted = true;
+            btn.innerHTML = "🔇"; btn.style.borderColor = "#444";
+        }
+    }
+
+    // --- 3. NAVIGATION ---
+    function switchToAbout() {
+        document.getElementById('home-view').style.display = 'none';
+        document.getElementById('games-view').style.display = 'none';
+        document.getElementById('about-view').style.display = 'block';
+        window.scrollTo(0, 0);
+        typeWriterEffect();
+    }
+
+    function switchToGames() {
+        currentMode = 'game';
+        document.getElementById('home-view').style.display = 'none';
+        document.getElementById('about-view').style.display = 'none';
+        document.getElementById('games-view').style.display = 'flex'; // Flex for centering
         
+        // Music Switch
+        if(globalAudio) globalAudio.pause();
+        if(gameAudio) { gameAudio.currentTime = 0; if(!isMuted) gameAudio.play(); }
+        btn.innerHTML = (!isMuted) ? "🎵" : "🔇";
+
+        setTimeout(initGame, 200);
+    }
+
+    function switchToHome() {
+        currentMode = 'home';
+        document.getElementById('about-view').style.display = 'none';
+        document.getElementById('games-view').style.display = 'none';
+        document.getElementById('home-view').style.display = 'block';
+
+        if(gameAudio) gameAudio.pause();
+        if(globalAudio && !isMuted) globalAudio.play();
+        btn.innerHTML = (!isMuted) ? "🎵" : "🔇";
+    }
+
+    // --- 4. CHESS LOGIC ---
+    function onDragStart (source, piece) {
+        if (game.game_over()) return false;
+        if (piece.search(/^b/) !== -1) return false;
+    }
+    function makeRandomMove () {
+        var possibleMoves = game.moves();
+        if (possibleMoves.length === 0) return;
+        var randomIdx = Math.floor(Math.random() * possibleMoves.length);
+        game.move(possibleMoves[randomIdx]);
+        board.position(game.fen());
+        updateStatus();
+    }
+    function onDrop (source, target) {
+        var move = game.move({ from: source, to: target, promotion: 'q' });
+        if (move === null) return 'snapback';
+        updateStatus();
+        window.setTimeout(makeRandomMove, 250);
+    }
+    function onSnapEnd () { board.position(game.fen()); }
+    function updateStatus () {
+        var status = '';
+        var moveColor = (game.turn() === 'b') ? 'Arnav AI' : 'You';
+        if (game.in_checkmate()) { status = 'Game over, ' + moveColor + ' is in checkmate.'; }
+        else { status = moveColor + ' to move'; }
+        $('#status').html(status);
+    }
+    function initGame() {
+        try {
+            game = new Chess();
+            var config = {
+                draggable: true,
+                position: 'start',
+                onDragStart: onDragStart,
+                onDrop: onDrop,
+                onSnapEnd: onSnapEnd,
+                pieceTheme: 'https://chessboardjs.com/img/chesspieces/wikipedia/{piece}.png'
+            };
+            board = Chessboard('myBoard', config);
+            $(window).resize(board.resize);
+        } catch(e) { console.log(e); }
+    }
+
+    // --- 5. TYPEWRITER ---
+    const poemText = "Moh dya ka tyag kar...\nAb jism se na pyar kar...\nMastko ke unke Aaj...\nDeh se ajaad kar....";
+    function typeWriterEffect() {
+        const element = document.getElementById("typewriter-output");
+        if(!element) return;
+        element.innerHTML = ""; let index = 0; clearInterval(typingInterval);
+        typingInterval = setInterval(() => {
+            if (poemText.charAt(index) === '\n') { element.innerHTML += "<br>"; } 
+            else { element.innerHTML += poemText.charAt(index); }
+            index++; if (index === poemText.length) { clearInterval(typingInterval); }
+        }, 50);
+    }
+
+    // --- 6. POPUP LOAD ---
+    window.onload = function() {
+        setTimeout(function() {
+            var popup = document.getElementById("music-popup");
+            if(popup) popup.classList.add("active");
+        }, 2000); 
+    };
+    function closePopup() {
+        document.getElementById("music-popup").classList.remove("active");
+        setTimeout(function(){ document.getElementById("music-popup").style.display = "none"; }, 800);
+    }
+</script>
+</body>
+</html>
