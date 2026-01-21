@@ -8,100 +8,18 @@
     <link rel="stylesheet" href="https://unpkg.com/@chrisoakman/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.css">
 
     <style>
-        /* --- 1. GLOBAL STYLES (THE DARK THEME) --- */
-        body {
-            background-color: #000;
-            color: #fff;
-            font-family: 'Courier New', Courier, monospace; /* Typewriter Font wapas */
-            margin: 0; padding: 0;
-            overflow-x: hidden;
+        /* YAHAN APNA CSS PASTE KARO */
+        /* Main Name ka color fix yahan add kar raha hoon */
+        .name { 
+            text-align: center; 
+            font-size: 2rem; 
+            margin-top: 20px; 
+            font-weight: bold; 
+            letter-spacing: 3px; 
+            text-transform: uppercase; 
+            color: #00a3ff !important; /* Blue color wapas */
+            text-shadow: 0 0 15px rgba(0, 163, 255, 0.7), 0 0 30px rgba(0, 163, 255, 0.4); 
         }
-
-        /* --- 2. LAYOUT & GLOW --- */
-        .main-wrapper {
-            padding: 20px;
-            max-width: 600px;
-            margin: 0 auto;
-            padding-bottom: 80px;
-            position: relative;
-            z-index: 10;
-        }
-
-        /* Profile Glow Logic */
-        .profile-container { position: relative; width: 120px; height: 120px; margin: 0 auto; margin-top: 40px; }
-        .profile-img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 2px solid #111; position: relative; z-index: 2; }
-        .profile-glow { 
-            position: absolute; top: -5px; left: -5px; right: -5px; bottom: -5px; 
-            border-radius: 50%; 
-            background: linear-gradient(45deg, #00a3ff, #ff0099); 
-            z-index: 1; 
-            animation: spin 3s linear infinite; 
-            filter: blur(10px); /* Soft Glow */
-        }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-
-        .name { text-align: center; font-size: 1.8rem; margin-top: 20px; font-weight: bold; letter-spacing: 2px; text-transform: uppercase; color: #fff; text-shadow: 0 0 10px rgba(0, 163, 255, 0.5); }
-        
-        /* Bio Animation */
-        .bio-wrap { display: flex; justify-content: center; margin-bottom: 25px; margin-top: 5px; }
-        .bio { 
-            color: #00a3ff; font-size: 0.9rem; letter-spacing: 1px; 
-            border-right: 2px solid #00a3ff; /* Cursor */
-            white-space: nowrap; overflow: hidden;
-            animation: typing 3.5s steps(30, end), blink-caret .75s step-end infinite;
-        }
-        @keyframes typing { from { width: 0 } to { width: 100% } }
-        @keyframes blink-caret { from, to { border-color: transparent } 50% { border-color: #00a3ff; } }
-
-        /* --- 3. BUTTONS & UI --- */
-        .btn-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 30px; }
-        .btn { 
-            background: #000; border: 1px solid #333; color: #fff; padding: 15px; 
-            text-align: center; text-decoration: none; border-radius: 8px; font-size: 0.9rem; transition: 0.3s; 
-            font-family: sans-serif; letter-spacing: 1px;
-        }
-        .btn:hover { border-color: #00a3ff; box-shadow: 0 0 10px rgba(0, 163, 255, 0.2); }
-        
-        .main-btn { 
-            background: #fff; color: #000; border: none; padding: 18px; width: 100%; 
-            font-weight: bold; margin-top: 25px; cursor: pointer; border-radius: 50px; font-size: 1rem; 
-            letter-spacing: 1px; text-transform: uppercase; transition: transform 0.2s;
-        }
-        .main-btn:active { transform: scale(0.98); }
-
-        .game-btn { 
-            background: linear-gradient(90deg, #4CAF50, #2E7D32); color: white; border: none; 
-            padding: 15px; width: 100%; font-weight: bold; margin-top: 15px; cursor: pointer; 
-            border-radius: 8px; font-size: 1rem; letter-spacing: 1px;
-        }
-
-        .chess-btn-container { margin-top: 25px; }
-        .chess-btn { 
-            background: #111; border: 1px dashed #333; display: flex; align-items: center; 
-            padding: 15px; border-radius: 12px; text-decoration: none; color: #fff; gap: 15px; 
-        }
-
-        /* --- 4. SECTIONS & ANIMATIONS --- */
-        .card { background: #111; border: 1px solid #222; border-radius: 12px; padding: 20px; margin-bottom: 20px; margin-top: 20px; }
-        .fade-in { animation: fadeIn 0.8s ease-in-out; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
-        /* --- 5. GAME SCREEN (Full Fixed) --- */
-        #games-view {
-            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: #000; z-index: 5000;
-            flex-direction: column; align-items: center; justify-content: center;
-            overflow: hidden;
-        }
-        .game-container { width: 100%; max-width: 400px; padding: 10px; touch-action: none; }
-        /* Chess Colors */
-        .white-1e1d7 { background-color: #eeeed2 !important; color: #769656 !important; }
-        .black-3c85d { background-color: #769656 !important; color: #eeeed2 !important; }
-
-        /* --- 6. POPUP --- */
-        #music-popup { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 9999; align-items: center; justify-content: center; backdrop-filter: blur(5px); }
-        #music-popup.active { display: flex; }
-        .popup-content { text-align: center; color: #fff; }
     </style>
 </head>
 <body>
@@ -115,7 +33,11 @@
 
 <div id="music-popup" onclick="closePopup()">
     <div class="popup-content">
-        <p>Welcome to my world. ✨<br><br>Tap anywhere to start.</p>
+        <p style="font-size: 1.2rem;">Welcome to my world. ✨</p>
+        <p style="color: #00a3ff; margin-top: 10px;">
+            Tap anywhere to enter.<br>
+            <span style="font-size: 0.8rem; color: #888;">(Don't forget to unmute at the top right for the vibe 🎵)</span>
+        </p>
     </div>
 </div>
 
@@ -160,16 +82,23 @@
         <button onclick="switchToHome()" class="back-btn" style="color:#888; background:none; border:none; margin-bottom:10px;">← Home Protocol</button>
 
         <h2>Sonic Fuel (GOAT)</h2>
-        <div class="card" style="border-top: 4px solid #fff; background: linear-gradient(145deg, #0a0a0a, #111);">
+        <div class="card" style="border-top: 4px solid #00a3ff; background: linear-gradient(145deg, #0a0a0a, #111);">
             <div style="display: flex; align-items: center; gap: 15px;">
                 <div style="width: 50px; height: 50px; border-radius: 50%; background: #222; display: flex; align-items: center; justify-content: center; font-weight: bold; color: #00a3ff; border: 1px solid #333; font-size: 1.2rem;">$</div>
                 <div>
-                    <h3 style="margin: 0; color: #fff; font-size: 1rem;">KR$NA 👑</h3>
-                    <p style="margin: 0; color: #666; font-size: 0.8rem;">The inspiration.</p>
+                    <h3 style="margin: 0; color: #fff; font-size: 1.1rem;">KR$NA 👑</h3>
+                    <p style="margin: 0; color: #00a3ff; font-size: 0.8rem;">The inspiration.</p>
                 </div>
             </div>
-            <p style="color: #bbb; font-size: 0.85rem; margin-top: 15px; font-style: italic;">
-                "Chahiye mujhe bas ek buss down Rollie<br>Lambhi si gaadi aur makaan do storey..."
+            <p style="color: #bbb; font-size: 0.9rem; margin-top: 20px; font-style: italic; line-height: 1.6; border-left: 2px solid #333; padding-left: 15px;">
+                "Chahiye mujhe bas ek buss down Rollie<br>
+                Lambhi si gaadi aur makaan do storey, haan<br>
+                Chahiye mujhe bas ek buss down Rollie<br>
+                Lambhi si chain aur kuch lakh ki tijori<br><br>
+                Paisa hai toh sab hai, warna bhai kaun hai?<br>
+                Zindagi hai race, aur hum sab hi clone hain<br>
+                Level mera up, tera career hi down hai<br>
+                King of the north, mere sar pe hi crown hai."
             </p>
         </div>
 
@@ -186,7 +115,6 @@
             <div id="typewriter-output-2" style="border-left: 2px solid #654ea3; padding-left: 10px; min-height: 50px; color: #d1c4e9; margin-bottom: 10px; font-family: monospace;"></div>
             <button onclick="readMoreVerses()" style="width: 100%; background: #654ea3; color: white; border: none; padding: 10px; border-radius: 8px; font-weight: bold; cursor: pointer;">READ FULL ➜</button>
         </div>
-
     </div>
 
     <div id="games-view">
@@ -205,50 +133,46 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.3/chess.min.js"></script>
 
 <script>
-    // --- VARIABLES ---
     var globalAudio = document.getElementById("global-bg-music");
     var gameAudio = document.getElementById("game-bg-music");
     var btn = document.getElementById("mute-btn");
-    var currentMode = 'home';
+    var currentMode = 'home'; 
     var isMuted = true;
     var board = null;
     var game = null;
+    var $status = $('#status');
+    var typingInterval;
 
-    // --- POPUP ---
     function readMoreVerses() {
-        if(confirm("Do you want to visit Instagram to read the full masterpiece? ✍️")) {
-            window.open("https://www.instagram.com/arnav_9.11", "_blank");
-        }
+        var userChoice = confirm("Do you want to visit Instagram to read the full masterpiece? ✍️\n(Click OK to visit)");
+        if(userChoice === true) { window.open("https://www.instagram.com/arnav_9.11", "_blank"); }
     }
 
-    // --- MUSIC ---
     function toggleMusic() {
         var activeAudio = (currentMode === 'game') ? gameAudio : globalAudio;
         if (activeAudio.paused) {
-            activeAudio.play().catch(e => console.log(e));
+            activeAudio.play().catch(function(e){ console.log("Audio Error:", e); });
             isMuted = false;
-            btn.innerHTML = "🎵"; btn.style.borderColor = "#00a3ff";
+            if(btn) { btn.innerHTML = "🎵"; btn.style.borderColor = "#00a3ff"; }
         } else {
             activeAudio.pause();
             isMuted = true;
-            btn.innerHTML = "🔇"; btn.style.borderColor = "#444";
+            if(btn) { btn.innerHTML = "🔇"; btn.style.borderColor = "#444"; }
         }
     }
 
-    // --- NAVIGATION ---
     function switchToAbout() {
         document.getElementById('home-view').style.display = 'none';
         document.getElementById('games-view').style.display = 'none';
         var about = document.getElementById('about-view');
         about.style.display = 'block';
-        about.classList.add('fade-in'); // Animation class
         window.scrollTo(0, 0);
         
-        // Start Verse Typing
-        startTyping("Moh dya ka tyag kar...\nAb jism se na pyar kar...", "typewriter-output-1");
+        // Verses Start
+        startTyping("Moh dya ka tyag kar...\nAb jism se na pyar kar...\nMastko ke unke Aaj...\nDeh se ajaad kar....", "typewriter-output-1");
         setTimeout(() => {
             startTyping("Mai antt hun mai ankurit,\nYugo yugo ka hal hai...", "typewriter-output-2");
-        }, 1000);
+        }, 1500);
     }
 
     function switchToGames() {
@@ -256,10 +180,9 @@
         document.getElementById('home-view').style.display = 'none';
         document.getElementById('about-view').style.display = 'none';
         document.getElementById('games-view').style.display = 'flex';
-        
         if(globalAudio) globalAudio.pause();
         if(gameAudio) { gameAudio.currentTime = 0; if(!isMuted) gameAudio.play(); }
-        btn.innerHTML = (!isMuted) ? "🎵" : "🔇";
+        if(btn) btn.innerHTML = (!isMuted) ? "🎵" : "🔇";
         setTimeout(initGame, 200);
     }
 
@@ -270,10 +193,9 @@
         document.getElementById('home-view').style.display = 'block';
         if(gameAudio) gameAudio.pause();
         if(globalAudio && !isMuted) globalAudio.play();
-        btn.innerHTML = (!isMuted) ? "🎵" : "🔇";
+        if(btn) btn.innerHTML = (!isMuted) ? "🎵" : "🔇";
     }
 
-    // --- TYPEWRITER LOGIC ---
     function startTyping(text, elementId) {
         const element = document.getElementById(elementId);
         if(!element) return;
@@ -287,51 +209,54 @@
         }, 50);
     }
 
-    // --- CHESS LOGIC ---
-    function onDragStart (source, piece) {
-        if (game.game_over() || piece.search(/^b/) !== -1) return false;
-    }
-    function makeRandomMove () {
-        var possibleMoves = game.moves();
-        if (possibleMoves.length === 0) return;
-        var randomIdx = Math.floor(Math.random() * possibleMoves.length);
-        game.move(possibleMoves[randomIdx]);
-        board.position(game.fen());
-        updateStatus();
-    }
-    function onDrop (source, target) {
-        var move = game.move({ from: source, to: target, promotion: 'q' });
-        if (move === null) return 'snapback';
-        updateStatus();
-        window.setTimeout(makeRandomMove, 250);
-    }
-    function onSnapEnd () { board.position(game.fen()); }
-    function updateStatus () {
-        var status = '';
-        var moveColor = (game.turn() === 'b') ? 'Arnav AI' : 'You';
-        if (game.in_checkmate()) status = 'Game over, ' + moveColor + ' is in checkmate.';
-        else status = moveColor + ' to move';
-        $('#status').html(status);
-    }
     function initGame() {
         game = new Chess();
         board = Chessboard('myBoard', {
-            draggable: true, position: 'start', onDragStart: onDragStart, onDrop: onDrop, onSnapEnd: onSnapEnd,
+            draggable: true, position: 'start',
+            onDragStart: function(s, p) { if (game.game_over() || p.search(/^b/) !== -1) return false; },
+            onDrop: function(s, t) {
+                var move = game.move({ from: s, to: t, promotion: 'q' });
+                if (move === null) return 'snapback';
+                updateStatus();
+                window.setTimeout(function() {
+                    var moves = game.moves();
+                    if (moves.length > 0) {
+                        game.move(moves[Math.floor(Math.random() * moves.length)]);
+                        board.position(game.fen());
+                        updateStatus();
+                    }
+                }, 250);
+            },
+            onSnapEnd: function() { board.position(game.fen()); },
             pieceTheme: 'https://chessboardjs.com/img/chesspieces/wikipedia/{piece}.png'
         });
         $(window).resize(board.resize);
     }
 
-    // --- POPUP LOAD ---
+    function updateStatus() {
+        var status = (game.turn() === 'b') ? 'Arnav AI to move' : 'Your move';
+        if (game.in_checkmate()) status = 'Checkmate!';
+        if($status) $status.html(status);
+    }
+
     window.onload = function() {
         setTimeout(function() {
             var popup = document.getElementById("music-popup");
             if(popup) popup.classList.add("active");
         }, 2000); 
     };
+
     function closePopup() {
-        document.getElementById("music-popup").classList.remove("active");
-        setTimeout(function(){ document.getElementById("music-popup").style.display = "none"; }, 800);
+        var popup = document.getElementById("music-popup");
+        if(popup) {
+            popup.classList.remove("active");
+            setTimeout(function(){ 
+                popup.style.display = "none";
+                // Start home page bio animation
+                const bio = document.querySelector('.bio');
+                if(bio) bio.style.animation = "typing 3.5s steps(30, end), blink-caret .75s step-end infinite";
+            }, 800);
+        }
     }
 </script>
 </body>
