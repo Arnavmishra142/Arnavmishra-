@@ -136,5 +136,38 @@
     <p style="margin-top: 30px; color: #333; font-size: 0.6rem; letter-spacing: 1px;">© 2026 ARNAV MISHRA</p>
 </div>
 
+ <div id="music-container" style="position: fixed; top: 20px; left: 20px; z-index: 999;">
+    <button onclick="toggleGlobalMusic()" id="mute-btn" style="background: rgba(0,0,0,0.5); border: 1px solid #333; color: #fff; padding: 10px; border-radius: 50%; width: 45px; height: 45px; cursor: pointer; backdrop-filter: blur(5px); font-size: 1.2rem; transition: 0.3s;">
+        🔇
+    </button>
+    <audio id="global-bg-music" loop>
+        <source src="co2.mp3" type="audio/mpeg">
+    </audio>
+</div>
+
+<script>
+    var audio = document.getElementById("global-bg-music");
+    var btn = document.getElementById("mute-btn");
+
+    // Volume Set to 20% (Soothing Level)
+    audio.volume = 0.2; 
+
+    function toggleGlobalMusic() {
+        if (audio.paused) {
+            audio.play().catch(function(error) {
+                console.log("Auto-play blocked by browser. User must click first.");
+            });
+            btn.innerHTML = "🎵";
+            btn.style.borderColor = "#00a3ff";
+            btn.style.boxShadow = "0 0 15px rgba(0, 163, 255, 0.4)";
+        } else {
+            audio.pause();
+            btn.innerHTML = "🔇";
+            btn.style.borderColor = "#333";
+            btn.style.boxShadow = "none";
+        }
+    }
+</script>
+    
 </body>
 </html>
