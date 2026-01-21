@@ -8,29 +8,14 @@
     <meta name="description" content="Official portfolio of Arnav Mishra. Student, Poet, and Tech Enthusiast.">
     
     <style>
-
-             /* Welcome Pop-up Styling */
-        #music-popup {
-            position: fixed; inset: 0; background: rgba(0,0,0,0.9);
-            z-index: 1000; display: flex; align-items: center; justify-content: center;
-            text-align: center; backdrop-filter: blur(10px); cursor: pointer;
-        }
-        .popup-content { padding: 30px; border: 1px solid #00a3ff; border-radius: 20px; max-width: 80%; box-shadow: 0 0 30px rgba(0, 163, 255, 0.2); }
-        .popup-content p { font-size: 1.1rem; line-height: 1.6; color: #fff; }
-        .popup-content span { color: #00a3ff; font-weight: bold; }
-        
-        /* BASE SETUP */
+        /* --- 1. BASE SETUP (Dark Mode Fix) --- */
         body { 
-            <div id="music-popup" onclick="closePopup()">
-    <div class="popup-content">
-        <p>Welcome to my world. ✨<br><br>
-        You can enjoy the 🎵 music as well by tapping the <span>Top Right corner</span>.<br><br>
-        <small style="color: #555;">(Tap anywhere to enter)</small></p>
-    </div>
-</div>
-            
-            background-color: #000; color: #fff; font-family: 'Segoe UI', sans-serif; 
-            margin: 0; padding: 0; overflow-x: hidden; min-height: 100vh;
+            background-color: #000; 
+            color: #fff; 
+            font-family: 'Segoe UI', sans-serif; 
+            margin: 0; padding: 0; 
+            overflow-x: hidden; 
+            min-height: 100vh;
         }
         
         /* The Container */
@@ -39,7 +24,22 @@
             min-height: 100vh; position: relative; padding-top: 50px;
         }
 
-        /* ----- HOME STYLES ----- */
+        /* --- 2. WELCOME POP-UP STYLES --- */
+        #music-popup {
+            position: fixed; inset: 0; background: rgba(0,0,0,0.9);
+            z-index: 2000; display: flex; align-items: center; justify-content: center;
+            text-align: center; backdrop-filter: blur(10px); cursor: pointer;
+        }
+        .popup-content { 
+            padding: 30px; border: 1px solid #00a3ff; border-radius: 20px; 
+            max-width: 80%; box-shadow: 0 0 30px rgba(0, 163, 255, 0.3);
+            background: #0a0a0a;
+        }
+        .popup-content p { font-size: 1.1rem; line-height: 1.6; color: #fff; margin: 0; }
+        .popup-content span { color: #00a3ff; font-weight: bold; }
+        .popup-content small { display: block; margin-top: 15px; color: #666; font-size: 0.8rem; }
+
+        /* --- 3. HOME PAGE STYLES --- */
         .profile-container { 
             width: 120px; height: 120px; margin: 0 auto 20px; position: relative;
             animation: popIn 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
@@ -65,15 +65,13 @@
             animation: typing 2.5s steps(30, end) forwards; width: 0; 
         }
 
-        /* Buttons & Cards */
+        /* Buttons */
         .btn-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
         .btn { 
             padding: 12px; background: #0a0a0a; border: 1px solid #333; 
             color: #fff; text-decoration: none; border-radius: 8px; font-size: 0.75rem; 
             text-align: center; display: block; transition: 0.3s;
         }
-        .btn:active { background: #333; }
-        
         .main-btn { 
             display: block; width: 100%; padding: 15px; margin-top: 20px; 
             background: linear-gradient(45deg, #00a3ff, #005f99); 
@@ -82,7 +80,7 @@
             box-shadow: 0 0 20px rgba(0, 163, 255, 0.2);
         }
 
-        /* ----- ABOUT / PROJECT STYLES ----- */
+        /* --- 4. ABOUT / CONTENT STYLES --- */
         .card { 
             background: #0a0a0a; border: 1px solid #222; border-radius: 16px; 
             padding: 20px; margin-bottom: 25px; 
@@ -99,7 +97,7 @@
             border-radius: 50px; cursor: pointer; margin-bottom: 10px; font-size: 0.85rem;
         }
 
-        /* ----- ANIMATIONS ----- */
+        /* --- 5. ANIMATIONS --- */
         @keyframes popIn { 0% { opacity: 0; transform: scale(0); } 100% { opacity: 1; transform: scale(1); } }
         @keyframes typing { from { width: 0 } to { width: 100% } }
         @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(0,163,255,0.4); } 70% { box-shadow: 0 0 0 15px rgba(0,0,0,0); } }
@@ -110,7 +108,15 @@
 </head>
 <body>
 
-<div style="position: fixed; top: 20px; right: 20px; z-index: 999;">
+<div id="music-popup" onclick="closePopup()">
+    <div class="popup-content">
+        <p>Welcome to my world. ✨<br><br>
+        You can enjoy the 🎵 music as well by tapping the <span>Top Right corner</span>.</p>
+        <small>(Tap anywhere to enter)</small>
+    </div>
+</div>
+
+<div style="position: fixed; top: 20px; right: 20px; z-index: 1000;">
     <button onclick="toggleGlobalMusic()" id="mute-btn" style="background: rgba(0,0,0,0.6); border: 1px solid #444; color: #fff; padding: 0; border-radius: 50%; width: 45px; height: 45px; cursor: pointer; backdrop-filter: blur(5px); font-size: 1.2rem; transition: 0.3s; display: flex; align-items: center; justify-content: center;">
         🔇
     </button>
@@ -148,6 +154,23 @@
     <div id="about-view" style="display: none; opacity: 0;">
         <button onclick="switchToHome()" class="back-btn">← Home Protocol</button>
 
+        <h2>Sonic Fuel (GOAT)</h2>
+        <div class="card" style="border-top: 4px solid #fff; background: linear-gradient(145deg, #0a0a0a, #111);">
+            <div style="display: flex; align-items: center; gap: 15px;">
+                <div style="width: 50px; height: 50px; border-radius: 50%; background: #222; display: flex; align-items: center; justify-content: center; font-weight: bold; color: #00a3ff; border: 1px solid #333; font-size: 1.2rem;">$</div>
+                <div>
+                    <h3 style="margin: 0; color: #fff; font-size: 1rem;">KR$NA 👑</h3>
+                    <p style="margin: 0; color: #666; font-size: 0.8rem;">The inspiration behind the pen.</p>
+                </div>
+            </div>
+            <p style="color: #bbb; font-size: 0.85rem; margin-top: 15px; font-style: italic; line-height: 1.4;">
+                "Chahiye mujhe bas ek buss down Rollie<br>
+                Lambhi si gaadi aur makaan do storey, haan<br>
+                Chahiye mujhe bas ek buss down Rollie<br>
+                Lambhi si chain aur kuch lakh ki tijori"
+            </p>
+        </div>
+
         <h2>Projects</h2>
         <div class="card" style="border-top: 4px solid #d32f2f;">
             <h3 style="margin-top: 0; color: #fff;">Zomato Analysis</h3>
@@ -155,25 +178,6 @@
             <a href="https://docs.google.com/spreadsheets/d/11k2QyICWavfXFuUGXRBGnRJ7l7zsblQB/edit?usp=drivesdk" style="color: #d32f2f; text-decoration: none; font-weight: bold;">View Sheets Project ➜</a>
         </div>
 
-                <h2>Sonic Fuel (GOAT)</h2>
-        <div class="card" style="border-top: 4px solid #fff; background: linear-gradient(145deg, #0a0a0a, #111);">
-            <div style="display: flex; align-items: center; gap: 15px;">
-                <div style="width: 50px; height: 50px; border-radius: 50%; background: #222; display: flex; align-items: center; justify-content: center; font-weight: bold; color: #00a3ff; border: 1px solid #333; font-size: 1.2rem;">$</div>
-                <div>
-                    <h3 style="margin: 0; color: #fff; font-size: 1rem;">KR$NA</h3>
-                    <p style="margin: 0; color: #666; font-size: 0.8rem;">The inspiration behind the pen.</p>
-                </div>
-            </div>
-            <p style="color: #bbb; font-size: 0.85rem; margin-top: 15px; font-style: italic; line-height: 1.4;">
-              <p style="color: #bbb; font-size: 0.85rem; margin-top: 15px; font-style: italic; line-height: 1.4;">
-    "Chahiye mujhe bas ek buss down Rollie<br>
-    Lambhi si gaadi aur makaan do storey, haan<br>
-    Chahiye mujhe bas ek buss down Rollie<br>
-    Lambhi si chain aur kuch lakh ki tijori"
-                </p>
-            
-        </div>
-        
         <h2>Original Verse</h2>
         
         <div class="card">
@@ -280,7 +284,7 @@ Har karm ka gathi mai
 </div>
 
 <script>
-    // 1. MUSIC CONTROL (Volume: 20%)
+    // Music Logic
     var audio = document.getElementById("global-bg-music");
     var btn = document.getElementById("mute-btn");
     audio.volume = 0.2; 
@@ -299,7 +303,13 @@ Har karm ka gathi mai
         }
     }
 
-    // 2. PAGE SWITCHING LOGIC (Smooth)
+    // Popup Logic
+    function closePopup() {
+        var popup = document.getElementById("music-popup");
+        popup.style.display = "none";
+    }
+
+    // Page Switching Logic
     function switchToAbout() {
         document.getElementById('home-view').style.display = 'none';
         var about = document.getElementById('about-view');
@@ -315,10 +325,6 @@ Har karm ka gathi mai
         home.classList.add('fade-in');
     }
 </script>
-    function closePopup() {
-        var popup = document.getElementById("music-popup");
-        popup.style.display = "none";
-    }
-    
+
 </body>
 </html>
