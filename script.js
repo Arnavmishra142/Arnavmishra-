@@ -106,17 +106,36 @@ const bioElement = document.getElementById('bio-text');
 
 let isMusicPlaying = false;
 
+/* --- PAGE LOAD EVENTS --- */
+window.addEventListener('load', () => {
+    // 1. Start Typewriter for Bio immediately
+    setTimeout(() => {
+        typeWriter(bioText, bioElement, 100);
+    }, 500);
+
+    // 2. Show Popup after 2.5 Seconds Delay
+    setTimeout(() => {
+        musicPopup.style.display = 'flex';
+        // Small delay to allow 'display:flex' to apply before opacity transition
+        setTimeout(() => {
+            musicPopup.style.opacity = '1';
+        }, 50);
+    }, 2500);
+});
+
 /* --- MUSIC CONTROL --- */
 function toggleMusic() {
     if (bgMusic.paused) {
         bgMusic.play();
         muteIcon.className = "fas fa-volume-up";
-        muteBtn.classList.add('playing');
+        muteBtn.style.borderColor = "#00ff88";
+        muteBtn.style.color = "#00ff88";
         isMusicPlaying = true;
     } else {
         bgMusic.pause();
         muteIcon.className = "fas fa-volume-mute";
-        muteBtn.classList.remove('playing');
+        muteBtn.style.borderColor = "#00a3ff";
+        muteBtn.style.color = "#00a3ff";
         isMusicPlaying = false;
     }
 }
@@ -131,14 +150,12 @@ function closePopup() {
         bgMusic.volume = 0.5;
         bgMusic.play().then(() => {
             muteIcon.className = "fas fa-volume-up";
-            muteBtn.classList.add('playing');
+            muteBtn.style.borderColor = "#00ff88";
+            muteBtn.style.color = "#00ff88";
             isMusicPlaying = true;
         }).catch(e => {
             console.log("Autoplay blocked");
         });
-        
-        // Start Bio Typing
-        typeWriter(bioText, bioElement, 100);
     }, 500);
 }
 
@@ -151,7 +168,6 @@ function switchToAbout() {
         homeView.style.display = 'none';
         aboutView.style.display = 'block';
         
-        // Reset animation
         aboutView.style.opacity = '0';
         aboutView.style.transform = 'translateY(20px)';
         void aboutView.offsetWidth; 
@@ -160,7 +176,6 @@ function switchToAbout() {
         aboutView.style.opacity = '1';
         aboutView.style.transform = 'translateY(0)';
         
-        // Initialize Verses with Full Text
         initVerse('verse1');
         initVerse('verse2');
         
@@ -196,17 +211,18 @@ function typeWriter(text, element, speed) {
     type();
 }
 
-/* --- VERSE HANDLING (Now loads full text immediately) --- */
+/* --- VERSE HANDLING --- */
 function initVerse(verseKey) {
     const elementId = verseKey === 'verse1' ? 'verse-1-display' : 'verse-2-display';
     const content = fullVerses[verseKey];
     const container = document.getElementById(elementId);
     
-    // Format lines with animation
+    // Format lines with staggered animation
     const formattedHtml = content.split('\n').map((line, index) => {
-        if (line.trim() === '') return '<br>'; // Preserve paragraph breaks
-        return `<span class="verse-line" style="animation-delay: ${index * 0.03}s">${line}</span>`;
-    }).join('<br>');
+        if (line.trim() === '') return '<br>';
+        // Slower delay for a more "dramatic" reading feel
+        return `<span class="verse-line" style="animation-delay: ${index * 0.1}s">${line}</span>`;
+    }).join('');
     
     container.innerHTML = formattedHtml;
 }
