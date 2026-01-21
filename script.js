@@ -1,8 +1,98 @@
 /* --- CONFIGURATION --- */
 const bioText = "Building ideas from scratch.";
-const verses = {
-    verse1: "Moh dya ka tyag kar...\nAb jism se na pyar kar...\nMastak ko uncha rakh tu,\nBas lakshya ka hi dhyan kar. 🔥",
-    verse2: "Anjaan raaston pe chalta raha,\nNa manzil ka pata, na khud ka pata...\nBas ek umeed thi seene mein,\nJo har andhere ko roshan kar gayi. 🌌"
+
+// Full Lyrics Objects
+const fullVerses = {
+    verse1: `Tu jang ka ailan kar 
+Dushmano PE vaar kar
+Papiyo ka naas kar....
+
+Moh dya ka tyag kar 
+Ab jism se na pyar kar 
+Mastko ke unke Aaj
+Deh se ajaad kar....
+
+Dikha de pure vishwa ko
+Parlaya ke raudra drishya ko
+Jaha par keval dharm ho
+Na dharm me koi sharm ho
+Jo dharm me kare sharam
+Un adharmiyo ka (naas kar)3...
+
+Na bhal(bhala) ka vo ghao ho 
+Na tir ka prabhav ho
+Bas bhid me tuhi,tuhi
+Aur Tera hi dabao ho
+Jo tu lade to kaun bhage 
+Jo tu bhage to kaun bache 
+Bache Jo bht koi karnaverse
+Kabhi na fir (vo lade)3...
+
+Moh dya ka tyag kr 
+Bas ek hi dharm vaar kr
+
+Saam,dam,dand,bhed
+Adharmiya pe kar ke dekh
+Man le to jane de 
+Na Mane to tu pran le
+Tu kaat de vo har gale 
+Jo marg pe tere na chle 
+Vo sarthi vo Tera bhale...
+
+Moh Daya ka tyag kar 
+Bs ek hi dharm var kr...
+
+Aarmbh hai is kaal ka 
+Papiyo ke naas ka
+Tu kaal se dare Bina 
+Ab Jaan ka bhi daan de
+Dikha de pure vishwa ko
+Nisthur se is dishya ko
+Adharmiyo ka naas kar 
+Apne vir ka praman de....
+
+Moh dya ka tyag kr 
+Bs ek hi dharm vaar kar....
+
+Moh dya ka tyag kr 
+Bs ek hi dharm (vaar kar)3...`,
+
+    verse2: `Mai antt hun mai ankurit 
+Yugo yugo ka hal hai
+Mai hinn hun ,mai hun priye
+Mera hi maah saal hai
+
+Na saksh hun, na aatma 
+Na devta ,pramatama 
+Mai bhoot (past) hun , mai kaal sa
+Divr hun mai bhaal sa
+
+Kurn sa mai dheema bhi
+Brahamand sa na sheema bhi
+Krishna se bhi vanchit mai 
+Bhole se na mai saar hun
+Mai ant hun mai ankurit 
+Chattan sa mai bhaar(bhaari) hun
+
+Na paksh dhar, nipaksh mai 
+Lankesh ka mai haar hun 
+Koi to mujhse hai khda 
+Kisi ka intezar hun
+Adrishya na mai hun kabhi
+Mai to shariyam hun
+Adharm na -mai dharm hun .
+Mai mera koi chaal hai 
+
+Mai antt hun mai ankurit 
+Yugo yugo ka haal hai
+
+Marg mera ek hai sheesha raasta magr
+Chaal mai jo chaldu 
+Aata na mi do-baar hu
+Mai paksh me vipaksh hun
+Vipaksh ka bhi shadhi mai
+Acha Bura ho jo magr
+Har karm ka gathi mai`
 };
 
 /* --- DOM ELEMENTS --- */
@@ -11,6 +101,7 @@ const aboutView = document.getElementById('about-view');
 const musicPopup = document.getElementById('music-popup');
 const bgMusic = document.getElementById('global-bg-music');
 const muteBtn = document.getElementById('mute-btn');
+const muteIcon = document.getElementById('mute-icon');
 const bioElement = document.getElementById('bio-text');
 
 let isMusicPlaying = false;
@@ -19,11 +110,13 @@ let isMusicPlaying = false;
 function toggleMusic() {
     if (bgMusic.paused) {
         bgMusic.play();
-        muteBtn.textContent = "🔊";
+        muteIcon.className = "fas fa-volume-up";
+        muteBtn.classList.add('playing');
         isMusicPlaying = true;
     } else {
         bgMusic.pause();
-        muteBtn.textContent = "🔇";
+        muteIcon.className = "fas fa-volume-mute";
+        muteBtn.classList.remove('playing');
         isMusicPlaying = false;
     }
 }
@@ -33,13 +126,15 @@ function closePopup() {
     musicPopup.style.opacity = '0';
     setTimeout(() => {
         musicPopup.style.display = 'none';
-        // Auto play music on entry if user interaction allowed
-        bgMusic.volume = 0.5; // Set volume to 50%
+        
+        // Try Auto play
+        bgMusic.volume = 0.5;
         bgMusic.play().then(() => {
-            muteBtn.textContent = "🔊";
+            muteIcon.className = "fas fa-volume-up";
+            muteBtn.classList.add('playing');
             isMusicPlaying = true;
         }).catch(e => {
-            console.log("Autoplay blocked, user must click mute btn");
+            console.log("Autoplay blocked");
         });
         
         // Start Bio Typing
@@ -56,19 +151,18 @@ function switchToAbout() {
         homeView.style.display = 'none';
         aboutView.style.display = 'block';
         
-        // Reset animation for about view
+        // Reset animation
         aboutView.style.opacity = '0';
         aboutView.style.transform = 'translateY(20px)';
-        
-        // Trigger reflow
         void aboutView.offsetWidth; 
         
         aboutView.style.transition = 'all 0.6s ease';
         aboutView.style.opacity = '1';
         aboutView.style.transform = 'translateY(0)';
         
-        // Start verse typing previews
-        startVerseTyping();
+        // Initialize Verses with Preview
+        initVerse('verse1');
+        initVerse('verse2');
         
         window.scrollTo(0, 0);
     }, 400);
@@ -81,16 +175,14 @@ function switchToHome() {
     setTimeout(() => {
         aboutView.style.display = 'none';
         homeView.style.display = 'block';
-        
         void homeView.offsetWidth;
-        
         homeView.style.transition = 'all 0.6s ease';
         homeView.style.opacity = '1';
         homeView.style.transform = 'translateY(0)';
     }, 400);
 }
 
-/* --- TYPEWRITER EFFECT --- */
+/* --- TYPEWRITER --- */
 function typeWriter(text, element, speed) {
     element.innerHTML = "";
     let i = 0;
@@ -104,23 +196,38 @@ function typeWriter(text, element, speed) {
     type();
 }
 
-function startVerseTyping() {
-    const verse1El = document.getElementById('verse-1');
-    const verse2El = document.getElementById('verse-2');
+/* --- VERSE HANDLING --- */
+function initVerse(verseKey) {
+    // Load text initially
+    const elementId = verseKey === 'verse1' ? 'verse-1-display' : 'verse-2-display';
+    const content = fullVerses[verseKey];
+    const container = document.getElementById(elementId);
     
-    // Type only first line as preview
-    const v1Preview = verses.verse1.split('\n')[0] + "...";
-    const v2Preview = verses.verse2.split('\n')[0] + "...";
+    // Format lines
+    const formattedHtml = content.split('\n').map((line, index) => 
+        `<span class="verse-line" style="animation-delay: ${index * 0.05}s">${line}</span>`
+    ).join('<br>');
     
-    typeWriter(v1Preview, verse1El, 50);
-    setTimeout(() => typeWriter(v2Preview, verse2El, 50), 1000);
+    container.innerHTML = formattedHtml;
 }
 
-/* --- READ FULL VERSE --- */
-function readFullVerse(verseKey) {
-    let elementId = (verseKey === 'verse1') ? 'verse-1' : 'verse-2';
-    let content = (verseKey === 'verse1') ? verses.verse1 : verses.verse2;
+function toggleVerse(verseKey) {
+    const elementId = verseKey === 'verse1' ? 'verse-1-display' : 'verse-2-display';
+    const btnId = verseKey === 'verse1' ? 'btn-verse1' : 'btn-verse2';
     
-    // Replace newlines with <br> for HTML display
-    document.getElementById(elementId).innerHTML = content.replace(/\n/g, "<br>");
+    const container = document.getElementById(elementId);
+    const btn = document.getElementById(btnId);
+    
+    if (container.classList.contains('collapsed')) {
+        container.classList.remove('collapsed');
+        container.classList.add('expanded');
+        btn.innerHTML = "COLLAPSE ⬆";
+    } else {
+        container.classList.remove('expanded');
+        container.classList.add('collapsed');
+        btn.innerHTML = "READ FULL ➜";
+        
+        // Scroll slightly up to header if user is deep down
+        container.previousElementSibling.scrollIntoView({behavior: "smooth", block: "center"});
+    }
 }
