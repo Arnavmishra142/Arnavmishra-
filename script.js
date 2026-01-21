@@ -1,14 +1,4 @@
-/* --- 1. YE SABSE UPAR RAHEGA (Button Logic) --- */
-function readMoreVerses() {
-    // Ye popup dikhayega
-    var userChoice = confirm("Do you want to visit Instagram to read the full masterpiece? ✍️\n(Click OK to visit, Cancel to stay)");
-    
-    if(userChoice === true) {
-        window.open("https://www.instagram.com/arnav_9.11", "_blank");
-    }
-}
-
-/* --- 2. BAAKI KA CODE --- */
+/* --- GLOBAL VARIABLES --- */
 var globalAudio = document.getElementById("global-bg-music");
 var gameAudio = document.getElementById("game-bg-music");
 var btn = document.getElementById("mute-btn");
@@ -17,27 +7,77 @@ var isMuted = true;
 var board = null;
 var game = null;
 var $status = $('#status');
+var typingInterval;
 
-// Poetry Teaser Text
-const poemText = "Moh dya ka tyag kar...\nAb jism se na pyar kar...\nMastko ke unke Aaj...\nDeh se ajaad kar....";
-let typingInterval;
+/* --- BUTTON FUNCTIONS (Top Level) --- */
 
-/* --- MUSIC SYSTEM --- */
-globalAudio.volume = 0.2; 
-if(gameAudio) gameAudio.volume = 0.3;
+// 1. Read More Button
+function readMoreVerses() {
+    var userChoice = confirm("Do you want to visit Instagram to read the full masterpiece? ✍️\n(Click OK to visit)");
+    if(userChoice === true) {
+        window.open("https://www.instagram.com/arnav_9.11", "_blank");
+    }
+}
 
+// 2. Music Toggle
 function toggleMusic() {
     var activeAudio = (currentMode === 'game') ? gameAudio : globalAudio;
-    
     if (activeAudio.paused) {
-        activeAudio.play().catch(e => console.log("Audio play failed")); 
+        activeAudio.play().catch(function(e){ console.log("Audio Error:", e); });
         isMuted = false;
-        btn.innerHTML = "🎵"; btn.style.borderColor = "#00a3ff";
+        if(btn) { btn.innerHTML = "🎵"; btn.style.borderColor = "#00a3ff"; }
     } else {
-        activeAudio.pause(); 
+        activeAudio.pause();
         isMuted = true;
-        btn.innerHTML = "🔇"; btn.style.borderColor = "#444";
+        if(btn) { btn.innerHTML = "🔇"; btn.style.borderColor = "#444"; }
     }
+}
+
+/* --- NAVIGATION LOGIC (The Fix) --- */
+
+function switchToAbout() {
+    console.log("Switching to About"); // Debugging
+    document.getElementById('home-view').style.display = 'none';
+    document.getElementById('games-view').style.display = 'none';
+    
+    var about = document.getElementById('about-view');
+    about.style.display = 'block';
+    window.scrollTo(0, 0);
+    
+    typeWriterEffect();
+}
+
+function switchToGames() {
+    console.log("Switching to Games"); // Debugging
+    currentMode = 'game';
+    document.getElementById('home-view').style.display = 'none';
+    document.getElementById('about-view').style.display = 'none';
+    
+    var gameView = document.getElementById('games-view');
+    gameView.style.display = 'flex'; // Important: Flex for centering
+    
+    // Music Switch
+    if(globalAudio) globalAudio.pause();
+    if(gameAudio) { 
+        gameAudio.currentTime = 0; 
+        if(!isMuted) gameAudio.play(); 
+    }
+    if(btn) btn.innerHTML = (!isMuted) ? "🎵" : "🔇";
+
+    // Init Board Delay
+    setTimeout(initGame, 200);
+}
+
+function switchToHome() {
+    currentMode = 'home';
+    document.getElementById('about-view').style.display = 'none';
+    document.getElementById('games-view').style.display = 'none';
+    document.getElementById('home-view').style.display = 'block';
+    
+    // Music Switch Back
+    if(gameAudio) gameAudio.pause();
+    if(globalAudio && !isMuted) globalAudio.play();
+    if(btn) btn.innerHTML = (!isMuted) ? "🎵" : "🔇";
 }
 
 /* --- CHESS LOGIC --- */
@@ -69,7 +109,7 @@ function updateStatus () {
     var moveColor = (game.turn() === 'b') ? 'Arnav AI' : 'You';
     if (game.in_checkmate()) { status = 'Game over, ' + moveColor + ' is in checkmate.'; }
     else if (game.in_draw()) { status = 'Game over, drawn position'; }
-    else { status = moveColor + ' to move'; if (game.in_check()) { status += ', ' + moveColor + ' is in check'; } }
+    else { status = moveColor + ' to move'; }
     if($status) $status.html(status);
 }
 
@@ -86,57 +126,32 @@ function initGame() {
         };
         board = Chessboard('myBoard', config);
         $(window).resize(board.resize);
-    } catch (e) { console.log("Chess error: " + e); }
+    } catch (e) { console.log("Chess Error:", e); }
 }
 
-/* --- NAVIGATION --- */
+/* --- TYPEWRITER EFFECT --- */
+const poemText = "Moh dya ka tyag kar...\nAb jism se na pyar kar...\nMastko ke unke Aaj...\nDeh se ajaad kar....";
 function typeWriterEffect() {
     const element = document.getElementById("typewriter-output");
     if(!element) return;
-    element.innerHTML = ""; let index = 0; clearInterval(typingInterval);
+    element.innerHTML = ""; 
+    let index = 0; 
+    clearInterval(typingInterval);
     typingInterval = setInterval(() => {
         if (poemText.charAt(index) === '\n') { element.innerHTML += "<br>"; } 
         else { element.innerHTML += poemText.charAt(index); }
-        index++; if (index === poemText.length) { clearInterval(typingInterval); }
+        index++; 
+        if (index === poemText.length) { clearInterval(typingInterval); }
     }, 50);
 }
 
-function switchToAbout() {
-    document.getElementById('home-view').style.display = 'none';
-    document.getElementById('games-view').style.display = 'none';
-    document.getElementById('about-view').style.display = 'block';
-    window.scrollTo(0, 0); typeWriterEffect();
-}
-
-function switchToGames() {
-    currentMode = 'game';
-    document.getElementById('home-view').style.display = 'none';
-    document.getElementById('about-view').style.display = 'none';
-    document.getElementById('games-view').style.display = 'block';
-    setTimeout(initGame, 100);
-    globalAudio.pause();
-    if(gameAudio) { gameAudio.currentTime = 0; if(!isMuted) gameAudio.play(); }
-    btn.innerHTML = (!isMuted) ? "🎵" : "🔇";
-}
-
-function switchToHome() {
-    currentMode = 'home';
-    document.getElementById('about-view').style.display = 'none';
-    document.getElementById('games-view').style.display = 'none';
-    document.getElementById('home-view').style.display = 'block';
-    if(gameAudio) gameAudio.pause();
-    if(!isMuted) globalAudio.play();
-    btn.innerHTML = (!isMuted) ? "🎵" : "🔇";
-}
-
-// Popup Logic (Welcome Screen)
+// Popup Logic
 window.onload = function() {
     setTimeout(function() {
         var popup = document.getElementById("music-popup");
         if(popup) popup.classList.add("active");
     }, 3000); 
 };
-
 function closePopup() {
     var popup = document.getElementById("music-popup");
     if(popup) {
