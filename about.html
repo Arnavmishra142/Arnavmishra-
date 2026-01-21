@@ -2,48 +2,91 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Arnav Mishra | Work & Mind</title>
     <style>
-        body { background-color: #000; color: #fff; font-family: 'Segoe UI', sans-serif; padding: 20px; margin: 0; }
-        .container { max-width: 500px; margin: 0 auto; }
+        /* BASE SETUP */
+        body { 
+            background-color: #000; color: #fff; font-family: 'Segoe UI', sans-serif; 
+            padding: 20px; margin: 0; overflow-x: hidden;
+        }
+        .container { max-width: 500px; margin: 0 auto; padding-bottom: 50px; }
         
-        h2 { border-bottom: 2px solid #333; padding-bottom: 10px; margin-top: 40px; color: #00a3ff; font-size: 1rem; text-transform: uppercase; letter-spacing: 2px; }
+        /* 1. BACK BUTTON ANIMATION (Slides in from Left) */
+        .back-btn-wrapper { 
+            opacity: 0; transform: translateX(-20px); 
+            animation: slideInLeft 0.8s ease forwards; animation-delay: 0.2s;
+        }
+        .back-btn { 
+            display: inline-block; color: #888; text-decoration: none; 
+            margin-bottom: 30px; font-size: 0.85rem; border: 1px solid #333; 
+            padding: 8px 16px; border-radius: 50px; transition: 0.3s; background: #0a0a0a;
+        }
+        .back-btn:active { background: #333; color: #fff; }
+
+        /* 2. SECTION HEADERS */
+        h2 { 
+            border-bottom: 2px solid #222; padding-bottom: 10px; margin-top: 40px; 
+            color: #00a3ff; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 2px;
+            opacity: 0; animation: fadeIn 1s ease forwards;
+        }
         
-        .card { background: #0a0a0a; border: 1px solid #222; border-radius: 15px; padding: 25px; margin-bottom: 25px; }
+        /* 3. CARD ANIMATIONS (They slide up one by one) */
+        .card { 
+            background: #0a0a0a; border: 1px solid #222; border-radius: 16px; 
+            padding: 25px; margin-bottom: 25px; 
+            opacity: 0; transform: translateY(30px);
+            animation: slideUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+        }
         
+        /* Staggered Delays for the "Cascade" Effect */
+        .delay-1 { animation-delay: 0.3s; } /* KR$NA */
+        .delay-2 { animation-delay: 0.5s; } /* Zomato */
+        .delay-3 { animation-delay: 0.7s; } /* Header Verse */
+        .delay-4 { animation-delay: 0.9s; } /* Jang-kaal */
+        .delay-5 { animation-delay: 1.1s; } /* Anjaan */
+
+        /* LYRICS BOX STYLE */
         .lyrics { 
             white-space: pre-line; 
             font-family: 'Georgia', serif; color: #ddd; line-height: 1.8; font-size: 0.95rem; 
-            background: #080808; padding: 20px; border-radius: 10px; border-left: 3px solid #444; margin-bottom: 30px;
+            background: #080808; padding: 20px; border-radius: 12px; 
+            border-left: 3px solid #444; margin-bottom: 30px;
         }
 
-        .back-btn { display: inline-block; color: #666; text-decoration: none; margin-bottom: 20px; font-size: 0.9rem; border: 1px solid #333; padding: 8px 15px; border-radius: 8px; }
+        /* KEYFRAMES */
+        @keyframes slideInLeft { to { opacity: 1; transform: translateX(0); } }
+        @keyframes slideUp { to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeIn { to { opacity: 1; } }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <a href="index.html" class="back-btn">← Back to Home</a>
+    
+    <div class="back-btn-wrapper">
+        <a href="index.html" class="back-btn">← Home Protocol</a>
+    </div>
 
-    <h2>Sonic Fuel</h2>
-    <div class="card" style="border-top: 4px solid #1DB954;">
+    <h2 style="animation-delay: 0.3s;">Sonic Fuel</h2>
+    <div class="card delay-1" style="border-top: 4px solid #1DB954;">
         <h3 style="margin-top: 0; color: #fff;">KR$NA</h3>
         <p style="color: #bbb; font-size: 0.9rem;">"His lyrics just hit different." Lyrical warfare. No sugar-coating, just straight facts.</p>
         <a href="https://open.spotify.com/artist/5C1S9XwxMuuCciutwMbe5t" target="_blank" style="color: #1DB954; text-decoration: none; font-weight: bold; font-size: 0.85rem;">Listen on Spotify ➜</a>
     </div>
 
-    <h2>Projects</h2>
-    <div class="card" style="border-top: 4px solid #d32f2f;">
+    <h2 style="animation-delay: 0.5s;">Projects</h2>
+    <div class="card delay-2" style="border-top: 4px solid #d32f2f;">
         <h3 style="margin-top: 0; color: #fff;">Zomato Analysis</h3>
         <p style="color: #bbb; font-size: 0.9rem;">Market positioning and SWOT analysis for hyperlocal delivery.</p>
         <a href="https://docs.google.com/spreadsheets/d/11k2QyICWavfXFuUGXRBGnRJ7l7zsblQB/edit?usp=drivesdk" target="_blank" style="color: #d32f2f; text-decoration: none; font-weight: bold; font-size: 0.85rem;">View Sheets Project ➜</a>
     </div>
 
-    <h2>Original Verse</h2>
+    <h2 style="animation-delay: 0.7s;">Original Verse</h2>
     
-    <h3 style="color: #ff4b2b; margin-bottom: 10px;">🔥 Jang-kaal</h3>
-    <div class="lyrics" style="border-color: #ff4b2b;">
+    <div class="card delay-4">
+        <h3 style="color: #ff4b2b; margin-top: 0;">🔥 Jang-kaal</h3>
+        <div class="lyrics" style="border-color: #ff4b2b; background: #000; margin-bottom: 0;">
 Tu jang ka ailan kar 
 Dushmano PE vaar kar
 Papiyo ka naas kar....
@@ -93,11 +136,13 @@ Adharmiyo ka naas kar
 Apne vir ka praman de....
 
 Moh dya ka tyag kr 
-Bs ek hi dharm vaar kar....
+Bs ek hi dharm vaar kr....
+        </div>
     </div>
 
-    <h3 style="color: #654ea3; margin-bottom: 10px;">🌌 Anjaan</h3>
-    <div class="lyrics" style="border-color: #654ea3;">
+    <div class="card delay-5">
+        <h3 style="color: #654ea3; margin-top: 0;">🌌 Anjaan</h3>
+        <div class="lyrics" style="border-color: #654ea3; background: #000; margin-bottom: 0;">
 Mai antt hun mai ankurit 
 Yugo yugo ka hal hai
 Mai hinn hun ,mai hun priye
@@ -134,14 +179,14 @@ Mai paksh me vipaksh hun
 Vipaksh ka bhi shadhi mai
 Acha Bura ho jo magr
 Har karm ka gathi mai
+        </div>
     </div>
     
-    <div style="text-align: center; margin-top: 50px; padding-bottom: 40px;">
-        <a href="index.html" style="color: #444; text-decoration: none; font-size: 0.8rem; letter-spacing: 1px;">© 2026 ARNAV MISHRA</a>
+    <div style="text-align: center; margin-top: 30px; opacity: 0; animation: fadeIn 1s ease forwards; animation-delay: 1.5s;">
+        <span style="color: #333; font-size: 0.7rem; letter-spacing: 1px;">© 2026 ARNAV MISHRA</span>
     </div>
 
 </div>
 
 </body>
 </html>
-
