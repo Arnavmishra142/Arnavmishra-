@@ -5,24 +5,32 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Arnav Mishra | Work & Mind</title>
     <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-
-<div class="sound-control">
-    <button onclick="toggleMusic()" id="mute-btn">🔇</button>
-</div>
 
 <audio id="global-bg-music" loop>
     <source src="co2.mp3" type="audio/mpeg">
 </audio>
+
+<div class="sound-control">
+    <button onclick="toggleMusic()" id="mute-btn">
+        <div class="icon-container">
+            <i class="fas fa-volume-mute" id="mute-icon"></i>
+        </div>
+    </button>
+</div>
 
 <div id="music-popup" onclick="closePopup()">
     <div class="popup-content">
         <div class="popup-icon">✨</div>
         <h2>Welcome to my world.</h2>
         <p class="tap-hint">Tap anywhere to enter</p>
-        <p class="vibe-note">(Please unmute for the vibe 🎵)</p>
+        <p class="vibe-note">
+            <i class="fas fa-arrow-up" style="transform: rotate(45deg);"></i> 
+            Sound button is on the Top-Right corner. 
+            <br>Turn it ON for the vibe! 🎵
+        </p>
     </div>
 </div>
 
@@ -53,18 +61,26 @@
 
         <button onclick="switchToAbout()" class="main-btn">ENTER MY WORLD <i class="fas fa-arrow-right"></i></button>
 
+        <div class="chess-msg-container">
+            <a href="https://wa.me/916393349498?text=Hey%20Arnav,%20I%20visited%20your%20portfolio!" target="_blank" class="chess-btn">
+                <i class="fab fa-whatsapp"></i> MAKE A MOVE (DM)
+            </a>
+        </div>
+
         <p class="footer-text">© 2026 ARNAV MISHRA</p>
     </div>
 
     <div id="about-view" style="display: none;">
-        <button onclick="switchToHome()" class="back-btn"><i class="fas fa-arrow-left"></i> Home Protocol</button>
+        <div class="nav-header">
+            <button onclick="switchToHome()" class="back-btn"><i class="fas fa-arrow-left"></i> Home Protocol</button>
+        </div>
 
         <h2 class="section-title">Projects</h2>
         <div class="card project-card">
             <div class="card-header">
                 <h3 style="color: #ff4b4b;">Zomato Analysis 📊</h3>
             </div>
-            <p style="color: #ccc; font-size: 0.9rem; margin-bottom: 15px;">
+            <p class="card-desc">
                 Market positioning and SWOT analysis for hyperlocal delivery based on real-time data.
             </p>
             <a href="https://docs.google.com/spreadsheets/d/11k2QyICWavfXFuUGXRBGnRJ7l7zsblQB/edit?usp=drivesdk" target="_blank" class="project-link-btn">
@@ -81,28 +97,34 @@
                     <p class="subtitle">The inspiration.</p>
                 </div>
             </div>
-            <p class="lyrics">
+            <div class="lyrics-box">
                 "Chahiye mujhe bas ek buss down Rollie<br>
                 Lambhi si gaadi aur makaan do storey, haan<br>
                 Chahiye mujhe bas ek buss down Rollie..."
-            </p>
+            </div>
         </div>
 
         <h2 class="section-title">Original Verses</h2>
         
         <div class="card verse-card">
-            <h3 class="verse-title fire">🔥 Jang-kaal</h3>
-            <div id="verse-1" class="typewriter-text"></div>
-            <button onclick="readFullVerse('verse1')" class="read-more-btn fire-btn">READ FULL ➜</button>
+            <div class="verse-header">
+                <h3 class="verse-title fire">🔥 Jang-kaal</h3>
+            </div>
+            <div id="verse-1-display" class="verse-content collapsed"></div>
+            
+            <button onclick="toggleVerse('verse1')" id="btn-verse1" class="read-more-btn fire-btn">READ FULL ➜</button>
         </div>
 
         <div class="card verse-card">
-            <h3 class="verse-title cosmic">🌌 Anjaan</h3>
-            <div id="verse-2" class="typewriter-text"></div>
-            <button onclick="readFullVerse('verse2')" class="read-more-btn cosmic-btn">READ FULL ➜</button>
+            <div class="verse-header">
+                <h3 class="verse-title cosmic">🌌 Anjaan</h3>
+            </div>
+            <div id="verse-2-display" class="verse-content collapsed"></div>
+            
+            <button onclick="toggleVerse('verse2')" id="btn-verse2" class="read-more-btn cosmic-btn">READ FULL ➜</button>
         </div>
 
-        <div style="height: 50px;"></div> </div>
+        <div style="height: 80px;"></div> </div>
 
 </div>
 
