@@ -2,76 +2,120 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Arnav Mishra</title>
     <style>
-        /* BASE RESET */
+        /* BASE SETUP */
         body { 
-            background-color: #000; color: #fff; font-family: 'Segoe UI', sans-serif; 
+            background-color: #000; color: #fff; font-family: 'Segoe UI', Courier, monospace; 
             display: flex; justify-content: center; align-items: center; 
             min-height: 100vh; margin: 0; padding: 0; overflow-x: hidden;
         }
         
         .container { 
-            max-width: 380px; width: 90%; padding: 20px; text-align: center;
-            animation: fadeIn 1s ease-in;
+            max-width: 400px; width: 85%; padding: 20px; text-align: center;
         }
 
-        /* PHOTO PULSE */
-        .profile-container { position: relative; width: 120px; height: 120px; margin: 0 auto 20px; }
+        /* 1. PHOTO POP-IN ANIMATION */
+        .profile-container { 
+            position: relative; width: 120px; height: 120px; margin: 0 auto 20px; 
+            opacity: 0; animation: popIn 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            animation-delay: 0.2s;
+        }
         .profile-glow { 
             position: absolute; top: 0; left: 0; right: 0; bottom: 0; border-radius: 50%; 
-            box-shadow: 0 0 20px rgba(0, 163, 255, 0.6); animation: pulse 2s infinite; 
+            box-shadow: 0 0 30px rgba(0, 163, 255, 0.6); animation: pulse 3s infinite; 
         }
         .profile-img { 
             width: 100%; height: 100%; border-radius: 50%; object-fit: cover; 
             border: 2px solid #fff; position: relative; z-index: 2; 
         }
 
-        /* GLITCH NAME */
+        /* 2. GLITCH NAME ANIMATION */
+        .name-wrapper { opacity: 0; animation: fadeIn 1s ease forwards; animation-delay: 0.5s; }
         .name {
-            font-size: 1.8rem; font-weight: 900; letter-spacing: 2px; text-transform: uppercase;
-            margin: 0; position: relative; display: inline-block;
+            font-size: 2rem; font-weight: 900; letter-spacing: 2px; text-transform: uppercase;
+            margin: 0; display: inline-block; position: relative;
             background: linear-gradient(to right, #fff, #00a3ff);
             -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            animation: glitch 3s infinite;
         }
 
-        /* QUOTE BOX */
+        /* 3. TYPEWRITER BIO ANIMATION */
+        .bio-wrapper { 
+            display: flex; justify-content: center; margin-bottom: 30px; 
+            opacity: 0; animation: fadeIn 1s ease forwards; animation-delay: 1s;
+        }
+        .bio { 
+            color: #00a3ff; font-size: 0.85rem; font-family: 'Courier New', monospace;
+            overflow: hidden; white-space: nowrap; border-right: 2px solid #00a3ff;
+            width: 0; animation: typing 2.5s steps(30, end) forwards, blink 0.75s step-end infinite;
+            animation-delay: 1.2s; /* Starts after name appears */
+        }
+
+        /* 4. SLIDE UP CARDS */
         .quote-box { 
-            background: #0a0a0a; border-left: 3px solid #00a3ff; padding: 15px; 
+            background: #111; border-left: 3px solid #00a3ff; padding: 15px; 
             margin: 25px 0; border-radius: 5px; font-style: italic; 
             color: #ccc; font-size: 0.85rem; line-height: 1.5; text-align: left;
+            opacity: 0; transform: translateY(30px);
+            animation: slideUp 0.8s ease forwards; animation-delay: 1.8s;
         }
 
-        /* BUTTONS */
-        .btn-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-        .btn { 
-            padding: 12px; background: #111; border: 1px solid #333; 
-            color: #fff; text-decoration: none; border-radius: 8px; font-size: 0.75rem; 
+        .btn-grid { 
+            display: grid; grid-template-columns: 1fr 1fr; gap: 10px; 
+            opacity: 0; transform: translateY(30px);
+            animation: slideUp 0.8s ease forwards; animation-delay: 2.0s;
         }
         
+        .btn { 
+            padding: 12px; background: #0a0a0a; border: 1px solid #333; 
+            color: #fff; text-decoration: none; border-radius: 8px; font-size: 0.75rem; 
+            transition: 0.3s;
+        }
+        .btn:active { background: #00a3ff; border-color: #00a3ff; }
+
         .main-btn { 
             display: block; width: 100%; padding: 15px; margin-top: 20px; 
             background: linear-gradient(45deg, #00a3ff, #005f99); 
             color: #fff; text-decoration: none; border-radius: 10px; 
-            font-weight: bold; box-shadow: 0 4px 15px rgba(0, 163, 255, 0.3);
+            font-weight: bold; box-shadow: 0 0 20px rgba(0, 163, 255, 0.2);
+            opacity: 0; transform: translateY(30px);
+            animation: slideUp 0.8s ease forwards; animation-delay: 2.2s;
         }
 
-        /* ANIMATIONS */
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes pulse { 0% { transform: scale(1); opacity: 0.5; } 50% { transform: scale(1.05); opacity: 0.8; } 100% { transform: scale(1); opacity: 0.5; } }
+        /* KEYFRAMES */
+        @keyframes popIn { 0% { opacity: 0; transform: scale(0); } 100% { opacity: 1; transform: scale(1); } }
+        @keyframes fadeIn { to { opacity: 1; } }
+        @keyframes slideUp { to { opacity: 1; transform: translateY(0); } }
+        @keyframes typing { from { width: 0 } to { width: 100% } }
+        @keyframes blink { from, to { border-color: transparent } 50% { border-color: #00a3ff } }
+        @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(0, 163, 255, 0.4); } 70% { box-shadow: 0 0 0 15px rgba(0, 163, 255, 0); } 100% { box-shadow: 0 0 0 0 rgba(0, 163, 255, 0); } }
+        @keyframes glitch { 
+            0%, 100% { transform: skew(0deg); } 
+            20% { transform: skew(-2deg); } 
+            40% { transform: skew(2deg); } 
+            60% { transform: skew(-1deg); } 
+            80% { transform: skew(1deg); } 
+        }
     </style>
 </head>
 <body>
 
 <div class="container">
+    
     <div class="profile-container">
         <div class="profile-glow"></div>
         <img src="https://imarnavin.wordpress.com/wp-content/uploads/2026/01/image_editor_output_image-900633096-17689630363507786449788545237875.jpg" class="profile-img">
     </div>
 
-    <h1 class="name">Arnav Mishra</h1>
-    <p style="color: #666; font-size: 0.85rem; margin-top: 5px;">Building ideas from scratch.</p>
+    <div class="name-wrapper">
+        <h1 class="name">Arnav Mishra</h1>
+    </div>
+    
+    <div class="bio-wrapper">
+        <div class="bio">Building ideas from scratch.</div>
+    </div>
 
     <div class="quote-box">
         "The secret of change is to focus all of your energy, not on fighting the old, but on building the new."
@@ -80,7 +124,7 @@
 
     <div class="btn-grid">
         <a href="https://www.linkedin.com/in/arnav-mishra-1a6934371" class="btn">LinkedIn</a>
-        <a href="https://x.com/ArnavMishra142" class="btn">X/Twitter</a>
+        <a href="https://x.com/ArnavMishra142" class="btn">X / Twitter</a>
         <a href="https://www.instagram.com/arnav_9.11" class="btn">Instagram</a>
         <a href="https://www.chess.com/member/Arnavm142" class="btn">♟️ Chess</a>
     </div>
@@ -89,7 +133,7 @@
         ENTER MY WORLD ➜
     </a>
 
-    <p style="margin-top: 30px; color: #222; font-size: 0.6rem; letter-spacing: 1px;">© 2026 ARNAV MISHRA</p>
+    <p style="margin-top: 30px; color: #333; font-size: 0.6rem; letter-spacing: 1px;">© 2026 ARNAV MISHRA</p>
 </div>
 
 </body>
