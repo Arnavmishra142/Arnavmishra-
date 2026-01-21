@@ -1,128 +1,72 @@
-/* --- 1. BASE SETUP --- */
-body { 
-    background-color: #000; color: #fff; font-family: 'Segoe UI', sans-serif; 
-    margin: 0; padding: 0; overflow-x: hidden; min-height: 100vh;
-}
-.main-wrapper { 
-    max-width: 500px; margin: 0 auto; padding: 20px; 
-    min-height: 100vh; position: relative; padding-top: 50px; 
+/* --- GLOBAL STYLES --- */
+body {
+    background-color: #000;
+    color: #fff;
+    font-family: 'Courier New', Courier, monospace;
+    margin: 0; padding: 0;
+    overflow-x: hidden; /* Horizontal scroll band */
 }
 
-/* --- 2. POP-UP STYLES --- */
-#music-popup { 
-    position: fixed; inset: 0; background: rgba(0, 0, 0, 0.3); backdrop-filter: blur(4px); 
-    z-index: 2000; display: flex; align-items: center; justify-content: center; 
-    text-align: center; cursor: pointer; opacity: 0; pointer-events: none; 
-    transition: opacity 0.8s ease, backdrop-filter 0.8s ease; 
+/* --- GAME FULL SCREEN & SCROLL FIX (MAGIC CODE) --- */
+#games-view {
+    position: fixed; /* Poori screen cover karega */
+    top: 0; left: 0; right: 0; bottom: 0;
+    width: 100vw; height: 100vh;
+    background: #111;
+    z-index: 2000; /* Sabse upar */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    /* Ye imp hai taaki background hile nahi */
+    overflow: hidden; 
 }
-#music-popup.active { opacity: 1; pointer-events: all; }
-.popup-content { 
-    padding: 25px; background: rgba(10, 10, 10, 0.85); 
-    border: 1px solid rgba(0, 163, 255, 0.5); border-radius: 20px; 
-    max-width: 80%; box-shadow: 0 0 40px rgba(0, 163, 255, 0.15); 
-    transform: translateY(30px); transition: transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1); 
-}
-#music-popup.active .popup-content { transform: translateY(0); }
-.popup-content p { font-size: 1rem; line-height: 1.5; color: #eee; margin: 0; }
-.popup-content span { color: #00a3ff; font-weight: bold; }
-.popup-content small { display: block; margin-top: 15px; color: #777; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px;}
 
-/* --- 3. CHESS BUTTON STYLES --- */
-.chess-btn-container { margin-top: 30px; text-align: center; }
-.chess-btn { 
-    background: #0a0a0a; color: #fff; border: 1px solid #333; border-radius: 12px; 
-    padding: 12px 20px; display: inline-flex; align-items: center; gap: 15px; 
-    text-decoration: none; font-weight: bold; position: relative; 
-    transition: 0.3s; box-shadow: 0 4px 15px rgba(0,0,0,0.5); overflow: hidden; 
-    width: 80%; justify-content: center; margin: 0 auto; 
-}
-.chess-btn::after { 
-    content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 4px; 
-    background: repeating-linear-gradient(90deg, #fff 0, #fff 10px, #333 10px, #333 20px); 
-}
-.chess-btn:hover { border-color: #00a3ff; transform: translateY(-3px); }
-.chess-icon { font-size: 1.8rem; animation: knightHop 2s infinite ease-in-out; }
-
-/* --- 4. GENERAL STYLES --- */
-.profile-container { 
-    width: 120px; height: 120px; margin: 0 auto 20px; position: relative; 
-    animation: popIn 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; 
-}
-.profile-img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 2px solid #fff; position: relative; z-index: 2; }
-.profile-glow { position: absolute; inset: 0; border-radius: 50%; box-shadow: 0 0 30px rgba(0, 163, 255, 0.6); animation: pulse 3s infinite; }
-.name { 
-    font-size: 2rem; font-weight: 900; text-transform: uppercase; text-align: center; 
-    background: linear-gradient(to right, #fff, #00a3ff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; 
-    margin: 10px 0; animation: glitch 3s infinite; 
-}
-.bio-wrap { text-align: center; margin-bottom: 30px; }
-.bio { 
-    display: inline-block; color: #00a3ff; font-family: 'Courier New', monospace; 
-    border-right: 2px solid #00a3ff; white-space: nowrap; overflow: hidden; 
-    animation: typing 2.5s steps(30, end) forwards; width: 0; 
-}
-.btn-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
-.btn { padding: 12px; background: #0a0a0a; border: 1px solid #333; color: #fff; text-decoration: none; border-radius: 8px; font-size: 0.75rem; text-align: center; display: block; transition: 0.3s; }
-.main-btn { 
-    display: block; width: 100%; padding: 15px; margin-top: 20px; 
-    background: linear-gradient(45deg, #00a3ff, #005f99); color: #fff; border: none; border-radius: 10px; 
-    font-weight: bold; font-size: 1rem; cursor: pointer; box-shadow: 0 0 20px rgba(0, 163, 255, 0.2); 
-}
-.card { background: #0a0a0a; border: 1px solid #222; border-radius: 16px; padding: 20px; margin-bottom: 25px; }
-.lyrics { white-space: pre-line; font-family: 'Georgia', serif; color: #ccc; line-height: 1.6; background: #080808; padding: 20px; border-radius: 12px; border-left: 3px solid #444; font-size: 0.9rem; }
-h2 { border-bottom: 2px solid #222; padding-bottom: 10px; color: #00a3ff; margin-top: 30px; font-size: 1rem; text-transform: uppercase; letter-spacing: 1px;}
-.back-btn { background: none; border: 1px solid #333; color: #888; padding: 8px 20px; border-radius: 50px; cursor: pointer; margin-bottom: 10px; font-size: 0.85rem; }
-
-/* --- 5. ANIMATIONS --- */
-@keyframes popIn { 0% { opacity: 0; transform: scale(0); } 100% { opacity: 1; transform: scale(1); } }
-@keyframes typing { from { width: 0 } to { width: 100% } }
-@keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(0,163,255,0.4); } 70% { box-shadow: 0 0 0 15px rgba(0,0,0,0); } }
-@keyframes glitch { 0%,100%{transform:skew(0deg);} 20%{transform:skew(-2deg);} 40%{transform:skew(2deg);} }
-@keyframes knightHop { 0%, 100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-6px) rotate(-10deg); } }
-.fade-in { animation: fadeIn 0.6s forwards; }
-@keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-
-/* --- 6. TYPEWRITER CURSOR --- */
-.typing-effect::after {
-    content: '|';
-    animation: blink 1s step-end infinite;
-    color: #00a3ff;
-    font-weight: bold;
-}
-@keyframes blink { 50% { opacity: 0; } }
-/* --- GAMES SECTION STYLES --- */
+/* BOARD CONTAINER */
 .game-container {
-    background: #111; border: 1px solid #333; border-radius: 12px;
-    padding: 10px; margin-top: 20px; box-shadow: 0 0 20px rgba(0, 163, 255, 0.1);
-    height: 500px; display: flex; align-items: center; justify-content: center;
-}
-iframe {
-    width: 100%; height: 100%; border: none; border-radius: 8px;
-}
-.game-btn {
-    display: block; width: 100%; padding: 15px; margin-top: 15px;
-    background: linear-gradient(45deg, #222, #333); color: #fff; 
-    border: 1px solid #444; border-radius: 10px; font-weight: bold; cursor: pointer;
-    transition: 0.3s;
-}
-.game-btn:hover { border-color: #00a3ff; transform: scale(1.02); }
-/* --- CUSTOM CHESSBOARD STYLES --- */
-.game-container {
-    background: #161616; border: 1px solid #333; border-radius: 12px;
-    padding: 20px; margin-top: 20px; box-shadow: 0 0 30px rgba(0, 163, 255, 0.1);
-    display: flex; flex-direction: column; align-items: center; justify-content: center;
-}
-#myBoard {
-    width: 100%; max-width: 400px; margin: 0 auto;
-}
-.game-status {
-    color: #00a3ff; font-family: 'Courier New', monospace; margin-top: 15px; 
-    font-size: 0.9rem; text-align: center;
+    width: 100%;
+    max-width: 400px; /* Mobile size */
+    padding: 10px;
+    /* SABSE ZAROORI LINE: Ye touch scroll rokega */
+    touch-action: none; 
 }
 
-/* Chessboard.js Library Overrides (Dark Theme) */
-.white-1e1d7 { background-color: #f0f0f0; color: #b58863; }
-.black-3c85d { background-color: #333; color: #f0d9b5; }
+/* --- CHESS.COM THEME COLORS (Green & Cream) --- */
+.white-1e1d7 {
+    background-color: #eeeed2 !important;
+    color: #769656 !important;
+}
+.black-3c85d {
+    background-color: #769656 !important;
+    color: #eeeed2 !important;
+}
 .highlight1-32417, .highlight2-9c5d2 {
-    box-shadow: inset 0 0 3px 3px yellow;
+    box-shadow: inset 0 0 3px 3px rgba(255, 255, 0, 0.6) !important;
 }
+
+/* --- BAAKI KA DESIGN (Buttons, Profile, etc.) --- */
+.main-wrapper { padding: 20px; max-width: 600px; margin: 0 auto; padding-bottom: 80px; }
+.profile-container { position: relative; width: 100px; height: 100px; margin: 0 auto; }
+.profile-img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 2px solid #333; filter: grayscale(100%); }
+.profile-glow { position: absolute; top: -5px; left: -5px; right: -5px; bottom: -5px; border-radius: 50%; background: linear-gradient(45deg, #00a3ff, #ff0099); z-index: -1; animation: spin 4s linear infinite; }
+@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+.name { text-align: center; font-size: 1.5rem; margin-top: 15px; font-weight: bold; letter-spacing: 2px; }
+.bio-wrap { display: flex; justify-content: center; margin-bottom: 20px; }
+.bio { background: #111; padding: 5px 15px; border-radius: 20px; font-size: 0.8rem; border: 1px solid #333; color: #888; }
+.btn-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 20px; }
+.btn { background: #111; border: 1px solid #333; color: #fff; padding: 12px; text-align: center; text-decoration: none; border-radius: 8px; font-size: 0.9rem; transition: 0.3s; }
+.btn:hover { border-color: #00a3ff; background: #0a0a0a; }
+.main-btn, .game-btn { background: #fff; color: #000; border: none; padding: 15px; width: 100%; font-weight: bold; margin-top: 25px; cursor: pointer; border-radius: 8px; font-size: 1rem; letter-spacing: 1px; }
+.game-btn { background: linear-gradient(45deg, #769656, #5a7543); color: white; } /* Green Button */
+.chess-btn-container { margin-top: 20px; }
+.chess-btn { background: #0a0a0a; border: 1px solid #333; display: flex; align-items: center; padding: 10px 15px; border-radius: 12px; text-decoration: none; color: #fff; gap: 15px; transition: 0.3s; }
+.chess-icon { font-size: 2rem; color: #00a3ff; }
+.card { background: #111; border: 1px solid #333; border-radius: 12px; padding: 20px; margin-bottom: 20px; margin-top: 20px; }
+.back-btn { background: transparent; border: none; color: #666; cursor: pointer; font-size: 0.9rem; margin-bottom: 10px; }
+
+/* Maintenance & Popup Styles */
+#music-popup { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 9999; align-items: center; justify-content: center; backdrop-filter: blur(5px); }
+#music-popup.active { display: flex; }
+.popup-content { text-align: center; color: #fff; animation: popUp 0.5s ease; }
+.popup-content span { color: #00a3ff; font-weight: bold; }
+@keyframes popUp { 0% { transform: scale(0.8); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
