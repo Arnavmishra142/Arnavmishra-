@@ -1,72 +1,89 @@
-/* --- GLOBAL STYLES --- */
+/* --- GLOBAL STYLES (Original Font) --- */
 body {
     background-color: #000;
     color: #fff;
-    font-family: 'Courier New', Courier, monospace;
+    /* Clean, Modern Font wapas aa gaya */
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     margin: 0; padding: 0;
-    overflow-x: hidden; /* Horizontal scroll band */
+    overflow-x: hidden;
 }
 
-/* --- GAME FULL SCREEN & SCROLL FIX (MAGIC CODE) --- */
+/* --- MAIN LAYOUT --- */
+.main-wrapper {
+    padding: 20px;
+    max-width: 600px;
+    margin: 0 auto;
+    padding-bottom: 80px;
+    position: relative;
+    z-index: 10; /* Content ko upar rakha */
+}
+
+/* --- PROFILE SECTION --- */
+.profile-container { position: relative; width: 100px; height: 100px; margin: 0 auto; margin-top: 20px;}
+.profile-img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 2px solid #333; filter: grayscale(100%); }
+.profile-glow { position: absolute; top: -5px; left: -5px; right: -5px; bottom: -5px; border-radius: 50%; background: linear-gradient(45deg, #00a3ff, #ff0099); z-index: -1; animation: spin 4s linear infinite; }
+@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+.name { text-align: center; font-size: 1.8rem; margin-top: 15px; font-weight: bold; letter-spacing: 1px; text-transform: uppercase; color: #fff; }
+.bio-wrap { display: flex; justify-content: center; margin-bottom: 25px; margin-top: 5px; }
+.bio { color: #00a3ff; font-size: 0.9rem; letter-spacing: 2px; text-transform: lowercase; font-family: 'Courier New', monospace; }
+
+/* --- QUOTE BOX --- */
+.quote-box {
+    background: #111; border-left: 3px solid #00a3ff; padding: 15px; margin: 25px 0; 
+    color: #ccc; font-style: italic; font-size: 0.85rem; line-height: 1.5;
+}
+
+/* --- BUTTONS --- */
+.btn-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 20px; }
+.btn { background: #111; border: 1px solid #333; color: #fff; padding: 12px; text-align: center; text-decoration: none; border-radius: 8px; font-size: 0.9rem; transition: 0.3s; }
+.btn:hover { border-color: #00a3ff; background: #0a0a0a; }
+
+.main-btn { 
+    background: #00a3ff; color: #fff; border: none; padding: 15px; width: 100%; 
+    font-weight: bold; margin-top: 25px; cursor: pointer; border-radius: 8px; font-size: 1rem; 
+    box-shadow: 0 4px 15px rgba(0, 163, 255, 0.3);
+}
+
+.game-btn { 
+    background: linear-gradient(45deg, #4CAF50, #2E7D32); /* Green Button */
+    color: white; border: none; padding: 15px; width: 100%; 
+    font-weight: bold; margin-top: 15px; cursor: pointer; border-radius: 8px; font-size: 1rem; 
+}
+
+/* --- CHESS & CARDS --- */
+.chess-btn-container { margin-top: 20px; position: relative; z-index: 20; }
+.chess-btn { background: #0a0a0a; border: 1px solid #333; display: flex; align-items: center; padding: 10px 15px; border-radius: 12px; text-decoration: none; color: #fff; gap: 15px; }
+.chess-icon { font-size: 2rem; color: #fff; }
+
+.card { background: #111; border: 1px solid #333; border-radius: 12px; padding: 20px; margin-bottom: 20px; margin-top: 20px; }
+.back-btn { background: transparent; border: none; color: #888; cursor: pointer; font-size: 0.9rem; margin-bottom: 15px; display: flex; align-items: center; gap: 5px; }
+
+/* --- GAME FULL SCREEN & SCROLL FIX --- */
 #games-view {
-    position: fixed; /* Poori screen cover karega */
-    top: 0; left: 0; right: 0; bottom: 0;
+    position: fixed; top: 0; left: 0; right: 0; bottom: 0;
     width: 100vw; height: 100vh;
     background: #111;
-    z-index: 2000; /* Sabse upar */
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    /* Ye imp hai taaki background hile nahi */
+    z-index: 5000; /* Sabse upar */
+    /* Flex nahi lagayenge yahan, JS se control karenge */
+    display: none; 
+    flex-direction: column; align-items: center; justify-content: center;
     overflow: hidden; 
 }
 
 /* BOARD CONTAINER */
 .game-container {
-    width: 100%;
-    max-width: 400px; /* Mobile size */
-    padding: 10px;
-    /* SABSE ZAROORI LINE: Ye touch scroll rokega */
-    touch-action: none; 
+    width: 100%; max-width: 400px; padding: 10px;
+    touch-action: none; /* Mobile scroll block for game */
 }
 
-/* --- CHESS.COM THEME COLORS (Green & Cream) --- */
-.white-1e1d7 {
-    background-color: #eeeed2 !important;
-    color: #769656 !important;
-}
-.black-3c85d {
-    background-color: #769656 !important;
-    color: #eeeed2 !important;
-}
-.highlight1-32417, .highlight2-9c5d2 {
-    box-shadow: inset 0 0 3px 3px rgba(255, 255, 0, 0.6) !important;
-}
+/* --- CHESS.COM THEME COLORS --- */
+.white-1e1d7 { background-color: #eeeed2 !important; color: #769656 !important; }
+.black-3c85d { background-color: #769656 !important; color: #eeeed2 !important; }
+.highlight1-32417, .highlight2-9c5d2 { box-shadow: inset 0 0 3px 3px rgba(255, 255, 0, 0.6) !important; }
 
-/* --- BAAKI KA DESIGN (Buttons, Profile, etc.) --- */
-.main-wrapper { padding: 20px; max-width: 600px; margin: 0 auto; padding-bottom: 80px; }
-.profile-container { position: relative; width: 100px; height: 100px; margin: 0 auto; }
-.profile-img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 2px solid #333; filter: grayscale(100%); }
-.profile-glow { position: absolute; top: -5px; left: -5px; right: -5px; bottom: -5px; border-radius: 50%; background: linear-gradient(45deg, #00a3ff, #ff0099); z-index: -1; animation: spin 4s linear infinite; }
-@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-.name { text-align: center; font-size: 1.5rem; margin-top: 15px; font-weight: bold; letter-spacing: 2px; }
-.bio-wrap { display: flex; justify-content: center; margin-bottom: 20px; }
-.bio { background: #111; padding: 5px 15px; border-radius: 20px; font-size: 0.8rem; border: 1px solid #333; color: #888; }
-.btn-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 20px; }
-.btn { background: #111; border: 1px solid #333; color: #fff; padding: 12px; text-align: center; text-decoration: none; border-radius: 8px; font-size: 0.9rem; transition: 0.3s; }
-.btn:hover { border-color: #00a3ff; background: #0a0a0a; }
-.main-btn, .game-btn { background: #fff; color: #000; border: none; padding: 15px; width: 100%; font-weight: bold; margin-top: 25px; cursor: pointer; border-radius: 8px; font-size: 1rem; letter-spacing: 1px; }
-.game-btn { background: linear-gradient(45deg, #769656, #5a7543); color: white; } /* Green Button */
-.chess-btn-container { margin-top: 20px; }
-.chess-btn { background: #0a0a0a; border: 1px solid #333; display: flex; align-items: center; padding: 10px 15px; border-radius: 12px; text-decoration: none; color: #fff; gap: 15px; transition: 0.3s; }
-.chess-icon { font-size: 2rem; color: #00a3ff; }
-.card { background: #111; border: 1px solid #333; border-radius: 12px; padding: 20px; margin-bottom: 20px; margin-top: 20px; }
-.back-btn { background: transparent; border: none; color: #666; cursor: pointer; font-size: 0.9rem; margin-bottom: 10px; }
-
-/* Maintenance & Popup Styles */
+/* POPUP */
 #music-popup { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 9999; align-items: center; justify-content: center; backdrop-filter: blur(5px); }
 #music-popup.active { display: flex; }
-.popup-content { text-align: center; color: #fff; animation: popUp 0.5s ease; }
+.popup-content { text-align: center; color: #fff; }
 .popup-content span { color: #00a3ff; font-weight: bold; }
-@keyframes popUp { 0% { transform: scale(0.8); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
