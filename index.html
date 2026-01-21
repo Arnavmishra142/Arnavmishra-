@@ -8,18 +8,105 @@
     <link rel="stylesheet" href="https://unpkg.com/@chrisoakman/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.css">
 
     <style>
-        /* YAHAN APNA CSS PASTE KARO */
-        /* Main Name ka color fix yahan add kar raha hoon */
+        /* --- GLOBAL STYLES --- */
+        body {
+            background-color: #000;
+            color: #fff;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            margin: 0; padding: 0;
+            overflow-x: hidden;
+        }
+
+        /* --- LAYOUT --- */
+        .main-wrapper {
+            padding: 20px;
+            max-width: 600px;
+            margin: 0 auto;
+            padding-bottom: 80px;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* --- PROFILE IMAGE & GLOW --- */
+        .profile-container { 
+            position: relative; width: 100px; height: 100px; margin: 0 auto; margin-top: 20px;
+        }
+        .profile-img { 
+            width: 100%; height: 100%; border-radius: 50%; object-fit: cover; 
+            border: 2px solid #333; filter: grayscale(100%); position: relative; z-index: 2;
+        }
+        .profile-glow { 
+            position: absolute; top: -5px; left: -5px; right: -5px; bottom: -5px; 
+            border-radius: 50%; background: linear-gradient(45deg, #00a3ff, #ff0099); 
+            z-index: 1; animation: spin 4s linear infinite; filter: blur(8px);
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        /* --- NAME (NEON BLUE FIX) --- */
         .name { 
-            text-align: center; 
-            font-size: 2rem; 
-            margin-top: 20px; 
-            font-weight: bold; 
-            letter-spacing: 3px; 
-            text-transform: uppercase; 
-            color: #00a3ff !important; /* Blue color wapas */
+            text-align: center; font-size: 1.8rem; margin-top: 15px; 
+            font-weight: bold; letter-spacing: 2px; text-transform: uppercase; 
+            color: #00a3ff; 
             text-shadow: 0 0 15px rgba(0, 163, 255, 0.7), 0 0 30px rgba(0, 163, 255, 0.4); 
         }
+
+        .bio-wrap { display: flex; justify-content: center; margin-bottom: 25px; margin-top: 5px; }
+        .bio { 
+            color: #00a3ff; font-size: 0.9rem; letter-spacing: 2px; 
+            text-transform: lowercase; font-family: 'Courier New', monospace; 
+        }
+
+        /* --- BUTTONS --- */
+        .btn-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 20px; }
+        .btn { 
+            background: #111; border: 1px solid #333; color: #fff; padding: 12px; 
+            text-align: center; text-decoration: none; border-radius: 8px; font-size: 0.9rem; transition: 0.3s; 
+        }
+        .btn:hover { border-color: #00a3ff; background: #0a0a0a; }
+
+        .main-btn { 
+            background: #00a3ff; color: #fff; border: none; padding: 15px; width: 100%; 
+            font-weight: bold; margin-top: 25px; cursor: pointer; border-radius: 8px; font-size: 1rem; 
+            box-shadow: 0 4px 15px rgba(0, 163, 255, 0.3);
+        }
+
+        .game-btn { 
+            background: linear-gradient(45deg, #4CAF50, #2E7D32); color: white; border: none; 
+            padding: 15px; width: 100%; font-weight: bold; margin-top: 15px; cursor: pointer; 
+            border-radius: 8px; font-size: 1rem; 
+        }
+
+        /* --- CHESS LINK BUTTON (FIXED) --- */
+        .chess-btn-container { margin-top: 20px; position: relative; z-index: 20; }
+        .chess-btn { 
+            background: #0a0a0a; border: 1px solid #333; display: flex; align-items: center; 
+            padding: 10px 15px; border-radius: 12px; text-decoration: none; color: #fff; gap: 15px; 
+        }
+
+        /* --- CARDS & CONTENT --- */
+        .quote-box { background: #111; border-left: 3px solid #00a3ff; padding: 15px; margin: 25px 0; color: #ccc; font-style: italic; font-size: 0.85rem; line-height: 1.5; }
+        .card { background: #111; border: 1px solid #333; border-radius: 12px; padding: 20px; margin-bottom: 20px; margin-top: 20px; }
+        .back-btn { background: transparent; border: none; color: #888; cursor: pointer; font-size: 0.9rem; margin-bottom: 15px; display: flex; align-items: center; gap: 5px; }
+
+        /* --- GAME SCREEN (FULL SCREEN FIX) --- */
+        #games-view {
+            display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            width: 100vw; height: 100vh;
+            background: #111; z-index: 5000;
+            flex-direction: column; align-items: center; justify-content: center;
+            overflow: hidden; 
+        }
+        .game-container { width: 100%; max-width: 400px; padding: 10px; touch-action: none; }
+
+        /* CHESS COLORS (GREEN) */
+        .white-1e1d7 { background-color: #eeeed2 !important; color: #769656 !important; }
+        .black-3c85d { background-color: #769656 !important; color: #eeeed2 !important; }
+        .highlight1-32417, .highlight2-9c5d2 { box-shadow: inset 0 0 3px 3px rgba(255, 255, 0, 0.6) !important; }
+
+        /* --- POPUP --- */
+        #music-popup { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 9999; align-items: center; justify-content: center; backdrop-filter: blur(5px); }
+        #music-popup.active { display: flex; }
+        .popup-content { text-align: center; color: #fff; }
     </style>
 </head>
 <body>
@@ -36,14 +123,14 @@
         <p style="font-size: 1.2rem;">Welcome to my world. ✨</p>
         <p style="color: #00a3ff; margin-top: 10px;">
             Tap anywhere to enter.<br>
-            <span style="font-size: 0.8rem; color: #888;">(Don't forget to unmute at the top right for the vibe 🎵)</span>
+            <span style="font-size: 0.8rem; color: #888;">(Don't forget to unmute at the top right 🎵)</span>
         </p>
     </div>
 </div>
 
 <div class="main-wrapper">
 
-    <div id="home-view" class="fade-in">
+    <div id="home-view">
         <div class="profile-container">
             <div class="profile-glow"></div>
             <img src="https://imarnavin.wordpress.com/wp-content/uploads/2026/01/image_editor_output_image-900633096-17689630363507786449788545237875.jpg" class="profile-img">
@@ -52,7 +139,7 @@
         <div class="name">Arnav Mishra</div>
         <div class="bio-wrap"><div class="bio">Building ideas from scratch.</div></div>
 
-        <div style="background: #111; border-left: 3px solid #00a3ff; padding: 15px; margin: 25px 0; color: #ccc; font-style: italic; font-size: 0.85rem;">
+        <div class="quote-box">
             "The secret of change is to focus all of your energy, not on fighting the old, but on building the new."
         </div>
 
@@ -79,7 +166,7 @@
     </div>
 
     <div id="about-view" style="display: none;">
-        <button onclick="switchToHome()" class="back-btn" style="color:#888; background:none; border:none; margin-bottom:10px;">← Home Protocol</button>
+        <button onclick="switchToHome()" class="back-btn">← Home Protocol</button>
 
         <h2>Sonic Fuel (GOAT)</h2>
         <div class="card" style="border-top: 4px solid #00a3ff; background: linear-gradient(145deg, #0a0a0a, #111);">
@@ -103,7 +190,6 @@
         </div>
 
         <h2>Original Verses</h2>
-        
         <div class="card">
             <h3 style="color: #ff4b2b; margin-top: 0;">🔥 Jang-kaal</h3>
             <div id="typewriter-output-1" style="border-left: 2px solid #ff4b2b; padding-left: 10px; min-height: 50px; color: #ffcccb; margin-bottom: 10px; font-family: monospace;"></div>
@@ -136,7 +222,7 @@
     var globalAudio = document.getElementById("global-bg-music");
     var gameAudio = document.getElementById("game-bg-music");
     var btn = document.getElementById("mute-btn");
-    var currentMode = 'home'; 
+    var currentMode = 'home';
     var isMuted = true;
     var board = null;
     var game = null;
@@ -144,20 +230,19 @@
     var typingInterval;
 
     function readMoreVerses() {
-        var userChoice = confirm("Do you want to visit Instagram to read the full masterpiece? ✍️\n(Click OK to visit)");
-        if(userChoice === true) { window.open("https://www.instagram.com/arnav_9.11", "_blank"); }
+        if(confirm("Do you want to visit Instagram to read the full masterpiece? ✍️")) window.open("https://www.instagram.com/arnav_9.11", "_blank");
     }
 
     function toggleMusic() {
         var activeAudio = (currentMode === 'game') ? gameAudio : globalAudio;
         if (activeAudio.paused) {
-            activeAudio.play().catch(function(e){ console.log("Audio Error:", e); });
+            activeAudio.play().catch(e => console.log(e));
             isMuted = false;
-            if(btn) { btn.innerHTML = "🎵"; btn.style.borderColor = "#00a3ff"; }
+            btn.innerHTML = "🎵"; btn.style.borderColor = "#00a3ff";
         } else {
             activeAudio.pause();
             isMuted = true;
-            if(btn) { btn.innerHTML = "🔇"; btn.style.borderColor = "#444"; }
+            btn.innerHTML = "🔇"; btn.style.borderColor = "#444";
         }
     }
 
@@ -168,7 +253,6 @@
         about.style.display = 'block';
         window.scrollTo(0, 0);
         
-        // Verses Start
         startTyping("Moh dya ka tyag kar...\nAb jism se na pyar kar...\nMastko ke unke Aaj...\nDeh se ajaad kar....", "typewriter-output-1");
         setTimeout(() => {
             startTyping("Mai antt hun mai ankurit,\nYugo yugo ka hal hai...", "typewriter-output-2");
@@ -180,9 +264,10 @@
         document.getElementById('home-view').style.display = 'none';
         document.getElementById('about-view').style.display = 'none';
         document.getElementById('games-view').style.display = 'flex';
+        
         if(globalAudio) globalAudio.pause();
         if(gameAudio) { gameAudio.currentTime = 0; if(!isMuted) gameAudio.play(); }
-        if(btn) btn.innerHTML = (!isMuted) ? "🎵" : "🔇";
+        btn.innerHTML = (!isMuted) ? "🎵" : "🔇";
         setTimeout(initGame, 200);
     }
 
@@ -191,9 +276,10 @@
         document.getElementById('about-view').style.display = 'none';
         document.getElementById('games-view').style.display = 'none';
         document.getElementById('home-view').style.display = 'block';
+        
         if(gameAudio) gameAudio.pause();
         if(globalAudio && !isMuted) globalAudio.play();
-        if(btn) btn.innerHTML = (!isMuted) ? "🎵" : "🔇";
+        btn.innerHTML = (!isMuted) ? "🎵" : "🔇";
     }
 
     function startTyping(text, elementId) {
@@ -201,12 +287,15 @@
         if(!element) return;
         element.innerHTML = "";
         let i = 0;
-        let timer = setInterval(() => {
-            if (text.charAt(i) === '\n') element.innerHTML += "<br>";
-            else element.innerHTML += text.charAt(i);
-            i++;
-            if (i === text.length) clearInterval(timer);
-        }, 50);
+        function type() {
+            if (i < text.length) {
+                if (text.charAt(i) === '\n') element.innerHTML += "<br>";
+                else element.innerHTML += text.charAt(i);
+                i++;
+                setTimeout(type, 50);
+            }
+        }
+        type();
     }
 
     function initGame() {
@@ -236,7 +325,7 @@
     function updateStatus() {
         var status = (game.turn() === 'b') ? 'Arnav AI to move' : 'Your move';
         if (game.in_checkmate()) status = 'Checkmate!';
-        if($status) $status.html(status);
+        $status.html(status);
     }
 
     window.onload = function() {
@@ -252,7 +341,6 @@
             popup.classList.remove("active");
             setTimeout(function(){ 
                 popup.style.display = "none";
-                // Start home page bio animation
                 const bio = document.querySelector('.bio');
                 if(bio) bio.style.animation = "typing 3.5s steps(30, end), blink-caret .75s step-end infinite";
             }, 800);
