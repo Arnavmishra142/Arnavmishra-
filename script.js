@@ -160,7 +160,7 @@ function switchToAbout() {
         aboutView.style.opacity = '1';
         aboutView.style.transform = 'translateY(0)';
         
-        // Initialize Verses with Preview
+        // Initialize Verses with Full Text
         initVerse('verse1');
         initVerse('verse2');
         
@@ -196,38 +196,17 @@ function typeWriter(text, element, speed) {
     type();
 }
 
-/* --- VERSE HANDLING --- */
+/* --- VERSE HANDLING (Now loads full text immediately) --- */
 function initVerse(verseKey) {
-    // Load text initially
     const elementId = verseKey === 'verse1' ? 'verse-1-display' : 'verse-2-display';
     const content = fullVerses[verseKey];
     const container = document.getElementById(elementId);
     
-    // Format lines
-    const formattedHtml = content.split('\n').map((line, index) => 
-        `<span class="verse-line" style="animation-delay: ${index * 0.05}s">${line}</span>`
-    ).join('<br>');
+    // Format lines with animation
+    const formattedHtml = content.split('\n').map((line, index) => {
+        if (line.trim() === '') return '<br>'; // Preserve paragraph breaks
+        return `<span class="verse-line" style="animation-delay: ${index * 0.03}s">${line}</span>`;
+    }).join('<br>');
     
     container.innerHTML = formattedHtml;
-}
-
-function toggleVerse(verseKey) {
-    const elementId = verseKey === 'verse1' ? 'verse-1-display' : 'verse-2-display';
-    const btnId = verseKey === 'verse1' ? 'btn-verse1' : 'btn-verse2';
-    
-    const container = document.getElementById(elementId);
-    const btn = document.getElementById(btnId);
-    
-    if (container.classList.contains('collapsed')) {
-        container.classList.remove('collapsed');
-        container.classList.add('expanded');
-        btn.innerHTML = "COLLAPSE ⬆";
-    } else {
-        container.classList.remove('expanded');
-        container.classList.add('collapsed');
-        btn.innerHTML = "READ FULL ➜";
-        
-        // Scroll slightly up to header if user is deep down
-        container.previousElementSibling.scrollIntoView({behavior: "smooth", block: "center"});
-    }
 }
