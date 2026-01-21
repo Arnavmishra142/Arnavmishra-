@@ -1,17 +1,15 @@
-/* --- GLOBAL VARIABLES --- */
+/* --- VARIABLES --- */
 var globalAudio = document.getElementById("global-bg-music");
 var gameAudio = document.getElementById("game-bg-music");
 var btn = document.getElementById("mute-btn");
-var currentMode = 'home'; 
+var currentMode = 'home';
 var isMuted = true;
 var board = null;
 var game = null;
-var $status = $('#status');
-var typingInterval;
+var $status = $('#status'); // Chess status ke liye
+var typingInterval; // Typing rokne ke liye
 
-/* --- BUTTON FUNCTIONS (Top Level) --- */
-
-// 1. Read More Button
+/* --- 1. POPUP & READ MORE --- */
 function readMoreVerses() {
     var userChoice = confirm("Do you want to visit Instagram to read the full masterpiece? ✍️\n(Click OK to visit)");
     if(userChoice === true) {
@@ -19,7 +17,7 @@ function readMoreVerses() {
     }
 }
 
-// 2. Music Toggle
+/* --- 2. MUSIC CONTROL --- */
 function toggleMusic() {
     var activeAudio = (currentMode === 'game') ? gameAudio : globalAudio;
     if (activeAudio.paused) {
@@ -33,28 +31,32 @@ function toggleMusic() {
     }
 }
 
-/* --- NAVIGATION LOGIC (The Fix) --- */
-
+/* --- 3. PAGE NAVIGATION --- */
 function switchToAbout() {
-    console.log("Switching to About"); // Debugging
     document.getElementById('home-view').style.display = 'none';
     document.getElementById('games-view').style.display = 'none';
     
     var about = document.getElementById('about-view');
     about.style.display = 'block';
-    window.scrollTo(0, 0);
+    window.scrollTo(0, 0); // Upar scroll karo
     
-    typeWriterEffect();
+    // Yahan se Typing shuru hogi (Sync Fix)
+    // Pehle Jang-kaal type hoga
+    startTyping("Moh dya ka tyag kar...\nAb jism se na pyar kar...\nMastko ke unke Aaj...\nDeh se ajaad kar....", "typewriter-output-1");
+    
+    // Thodi der baad Anjaan type hoga
+    setTimeout(() => {
+        startTyping("Mai antt hun mai ankurit,\nYugo yugo ka hal hai...", "typewriter-output-2");
+    }, 2000);
 }
 
 function switchToGames() {
-    console.log("Switching to Games"); // Debugging
     currentMode = 'game';
     document.getElementById('home-view').style.display = 'none';
     document.getElementById('about-view').style.display = 'none';
     
     var gameView = document.getElementById('games-view');
-    gameView.style.display = 'flex'; // Important: Flex for centering
+    gameView.style.display = 'flex'; // Flex zaroori hai centering ke liye
     
     // Music Switch
     if(globalAudio) globalAudio.pause();
@@ -63,8 +65,8 @@ function switchToGames() {
         if(!isMuted) gameAudio.play(); 
     }
     if(btn) btn.innerHTML = (!isMuted) ? "🎵" : "🔇";
-
-    // Init Board Delay
+    
+    // Chess Board Init
     setTimeout(initGame, 200);
 }
 
@@ -80,15 +82,39 @@ function switchToHome() {
     if(btn) btn.innerHTML = (!isMuted) ? "🎵" : "🔇";
 }
 
-/* --- CHESS LOGIC --- */
+/* --- 4. TYPEWRITER EFFECT (FIXED) --- */
+function startTyping(text, elementId) {
+    const element = document.getElementById(elementId);
+    if(!element) return;
+    
+    element.innerHTML = ""; // Pehle safai
+    let i = 0;
+    
+    // Simple recursive function for typing
+    function typeChar() {
+        if (i < text.length) {
+            if (text.charAt(i) === '\n') {
+                element.innerHTML += "<br>";
+            } else {
+                element.innerHTML += text.charAt(i);
+            }
+            i++;
+            setTimeout(typeChar, 50); // Speed: 50ms
+        }
+    }
+    typeChar();
+}
+
+/* --- 5. CHESS LOGIC (Arnav Bot) --- */
 function onDragStart (source, piece) {
     if (game.game_over()) return false;
-    if (piece.search(/^b/) !== -1) return false;
+    if (piece.search(/^b/) !== -1) return false; // Sirf White chala sakte ho
 }
 
 function makeRandomMove () {
     var possibleMoves = game.moves();
     if (possibleMoves.length === 0) return;
+
     var randomIdx = Math.floor(Math.random() * possibleMoves.length);
     game.move(possibleMoves[randomIdx]);
     board.position(game.fen());
@@ -129,33 +155,23 @@ function initGame() {
     } catch (e) { console.log("Chess Error:", e); }
 }
 
-/* --- TYPEWRITER EFFECT --- */
-const poemText = "Moh dya ka tyag kar...\nAb jism se na pyar kar...\nMastko ke unke Aaj...\nDeh se ajaad kar....";
-function typeWriterEffect() {
-    const element = document.getElementById("typewriter-output");
-    if(!element) return;
-    element.innerHTML = ""; 
-    let index = 0; 
-    clearInterval(typingInterval);
-    typingInterval = setInterval(() => {
-        if (poemText.charAt(index) === '\n') { element.innerHTML += "<br>"; } 
-        else { element.innerHTML += poemText.charAt(index); }
-        index++; 
-        if (index === poemText.length) { clearInterval(typingInterval); }
-    }, 50);
-}
-
-// Popup Logic
+/* --- 6. POPUP LOGIC --- */
 window.onload = function() {
     setTimeout(function() {
         var popup = document.getElementById("music-popup");
         if(popup) popup.classList.add("active");
-    }, 3000); 
+    }, 2000); 
 };
+
 function closePopup() {
     var popup = document.getElementById("music-popup");
     if(popup) {
         popup.classList.remove("active");
-        setTimeout(function(){ popup.style.display = "none"; }, 800);
+        setTimeout(function(){ 
+            popup.style.display = "none";
+            // Jab popup hatega, tabhi Home Page ki typing animation chalegi
+            const bio = document.querySelector('.bio');
+            if(bio) bio.style.animation = "typing 3.5s steps(30, end), blink-caret .75s step-end infinite";
+        }, 800);
     }
 }
