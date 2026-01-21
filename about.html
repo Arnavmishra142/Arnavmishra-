@@ -12,7 +12,7 @@
         }
         .container { max-width: 500px; margin: 0 auto; padding-bottom: 50px; }
         
-        /* 1. BACK BUTTON ANIMATION (Slides in from Left) */
+        /* 1. BACK BUTTON ANIMATION */
         .back-btn-wrapper { 
             opacity: 0; transform: translateX(-20px); 
             animation: slideInLeft 0.8s ease forwards; animation-delay: 0.2s;
@@ -31,20 +31,20 @@
             opacity: 0; animation: fadeIn 1s ease forwards;
         }
         
-        /* 3. CARD ANIMATIONS (They slide up one by one) */
+        /* 3. CARD ANIMATIONS */
         .card { 
             background: #0a0a0a; border: 1px solid #222; border-radius: 16px; 
-            padding: 25px; margin-bottom: 25px; 
+            padding: 20px; margin-bottom: 25px; 
             opacity: 0; transform: translateY(30px);
             animation: slideUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
         }
         
-        /* Staggered Delays for the "Cascade" Effect */
-        .delay-1 { animation-delay: 0.3s; } /* KR$NA */
-        .delay-2 { animation-delay: 0.5s; } /* Zomato */
-        .delay-3 { animation-delay: 0.7s; } /* Header Verse */
-        .delay-4 { animation-delay: 0.9s; } /* Jang-kaal */
-        .delay-5 { animation-delay: 1.1s; } /* Anjaan */
+        /* Delays */
+        .delay-1 { animation-delay: 0.3s; }
+        .delay-2 { animation-delay: 0.5s; }
+        .delay-3 { animation-delay: 0.7s; }
+        .delay-4 { animation-delay: 0.9s; }
+        .delay-5 { animation-delay: 1.1s; }
 
         /* LYRICS BOX STYLE */
         .lyrics { 
@@ -69,10 +69,8 @@
     </div>
 
     <h2 style="animation-delay: 0.3s;">Sonic Fuel</h2>
-    <div class="card delay-1" style="border-top: 4px solid #1DB954;">
-        <h3 style="margin-top: 0; color: #fff;">KR$NA</h3>
-        <p style="color: #bbb; font-size: 0.9rem;">"His lyrics just hit different." Lyrical warfare. No sugar-coating, just straight facts.</p>
-        <a href="https://open.spotify.com/artist/5C1S9XwxMuuCciutwMbe5t" target="_blank" style="color: #1DB954; text-decoration: none; font-weight: bold; font-size: 0.85rem;">Listen on Spotify ➜</a>
+    <div class="card delay-1" style="border-top: 4px solid #1DB954; padding: 0; overflow: hidden;">
+        <iframe style="border-radius:12px" src="https://open.spotify.com/embed/artist/5C1S9XwxMuuC23r87rGdqs?utm_source=generator&theme=0" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
     </div>
 
     <h2 style="animation-delay: 0.5s;">Projects</h2>
