@@ -5,20 +5,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Arnav Mishra | Work & Mind</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
 
-<div style="position: fixed; top: 20px; right: 20px; z-index: 1000;">
-    <button onclick="toggleMusic()" id="mute-btn" style="background: rgba(0,0,0,0.6); border: 1px solid #444; color: #fff; padding: 0; border-radius: 50%; width: 45px; height: 45px; cursor: pointer; backdrop-filter: blur(5px); font-size: 1.2rem; display: flex; align-items: center; justify-content: center;">🔇</button>
+<div class="sound-control">
+    <button onclick="toggleMusic()" id="mute-btn">🔇</button>
 </div>
 
-<audio id="global-bg-music" loop><source src="co2.mp3" type="audio/mpeg"></audio>
+<audio id="global-bg-music" loop>
+    <source src="co2.mp3" type="audio/mpeg">
+</audio>
 
 <div id="music-popup" onclick="closePopup()">
     <div class="popup-content">
-        <p style="font-size: 1.5rem; margin-bottom: 10px;">Welcome to my world. ✨</p>
-        <p style="color: #00a3ff;">Tap anywhere to enter.</p>
-        <p style="font-size: 0.7rem; color: #aaa; margin-top: 20px;">(Please unmute for the vibe 🎵)</p>
+        <div class="popup-icon">✨</div>
+        <h2>Welcome to my world.</h2>
+        <p class="tap-hint">Tap anywhere to enter</p>
+        <p class="vibe-note">(Please unmute for the vibe 🎵)</p>
     </div>
 </div>
 
@@ -27,71 +31,78 @@
     <div id="home-view" class="fade-in">
         <div class="profile-container">
             <div class="profile-glow"></div>
-            <img src="https://imarnavin.wordpress.com/wp-content/uploads/2026/01/image_editor_output_image-900633096-17689630363507786449788545237875.jpg" class="profile-img">
+            <img src="https://imarnavin.wordpress.com/wp-content/uploads/2026/01/image_editor_output_image-900633096-17689630363507786449788545237875.jpg" class="profile-img" alt="Arnav Mishra">
         </div>
         
         <div class="name">Arnav Mishra</div>
         
-        <div class="bio-wrap"><div class="bio">Building ideas from scratch.</div></div>
+        <div class="bio-wrap">
+            <div class="bio" id="bio-text"></div>
+        </div>
 
         <div class="quote-box">
             "The secret of change is to focus all of your energy, not on fighting the old, but on building the new."
         </div>
 
         <div class="btn-grid">
-            <a href="https://www.linkedin.com/in/arnav-mishra-1a6934371" class="btn">LinkedIn</a>
-            <a href="https://x.com/ArnavMishra142" class="btn">X / Twitter</a>
-            <a href="https://www.instagram.com/arnav_9.11" class="btn">Instagram</a>
-            <a href="https://github.com/imarnavin" class="btn">GitHub</a>
+            <a href="https://www.linkedin.com/in/arnav-mishra-1a6934371" class="btn"><i class="fab fa-linkedin"></i> LinkedIn</a>
+            <a href="https://x.com/ArnavMishra142" class="btn"><i class="fab fa-twitter"></i> X / Twitter</a>
+            <a href="https://www.instagram.com/arnav_9.11" class="btn"><i class="fab fa-instagram"></i> Instagram</a>
+            <a href="https://github.com/imarnavin" class="btn"><i class="fab fa-github"></i> GitHub</a>
         </div>
 
-        <button onclick="switchToAbout()" class="main-btn">ENTER MY WORLD ➜</button>
+        <button onclick="switchToAbout()" class="main-btn">ENTER MY WORLD <i class="fas fa-arrow-right"></i></button>
 
-        <p style="text-align: center; margin-top: 50px; color: #333; font-size: 0.6rem;">© 2026 ARNAV MISHRA</p>
+        <p class="footer-text">© 2026 ARNAV MISHRA</p>
     </div>
 
     <div id="about-view" style="display: none;">
-        <button onclick="switchToHome()" class="back-btn">← Home Protocol</button>
+        <button onclick="switchToHome()" class="back-btn"><i class="fas fa-arrow-left"></i> Home Protocol</button>
 
-        <h2>Sonic Fuel (GOAT)</h2>
-        <div class="card" style="border-top: 4px solid #00a3ff; background: linear-gradient(145deg, #0a0a0a, #111);">
-            <div style="display: flex; align-items: center; gap: 15px;">
-                <div style="width: 50px; height: 50px; border-radius: 50%; background: #222; display: flex; align-items: center; justify-content: center; font-weight: bold; color: #00a3ff; border: 1px solid #333; font-size: 1.2rem;">$</div>
+        <h2 class="section-title">Projects</h2>
+        <div class="card project-card">
+            <div class="card-header">
+                <h3 style="color: #ff4b4b;">Zomato Analysis 📊</h3>
+            </div>
+            <p style="color: #ccc; font-size: 0.9rem; margin-bottom: 15px;">
+                Market positioning and SWOT analysis for hyperlocal delivery based on real-time data.
+            </p>
+            <a href="https://docs.google.com/spreadsheets/d/11k2QyICWavfXFuUGXRBGnRJ7l7zsblQB/edit?usp=drivesdk" target="_blank" class="project-link-btn">
+                View Sheets Project <i class="fas fa-external-link-alt"></i>
+            </a>
+        </div>
+
+        <h2 class="section-title">Sonic Fuel (GOAT)</h2>
+        <div class="card krsna-card">
+            <div class="krsna-header">
+                <div class="krsna-icon">$</div>
                 <div>
-                    <h3 style="margin: 0; color: #fff; font-size: 1.1rem;">KR$NA 👑</h3>
-                    <p style="margin: 0; color: #00a3ff; font-size: 0.8rem;">The inspiration.</p>
+                    <h3>KR$NA 👑</h3>
+                    <p class="subtitle">The inspiration.</p>
                 </div>
             </div>
-            <p style="color: #bbb; font-size: 0.9rem; margin-top: 20px; font-style: italic; line-height: 1.6; border-left: 2px solid #333; padding-left: 15px;">
+            <p class="lyrics">
                 "Chahiye mujhe bas ek buss down Rollie<br>
                 Lambhi si gaadi aur makaan do storey, haan<br>
-                Chahiye mujhe bas ek buss down Rollie<br>
-                Lambhi si chain aur kuch lakh ki tijori"
+                Chahiye mujhe bas ek buss down Rollie..."
             </p>
         </div>
 
-        <h2>Projects</h2>
-        <div class="card" style="border-top: 4px solid #d32f2f;">
-            <h3 style="margin-top: 0; color: #fff;">Zomato Analysis</h3>
-            <p style="color: #bbb; font-size: 0.9rem;">Market positioning and SWOT analysis for hyperlocal delivery.</p>
-            <a href="https://docs.google.com/spreadsheets/d/11k2QyICWavfXFuUGXRBGnRJ7l7zsblQB/edit?usp=drivesdk" style="color: #d32f2f; text-decoration: none; font-weight: bold;">View Sheets Project ➜</a>
-        </div>
-
-        <h2>Original Verses</h2>
+        <h2 class="section-title">Original Verses</h2>
         
-        <div class="card">
-            <h3 style="color: #ff4b2b; margin-top: 0;">🔥 Jang-kaal</h3>
-            <div id="typewriter-output-1" style="border-left: 2px solid #ff4b2b; padding-left: 10px; min-height: 50px; color: #ffcccb; margin-bottom: 10px; font-family: monospace;"></div>
-            <button onclick="readMoreVerses()" style="width: 100%; background: #ff4b2b; color: white; border: none; padding: 10px; border-radius: 8px; font-weight: bold; cursor: pointer;">READ FULL ➜</button>
+        <div class="card verse-card">
+            <h3 class="verse-title fire">🔥 Jang-kaal</h3>
+            <div id="verse-1" class="typewriter-text"></div>
+            <button onclick="readFullVerse('verse1')" class="read-more-btn fire-btn">READ FULL ➜</button>
         </div>
 
-        <div class="card">
-            <h3 style="color: #654ea3; margin-top: 0;">🌌 Anjaan</h3>
-            <div id="typewriter-output-2" style="border-left: 2px solid #654ea3; padding-left: 10px; min-height: 50px; color: #d1c4e9; margin-bottom: 10px; font-family: monospace;"></div>
-            <button onclick="readMoreVerses()" style="width: 100%; background: #654ea3; color: white; border: none; padding: 10px; border-radius: 8px; font-weight: bold; cursor: pointer;">READ FULL ➜</button>
+        <div class="card verse-card">
+            <h3 class="verse-title cosmic">🌌 Anjaan</h3>
+            <div id="verse-2" class="typewriter-text"></div>
+            <button onclick="readFullVerse('verse2')" class="read-more-btn cosmic-btn">READ FULL ➜</button>
         </div>
 
-    </div>
+        <div style="height: 50px;"></div> </div>
 
 </div>
 
