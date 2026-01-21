@@ -8,7 +8,7 @@
     <meta name="description" content="Official portfolio of Arnav Mishra. Student, Poet, and Tech Enthusiast.">
     
     <style>
-        /* --- 1. BASE SETUP (Dark Mode Fix) --- */
+        /* --- 1. BASE SETUP --- */
         body { 
             background-color: #000; 
             color: #fff; 
@@ -18,26 +18,51 @@
             min-height: 100vh;
         }
         
-        /* The Container */
         .main-wrapper {
             max-width: 500px; margin: 0 auto; padding: 20px; 
             min-height: 100vh; position: relative; padding-top: 50px;
         }
 
-        /* --- 2. WELCOME POP-UP STYLES --- */
+        /* --- 2. SMART POP-UP STYLES (Glass Effect) --- */
         #music-popup {
-            position: fixed; inset: 0; background: rgba(0,0,0,0.9);
-            z-index: 2000; display: flex; align-items: center; justify-content: center;
-            text-align: center; backdrop-filter: blur(10px); cursor: pointer;
+            position: fixed; inset: 0; 
+            /* Background: Halka Black + Blur (Glass Effect) */
+            background: rgba(0, 0, 0, 0.3); 
+            backdrop-filter: blur(4px);
+            z-index: 2000; 
+            display: flex; align-items: center; justify-content: center;
+            text-align: center; cursor: pointer;
+            
+            /* Hidden Initially (Animation Setup) */
+            opacity: 0; pointer-events: none;
+            transition: opacity 0.8s ease, backdrop-filter 0.8s ease;
         }
+
+        /* Jab Pop-up Active hoga */
+        #music-popup.active {
+            opacity: 1; pointer-events: all;
+        }
+
         .popup-content { 
-            padding: 30px; border: 1px solid #00a3ff; border-radius: 20px; 
-            max-width: 80%; box-shadow: 0 0 30px rgba(0, 163, 255, 0.3);
-            background: #0a0a0a;
+            padding: 25px; 
+            background: rgba(10, 10, 10, 0.85); /* Semi-transparent Card */
+            border: 1px solid rgba(0, 163, 255, 0.5); 
+            border-radius: 20px; 
+            max-width: 80%; 
+            box-shadow: 0 0 40px rgba(0, 163, 255, 0.15);
+            
+            /* Slide Up Animation */
+            transform: translateY(30px);
+            transition: transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
         }
-        .popup-content p { font-size: 1.1rem; line-height: 1.6; color: #fff; margin: 0; }
+
+        #music-popup.active .popup-content {
+            transform: translateY(0);
+        }
+
+        .popup-content p { font-size: 1rem; line-height: 1.5; color: #eee; margin: 0; }
         .popup-content span { color: #00a3ff; font-weight: bold; }
-        .popup-content small { display: block; margin-top: 15px; color: #666; font-size: 0.8rem; }
+        .popup-content small { display: block; margin-top: 15px; color: #777; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px;}
 
         /* --- 3. HOME PAGE STYLES --- */
         .profile-container { 
@@ -65,7 +90,7 @@
             animation: typing 2.5s steps(30, end) forwards; width: 0; 
         }
 
-        /* Buttons */
+        /* Buttons & Components */
         .btn-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
         .btn { 
             padding: 12px; background: #0a0a0a; border: 1px solid #333; 
@@ -79,25 +104,12 @@
             font-weight: bold; font-size: 1rem; cursor: pointer;
             box-shadow: 0 0 20px rgba(0, 163, 255, 0.2);
         }
-
-        /* --- 4. ABOUT / CONTENT STYLES --- */
-        .card { 
-            background: #0a0a0a; border: 1px solid #222; border-radius: 16px; 
-            padding: 20px; margin-bottom: 25px; 
-        }
-        .lyrics { 
-            white-space: pre-line; font-family: 'Georgia', serif; color: #ccc; 
-            line-height: 1.6; background: #080808; padding: 20px; border-radius: 12px; 
-            border-left: 3px solid #444; font-size: 0.9rem;
-        }
+        .card { background: #0a0a0a; border: 1px solid #222; border-radius: 16px; padding: 20px; margin-bottom: 25px; }
+        .lyrics { white-space: pre-line; font-family: 'Georgia', serif; color: #ccc; line-height: 1.6; background: #080808; padding: 20px; border-radius: 12px; border-left: 3px solid #444; font-size: 0.9rem; }
         h2 { border-bottom: 2px solid #222; padding-bottom: 10px; color: #00a3ff; margin-top: 30px; font-size: 1rem; text-transform: uppercase; letter-spacing: 1px;}
-        
-        .back-btn {
-            background: none; border: 1px solid #333; color: #888; padding: 8px 20px;
-            border-radius: 50px; cursor: pointer; margin-bottom: 10px; font-size: 0.85rem;
-        }
+        .back-btn { background: none; border: 1px solid #333; color: #888; padding: 8px 20px; border-radius: 50px; cursor: pointer; margin-bottom: 10px; font-size: 0.85rem; }
 
-        /* --- 5. ANIMATIONS --- */
+        /* --- 4. ANIMATIONS --- */
         @keyframes popIn { 0% { opacity: 0; transform: scale(0); } 100% { opacity: 1; transform: scale(1); } }
         @keyframes typing { from { width: 0 } to { width: 100% } }
         @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(0,163,255,0.4); } 70% { box-shadow: 0 0 0 15px rgba(0,0,0,0); } }
@@ -111,8 +123,8 @@
 <div id="music-popup" onclick="closePopup()">
     <div class="popup-content">
         <p>Welcome to my world. ✨<br><br>
-        You can enjoy the 🎵 music as well by tapping the <span>Top Right corner</span>.</p>
-        <small>(Tap anywhere to enter)</small>
+        Tap the <span>Top Right corner</span> to enable the vibe.</p>
+        <small>(Tap anywhere to continue)</small>
     </div>
 </div>
 
@@ -303,13 +315,23 @@ Har karm ka gathi mai
         }
     }
 
-    // Popup Logic
+    // Popup Logic with Delay
+    window.onload = function() {
+        setTimeout(function() {
+            var popup = document.getElementById("music-popup");
+            popup.classList.add("active"); // Animation trigger
+        }, 3000); // 3000ms = 3 Seconds Wait
+    };
+
     function closePopup() {
         var popup = document.getElementById("music-popup");
-        popup.style.display = "none";
+        popup.classList.remove("active");
+        setTimeout(function(){
+            popup.style.display = "none";
+        }, 800);
     }
 
-    // Page Switching Logic
+    // Page Switching
     function switchToAbout() {
         document.getElementById('home-view').style.display = 'none';
         var about = document.getElementById('about-view');
