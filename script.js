@@ -5,10 +5,11 @@ var btn = document.getElementById("mute-btn");
 var currentMode = 'home'; 
 var isMuted = true;
 var board = null;
-var game = null; // Game init baad me karenge
+var game = null;
 var $status = $('#status');
 
-const poemText = "Tu jang ka ailan kar...\nDushmano PE vaar kar...\nPapiyo ka naas kar....";
+// Sirf Starting ki lines (Teaser)
+const poemText = "Moh dya ka tyag kar...\nAb jism se na pyar kar...\nMastko ke unke Aaj...\nDeh se ajaad kar....";
 let typingInterval;
 
 /* --- MUSIC SYSTEM --- */
@@ -29,16 +30,23 @@ function toggleMusic() {
     }
 }
 
-/* --- CHESS LOGIC (ARNAV BOT) --- */
-function onDragStart (source, piece, position, orientation) {
+/* --- NEW: INSTAGRAM REDIRECT --- */
+function readMoreVerses() {
+    // Ye user se permission lega
+    if(confirm("Do you want to visit Instagram to read the full masterpiece? ✍️")) {
+        window.open("https://www.instagram.com/arnav_9.11", "_blank");
+    }
+}
+
+/* --- CHESS LOGIC --- */
+function onDragStart (source, piece) {
     if (game.game_over()) return false;
-    if (piece.search(/^b/) !== -1) return false; // Only allow picking White
+    if (piece.search(/^b/) !== -1) return false;
 }
 
 function makeRandomMove () {
     var possibleMoves = game.moves();
-    if (possibleMoves.length === 0) return; // Game over
-
+    if (possibleMoves.length === 0) return;
     var randomIdx = Math.floor(Math.random() * possibleMoves.length);
     game.move(possibleMoves[randomIdx]);
     board.position(game.fen());
@@ -47,9 +55,9 @@ function makeRandomMove () {
 
 function onDrop (source, target) {
     var move = game.move({ from: source, to: target, promotion: 'q' });
-    if (move === null) return 'snapback'; // Invalid move
+    if (move === null) return 'snapback';
     updateStatus();
-    window.setTimeout(makeRandomMove, 250); // AI moves after 250ms
+    window.setTimeout(makeRandomMove, 250);
 }
 
 function onSnapEnd () { board.position(game.fen()); }
@@ -60,7 +68,6 @@ function updateStatus () {
     if (game.in_checkmate()) { status = 'Game over, ' + moveColor + ' is in checkmate.'; }
     else if (game.in_draw()) { status = 'Game over, drawn position'; }
     else { status = moveColor + ' to move'; if (game.in_check()) { status += ', ' + moveColor + ' is in check'; } }
-    
     if($status) $status.html(status);
 }
 
@@ -77,12 +84,10 @@ function initGame() {
         };
         board = Chessboard('myBoard', config);
         $(window).resize(board.resize);
-    } catch (e) {
-        console.log("Chess error: " + e);
-    }
+    } catch (e) { console.log("Chess error: " + e); }
 }
 
-/* --- NAVIGATION & TYPEWRITER --- */
+/* --- NAVIGATION --- */
 function typeWriterEffect() {
     const element = document.getElementById("typewriter-output");
     if(!element) return;
@@ -106,16 +111,10 @@ function switchToGames() {
     document.getElementById('home-view').style.display = 'none';
     document.getElementById('about-view').style.display = 'none';
     document.getElementById('games-view').style.display = 'block';
-
-    // Initialize board AFTER view is visible
     setTimeout(initGame, 100);
-
     globalAudio.pause();
-    if(gameAudio) gameAudio.currentTime = 0;
-    
-    if (!isMuted && gameAudio) { 
-        gameAudio.play(); btn.innerHTML = "🎵"; 
-    }
+    if(gameAudio) { gameAudio.currentTime = 0; if(!isMuted) gameAudio.play(); }
+    btn.innerHTML = (!isMuted) ? "🎵" : "🔇";
 }
 
 function switchToHome() {
@@ -123,7 +122,7 @@ function switchToHome() {
     document.getElementById('about-view').style.display = 'none';
     document.getElementById('games-view').style.display = 'none';
     document.getElementById('home-view').style.display = 'block';
-
     if(gameAudio) gameAudio.pause();
-    if (!isMuted) { globalAudio.play(); btn.innerHTML = "🎵"; }
+    if(!isMuted) globalAudio.play();
+    btn.innerHTML = (!isMuted) ? "🎵" : "🔇";
 }
