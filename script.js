@@ -1,22 +1,31 @@
 /* --- VARIABLES --- */
-var globalAudio = document.getElementById("global-bg-music");
-var gameAudio = document.getElementById("game-bg-music");
+var globalAudio = document.getElementById("global-bg-music"); // Home Song
+var gameAudio = document.getElementById("game-bg-music");     // Game Song
 var btn = document.getElementById("mute-btn");
+
+// Hum track karenge ki abhi user kahan hai (home ya game)
+var currentMode = 'home'; 
+var isMuted = true; // By default mute rakhenge jab tak user tap na kare
 
 const poemText = "Tu jang ka ailan kar...\nDushmano PE vaar kar...\nPapiyo ka naas kar....";
 let typingInterval;
 
-/* --- MUSIC CONTROL --- */
+/* --- MUSIC CONTROL (SMART TOGGLE) --- */
 globalAudio.volume = 0.2; 
-gameAudio.volume = 0.3; // Game music thoda tez
+gameAudio.volume = 0.3; 
 
-function toggleGlobalMusic() {
-    if (globalAudio.paused) {
-        globalAudio.play(); 
+function toggleMusic() {
+    // Jo mode active hai, uska gaana pakdo
+    var activeAudio = (currentMode === 'game') ? gameAudio : globalAudio;
+
+    if (activeAudio.paused) {
+        activeAudio.play();
+        isMuted = false;
         btn.innerHTML = "🎵"; 
         btn.style.borderColor = "#00a3ff";
     } else {
-        globalAudio.pause(); 
+        activeAudio.pause();
+        isMuted = true;
         btn.innerHTML = "🔇"; 
         btn.style.borderColor = "#444";
     }
@@ -51,10 +60,11 @@ function typeWriterEffect() {
     }, 50);
 }
 
-/* --- PAGE SWITCHING & MUSIC LOGIC --- */
+/* --- PAGE SWITCHING --- */
 function switchToAbout() {
+    // Music change nahi hoga, bas view change hoga
     document.getElementById('home-view').style.display = 'none';
-    document.getElementById('games-view').style.display = 'none'; // Hide games
+    document.getElementById('games-view').style.display = 'none';
     
     var about = document.getElementById('about-view');
     about.style.display = 'block'; about.classList.add('fade-in');
@@ -63,6 +73,8 @@ function switchToAbout() {
 }
 
 function switchToGames() {
+    currentMode = 'game'; // Mode update kiya
+    
     document.getElementById('home-view').style.display = 'none';
     document.getElementById('about-view').style.display = 'none';
     
@@ -70,20 +82,34 @@ function switchToGames() {
     games.style.display = 'block'; games.classList.add('fade-in');
     window.scrollTo(0, 0);
 
-    // MUSIC SWAP MAGIC
+    // LOGIC: Home song roko, Game song chalao (agar mute nahi hai)
     globalAudio.pause();
-    gameAudio.currentTime = 0;
-    gameAudio.play();
+    gameAudio.currentTime = 0; // Shuru se bajega
+    if (!isMuted) {
+        gameAudio.play();
+        btn.innerHTML = "🎵";
+        btn.style.borderColor = "#00a3ff";
+    } else {
+        btn.innerHTML = "🔇";
+    }
 }
 
 function switchToHome() {
+    currentMode = 'home'; // Mode wapas Home
+    
     document.getElementById('about-view').style.display = 'none';
     document.getElementById('games-view').style.display = 'none';
     
     var home = document.getElementById('home-view');
     home.style.display = 'block'; home.classList.add('fade-in');
 
-    // MUSIC SWAP BACK
+    // LOGIC: Game song roko, Home song wapas chalao
     gameAudio.pause();
-    if(btn.innerHTML === "🎵") { globalAudio.play(); } // Resume only if unmuted
+    if (!isMuted) {
+        globalAudio.play();
+        btn.innerHTML = "🎵";
+        btn.style.borderColor = "#00a3ff";
+    } else {
+        btn.innerHTML = "🔇";
+    }
 }
