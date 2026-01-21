@@ -1,88 +1,228 @@
-/* --- GLOBAL --- */
+/* --- GLOBAL RESET & FONTS --- */
+@import url('https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=Poppins:wght@300;400;600&display=swap');
+
 body {
-    background-color: #000;
-    color: #fff;
-    font-family: 'Courier New', Courier, monospace; 
+    background-color: #050505;
+    color: #e0e0e0;
+    font-family: 'Poppins', sans-serif; /* Cleaner font for UI */
     margin: 0; padding: 0;
     overflow-x: hidden;
 }
 
+/* Scrollbar styling */
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: #000; }
+::-webkit-scrollbar-thumb { background: #333; border-radius: 10px; }
+
 .main-wrapper {
     padding: 20px;
-    max-width: 600px;
+    max-width: 550px;
     margin: 0 auto;
-    padding-bottom: 80px;
+    min-height: 100vh;
     position: relative;
     z-index: 10;
 }
 
-/* --- PROFILE PHOTO (Original Fix) --- */
-.profile-container { position: relative; width: 100px; height: 100px; margin: 0 auto; margin-top: 20px; }
+/* --- SOUND CONTROL --- */
+.sound-control {
+    position: fixed; top: 20px; right: 20px; z-index: 1000;
+}
+#mute-btn {
+    background: rgba(0,0,0,0.6); 
+    border: 1px solid #444; 
+    color: #fff; 
+    width: 45px; height: 45px; 
+    border-radius: 50%; 
+    cursor: pointer; 
+    backdrop-filter: blur(5px); 
+    font-size: 1.2rem;
+    transition: transform 0.2s;
+}
+#mute-btn:active { transform: scale(0.9); }
+
+/* --- POPUP STYLING --- */
+#music-popup { 
+    display: flex; 
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+    background: rgba(0,0,0,0.85); 
+    z-index: 9999; 
+    align-items: center; justify-content: center; 
+    backdrop-filter: blur(10px);
+    transition: opacity 0.5s ease;
+}
+.popup-content { 
+    text-align: center; color: #fff; 
+    animation: zoomIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+}
+.popup-icon { font-size: 3rem; margin-bottom: 10px; animation: float 3s infinite ease-in-out; }
+.tap-hint { color: #00a3ff; font-weight: 600; margin-top: 10px; animation: pulse 1.5s infinite; }
+.vibe-note { font-size: 0.75rem; color: #666; margin-top: 25px; }
+
+/* --- PROFILE SECTION --- */
+.profile-container { 
+    position: relative; width: 110px; height: 110px; margin: 40px auto 20px; 
+}
 .profile-img { 
     width: 100%; height: 100%; border-radius: 50%; object-fit: cover; 
-    border: 2px solid #333; 
-    /* Filter hata diya taaki original dikhe */
+    border: 3px solid #1a1a1a; 
     position: relative; z-index: 2; 
 }
 .profile-glow { 
     position: absolute; top: -5px; left: -5px; right: -5px; bottom: -5px; 
-    border-radius: 50%; background: linear-gradient(45deg, #00a3ff, #ff0099); 
-    z-index: 1; animation: spin 4s linear infinite; filter: blur(8px);
+    border-radius: 50%; 
+    background: linear-gradient(45deg, #00a3ff, #ff0099, #00a3ff); 
+    background-size: 400%;
+    z-index: 1; 
+    animation: spin 4s linear infinite, glowPulse 2s infinite alternate; 
+    filter: blur(10px);
 }
-@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-/* --- NAME (Blue & White Gradient Fix) --- */
+/* --- TEXT & TYPOGRAPHY --- */
 .name { 
-    text-align: center; font-size: 1.8rem; margin-top: 15px; 
-    font-weight: bold; letter-spacing: 2px; text-transform: uppercase; 
-    
-    /* GRADIENT LOGIC */
-    background: linear-gradient(to right, #00a3ff, #ffffff);
+    text-align: center; font-size: 2rem; 
+    font-weight: 700; letter-spacing: 1px; text-transform: uppercase; 
+    background: linear-gradient(to right, #00a3ff, #fff, #00a3ff);
+    background-size: 200%;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    text-shadow: 0 0 20px rgba(0, 163, 255, 0.3);
+    animation: gradientFlow 3s linear infinite;
+    margin-bottom: 5px;
 }
 
-/* --- BIO ANIMATION --- */
-.bio-wrap { display: flex; justify-content: center; margin-bottom: 25px; margin-top: 5px; }
+.bio-wrap { 
+    height: 25px; display: flex; justify-content: center; align-items: center; margin-bottom: 30px; 
+}
 .bio { 
-    color: #00a3ff; font-size: 0.9rem; letter-spacing: 2px; 
-    text-transform: lowercase; font-family: 'Courier New', monospace;
+    color: #00a3ff; font-size: 0.95rem; font-family: 'Courier Prime', monospace;
     border-right: 2px solid #00a3ff;
-    white-space: nowrap; overflow: hidden;
-    width: 0;
+    padding-right: 5px;
+    animation: blink-caret 0.7s step-end infinite;
 }
-@keyframes typing { from { width: 0 } to { width: 100% } }
-@keyframes blink-caret { from, to { border-color: transparent } 50% { border-color: #00a3ff; } }
 
-/* --- UI ELEMENTS --- */
-.quote-box { background: #111; border-left: 3px solid #00a3ff; padding: 15px; margin: 25px 0; color: #ccc; font-style: italic; font-size: 0.85rem; line-height: 1.5; }
-.card { background: #111; border: 1px solid #333; border-radius: 12px; padding: 20px; margin-bottom: 20px; margin-top: 20px; }
-
-/* Buttons */
-.btn-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 20px; }
-.btn { background: #111; border: 1px solid #333; color: #fff; padding: 12px; text-align: center; text-decoration: none; border-radius: 8px; font-size: 0.9rem; transition: 0.3s; font-family: sans-serif; }
-.btn:hover { border-color: #00a3ff; background: #0a0a0a; }
-
-.main-btn { background: #00a3ff; color: #fff; border: none; padding: 15px; width: 100%; font-weight: bold; margin-top: 25px; cursor: pointer; border-radius: 8px; font-size: 1rem; box-shadow: 0 4px 15px rgba(0, 163, 255, 0.3); }
-
-.back-btn { background: transparent; border: none; color: #888; cursor: pointer; font-size: 0.9rem; margin-bottom: 15px; display: flex; align-items: center; gap: 5px; }
-
-/* --- POPUP FIX (Transparent Background) --- */
-#music-popup { 
-    display: none; 
-    position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-    /* Halka transparent black, taaki peeche ka site dikhe */
-    background: rgba(0,0,0,0.8); 
-    z-index: 9999; 
-    align-items: center; justify-content: center; 
-    backdrop-filter: blur(8px); /* Blur effect */
+.quote-box { 
+    background: #0f0f0f; 
+    border-left: 3px solid #00a3ff; 
+    padding: 20px; 
+    margin: 20px 0; 
+    color: #bbb; 
+    font-style: italic; 
+    font-size: 0.9rem; 
+    line-height: 1.6;
+    border-radius: 0 8px 8px 0;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
 }
-#music-popup.active { display: flex; }
-.popup-content { text-align: center; color: #fff; animation: popUp 0.5s ease; }
-@keyframes popUp { 0% { transform: scale(0.8); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
 
-/* Page Transition */
-.fade-in { animation: fadeIn 0.8s ease-in-out; }
-@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-    
+/* --- BUTTONS --- */
+.btn-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 30px; }
+.btn { 
+    background: #111; border: 1px solid #222; color: #ccc; 
+    padding: 14px; text-align: center; text-decoration: none; 
+    border-radius: 10px; font-size: 0.9rem; transition: 0.3s; 
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+}
+.btn:hover { 
+    border-color: #00a3ff; background: #0a0a0a; color: #fff; transform: translateY(-3px); 
+    box-shadow: 0 5px 15px rgba(0, 163, 255, 0.15);
+}
+
+.main-btn { 
+    background: linear-gradient(90deg, #00a3ff, #0077ff); 
+    color: #fff; border: none; padding: 18px; width: 100%; 
+    font-weight: bold; margin-top: 30px; cursor: pointer; 
+    border-radius: 12px; font-size: 1rem; letter-spacing: 1px;
+    box-shadow: 0 0 20px rgba(0, 163, 255, 0.4); 
+    transition: 0.3s;
+}
+.main-btn:hover { transform: scale(1.02); box-shadow: 0 0 30px rgba(0, 163, 255, 0.6); }
+
+.back-btn { 
+    background: transparent; border: none; color: #888; 
+    cursor: pointer; font-size: 1rem; margin-bottom: 20px; 
+    display: flex; align-items: center; gap: 8px; transition: 0.3s;
+}
+.back-btn:hover { color: #fff; transform: translateX(-5px); }
+
+/* --- CARDS & SECTIONS --- */
+.section-title {
+    color: #fff; margin-top: 30px; font-size: 1.2rem; 
+    border-bottom: 1px solid #222; padding-bottom: 10px; margin-bottom: 15px;
+    font-weight: 600; letter-spacing: 1px;
+}
+
+.card { 
+    background: #0e0e0e; border: 1px solid #222; 
+    border-radius: 16px; padding: 20px; margin-bottom: 25px; 
+    transition: 0.3s; position: relative; overflow: hidden;
+}
+
+/* Zomato Project Card Special Styling */
+.project-card {
+    border-top: 4px solid #d32f2f;
+    box-shadow: 0 10px 30px rgba(211, 47, 47, 0.1);
+}
+.project-card:hover { transform: translateY(-5px); box-shadow: 0 15px 40px rgba(211, 47, 47, 0.2); }
+
+.project-link-btn {
+    display: inline-block; margin-top: 10px;
+    color: #ff4b4b; text-decoration: none; font-weight: bold; font-size: 0.95rem;
+    border: 1px solid #ff4b4b; padding: 10px 20px; border-radius: 50px;
+    transition: 0.3s;
+}
+.project-link-btn:hover { background: #ff4b4b; color: white; }
+
+/* KR$NA Card */
+.krsna-card {
+    border-top: 4px solid #00a3ff;
+    background: linear-gradient(145deg, #0a0a0a, #111);
+}
+.krsna-header { display: flex; align-items: center; gap: 15px; margin-bottom: 15px; }
+.krsna-icon {
+    width: 50px; height: 50px; border-radius: 50%; background: #151515; 
+    display: flex; align-items: center; justify-content: center; 
+    color: #00a3ff; border: 1px solid #333; font-size: 1.2rem;
+    box-shadow: 0 0 10px rgba(0, 163, 255, 0.2);
+}
+.subtitle { margin: 0; color: #00a3ff; font-size: 0.8rem; opacity: 0.8; }
+.lyrics { 
+    color: #bbb; font-size: 0.9rem; font-style: italic; 
+    line-height: 1.8; border-left: 2px solid #333; padding-left: 15px; font-family: 'Courier Prime', monospace;
+}
+
+/* Verses */
+.verse-card { padding: 25px; }
+.verse-title { margin-top: 0; display: flex; align-items: center; gap: 10px; }
+.verse-title.fire { color: #ff4b2b; }
+.verse-title.cosmic { color: #8e44ad; }
+
+.typewriter-text {
+    font-family: 'Courier Prime', monospace; color: #ddd; 
+    min-height: 40px; margin-bottom: 15px; line-height: 1.5; font-size: 0.95rem;
+}
+
+.read-more-btn { width: 100%; border: none; padding: 12px; border-radius: 8px; font-weight: bold; cursor: pointer; transition: 0.3s; }
+.fire-btn { background: rgba(255, 75, 43, 0.1); color: #ff4b2b; border: 1px solid #ff4b2b; }
+.fire-btn:hover { background: #ff4b2b; color: #fff; }
+
+.cosmic-btn { background: rgba(142, 68, 173, 0.1); color: #8e44ad; border: 1px solid #8e44ad; }
+.cosmic-btn:hover { background: #8e44ad; color: #fff; }
+
+.footer-text { text-align: center; margin-top: 50px; color: #444; font-size: 0.7rem; letter-spacing: 2px; }
+
+/* --- ANIMATIONS --- */
+@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+@keyframes glowPulse { from { opacity: 0.8; } to { opacity: 0.4; } }
+@keyframes zoomIn { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+@keyframes pulse { 0% { opacity: 0.6; } 50% { opacity: 1; } 100% { opacity: 0.6; } }
+@keyframes float { 0% { transform: translateY(0px); } 50% { transform: translateY(-10px); } 100% { transform: translateY(0px); } }
+@keyframes blink-caret { 50% { border-color: transparent; } }
+@keyframes gradientFlow { 0% { background-position: 0% 50%; } 100% { background-position: 100% 50%; } }
+
+/* Transitions */
+.fade-in { animation: fadeIn 0.8s ease-out forwards; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+/* Mobile optimization */
+@media (max-width: 400px) {
+    .name { font-size: 1.5rem; }
+    .btn-grid { grid-template-columns: 1fr; }
+    }
