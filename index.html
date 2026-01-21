@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     
     <title>Arnav Mishra | Work & Mind</title>
-    <meta name="description" content="Portfolio of Arnav Mishra. Student, Poet, Tech Enthusiast.">
-
+    <meta name="description" content="Official portfolio of Arnav Mishra. Student, Poet, and Tech Enthusiast.">
+    
     <style>
         /* BASE SETUP */
         body { 
@@ -14,15 +14,15 @@
             margin: 0; padding: 0; overflow-x: hidden; min-height: 100vh;
         }
         
-        /* The Container for Everything */
+        /* The Container */
         .main-wrapper {
             max-width: 500px; margin: 0 auto; padding: 20px; 
-            min-height: 100vh; position: relative;
+            min-height: 100vh; position: relative; padding-top: 50px;
         }
 
         /* ----- HOME STYLES ----- */
         .profile-container { 
-            width: 120px; height: 120px; margin: 20px auto; position: relative;
+            width: 120px; height: 120px; margin: 0 auto 20px; position: relative;
             animation: popIn 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
         }
         .profile-img { 
@@ -39,21 +39,22 @@
             -webkit-background-clip: text; -webkit-text-fill-color: transparent;
             margin: 10px 0; animation: glitch 3s infinite;
         }
+        .bio-wrap { text-align: center; margin-bottom: 30px; }
         .bio { 
-            text-align: center; color: #00a3ff; font-family: 'Courier New', monospace;
-            border-right: 2px solid #00a3ff; display: inline-block;
-            white-space: nowrap; overflow: hidden; margin-bottom: 30px;
-            animation: typing 2.5s steps(30, end) forwards;
-            width: 0; 
+            display: inline-block; color: #00a3ff; font-family: 'Courier New', monospace;
+            border-right: 2px solid #00a3ff; white-space: nowrap; overflow: hidden;
+            animation: typing 2.5s steps(30, end) forwards; width: 0; 
         }
-        .bio-wrap { text-align: center; }
 
+        /* Buttons & Cards */
         .btn-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
         .btn { 
             padding: 12px; background: #0a0a0a; border: 1px solid #333; 
             color: #fff; text-decoration: none; border-radius: 8px; font-size: 0.75rem; 
-            text-align: center; display: block;
+            text-align: center; display: block; transition: 0.3s;
         }
+        .btn:active { background: #333; }
+        
         .main-btn { 
             display: block; width: 100%; padding: 15px; margin-top: 20px; 
             background: linear-gradient(45deg, #00a3ff, #005f99); 
@@ -62,20 +63,21 @@
             box-shadow: 0 0 20px rgba(0, 163, 255, 0.2);
         }
 
-        /* ----- ABOUT STYLES (Hidden by default) ----- */
+        /* ----- ABOUT / PROJECT STYLES ----- */
         .card { 
             background: #0a0a0a; border: 1px solid #222; border-radius: 16px; 
             padding: 20px; margin-bottom: 25px; 
         }
         .lyrics { 
-            white-space: pre-line; font-family: 'Georgia', serif; color: #ddd; 
-            line-height: 1.8; background: #080808; padding: 20px; border-radius: 12px; 
-            border-left: 3px solid #444; 
+            white-space: pre-line; font-family: 'Georgia', serif; color: #ccc; 
+            line-height: 1.6; background: #080808; padding: 20px; border-radius: 12px; 
+            border-left: 3px solid #444; font-size: 0.9rem;
         }
-        h2 { border-bottom: 2px solid #222; padding-bottom: 10px; color: #00a3ff; margin-top: 30px;}
+        h2 { border-bottom: 2px solid #222; padding-bottom: 10px; color: #00a3ff; margin-top: 30px; font-size: 1rem; text-transform: uppercase; letter-spacing: 1px;}
+        
         .back-btn {
             background: none; border: 1px solid #333; color: #888; padding: 8px 20px;
-            border-radius: 50px; cursor: pointer; margin-bottom: 20px;
+            border-radius: 50px; cursor: pointer; margin-bottom: 10px; font-size: 0.85rem;
         }
 
         /* ----- ANIMATIONS ----- */
@@ -83,17 +85,14 @@
         @keyframes typing { from { width: 0 } to { width: 100% } }
         @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(0,163,255,0.4); } 70% { box-shadow: 0 0 0 15px rgba(0,0,0,0); } }
         @keyframes glitch { 0%,100%{transform:skew(0deg);} 20%{transform:skew(-2deg);} 40%{transform:skew(2deg);} }
-        .fade-in { animation: fadeIn 0.5s forwards; }
-        .fade-out { animation: fadeOut 0.5s forwards; }
+        .fade-in { animation: fadeIn 0.6s forwards; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes fadeOut { from { opacity: 1; } to { opacity: 0; } }
-
     </style>
 </head>
 <body>
 
-<div style="position: fixed; top: 20px; left: 20px; z-index: 999;">
-    <button onclick="toggleGlobalMusic()" id="mute-btn" style="background: rgba(0,0,0,0.5); border: 1px solid #333; color: #fff; padding: 10px; border-radius: 50%; width: 45px; height: 45px; cursor: pointer; backdrop-filter: blur(5px); font-size: 1.2rem;">
+<div style="position: fixed; top: 20px; right: 20px; z-index: 999;">
+    <button onclick="toggleGlobalMusic()" id="mute-btn" style="background: rgba(0,0,0,0.6); border: 1px solid #444; color: #fff; padding: 0; border-radius: 50%; width: 45px; height: 45px; cursor: pointer; backdrop-filter: blur(5px); font-size: 1.2rem; transition: 0.3s; display: flex; align-items: center; justify-content: center;">
         🔇
     </button>
     <audio id="global-bg-music" loop>
@@ -130,62 +129,145 @@
     <div id="about-view" style="display: none; opacity: 0;">
         <button onclick="switchToHome()" class="back-btn">← Home Protocol</button>
 
-        <h2>Sonic Fuel</h2>
-        <div class="card" style="border-top: 4px solid #1DB954; padding: 0;">
-            <iframe style="border-radius:12px" src="https://open.spotify.com/embed/artist/5C1S9XwxMuuCciutwM95wn?utm_source=generator&theme=0" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
-        </div>
-
         <h2>Projects</h2>
         <div class="card" style="border-top: 4px solid #d32f2f;">
             <h3 style="margin-top: 0; color: #fff;">Zomato Analysis</h3>
-            <p style="color: #bbb; font-size: 0.9rem;">Market positioning and SWOT analysis.</p>
-            <a href="https://docs.google.com/spreadsheets/d/11k2QyICWavfXFuUGXRBGnRJ7l7zsblQB/edit?usp=drivesdk" style="color: #d32f2f;">View Sheets ➜</a>
+            <p style="color: #bbb; font-size: 0.9rem;">Market positioning and SWOT analysis for hyperlocal delivery.</p>
+            <a href="https://docs.google.com/spreadsheets/d/11k2QyICWavfXFuUGXRBGnRJ7l7zsblQB/edit?usp=drivesdk" style="color: #d32f2f; text-decoration: none; font-weight: bold;">View Sheets Project ➜</a>
         </div>
 
         <h2>Original Verse</h2>
-        <div class="card">
-            <h3 style="color: #ff4b2b;">🔥 Jang-kaal</h3>
-            <div class="lyrics" style="border-color: #ff4b2b;">
-Tu jang ka ailan kar, Dushmano PE vaar kar...
-Moh dya ka tyag kar, Ab jism se na pyar kar...
-(Tap to read full on IG)
-            </div>
-        </div>
         
         <div class="card">
-            <h3 style="color: #654ea3;">🌌 Anjaan</h3>
-            <div class="lyrics" style="border-color: #654ea3;">
-Mai antt hun mai ankurit, Yugo yugo ka hal hai...
-Na saksh hun, na aatma, Na devta ,pramatama...
+            <h3 style="color: #ff4b2b; margin-top: 0;">🔥 Jang-kaal</h3>
+            <div class="lyrics" style="border-color: #ff4b2b;">
+Tu jang ka ailan kar 
+Dushmano PE vaar kar
+Papiyo ka naas kar....
+
+Moh dya ka tyag kar 
+Ab jism se na pyar kar 
+Mastko ke unke Aaj
+Deh se ajaad kar....
+
+Dikha de pure vishwa ko
+Parlaya ke raudra drishya ko
+Jaha par keval dharm ho
+Na dharm me koi sharm ho
+Jo dharm me kare sharam
+Un adharmiyo ka (naas kar)3...
+
+Na bhal ka vo ghao ho 
+Na tir ka prabhav ho
+Bas bhid me tuhi,tuhi
+Aur Tera hi dabao ho
+Jo tu lade to kaun bhage 
+Jo tu bhage to kaun bache 
+Bache Jo bht koi karnaverse
+Kabhi na fir (vo lade)3...
+
+Moh dya ka tyag kr 
+Bas ek hi dharm vaar kr
+
+Saam,dam,dand,bhed
+Adharmiya pe kar ke dekh
+Man le to jane de 
+Na Mane to tu pran le
+Tu kaat de vo har gale 
+Jo marg pe tere na chle 
+Vo sarthi vo Tera bhale...
+
+Moh Daya ka tyag kar 
+Bs ek hi dharm var kr...
+
+Aarmbh hai is kaal ka 
+Papiyo ke naas ka
+Tu kaal se dare Bina 
+Ab Jaan ka bhi daan de
+Dikha de pure vishwa ko
+Nisthur se is dishya ko
+Adharmiyo ka naas kar 
+Apne vir ka praman de....
+
+Moh dya ka tyag kr 
+Bs ek hi dharm vaar kr....
             </div>
         </div>
 
-        <p style="text-align: center; color: #333;">End of Protocol.</p>
+        <div class="card">
+            <h3 style="color: #654ea3; margin-top: 0;">🌌 Anjaan</h3>
+            <div class="lyrics" style="border-color: #654ea3;">
+Mai antt hun mai ankurit 
+Yugo yugo ka hal hai
+Mai hinn hun ,mai hun priye
+Mera hi maah saal hai
+
+Na saksh hun, na aatma 
+Na devta ,pramatama 
+Mai bhoot hun , mai kaal sa
+Divr hun mai bhaal sa
+
+Kurn sa mai dheema bhi
+Brahamand sa na sheema bhi
+Krishna se bhi vanchit mai 
+Bhole se na mai saar hun
+Mai ant hun mai ankurit 
+Chattan sa mai bhaar hun
+
+Na paksh dhar, nipaksh mai 
+Lankesh ka mai haar hun 
+Koi to mujhse hai khda 
+Kisi ka intezar hun
+Adrishya na mai hun kabhi
+Mai to shariyam hun
+Adharm na -mai dharm hun .
+Mai mera koi chaal hai 
+
+Mai antt hun mai ankurit 
+Yugo yugo ka haal hai
+
+Marg mera ek hai sheesha raasta magr
+Chaal mai jo chaldu 
+Aata na mi do-baar hu
+Mai paksh me vipaksh hun
+Vipaksh ka bhi shadhi mai
+Acha Bura ho jo magr
+Har karm ka gathi mai
+            </div>
+        </div>
+
+        <p style="text-align: center; color: #444; font-size: 0.8rem; margin-top: 40px;">End of Protocol.</p>
     </div>
 
 </div>
 
 <script>
-    // 1. MUSIC CONTROL
+    // 1. MUSIC CONTROL (Volume: 20%)
     var audio = document.getElementById("global-bg-music");
     var btn = document.getElementById("mute-btn");
     audio.volume = 0.2; 
 
     function toggleGlobalMusic() {
         if (audio.paused) {
-            audio.play(); btn.innerHTML = "🎵"; btn.style.borderColor = "#00a3ff";
+            audio.play(); 
+            btn.innerHTML = "🎵"; 
+            btn.style.borderColor = "#00a3ff";
+            btn.style.boxShadow = "0 0 15px rgba(0, 163, 255, 0.3)";
         } else {
-            audio.pause(); btn.innerHTML = "🔇"; btn.style.borderColor = "#333";
+            audio.pause(); 
+            btn.innerHTML = "🔇"; 
+            btn.style.borderColor = "#444";
+            btn.style.boxShadow = "none";
         }
     }
 
-    // 2. PAGE SWITCHING LOGIC
+    // 2. PAGE SWITCHING LOGIC (Smooth)
     function switchToAbout() {
         document.getElementById('home-view').style.display = 'none';
         var about = document.getElementById('about-view');
         about.style.display = 'block';
         about.classList.add('fade-in');
-        window.scrollTo(0, 0); // Scroll to top
+        window.scrollTo(0, 0);
     }
 
     function switchToHome() {
