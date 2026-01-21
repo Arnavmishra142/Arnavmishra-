@@ -1,4 +1,14 @@
-/* --- GLOBAL VARIABLES --- */
+/* --- 1. YE SABSE UPAR RAHEGA (Button Logic) --- */
+function readMoreVerses() {
+    // Ye popup dikhayega
+    var userChoice = confirm("Do you want to visit Instagram to read the full masterpiece? ✍️\n(Click OK to visit, Cancel to stay)");
+    
+    if(userChoice === true) {
+        window.open("https://www.instagram.com/arnav_9.11", "_blank");
+    }
+}
+
+/* --- 2. BAAKI KA CODE --- */
 var globalAudio = document.getElementById("global-bg-music");
 var gameAudio = document.getElementById("game-bg-music");
 var btn = document.getElementById("mute-btn");
@@ -8,7 +18,7 @@ var board = null;
 var game = null;
 var $status = $('#status');
 
-// Sirf Starting ki lines (Teaser)
+// Poetry Teaser Text
 const poemText = "Moh dya ka tyag kar...\nAb jism se na pyar kar...\nMastko ke unke Aaj...\nDeh se ajaad kar....";
 let typingInterval;
 
@@ -27,14 +37,6 @@ function toggleMusic() {
         activeAudio.pause(); 
         isMuted = true;
         btn.innerHTML = "🔇"; btn.style.borderColor = "#444";
-    }
-}
-
-/* --- NEW: INSTAGRAM REDIRECT --- */
-function readMoreVerses() {
-    // Ye user se permission lega
-    if(confirm("Do you want to visit Instagram to read the full masterpiece? ✍️")) {
-        window.open("https://www.instagram.com/arnav_9.11", "_blank");
     }
 }
 
@@ -125,4 +127,20 @@ function switchToHome() {
     if(gameAudio) gameAudio.pause();
     if(!isMuted) globalAudio.play();
     btn.innerHTML = (!isMuted) ? "🎵" : "🔇";
+}
+
+// Popup Logic (Welcome Screen)
+window.onload = function() {
+    setTimeout(function() {
+        var popup = document.getElementById("music-popup");
+        if(popup) popup.classList.add("active");
+    }, 3000); 
+};
+
+function closePopup() {
+    var popup = document.getElementById("music-popup");
+    if(popup) {
+        popup.classList.remove("active");
+        setTimeout(function(){ popup.style.display = "none"; }, 800);
+    }
 }
