@@ -1,55 +1,104 @@
-<style>
-    body { background-color: #000; color: #fff; font-family: 'Segoe UI', sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; overflow: hidden; }
-    
-    /* Fade-in Animation for the whole container */
-    .container { 
-        max-width: 400px; width: 100%; padding: 20px; 
-        animation: fadeIn 1.2s ease-out;
-    }
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arnav Mishra | Home</title>
+    <style>
+        /* Base Setup */
+        body { background-color: #000; color: #fff; font-family: 'Segoe UI', sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; overflow-x: hidden; }
+        
+        /* Fade-in Animation for the whole container */
+        .container { 
+            max-width: 400px; width: 100%; padding: 20px; 
+            animation: fadeIn 1.2s ease-out;
+        }
 
-    /* Fixed Photo Style */
-    .profile-container { position: relative; width: 130px; height: 130px; margin: 0 auto 20px; }
-    .profile-glow { position: absolute; top: 0; left: 0; right: 0; bottom: 0; border-radius: 50%; box-shadow: 0 0 25px rgba(0, 163, 255, 0.5); animation: pulse 3s infinite; }
-    .profile-img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 2px solid #fff; position: relative; z-index: 2; background: #222; }
+        /* Pulsing Profile Photo */
+        .profile-container { position: relative; width: 130px; height: 130px; margin: 0 auto 20px; }
+        .profile-glow { position: absolute; top: 0; left: 0; right: 0; bottom: 0; border-radius: 50%; box-shadow: 0 0 25px rgba(0, 163, 255, 0.5); animation: pulse 3s infinite; }
+        .profile-img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 2px solid #fff; position: relative; z-index: 2; background: #222; }
 
-    /* CYBER GLITCH NAME */
-    h1 { 
-        font-size: 2.2rem; text-transform: uppercase; font-weight: 900; letter-spacing: 3px; text-align: center; margin: 0;
-        position: relative;
-        background: linear-gradient(to right, #fff, #00a3ff); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-    }
-    
-    h1::before, h1::after {
-        content: "ARNAV MISHRA"; position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0.8;
-    }
-    h1::before { color: #ff00c1; z-index: -1; animation: glitch 3s infinite; }
-    h1::after { color: #00a3ff; z-index: -2; animation: glitch 2s infinite reverse; }
+        /* CYBER GLITCH NAME */
+        .glitch-name { 
+            font-size: 2.2rem; text-transform: uppercase; font-weight: 900; letter-spacing: 3px; text-align: center; margin: 0;
+            position: relative; color: #fff;
+            background: linear-gradient(to right, #fff, #00a3ff); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+        
+        /* The Glitch Effect Layers */
+        .glitch-name::before, .glitch-name::after {
+            content: "ARNAV MISHRA"; position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0.8;
+        }
+        .glitch-name::before { color: #ff00c1; z-index: -1; animation: glitch 3s infinite; -webkit-text-fill-color: #ff00c1; }
+        .glitch-name::after { color: #00a3ff; z-index: -2; animation: glitch 2s infinite reverse; -webkit-text-fill-color: #00a3ff; }
 
-    .bio { color: #888; text-align: center; margin-bottom: 30px; font-size: 0.9rem; letter-spacing: 1px; }
-    .quote-box { background: #111; border-left: 3px solid #00a3ff; padding: 20px; margin-bottom: 30px; border-radius: 8px; font-style: italic; color: #ddd; font-size: 0.9rem; line-height: 1.5; animation: slideUp 1s ease-out; }
+        .bio { color: #888; text-align: center; margin-bottom: 30px; font-size: 0.9rem; letter-spacing: 1px; }
+        
+        /* Quote Box with Slide-up Animation */
+        .quote-box { background: #111; border-left: 3px solid #00a3ff; padding: 20px; margin-bottom: 30px; border-radius: 8px; font-style: italic; color: #ddd; font-size: 0.9rem; line-height: 1.5; animation: slideUp 1s ease-out; }
 
-    .btn-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-    .btn { display: block; padding: 12px; text-align: center; background: #0a0a0a; border: 1px solid #333; color: #fff; text-decoration: none; border-radius: 8px; font-size: 0.75rem; transition: 0.3s; }
-    .btn:hover { border-color: #00a3ff; box-shadow: 0 0 10px rgba(0,163,255,0.2); }
+        /* Button Grid */
+        .btn-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .btn { display: block; padding: 12px; text-align: center; background: #0a0a0a; border: 1px solid #333; color: #fff; text-decoration: none; border-radius: 8px; font-size: 0.75rem; transition: 0.3s; }
+        .btn:active { transform: scale(0.95); }
 
-    .main-btn { 
-        display: block; width: 100%; padding: 16px; margin-top: 20px; 
-        background: linear-gradient(45deg, #00a3ff, #005f99); 
-        color: #fff; text-align: center; text-decoration: none; 
-        border-radius: 12px; font-weight: bold; letter-spacing: 1px;
-        box-shadow: 0 4px 15px rgba(0, 163, 255, 0.3);
-    }
+        /* Main CTA Button */
+        .main-btn { 
+            display: block; width: 100%; padding: 16px; margin-top: 20px; box-sizing: border-box;
+            background: linear-gradient(45deg, #00a3ff, #005f99); 
+            color: #fff; text-align: center; text-decoration: none; 
+            border-radius: 12px; font-weight: bold; letter-spacing: 1px;
+            box-shadow: 0 4px 15px rgba(0, 163, 255, 0.3);
+            animation: slideUp 1.2s ease-out;
+        }
 
-    /* KEYFRAMES */
-    @keyframes glitch {
-        0% { transform: translate(0); }
-        20% { transform: translate(-2px, 2px); }
-        40% { transform: translate(-2px, -2px); }
-        60% { transform: translate(2px, 2px); }
-        80% { transform: translate(2px, -2px); }
-        100% { transform: translate(0); }
-    }
-    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-    @keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-    @keyframes pulse { 0%, 100% { transform: scale(1); opacity: 0.5; } 50% { transform: scale(1.05); opacity: 0.8; } }
-</style>
+        /* KEYFRAMES */
+        @keyframes glitch {
+            0% { transform: translate(0); }
+            20% { transform: translate(-2px, 2px); }
+            40% { transform: translate(-2px, -2px); }
+            60% { transform: translate(2px, 2px); }
+            80% { transform: translate(2px, -2px); }
+            100% { transform: translate(0); }
+        }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        @keyframes pulse { 0%, 100% { transform: scale(1); opacity: 0.5; } 50% { transform: scale(1.05); opacity: 0.8; } }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="profile-container">
+        <div class="profile-glow"></div>
+        <img src="https://imarnavin.wordpress.com/wp-content/uploads/2026/01/image_editor_output_image-900633096-17689630363507786449788545237875.jpg" class="profile-img">
+    </div>
+
+    <h1 class="glitch-name">Arnav Mishra</h1>
+    <p class="bio">Building ideas from scratch.</p>
+
+    <div class="quote-box">
+        "The secret of change is to focus all of your energy, not on fighting the old, but on building the new."
+        <br><span style="color: #666; font-size: 0.8rem; margin-top: 5px; display: block;">— Socrates</span>
+    </div>
+
+    <div class="btn-grid">
+        <a href="https://www.linkedin.com/in/arnav-mishra-1a6934371" class="btn">LinkedIn</a>
+        <a href="https://x.com/ArnavMishra142" class="btn">X / Twitter</a>
+        <a href="https://www.instagram.com/arnav_9.11" class="btn">Instagram</a>
+        <a href="https://www.chess.com/member/Arnavm142" class="btn">♟️ Chess</a>
+    </div>
+
+    <a href="about.html" class="main-btn">
+        ENTER MY WORLD ➜<br>
+        <span style="font-size: 0.7rem; opacity: 0.8; font-weight: normal;">(Work, Poetry, Music)</span>
+    </a>
+
+    <div style="text-align: center; margin-top: 40px; color: #333; font-size: 0.7rem; letter-spacing: 1px;">
+        © 2026 ARNAV MISHRA
+    </div>
+</div>
+
+</body>
+</html>
