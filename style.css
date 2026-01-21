@@ -1,92 +1,70 @@
-/* --- 1. BASE SETUP --- */
-body { 
-    background-color: #000; color: #fff; font-family: 'Segoe UI', sans-serif; 
-    margin: 0; padding: 0; overflow-x: hidden; min-height: 100vh;
-}
-.main-wrapper { 
-    max-width: 500px; margin: 0 auto; padding: 20px; 
-    min-height: 100vh; position: relative; padding-top: 50px; 
+/* --- GLOBAL STYLES --- */
+body {
+    background-color: #000;
+    color: #fff;
+    /* Typewriter Font for the vibe */
+    font-family: 'Courier New', Courier, monospace; 
+    margin: 0; padding: 0;
+    overflow-x: hidden;
 }
 
-/* --- 2. POP-UP STYLES --- */
-#music-popup { 
-    position: fixed; inset: 0; background: rgba(0, 0, 0, 0.3); backdrop-filter: blur(4px); 
-    z-index: 2000; display: flex; align-items: center; justify-content: center; 
-    text-align: center; cursor: pointer; opacity: 0; pointer-events: none; 
-    transition: opacity 0.8s ease, backdrop-filter 0.8s ease; 
+/* --- MAIN LAYOUT --- */
+.main-wrapper {
+    padding: 20px;
+    max-width: 600px;
+    margin: 0 auto;
+    padding-bottom: 80px;
+    position: relative;
+    z-index: 10;
 }
-#music-popup.active { opacity: 1; pointer-events: all; }
-.popup-content { 
-    padding: 25px; background: rgba(10, 10, 10, 0.85); 
-    border: 1px solid rgba(0, 163, 255, 0.5); border-radius: 20px; 
-    max-width: 80%; box-shadow: 0 0 40px rgba(0, 163, 255, 0.15); 
-    transform: translateY(30px); transition: transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1); 
-}
-#music-popup.active .popup-content { transform: translateY(0); }
-.popup-content p { font-size: 1rem; line-height: 1.5; color: #eee; margin: 0; }
-.popup-content span { color: #00a3ff; font-weight: bold; }
-.popup-content small { display: block; margin-top: 15px; color: #777; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px;}
 
-/* --- 3. CHESS BUTTON STYLES --- */
-.chess-btn-container { margin-top: 30px; text-align: center; }
-.chess-btn { 
-    background: #0a0a0a; color: #fff; border: 1px solid #333; border-radius: 12px; 
-    padding: 12px 20px; display: inline-flex; align-items: center; gap: 15px; 
-    text-decoration: none; font-weight: bold; position: relative; 
-    transition: 0.3s; box-shadow: 0 4px 15px rgba(0,0,0,0.5); overflow: hidden; 
-    width: 80%; justify-content: center; margin: 0 auto; 
+/* --- PROFILE & GLOW --- */
+.profile-container { position: relative; width: 100px; height: 100px; margin: 0 auto; margin-top: 20px; }
+.profile-img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 2px solid #333; filter: grayscale(100%); position: relative; z-index: 2; }
+.profile-glow { 
+    position: absolute; top: -5px; left: -5px; right: -5px; bottom: -5px; 
+    border-radius: 50%; background: linear-gradient(45deg, #00a3ff, #ff0099); 
+    z-index: 1; animation: spin 4s linear infinite; filter: blur(8px);
 }
-.chess-btn::after { 
-    content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 4px; 
-    background: repeating-linear-gradient(90deg, #fff 0, #fff 10px, #333 10px, #333 20px); 
-}
-.chess-btn:hover { border-color: #00a3ff; transform: translateY(-3px); }
-.chess-icon { font-size: 1.8rem; animation: knightHop 2s infinite ease-in-out; }
+@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-/* --- 4. GENERAL STYLES --- */
-.profile-container { 
-    width: 120px; height: 120px; margin: 0 auto 20px; position: relative; 
-    animation: popIn 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; 
-}
-.profile-img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 2px solid #fff; position: relative; z-index: 2; }
-.profile-glow { position: absolute; inset: 0; border-radius: 50%; box-shadow: 0 0 30px rgba(0, 163, 255, 0.6); animation: pulse 3s infinite; }
+/* --- NAME (NEON BLUE) --- */
 .name { 
-    font-size: 2rem; font-weight: 900; text-transform: uppercase; text-align: center; 
-    background: linear-gradient(to right, #fff, #00a3ff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; 
-    margin: 10px 0; animation: glitch 3s infinite; 
+    text-align: center; font-size: 1.8rem; margin-top: 15px; 
+    font-weight: bold; letter-spacing: 2px; text-transform: uppercase; 
+    color: #00a3ff; 
+    text-shadow: 0 0 15px rgba(0, 163, 255, 0.7), 0 0 30px rgba(0, 163, 255, 0.4); 
 }
-.bio-wrap { text-align: center; margin-bottom: 30px; }
+
+/* --- ANIMATION STYLING --- */
+.bio-wrap { display: flex; justify-content: center; margin-bottom: 25px; margin-top: 5px; }
 .bio { 
-    display: inline-block; color: #00a3ff; font-family: 'Courier New', monospace; 
-    border-right: 2px solid #00a3ff; white-space: nowrap; overflow: hidden; 
-    animation: typing 2.5s steps(30, end) forwards; width: 0; 
+    color: #00a3ff; font-size: 0.9rem; letter-spacing: 2px; 
+    text-transform: lowercase; font-family: 'Courier New', monospace;
+    border-right: 2px solid #00a3ff;
+    white-space: nowrap; overflow: hidden;
+    width: 0; /* Animation ke liye 0 se start */
 }
-.btn-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
-.btn { padding: 12px; background: #0a0a0a; border: 1px solid #333; color: #fff; text-decoration: none; border-radius: 8px; font-size: 0.75rem; text-align: center; display: block; transition: 0.3s; }
-.main-btn { 
-    display: block; width: 100%; padding: 15px; margin-top: 20px; 
-    background: linear-gradient(45deg, #00a3ff, #005f99); color: #fff; border: none; border-radius: 10px; 
-    font-weight: bold; font-size: 1rem; cursor: pointer; box-shadow: 0 0 20px rgba(0, 163, 255, 0.2); 
-}
-.card { background: #0a0a0a; border: 1px solid #222; border-radius: 16px; padding: 20px; margin-bottom: 25px; }
-.lyrics { white-space: pre-line; font-family: 'Georgia', serif; color: #ccc; line-height: 1.6; background: #080808; padding: 20px; border-radius: 12px; border-left: 3px solid #444; font-size: 0.9rem; }
-h2 { border-bottom: 2px solid #222; padding-bottom: 10px; color: #00a3ff; margin-top: 30px; font-size: 1rem; text-transform: uppercase; letter-spacing: 1px;}
-.back-btn { background: none; border: 1px solid #333; color: #888; padding: 8px 20px; border-radius: 50px; cursor: pointer; margin-bottom: 10px; font-size: 0.85rem; }
-
-/* --- 5. ANIMATIONS --- */
-@keyframes popIn { 0% { opacity: 0; transform: scale(0); } 100% { opacity: 1; transform: scale(1); } }
+/* Animation Logic handled in CSS now to be safe */
 @keyframes typing { from { width: 0 } to { width: 100% } }
-@keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(0,163,255,0.4); } 70% { box-shadow: 0 0 0 15px rgba(0,0,0,0); } }
-@keyframes glitch { 0%,100%{transform:skew(0deg);} 20%{transform:skew(-2deg);} 40%{transform:skew(2deg);} }
-@keyframes knightHop { 0%, 100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-6px) rotate(-10deg); } }
-.fade-in { animation: fadeIn 0.6s forwards; }
-@keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes blink-caret { from, to { border-color: transparent } 50% { border-color: #00a3ff; } }
 
-/* --- 6. TYPEWRITER CURSOR --- */
-.typing-effect::after {
-    content: '|';
-    animation: blink 1s step-end infinite;
-    color: #00a3ff;
-    font-weight: bold;
-}
-@keyframes blink { 50% { opacity: 0; } }
+/* --- QUOTE & CARDS --- */
+.quote-box { background: #111; border-left: 3px solid #00a3ff; padding: 15px; margin: 25px 0; color: #ccc; font-style: italic; font-size: 0.85rem; line-height: 1.5; }
+.card { background: #111; border: 1px solid #333; border-radius: 12px; padding: 20px; margin-bottom: 20px; margin-top: 20px; }
+
+/* --- BUTTONS --- */
+.btn-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 20px; }
+.btn { background: #111; border: 1px solid #333; color: #fff; padding: 12px; text-align: center; text-decoration: none; border-radius: 8px; font-size: 0.9rem; transition: 0.3s; font-family: sans-serif; }
+.btn:hover { border-color: #00a3ff; background: #0a0a0a; }
+
+.main-btn { background: #00a3ff; color: #fff; border: none; padding: 15px; width: 100%; font-weight: bold; margin-top: 25px; cursor: pointer; border-radius: 8px; font-size: 1rem; box-shadow: 0 4px 15px rgba(0, 163, 255, 0.3); }
+
+.back-btn { background: transparent; border: none; color: #888; cursor: pointer; font-size: 0.9rem; margin-bottom: 15px; display: flex; align-items: center; gap: 5px; }
+
+/* --- POPUP --- */
+#music-popup { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 9999; align-items: center; justify-content: center; backdrop-filter: blur(5px); }
+#music-popup.active { display: flex; }
+.popup-content { text-align: center; color: #fff; }
+.fade-in { animation: fadeIn 0.8s ease-in-out; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
