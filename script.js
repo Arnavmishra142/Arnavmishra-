@@ -1,23 +1,24 @@
 /* --- VARIABLES --- */
-var audio = document.getElementById("global-bg-music");
+var globalAudio = document.getElementById("global-bg-music");
+var gameAudio = document.getElementById("game-bg-music");
 var btn = document.getElementById("mute-btn");
-// Ye wo text hai jo Typewriter se likha jayega
+
 const poemText = "Tu jang ka ailan kar...\nDushmano PE vaar kar...\nPapiyo ka naas kar....";
 let typingInterval;
 
 /* --- MUSIC CONTROL --- */
-audio.volume = 0.2; 
+globalAudio.volume = 0.2; 
+gameAudio.volume = 0.3; // Game music thoda tez
+
 function toggleGlobalMusic() {
-    if (audio.paused) {
-        audio.play(); 
+    if (globalAudio.paused) {
+        globalAudio.play(); 
         btn.innerHTML = "🎵"; 
         btn.style.borderColor = "#00a3ff";
-        btn.style.boxShadow = "0 0 15px rgba(0, 163, 255, 0.3)";
     } else {
-        audio.pause(); 
+        globalAudio.pause(); 
         btn.innerHTML = "🔇"; 
         btn.style.borderColor = "#444";
-        btn.style.boxShadow = "none";
     }
 }
 
@@ -32,53 +33,57 @@ window.onload = function() {
 function closePopup() {
     var popup = document.getElementById("music-popup");
     popup.classList.remove("active");
-    setTimeout(function(){
-        popup.style.display = "none";
-    }, 800);
+    setTimeout(function(){ popup.style.display = "none"; }, 800);
 }
 
-/* --- TYPEWRITER LOGIC (New!) --- */
+/* --- TYPEWRITER LOGIC --- */
 function typeWriterEffect() {
     const element = document.getElementById("typewriter-output");
     if(!element) return;
-    
-    element.innerHTML = ""; // Clear old text
+    element.innerHTML = ""; 
     let index = 0;
-    
-    // Reset any existing timer
     clearInterval(typingInterval);
-
     typingInterval = setInterval(() => {
-        if (poemText.charAt(index) === '\n') {
-            element.innerHTML += "<br>";
-        } else {
-            element.innerHTML += poemText.charAt(index);
-        }
+        if (poemText.charAt(index) === '\n') { element.innerHTML += "<br>"; } 
+        else { element.innerHTML += poemText.charAt(index); }
         index++;
-        if (index === poemText.length) {
-            clearInterval(typingInterval);
-        }
-    }, 50); // Speed: 50ms per letter
+        if (index === poemText.length) { clearInterval(typingInterval); }
+    }, 50);
 }
 
-/* --- PAGE SWITCHING --- */
+/* --- PAGE SWITCHING & MUSIC LOGIC --- */
 function switchToAbout() {
     document.getElementById('home-view').style.display = 'none';
-    var about = document.getElementById('about-view');
-    about.style.display = 'block';
-    about.classList.add('fade-in');
-    window.scrollTo(0, 0);
+    document.getElementById('games-view').style.display = 'none'; // Hide games
     
-    // Trigger Typing
+    var about = document.getElementById('about-view');
+    about.style.display = 'block'; about.classList.add('fade-in');
+    window.scrollTo(0, 0);
     typeWriterEffect();
+}
+
+function switchToGames() {
+    document.getElementById('home-view').style.display = 'none';
+    document.getElementById('about-view').style.display = 'none';
+    
+    var games = document.getElementById('games-view');
+    games.style.display = 'block'; games.classList.add('fade-in');
+    window.scrollTo(0, 0);
+
+    // MUSIC SWAP MAGIC
+    globalAudio.pause();
+    gameAudio.currentTime = 0;
+    gameAudio.play();
 }
 
 function switchToHome() {
     document.getElementById('about-view').style.display = 'none';
-    var home = document.getElementById('home-view');
-    home.style.display = 'block';
-    home.classList.add('fade-in');
+    document.getElementById('games-view').style.display = 'none';
     
-    // Stop Typing
-    clearInterval(typingInterval);
+    var home = document.getElementById('home-view');
+    home.style.display = 'block'; home.classList.add('fade-in');
+
+    // MUSIC SWAP BACK
+    gameAudio.pause();
+    if(btn.innerHTML === "🎵") { globalAudio.play(); } // Resume only if unmuted
 }
