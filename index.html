@@ -1,41 +1,101 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Arnav Mishra</title>
-  <style>
-    body {
-      margin: 0;
-      font-family: 'Segoe UI', sans-serif;
-      background: linear-gradient(135deg, #1f1c2c, #928DAB);
-      color: #fff;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-      text-align: center;
-    }
-    h1 {
-      font-size: 3em;
-      margin-bottom: 0.2em;
-    }
-    p {
-      font-size: 1.2em;
-      margin-bottom: 1em;
-    }
-    .contact {
-      font-size: 1em;
-      background: rgba(255, 255, 255, 0.1);
-      padding: 10px 20px;
-      border-radius: 20px;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arnav Mishra | Portfolio</title>
+    <style>
+        body { background-color: #000; color: #fff; font-family: 'Segoe UI', sans-serif; margin: 0; padding: 0; }
+        .container { max-width: 500px; margin: 0 auto; padding: 40px 20px; }
+        .card { background: #0a0a0a; border: 1px solid #222; border-radius: 30px; padding: 30px; margin-bottom: 30px; text-align: center; }
+        .profile-img { width: 120px; height: 120px; border-radius: 50%; border: 2px solid #00a3ff; box-shadow: 0 0 20px rgba(0, 163, 255, 0.4); }
+        h1 { font-size: 1.8rem; letter-spacing: 2px; text-transform: uppercase; margin: 20px 0 10px; text-shadow: 2px 0 #00a3ff, -2px 0 #ff00c1; }
+        .status-box { background: #111; border-left: 3px solid #00a3ff; padding: 15px; text-align: left; margin: 20px 0; border-radius: 10px; }
+        .btn { display: block; padding: 15px; margin: 10px 0; border-radius: 12px; text-decoration: none; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; font-size: 0.85rem; transition: 0.3s; }
+        .btn-blue { background: #00a3ff; color: #fff; }
+        .btn-outline { border: 1px solid #333; color: #fff; background: #000; }
+        .poem-box { background: #111; padding: 20px; border-radius: 15px; text-align: left; line-height: 1.8; font-family: 'Georgia', serif; white-space: pre-line; color: #eee; border: 1px solid #222; }
+        .section-title { color: #00a3ff; text-transform: uppercase; font-size: 0.8rem; letter-spacing: 2px; margin: 40px 0 20px; text-align: center; }
+    </style>
 </head>
 <body>
-  <h1>Arnav Mishra</h1>
-  <p>Exploring the world, one idea at a time.</p>
-  <div class="contact">Contact: mishrarnav142@gmail.com</div>
+
+<div class="container">
+    <div class="card">
+        <img src="https://imarnavin.wordpress.com/wp-content/uploads/2026/01/image_editor_output_image-900633096-17689630363507786449788545237875.jpg" class="profile-img">
+        <h1>Arnav Mishra</h1>
+        <p style="color: #aaa;">Building ideas from scratch.</p>
+        
+        <div class="status-box">
+            <div style="color: #00a3ff; font-size: 0.7rem; font-weight: bold; margin-bottom: 5px;">CURRENT FOCUS</div>
+            <div style="color: #ccc; font-size: 0.85rem;">🚀 <b>Project:</b> Stealth Startup Mode</div>
+            <div style="color: #ccc; font-size: 0.85rem;">📚 <b>Academia:</b> Class 12 (PCM)</div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+            <a href="https://www.linkedin.com/in/arnav-mishra-1a6934371" class="btn btn-outline">LinkedIn</a>
+            <a href="https://x.com/ArnavMishra142" class="btn btn-outline">X</a>
+        </div>
+        <a href="https://www.chess.com/member/Arnavm142" class="btn btn-blue" style="margin-top: 20px;">♟️ Play Chess</a>
+    </div>
+
+    <div class="section-title">Sonic Fuel</div>
+    <div class="card" style="border-top: 4px solid #1DB954;">
+        <h2 style="margin: 0; color: #fff;">KR$NA</h2>
+        <p style="color: #eee; font-style: italic; font-size: 0.9rem; margin: 15px 0;">"His lyrics just hit different."</p>
+        <p style="color: #bbb; font-size: 0.85rem; line-height: 1.5;">Lyrical warfare for the grind. No sugar-coating, just straight facts.</p>
+        <a href="#" class="btn" style="background: #1DB954; color: #000;">Listen on Spotify</a>
+    </div>
+
+    <div class="section-title">Projects</div>
+    <div class="card" style="border-top: 4px solid #d32f2f;">
+        <h2 style="margin: 0; color: #fff;">Zomato Analysis</h2>
+        <p style="color: #bbb; font-size: 0.85rem; margin: 15px 0;">Market positioning and SWOT analysis for hyperlocal delivery.</p>
+        <a href="https://docs.google.com/spreadsheets/d/11k2QyICWavfXFuUGXRBGnRJ7l7zsblQB/edit?usp=drivesdk" class="btn btn-outline" style="border-color: #d32f2f;">View Project ➜</a>
+    </div>
+
+    <div class="section-title">Original Verse</div>
+    <h3 style="color: #ff4b2b; text-align: center;">Jang-kaal</h3>
+    <div class="poem-box">
+Tu jang ka ailan kar 
+Dushmano PE vaar kar
+Papiyo ka naas kar....
+
+Moh dya ka tyag kar 
+Ab jism se na pyar kar 
+Mastko ke unke Aaj
+Deh se ajaad kar....
+
+Dikha de pure vishwa ko
+Parlaya ke raudra drishya ko
+Jaha par keval dharm ho
+Na dharm me koi sharm ho
+Jo dharm me kare sharam
+Un adharmiyo ka naas kar...
+    </div>
+
+    <h3 style="color: #654ea3; text-align: center; margin-top: 40px;">Anjaan</h3>
+    <div class="poem-box">
+Mai antt hun mai ankurit 
+Yugo yugo ka hal hai
+Mai hinn hun ,mai hun priye
+Mera hi maah saal hai
+
+Na saksh hun, na aatma 
+Na devta ,pramatama 
+Mai bhoot hun , mai kaal sa
+Divr hun mai bhaal sa
+
+Kurn sa mai dheema bhi
+Brahamand sa na sheema bhi
+Krishna se bhi vanchit mai 
+Bhole se na mai saar hun...
+    </div>
+
+    <div style="text-align: center; margin-top: 60px; color: #444; font-size: 0.7rem; letter-spacing: 1px;">
+        © 2026 ARNAV MISHRA | NO ADS. NO TRACKERS.
+    </div>
+</div>
+
 </body>
 </html>
