@@ -1,84 +1,86 @@
 /* --- VARIABLES --- */
-var audio = document.getElementById("global-bg-music");
-var btn = document.getElementById("mute-btn");
-// Ye wo text hai jo Typewriter se likha jayega
-const poemText = "Tu jang ka ailan kar...\nDushmano PE vaar kar...\nPapiyo ka naas kar....";
-let typingInterval;
+var bgMusic = document.getElementById("global-bg-music");
+var muteBtn = document.getElementById("mute-btn");
+var isMuted = true;
 
-/* --- MUSIC CONTROL --- */
-audio.volume = 0.2; 
-function toggleGlobalMusic() {
-    if (audio.paused) {
-        audio.play(); 
-        btn.innerHTML = "🎵"; 
-        btn.style.borderColor = "#00a3ff";
-        btn.style.boxShadow = "0 0 15px rgba(0, 163, 255, 0.3)";
-    } else {
-        audio.pause(); 
-        btn.innerHTML = "🔇"; 
-        btn.style.borderColor = "#444";
-        btn.style.boxShadow = "none";
-    }
-}
-
-/* --- POPUP CONTROL --- */
+/* --- 1. POPUP & ANIMATION TRIGGER --- */
 window.onload = function() {
+    // 2 second baad popup dikhao
     setTimeout(function() {
         var popup = document.getElementById("music-popup");
         if(popup) popup.classList.add("active");
-    }, 3000); 
+    }, 2000); 
 };
 
 function closePopup() {
     var popup = document.getElementById("music-popup");
-    popup.classList.remove("active");
-    setTimeout(function(){
-        popup.style.display = "none";
-    }, 800);
+    if(popup) {
+        popup.classList.remove("active");
+        setTimeout(function(){ 
+            popup.style.display = "none";
+            // Jab popup band ho, tabhi BIO animation start karo
+            const bio = document.querySelector('.bio');
+            if(bio) {
+                bio.style.width = "0"; 
+                bio.style.animation = "typing 3.5s steps(30, end) forwards, blink-caret .75s step-end infinite";
+            }
+        }, 800);
+    }
 }
 
-/* --- TYPEWRITER LOGIC (New!) --- */
-function typeWriterEffect() {
-    const element = document.getElementById("typewriter-output");
-    if(!element) return;
-    
-    element.innerHTML = ""; // Clear old text
-    let index = 0;
-    
-    // Reset any existing timer
-    clearInterval(typingInterval);
-
-    typingInterval = setInterval(() => {
-        if (poemText.charAt(index) === '\n') {
-            element.innerHTML += "<br>";
-        } else {
-            element.innerHTML += poemText.charAt(index);
-        }
-        index++;
-        if (index === poemText.length) {
-            clearInterval(typingInterval);
-        }
-    }, 50); // Speed: 50ms per letter
+/* --- 2. MUSIC CONTROL --- */
+function toggleMusic() {
+    if (bgMusic.paused) {
+        bgMusic.play().catch(e => console.log("Audio permission error:", e));
+        isMuted = false;
+        muteBtn.innerHTML = "🎵"; 
+        muteBtn.style.borderColor = "#00a3ff";
+    } else {
+        bgMusic.pause();
+        isMuted = true;
+        muteBtn.innerHTML = "🔇"; 
+        muteBtn.style.borderColor = "#444";
+    }
 }
 
-/* --- PAGE SWITCHING --- */
+/* --- 3. PAGE NAVIGATION --- */
 function switchToAbout() {
     document.getElementById('home-view').style.display = 'none';
     var about = document.getElementById('about-view');
     about.style.display = 'block';
-    about.classList.add('fade-in');
     window.scrollTo(0, 0);
     
-    // Trigger Typing
-    typeWriterEffect();
+    // Type Verses
+    startTyping("Moh dya ka tyag kar...\nAb jism se na pyar kar...\nMastko ke unke Aaj...\nDeh se ajaad kar....", "typewriter-output-1");
+    setTimeout(() => {
+        startTyping("Mai antt hun mai ankurit,\nYugo yugo ka hal hai...", "typewriter-output-2");
+    }, 2000);
 }
 
 function switchToHome() {
     document.getElementById('about-view').style.display = 'none';
-    var home = document.getElementById('home-view');
-    home.style.display = 'block';
-    home.classList.add('fade-in');
-    
-    // Stop Typing
-    clearInterval(typingInterval);
+    document.getElementById('home-view').style.display = 'block';
+}
+
+/* --- 4. HELPER FUNCTIONS --- */
+function readMoreVerses() {
+    if(confirm("Do you want to visit Instagram to read the full masterpiece? ✍️\n(Click OK to visit)")) {
+        window.open("https://www.instagram.com/arnav_9.11", "_blank");
+    }
+}
+
+function startTyping(text, elementId) {
+    const element = document.getElementById(elementId);
+    if(!element) return;
+    element.innerHTML = "";
+    let i = 0;
+    function typeChar() {
+        if (i < text.length) {
+            if (text.charAt(i) === '\n') element.innerHTML += "<br>";
+            else element.innerHTML += text.charAt(i);
+            i++;
+            setTimeout(typeChar, 50);
+        }
+    }
+    typeChar();
 }
