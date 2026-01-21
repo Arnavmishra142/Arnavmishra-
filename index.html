@@ -3,63 +3,194 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Arnav Mishra</title>
+    <title>Arnav Mishra | Work & Mind</title>
     <style>
         /* BASE SETUP */
         body { 
-            background-color: #000; color: #fff; font-family: 'Segoe UI', Courier, monospace; 
-            display: flex; justify-content: center; align-items: center; 
-            min-height: 100vh; margin: 0; padding: 0; overflow-x: hidden;
+            background-color: #000; color: #fff; font-family: 'Segoe UI', sans-serif; 
+            padding: 20px; margin: 0; overflow-x: hidden;
+        }
+        .container { max-width: 500px; margin: 0 auto; padding-bottom: 50px; }
+        
+        /* 1. BACK BUTTON ANIMATION (Slides in from Left) */
+        .back-btn-wrapper { 
+            opacity: 0; transform: translateX(-20px); 
+            animation: slideInLeft 0.8s ease forwards; animation-delay: 0.2s;
+        }
+        .back-btn { 
+            display: inline-block; color: #888; text-decoration: none; 
+            margin-bottom: 30px; font-size: 0.85rem; border: 1px solid #333; 
+            padding: 8px 16px; border-radius: 50px; transition: 0.3s; background: #0a0a0a;
+        }
+        .back-btn:active { background: #333; color: #fff; }
+
+        /* 2. SECTION HEADERS */
+        h2 { 
+            border-bottom: 2px solid #222; padding-bottom: 10px; margin-top: 40px; 
+            color: #00a3ff; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 2px;
+            opacity: 0; animation: fadeIn 1s ease forwards;
         }
         
-        .container { 
-            max-width: 400px; width: 85%; padding: 20px; text-align: center;
-        }
-
-        /* 1. PHOTO POP-IN ANIMATION */
-        .profile-container { 
-            position: relative; width: 120px; height: 120px; margin: 0 auto 20px; 
-            opacity: 0; animation: popIn 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
-            animation-delay: 0.2s;
-        }
-        .profile-glow { 
-            position: absolute; top: 0; left: 0; right: 0; bottom: 0; border-radius: 50%; 
-            box-shadow: 0 0 30px rgba(0, 163, 255, 0.6); animation: pulse 3s infinite; 
-        }
-        .profile-img { 
-            width: 100%; height: 100%; border-radius: 50%; object-fit: cover; 
-            border: 2px solid #fff; position: relative; z-index: 2; 
-        }
-
-        /* 2. GLITCH NAME ANIMATION */
-        .name-wrapper { opacity: 0; animation: fadeIn 1s ease forwards; animation-delay: 0.5s; }
-        .name {
-            font-size: 2rem; font-weight: 900; letter-spacing: 2px; text-transform: uppercase;
-            margin: 0; display: inline-block; position: relative;
-            background: linear-gradient(to right, #fff, #00a3ff);
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            animation: glitch 3s infinite;
-        }
-
-        /* 3. TYPEWRITER BIO ANIMATION */
-        .bio-wrapper { 
-            display: flex; justify-content: center; margin-bottom: 30px; 
-            opacity: 0; animation: fadeIn 1s ease forwards; animation-delay: 1s;
-        }
-        .bio { 
-            color: #00a3ff; font-size: 0.85rem; font-family: 'Courier New', monospace;
-            overflow: hidden; white-space: nowrap; border-right: 2px solid #00a3ff;
-            width: 0; animation: typing 2.5s steps(30, end) forwards, blink 0.75s step-end infinite;
-            animation-delay: 1.2s; /* Starts after name appears */
-        }
-
-        /* 4. SLIDE UP CARDS */
-        .quote-box { 
-            background: #111; border-left: 3px solid #00a3ff; padding: 15px; 
-            margin: 25px 0; border-radius: 5px; font-style: italic; 
-            color: #ccc; font-size: 0.85rem; line-height: 1.5; text-align: left;
+        /* 3. CARD ANIMATIONS (They slide up one by one) */
+        .card { 
+            background: #0a0a0a; border: 1px solid #222; border-radius: 16px; 
+            padding: 25px; margin-bottom: 25px; 
             opacity: 0; transform: translateY(30px);
-            animation: slideUp 0.8s ease forwards; animation-delay: 1.8s;
+            animation: slideUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+        }
+        
+        /* Staggered Delays for the "Cascade" Effect */
+        .delay-1 { animation-delay: 0.3s; } /* KR$NA */
+        .delay-2 { animation-delay: 0.5s; } /* Zomato */
+        .delay-3 { animation-delay: 0.7s; } /* Header Verse */
+        .delay-4 { animation-delay: 0.9s; } /* Jang-kaal */
+        .delay-5 { animation-delay: 1.1s; } /* Anjaan */
+
+        /* LYRICS BOX STYLE */
+        .lyrics { 
+            white-space: pre-line; 
+            font-family: 'Georgia', serif; color: #ddd; line-height: 1.8; font-size: 0.95rem; 
+            background: #080808; padding: 20px; border-radius: 12px; 
+            border-left: 3px solid #444; margin-bottom: 30px;
+        }
+
+        /* KEYFRAMES */
+        @keyframes slideInLeft { to { opacity: 1; transform: translateX(0); } }
+        @keyframes slideUp { to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeIn { to { opacity: 1; } }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    
+    <div class="back-btn-wrapper">
+        <a href="index.html" class="back-btn">← Home Protocol</a>
+    </div>
+
+    <h2 style="animation-delay: 0.3s;">Sonic Fuel</h2>
+    <div class="card delay-1" style="border-top: 4px solid #1DB954;">
+        <h3 style="margin-top: 0; color: #fff;">KR$NA</h3>
+        <p style="color: #bbb; font-size: 0.9rem;">"His lyrics just hit different." Lyrical warfare. No sugar-coating, just straight facts.</p>
+        <a href="https://open.spotify.com/artist/5C1S9XwxMuuCciutwMbe5t" target="_blank" style="color: #1DB954; text-decoration: none; font-weight: bold; font-size: 0.85rem;">Listen on Spotify ➜</a>
+    </div>
+
+    <h2 style="animation-delay: 0.5s;">Projects</h2>
+    <div class="card delay-2" style="border-top: 4px solid #d32f2f;">
+        <h3 style="margin-top: 0; color: #fff;">Zomato Analysis</h3>
+        <p style="color: #bbb; font-size: 0.9rem;">Market positioning and SWOT analysis for hyperlocal delivery.</p>
+        <a href="https://docs.google.com/spreadsheets/d/11k2QyICWavfXFuUGXRBGnRJ7l7zsblQB/edit?usp=drivesdk" target="_blank" style="color: #d32f2f; text-decoration: none; font-weight: bold; font-size: 0.85rem;">View Sheets Project ➜</a>
+    </div>
+
+    <h2 style="animation-delay: 0.7s;">Original Verse</h2>
+    
+    <div class="card delay-4">
+        <h3 style="color: #ff4b2b; margin-top: 0;">🔥 Jang-kaal</h3>
+        <div class="lyrics" style="border-color: #ff4b2b; background: #000; margin-bottom: 0;">
+Tu jang ka ailan kar 
+Dushmano PE vaar kar
+Papiyo ka naas kar....
+
+Moh dya ka tyag kar 
+Ab jism se na pyar kar 
+Mastko ke unke Aaj
+Deh se ajaad kar....
+
+Dikha de pure vishwa ko
+Parlaya ke raudra drishya ko
+Jaha par keval dharm ho
+Na dharm me koi sharm ho
+Jo dharm me kare sharam
+Un adharmiyo ka (naas kar)3...
+
+Na bhal ka vo ghao ho 
+Na tir ka prabhav ho
+Bas bhid me tuhi,tuhi
+Aur Tera hi dabao ho
+Jo tu lade to kaun bhage 
+Jo tu bhage to kaun bache 
+Bache Jo bht koi karnaverse
+Kabhi na fir (vo lade)3...
+
+Moh dya ka tyag kr 
+Bas ek hi dharm vaar kr
+
+Saam,dam,dand,bhed
+Adharmiya pe kar ke dekh
+Man le to jane de 
+Na Mane to tu pran le
+Tu kaat de vo har gale 
+Jo marg pe tere na chle 
+Vo sarthi vo Tera bhale...
+
+Moh Daya ka tyag kar 
+Bs ek hi dharm var kr...
+
+Aarmbh hai is kaal ka 
+Papiyo ke naas ka
+Tu kaal se dare Bina 
+Ab Jaan ka bhi daan de
+Dikha de pure vishwa ko
+Nisthur se is dishya ko
+Adharmiyo ka naas kar 
+Apne vir ka praman de....
+
+Moh dya ka tyag kr 
+Bs ek hi dharm vaar kr....
+        </div>
+    </div>
+
+    <div class="card delay-5">
+        <h3 style="color: #654ea3; margin-top: 0;">🌌 Anjaan</h3>
+        <div class="lyrics" style="border-color: #654ea3; background: #000; margin-bottom: 0;">
+Mai antt hun mai ankurit 
+Yugo yugo ka hal hai
+Mai hinn hun ,mai hun priye
+Mera hi maah saal hai
+
+Na saksh hun, na aatma 
+Na devta ,pramatama 
+Mai bhoot hun , mai kaal sa
+Divr hun mai bhaal sa
+
+Kurn sa mai dheema bhi
+Brahamand sa na sheema bhi
+Krishna se bhi vanchit mai 
+Bhole se na mai saar hun
+Mai ant hun mai ankurit 
+Chattan sa mai bhaar hun
+
+Na paksh dhar, nipaksh mai 
+Lankesh ka mai haar hun 
+Koi to mujhse hai khda 
+Kisi ka intezar hun
+Adrishya na mai hun kabhi
+Mai to shariyam hun
+Adharm na -mai dharm hun .
+Mai mera koi chaal hai 
+
+Mai antt hun mai ankurit 
+Yugo yugo ka haal hai
+
+Marg mera ek hai sheesha raasta magr
+Chaal mai jo chaldu 
+Aata na mi do-baar hu
+Mai paksh me vipaksh hun
+Vipaksh ka bhi shadhi mai
+Acha Bura ho jo magr
+Har karm ka gathi mai
+        </div>
+    </div>
+    
+    <div style="text-align: center; margin-top: 30px; opacity: 0; animation: fadeIn 1s ease forwards; animation-delay: 1.5s;">
+        <span style="color: #333; font-size: 0.7rem; letter-spacing: 1px;">© 2026 ARNAV MISHRA</span>
+    </div>
+
+</div>
+
+</body>
+</html>
+animation: slideUp 0.8s ease forwards; animation-delay: 1.8s;
         }
 
         .btn-grid { 
