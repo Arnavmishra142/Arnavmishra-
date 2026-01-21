@@ -16,13 +16,9 @@
 </div>
 
 <div style="position: fixed; top: 20px; right: 20px; z-index: 1000;">
-    <button onclick="toggleMusic()" id="mute-btn" style="background: rgba(0,0,0,0.6); border: 1px solid #444; color: #fff; padding: 0; border-radius: 50%; width: 45px; height: 45px; cursor: pointer; backdrop-filter: blur(5px); font-size: 1.2rem; display: flex; align-items: center; justify-content: center;">🔇</button>
+    <button onclick="toggleGlobalMusic()" id="mute-btn" style="background: rgba(0,0,0,0.6); border: 1px solid #444; color: #fff; padding: 0; border-radius: 50%; width: 45px; height: 45px; cursor: pointer; backdrop-filter: blur(5px); font-size: 1.2rem; display: flex; align-items: center; justify-content: center;">🔇</button>
+    <audio id="global-bg-music" loop><source src="co2.mp3" type="audio/mpeg"></audio>
 </div>
-
-<audio id="global-bg-music" loop><source src="co2.mp3" type="audio/mpeg"></audio>
-
-<audio id="game-bg-music" loop><source src="chess-music.mp3" type="audio/mpeg"></audio>
-
 
 <div class="main-wrapper">
 
@@ -47,8 +43,6 @@
         </div>
 
         <button onclick="switchToAbout()" class="main-btn">ENTER MY WORLD ➜</button>
-        
-        <button onclick="switchToGames()" class="game-btn">PLAY GAMES 🎮</button>
 
         <div class="chess-btn-container">
             <a href="https://wa.me/916393349498?text=Hi%20Arnav!%20%E2%99%9F%20Checkmate.%20Just%20explored%20your%20world%20and%20the%20vibe%20is%20crazy!%20%F0%9F%94%A5" target="_blank" class="chess-btn">
@@ -59,6 +53,7 @@
                 </div>
             </a>
         </div>
+
         <p style="text-align: center; margin-top: 30px; color: #333; font-size: 0.6rem;">© 2026 ARNAV MISHRA</p>
     </div>
 
@@ -90,9 +85,51 @@
         
         <div class="card">
             <h3 style="color: #ff4b2b; margin-top: 0;">🔥 Jang-kaal</h3>
-            <div id="typewriter-output" class="lyrics typing-effect" style="border-color: #ff4b2b; min-height: 80px; color: #ffcccb; margin-bottom: 0; border-bottom: none; border-radius: 12px 12px 0 0;"></div>
+            
+            <div id="typewriter-output" class="lyrics typing-effect" style="border-color: #ff4b2b; min-height: 80px; color: #ffcccb; margin-bottom: 0; border-bottom: none; border-radius: 12px 12px 0 0;">
+                </div>
+
             <div class="lyrics" style="border-top: none; border-color: #ff4b2b; border-radius: 0 0 12px 12px; margin-top: -20px; padding-top: 5px; color: #bbb;">
-                <br>Moh dya ka tyag kar<br>Ab jism se na pyar kar<br>Mastko ke unke Aaj<br>Deh se ajaad kar....<br><br>Dikha de pure vishwa ko<br>Parlaya ke raudra drishya ko<br>Jaha par keval dharm ho<br>Na dharm me koi sharm ho<br>Jo dharm me kare sharam<br>Un adharmiyo ka (naas kar)3...<br><br>Na bhal ka vo ghao ho<br>Na tir ka prabhav ho<br>Bas bhid me tuhi,tuhi<br>Aur Tera hi dabao ho<br>Jo tu lade to kaun bhage<br>Jo tu bhage to kaun bache<br>Bache Jo bht koi karnaverse<br>Kabhi na fir (vo lade)3...<br><br>Moh dya ka tyag kr<br>Bas ek hi dharm vaar kr<br><br>Saam,dam,dand,bhed<br>Adharmiya pe kar ke dekh<br>Man le to jane de<br>Na Mane to tu pran le<br>Tu kaat de vo har gale<br>Jo marg pe tere na chle<br>Vo sarthi vo Tera bhale...<br><br>Moh Daya ka tyag kar<br>Bs ek hi dharm var kr...<br><br>Aarmbh hai is kaal ka<br>Papiyo ke naas ka<br>Tu kaal se dare Bina<br>Ab Jaan ka bhi daan de<br>Dikha de pure vishwa ko<br>Nisthur se is dishya ko<br>Adharmiyo ka naas kar<br>Apne vir ka praman de....<br><br>Moh dya ka tyag kr<br>Bs ek hi dharm vaar kr....
+                <br>
+                Moh dya ka tyag kar<br> 
+                Ab jism se na pyar kar<br> 
+                Mastko ke unke Aaj<br>
+                Deh se ajaad kar....<br><br>
+                Dikha de pure vishwa ko<br>
+                Parlaya ke raudra drishya ko<br>
+                Jaha par keval dharm ho<br>
+                Na dharm me koi sharm ho<br>
+                Jo dharm me kare sharam<br>
+                Un adharmiyo ka (naas kar)3...<br><br>
+                Na bhal ka vo ghao ho<br> 
+                Na tir ka prabhav ho<br>
+                Bas bhid me tuhi,tuhi<br>
+                Aur Tera hi dabao ho<br>
+                Jo tu lade to kaun bhage<br> 
+                Jo tu bhage to kaun bache<br> 
+                Bache Jo bht koi karnaverse<br>
+                Kabhi na fir (vo lade)3...<br><br>
+                Moh dya ka tyag kr<br> 
+                Bas ek hi dharm vaar kr<br><br>
+                Saam,dam,dand,bhed<br>
+                Adharmiya pe kar ke dekh<br>
+                Man le to jane de<br> 
+                Na Mane to tu pran le<br>
+                Tu kaat de vo har gale<br> 
+                Jo marg pe tere na chle<br> 
+                Vo sarthi vo Tera bhale...<br><br>
+                Moh Daya ka tyag kar<br> 
+                Bs ek hi dharm var kr...<br><br>
+                Aarmbh hai is kaal ka<br> 
+                Papiyo ke naas ka<br>
+                Tu kaal se dare Bina<br> 
+                Ab Jaan ka bhi daan de<br>
+                Dikha de pure vishwa ko<br>
+                Nisthur se is dishya ko<br>
+                Adharmiyo ka naas kar<br> 
+                Apne vir ka praman de....<br><br>
+                Moh dya ka tyag kr<br> 
+                Bs ek hi dharm vaar kr....
             </div>
         </div>
 
@@ -120,19 +157,6 @@ Acha Bura ho jo magr, Har karm ka gathi mai
 
         <p style="text-align: center; color: #444; font-size: 0.8rem; margin-top: 40px;">End of Protocol.</p>
     </div>
-
-    <div id="games-view" style="display: none; opacity: 0;">
-        <button onclick="switchToHome()" class="back-btn">← Exit Arena</button>
-        <h2 style="text-align: center; border: none; color: #fff;">♟️ ARNAV BOT (AI)</h2>
-        <p style="text-align: center; color: #888; font-size: 0.8rem;">Rating: 1500 | Instrumental Mode: ON</p>
-        
-        <div class="game-container">
-            <iframe src="https://cdn.htmlgames.com/Chess/" scrolling="no"></iframe>
-        </div>
-        
-        <p style="text-align: center; margin-top: 20px; color: #444; font-size: 0.7rem;">More games coming soon...</p>
-    </div>
-
 </div>
 
 <script src="script.js"></script>
