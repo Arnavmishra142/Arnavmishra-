@@ -8,8 +8,27 @@
     <meta name="description" content="Official portfolio of Arnav Mishra. Student, Poet, and Tech Enthusiast.">
     
     <style>
+
+             /* Welcome Pop-up Styling */
+        #music-popup {
+            position: fixed; inset: 0; background: rgba(0,0,0,0.9);
+            z-index: 1000; display: flex; align-items: center; justify-content: center;
+            text-align: center; backdrop-filter: blur(10px); cursor: pointer;
+        }
+        .popup-content { padding: 30px; border: 1px solid #00a3ff; border-radius: 20px; max-width: 80%; box-shadow: 0 0 30px rgba(0, 163, 255, 0.2); }
+        .popup-content p { font-size: 1.1rem; line-height: 1.6; color: #fff; }
+        .popup-content span { color: #00a3ff; font-weight: bold; }
+        
         /* BASE SETUP */
         body { 
+            <div id="music-popup" onclick="closePopup()">
+    <div class="popup-content">
+        <p>Welcome to my world. ✨<br><br>
+        You can enjoy the 🎵 music as well by tapping the <span>Top Right corner</span>.<br><br>
+        <small style="color: #555;">(Tap anywhere to enter)</small></p>
+    </div>
+</div>
+            
             background-color: #000; color: #fff; font-family: 'Segoe UI', sans-serif; 
             margin: 0; padding: 0; overflow-x: hidden; min-height: 100vh;
         }
@@ -296,6 +315,10 @@ Har karm ka gathi mai
         home.classList.add('fade-in');
     }
 </script>
-
+    function closePopup() {
+        var popup = document.getElementById("music-popup");
+        popup.style.display = "none";
+    }
+    
 </body>
 </html>
