@@ -6,37 +6,34 @@
     <title>Arnav Mishra | Work & Mind</title>
     
     <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://unpkg.com/@chrisoakman/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.css">
 </head>
 <body>
 
-<div style="position: fixed; top: 20px; right: 20px; z-index: 1000;">
-    <button onclick="toggleMusic()" id="mute-btn" style="background: rgba(0,0,0,0.6); border: 1px solid #444; color: #fff; padding: 0; border-radius: 50%; width: 45px; height: 45px; cursor: pointer; backdrop-filter: blur(5px); font-size: 1.2rem; display: flex; align-items: center; justify-content: center;">🔇</button>
-</div>
-
-<audio id="global-bg-music" loop><source src="co2.mp3" type="audio/mpeg"></audio>
-<audio id="game-bg-music" loop><source src="chess-music.mp3" type="audio/mpeg"></audio>
-
 <div id="music-popup" onclick="closePopup()">
     <div class="popup-content">
-        <p style="font-size: 1.2rem;">Welcome to my world. ✨</p>
-        <p style="color: #00a3ff; margin-top: 10px;">Tap anywhere to enter.</p>
+        <p>Welcome to my world. ✨<br><br>Tap the <span>Top Right corner</span> to enable the vibe.</p>
+        <small>(Tap anywhere to continue)</small>
     </div>
+</div>
+
+<div style="position: fixed; top: 20px; right: 20px; z-index: 1000;">
+    <button onclick="toggleGlobalMusic()" id="mute-btn" style="background: rgba(0,0,0,0.6); border: 1px solid #444; color: #fff; padding: 0; border-radius: 50%; width: 45px; height: 45px; cursor: pointer; backdrop-filter: blur(5px); font-size: 1.2rem; display: flex; align-items: center; justify-content: center;">🔇</button>
+    <audio id="global-bg-music" loop><source src="co2.mp3" type="audio/mpeg"></audio>
 </div>
 
 <div class="main-wrapper">
 
-    <div id="home-view" class="fade-in">
+    <div id="home-view">
         <div class="profile-container">
             <div class="profile-glow"></div>
             <img src="https://imarnavin.wordpress.com/wp-content/uploads/2026/01/image_editor_output_image-900633096-17689630363507786449788545237875.jpg" class="profile-img">
         </div>
-        
         <div class="name">Arnav Mishra</div>
         <div class="bio-wrap"><div class="bio">Building ideas from scratch.</div></div>
 
         <div style="background: #111; border-left: 3px solid #00a3ff; padding: 15px; margin: 25px 0; color: #ccc; font-style: italic; font-size: 0.85rem;">
             "The secret of change is to focus all of your energy, not on fighting the old, but on building the new."
+            <br><span style="color: #444;">— Socrates</span>
         </div>
 
         <div class="btn-grid">
@@ -47,37 +44,34 @@
         </div>
 
         <button onclick="switchToAbout()" class="main-btn">ENTER MY WORLD ➜</button>
-        <button onclick="switchToGames()" class="game-btn">PLAY WITH ARNAV BOT 🎮</button>
 
         <div class="chess-btn-container">
             <a href="https://wa.me/916393349498?text=Hi%20Arnav!%20%E2%99%9F%20Checkmate.%20Just%20explored%20your%20world%20and%20the%20vibe%20is%20crazy!%20%F0%9F%94%A5" target="_blank" class="chess-btn">
-                <span style="font-size: 2rem;">♞</span>
+                <span class="chess-icon">♞</span>
                 <div style="text-align: left;">
                     <div style="font-size: 0.7rem; color: #888;">MAKE A MOVE</div>
                     <div style="font-size: 1rem;">Say Hello 👋</div>
                 </div>
             </a>
         </div>
+
         <p style="text-align: center; margin-top: 30px; color: #333; font-size: 0.6rem;">© 2026 ARNAV MISHRA</p>
     </div>
 
-    <div id="about-view" style="display: none;">
+    <div id="about-view" style="display: none; opacity: 0;">
         <button onclick="switchToHome()" class="back-btn">← Home Protocol</button>
 
         <h2>Sonic Fuel (GOAT)</h2>
-        <div class="card" style="border-top: 4px solid #00a3ff; background: linear-gradient(145deg, #0a0a0a, #111);">
+        <div class="card" style="border-top: 4px solid #fff; background: linear-gradient(145deg, #0a0a0a, #111);">
             <div style="display: flex; align-items: center; gap: 15px;">
                 <div style="width: 50px; height: 50px; border-radius: 50%; background: #222; display: flex; align-items: center; justify-content: center; font-weight: bold; color: #00a3ff; border: 1px solid #333; font-size: 1.2rem;">$</div>
                 <div>
                     <h3 style="margin: 0; color: #fff; font-size: 1rem;">KR$NA 👑</h3>
-                    <p style="margin: 0; color: #00a3ff; font-size: 0.8rem;">The inspiration.</p>
+                    <p style="margin: 0; color: #666; font-size: 0.8rem;">The inspiration behind the pen.</p>
                 </div>
             </div>
-            <p style="color: #bbb; font-size: 0.9rem; margin-top: 20px; font-style: italic; line-height: 1.6; border-left: 2px solid #333; padding-left: 15px;">
-                "Chahiye mujhe bas ek buss down Rollie<br>
-                Lambhi si gaadi aur makaan do storey, haan<br>
-                Chahiye mujhe bas ek buss down Rollie<br>
-                Lambhi si chain aur kuch lakh ki tijori  
+            <p style="color: #bbb; font-size: 0.85rem; margin-top: 15px; font-style: italic; line-height: 1.4;">
+                "Chahiye mujhe bas ek buss down Rollie<br>Lambhi si gaadi aur makaan do storey, haan<br>Chahiye mujhe bas ek buss down Rollie<br>Lambhi si chain aur kuch lakh ki tijori"
             </p>
         </div>
 
@@ -88,37 +82,84 @@
             <a href="https://docs.google.com/spreadsheets/d/11k2QyICWavfXFuUGXRBGnRJ7l7zsblQB/edit?usp=drivesdk" style="color: #d32f2f; text-decoration: none; font-weight: bold;">View Sheets Project ➜</a>
         </div>
 
-        <h2>Original Verses</h2>
+        <h2>Original Verse</h2>
         
         <div class="card">
             <h3 style="color: #ff4b2b; margin-top: 0;">🔥 Jang-kaal</h3>
-            <div id="typewriter-output-1" style="border-left: 2px solid #ff4b2b; padding-left: 10px; min-height: 50px; color: #ffcccb; margin-bottom: 10px; font-family: monospace;"></div>
-            <button onclick="readMoreVerses()" style="width: 100%; background: #ff4b2b; color: white; border: none; padding: 10px; border-radius: 8px; font-weight: bold; cursor: pointer;">READ FULL ➜</button>
+            
+            <div id="typewriter-output" class="lyrics typing-effect" style="border-color: #ff4b2b; min-height: 80px; color: #ffcccb; margin-bottom: 0; border-bottom: none; border-radius: 12px 12px 0 0;">
+                </div>
+
+            <div class="lyrics" style="border-top: none; border-color: #ff4b2b; border-radius: 0 0 12px 12px; margin-top: -20px; padding-top: 5px; color: #bbb;">
+                <br>
+                Moh dya ka tyag kar<br> 
+                Ab jism se na pyar kar<br> 
+                Mastko ke unke Aaj<br>
+                Deh se ajaad kar....<br><br>
+                Dikha de pure vishwa ko<br>
+                Parlaya ke raudra drishya ko<br>
+                Jaha par keval dharm ho<br>
+                Na dharm me koi sharm ho<br>
+                Jo dharm me kare sharam<br>
+                Un adharmiyo ka (naas kar)3...<br><br>
+                Na bhal ka vo ghao ho<br> 
+                Na tir ka prabhav ho<br>
+                Bas bhid me tuhi,tuhi<br>
+                Aur Tera hi dabao ho<br>
+                Jo tu lade to kaun bhage<br> 
+                Jo tu bhage to kaun bache<br> 
+                Bache Jo bht koi karnaverse<br>
+                Kabhi na fir (vo lade)3...<br><br>
+                Moh dya ka tyag kr<br> 
+                Bas ek hi dharm vaar kr<br><br>
+                Saam,dam,dand,bhed<br>
+                Adharmiya pe kar ke dekh<br>
+                Man le to jane de<br> 
+                Na Mane to tu pran le<br>
+                Tu kaat de vo har gale<br> 
+                Jo marg pe tere na chle<br> 
+                Vo sarthi vo Tera bhale...<br><br>
+                Moh Daya ka tyag kar<br> 
+                Bs ek hi dharm var kr...<br><br>
+                Aarmbh hai is kaal ka<br> 
+                Papiyo ke naas ka<br>
+                Tu kaal se dare Bina<br> 
+                Ab Jaan ka bhi daan de<br>
+                Dikha de pure vishwa ko<br>
+                Nisthur se is dishya ko<br>
+                Adharmiyo ka naas kar<br> 
+                Apne vir ka praman de....<br><br>
+                Moh dya ka tyag kr<br> 
+                Bs ek hi dharm vaar kr....
+            </div>
         </div>
 
         <div class="card">
             <h3 style="color: #654ea3; margin-top: 0;">🌌 Anjaan</h3>
-            <div id="typewriter-output-2" style="border-left: 2px solid #654ea3; padding-left: 10px; min-height: 50px; color: #d1c4e9; margin-bottom: 10px; font-family: monospace;"></div>
-            <button onclick="readMoreVerses()" style="width: 100%; background: #654ea3; color: white; border: none; padding: 10px; border-radius: 8px; font-weight: bold; cursor: pointer;">READ FULL ➜</button>
+            <div class="lyrics" style="border-color: #654ea3;">
+Mai antt hun mai ankurit, Yugo yugo ka hal hai
+Mai hinn hun ,mai hun priye, Mera hi maah saal hai
+Na saksh hun, na aatma, Na devta ,pramatama 
+Mai bhoot hun , mai kaal sa, Divr hun mai bhaal sa
+Kurn sa mai dheema bhi, Brahamand sa na sheema bhi
+Krishna se bhi vanchit mai, Bhole se na mai saar hun
+Mai ant hun mai ankurit, Chattan sa mai bhaar hun
+Na paksh dhar, nipaksh mai, Lankesh ka mai haar hun 
+Koi to mujhse hai khda, Kisi ka intezar hun
+Adrishya na mai hun kabhi, Mai to shariyam hun
+Adharm na -mai dharm hun, Mai mera koi chaal hai 
+Mai antt hun mai ankurit, Yugo yugo ka haal hai
+Marg mera ek hai sheesha raasta magr
+Chaal mai jo chaldu, Aata na mi do-baar hu
+Mai paksh me vipaksh hun, Vipaksh ka bhi shadhi mai
+Acha Bura ho jo magr, Har karm ka gathi mai
+            </div>
         </div>
 
+        <p style="text-align: center; color: #444; font-size: 0.8rem; margin-top: 40px;">End of Protocol.</p>
     </div>
-
-    <div id="games-view">
-        <div style="position: absolute; top: 20px; left: 20px; z-index: 2001;">
-            <button onclick="switchToHome()" style="color: #fff; background: rgba(0,0,0,0.5); border:none; padding: 5px 15px; border-radius: 8px; cursor: pointer;">← Exit Arena</button>
-        </div>
-        <h2 style="text-align: center; color: #fff; margin-bottom: 5px; font-size: 1.5rem; margin-top: 40px;">♟️ ARNAV GOAT AI</h2>
-        <p style="text-align: center; color: #888; font-size: 0.8rem; margin-bottom: 20px;">Can you beat the code?</p>
-        <div class="game-container"><div id="myBoard" style="width: 100%"></div><div id="status" style="margin-top: 15px; color: #eeeed2; text-align: center;">White to move</div></div>
-    </div>
-
 </div>
 
-<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-<script src="https://unpkg.com/@chrisoakman/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.3/chess.min.js"></script>
 <script src="script.js"></script>
-
 </body>
 </html>
