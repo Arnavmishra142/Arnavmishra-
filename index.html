@@ -22,15 +22,15 @@
 </div>
 
 <div id="music-popup" onclick="closePopup()">
-    <div class="popup-content">
+    <div class="popup-box">
         <div class="popup-icon">✨</div>
         <h2>Welcome to my world.</h2>
         <p class="tap-hint">Tap anywhere to enter</p>
-        <p class="vibe-note">
+        <div class="vibe-note">
             <i class="fas fa-arrow-up" style="transform: rotate(45deg);"></i> 
             Sound button is on the Top-Right corner. 
             <br>Turn it ON for the vibe! 🎵
-        </p>
+        </div>
     </div>
 </div>
 
@@ -56,14 +56,18 @@
             <a href="https://www.linkedin.com/in/arnav-mishra-1a6934371" class="btn"><i class="fab fa-linkedin"></i> LinkedIn</a>
             <a href="https://x.com/ArnavMishra142" class="btn"><i class="fab fa-twitter"></i> X / Twitter</a>
             <a href="https://www.instagram.com/arnav_9.11" class="btn"><i class="fab fa-instagram"></i> Instagram</a>
-            <a href="https://github.com/imarnavin" class="btn"><i class="fab fa-github"></i> GitHub</a>
+            <a href="https://www.chess.com/member/Arnavm142" class="btn"><i class="fas fa-chess-knight"></i> Chess.com</a>
         </div>
 
         <button onclick="switchToAbout()" class="main-btn">ENTER MY WORLD <i class="fas fa-arrow-right"></i></button>
 
         <div class="chess-msg-container">
-            <a href="https://wa.me/916393349498?text=Hey%20Arnav,%20I%20visited%20your%20portfolio!" target="_blank" class="chess-btn">
-                <i class="fab fa-whatsapp"></i> MAKE A MOVE (DM)
+            <a href="https://wa.me/916393349498?text=Hey%20Arnav,%20I%20visited%20your%20portfolio!" target="_blank" class="chess-btn-animated">
+                <i class="fas fa-chess-knight knight-icon"></i>
+                <div class="btn-text">
+                    <span class="small-text">MAKE A MOVE</span>
+                    <span class="big-text">Say Hello <i class="fas fa-hand-sparkles wave-icon"></i></span>
+                </div>
             </a>
         </div>
 
@@ -100,7 +104,8 @@
             <div class="lyrics-box">
                 "Chahiye mujhe bas ek buss down Rollie<br>
                 Lambhi si gaadi aur makaan do storey, haan<br>
-                Chahiye mujhe bas ek buss down Rollie..."
+                Chahiye mujhe bas ek buss down Rollie<br>
+                Lambi si chain aur kuch lakh ki tijori"
             </div>
         </div>
 
@@ -110,18 +115,14 @@
             <div class="verse-header">
                 <h3 class="verse-title fire">🔥 Jang-kaal</h3>
             </div>
-            <div id="verse-1-display" class="verse-content collapsed"></div>
-            
-            <button onclick="toggleVerse('verse1')" id="btn-verse1" class="read-more-btn fire-btn">READ FULL ➜</button>
+            <div id="verse-1-display" class="verse-content"></div>
         </div>
 
         <div class="card verse-card">
             <div class="verse-header">
                 <h3 class="verse-title cosmic">🌌 Anjaan</h3>
             </div>
-            <div id="verse-2-display" class="verse-content collapsed"></div>
-            
-            <button onclick="toggleVerse('verse2')" id="btn-verse2" class="read-more-btn cosmic-btn">READ FULL ➜</button>
+            <div id="verse-2-display" class="verse-content"></div>
         </div>
 
         <div style="height: 80px;"></div> </div>
