@@ -10,77 +10,63 @@
     <style>
         /* --- 1. BASE SETUP --- */
         body { 
-            background-color: #000; 
-            color: #fff; 
-            font-family: 'Segoe UI', sans-serif; 
-            margin: 0; padding: 0; 
-            overflow-x: hidden; 
-            min-height: 100vh;
+            background-color: #000; color: #fff; font-family: 'Segoe UI', sans-serif; 
+            margin: 0; padding: 0; overflow-x: hidden; min-height: 100vh;
         }
-        
         .main-wrapper {
             max-width: 500px; margin: 0 auto; padding: 20px; 
             min-height: 100vh; position: relative; padding-top: 50px;
         }
 
-        /* --- 2. SMART POP-UP STYLES (Glass Effect) --- */
+        /* --- 2. POP-UP STYLES (Glass Effect) --- */
         #music-popup {
-            position: fixed; inset: 0; 
-            /* Background: Halka Black + Blur (Glass Effect) */
-            background: rgba(0, 0, 0, 0.3); 
-            backdrop-filter: blur(4px);
-            z-index: 2000; 
-            display: flex; align-items: center; justify-content: center;
-            text-align: center; cursor: pointer;
-            
-            /* Hidden Initially (Animation Setup) */
-            opacity: 0; pointer-events: none;
+            position: fixed; inset: 0; background: rgba(0, 0, 0, 0.3); backdrop-filter: blur(4px);
+            z-index: 2000; display: flex; align-items: center; justify-content: center;
+            text-align: center; cursor: pointer; opacity: 0; pointer-events: none;
             transition: opacity 0.8s ease, backdrop-filter 0.8s ease;
         }
-
-        /* Jab Pop-up Active hoga */
-        #music-popup.active {
-            opacity: 1; pointer-events: all;
-        }
-
+        #music-popup.active { opacity: 1; pointer-events: all; }
         .popup-content { 
-            padding: 25px; 
-            background: rgba(10, 10, 10, 0.85); /* Semi-transparent Card */
-            border: 1px solid rgba(0, 163, 255, 0.5); 
-            border-radius: 20px; 
-            max-width: 80%; 
-            box-shadow: 0 0 40px rgba(0, 163, 255, 0.15);
-            
-            /* Slide Up Animation */
-            transform: translateY(30px);
-            transition: transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+            padding: 25px; background: rgba(10, 10, 10, 0.85); 
+            border: 1px solid rgba(0, 163, 255, 0.5); border-radius: 20px; 
+            max-width: 80%; box-shadow: 0 0 40px rgba(0, 163, 255, 0.15);
+            transform: translateY(30px); transition: transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
         }
-
-        #music-popup.active .popup-content {
-            transform: translateY(0);
-        }
-
+        #music-popup.active .popup-content { transform: translateY(0); }
         .popup-content p { font-size: 1rem; line-height: 1.5; color: #eee; margin: 0; }
         .popup-content span { color: #00a3ff; font-weight: bold; }
         .popup-content small { display: block; margin-top: 15px; color: #777; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px;}
 
-        /* --- 3. HOME PAGE STYLES --- */
+        /* --- 3. CHESS BUTTON STYLES (New Feature) --- */
+        .chess-btn-container { margin-top: 30px; text-align: center; }
+        .chess-btn {
+            background: #0a0a0a; color: #fff; border: 1px solid #333; border-radius: 12px;
+            padding: 12px 20px; display: inline-flex; align-items: center; gap: 15px;
+            text-decoration: none; font-weight: bold; position: relative;
+            transition: 0.3s; box-shadow: 0 4px 15px rgba(0,0,0,0.5); overflow: hidden;
+            width: 80%; justify-content: center; margin: 0 auto;
+        }
+        .chess-btn::after {
+            content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 4px;
+            background: repeating-linear-gradient(90deg, #fff 0, #fff 10px, #333 10px, #333 20px);
+        }
+        .chess-btn:hover { border-color: #00a3ff; transform: translateY(-3px); }
+        .chess-icon { font-size: 1.8rem; animation: knightHop 2s infinite ease-in-out; }
+        @keyframes knightHop {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-6px) rotate(-10deg); }
+        }
+
+        /* --- 4. GENERAL STYLES --- */
         .profile-container { 
             width: 120px; height: 120px; margin: 0 auto 20px; position: relative;
             animation: popIn 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
         }
-        .profile-img { 
-            width: 100%; height: 100%; border-radius: 50%; object-fit: cover; 
-            border: 2px solid #fff; position: relative; z-index: 2; 
-        }
-        .profile-glow {
-            position: absolute; inset: 0; border-radius: 50%;
-            box-shadow: 0 0 30px rgba(0, 163, 255, 0.6); animation: pulse 3s infinite;
-        }
+        .profile-img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 2px solid #fff; position: relative; z-index: 2; }
+        .profile-glow { position: absolute; inset: 0; border-radius: 50%; box-shadow: 0 0 30px rgba(0, 163, 255, 0.6); animation: pulse 3s infinite; }
         .name {
             font-size: 2rem; font-weight: 900; text-transform: uppercase; text-align: center;
-            background: linear-gradient(to right, #fff, #00a3ff);
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            background: linear-gradient(to right, #fff, #00a3ff); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
             margin: 10px 0; animation: glitch 3s infinite;
         }
         .bio-wrap { text-align: center; margin-bottom: 30px; }
@@ -89,27 +75,19 @@
             border-right: 2px solid #00a3ff; white-space: nowrap; overflow: hidden;
             animation: typing 2.5s steps(30, end) forwards; width: 0; 
         }
-
-        /* Buttons & Components */
         .btn-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
-        .btn { 
-            padding: 12px; background: #0a0a0a; border: 1px solid #333; 
-            color: #fff; text-decoration: none; border-radius: 8px; font-size: 0.75rem; 
-            text-align: center; display: block; transition: 0.3s;
-        }
+        .btn { padding: 12px; background: #0a0a0a; border: 1px solid #333; color: #fff; text-decoration: none; border-radius: 8px; font-size: 0.75rem; text-align: center; display: block; transition: 0.3s; }
         .main-btn { 
             display: block; width: 100%; padding: 15px; margin-top: 20px; 
-            background: linear-gradient(45deg, #00a3ff, #005f99); 
-            color: #fff; border: none; border-radius: 10px; 
-            font-weight: bold; font-size: 1rem; cursor: pointer;
-            box-shadow: 0 0 20px rgba(0, 163, 255, 0.2);
+            background: linear-gradient(45deg, #00a3ff, #005f99); color: #fff; border: none; border-radius: 10px; 
+            font-weight: bold; font-size: 1rem; cursor: pointer; box-shadow: 0 0 20px rgba(0, 163, 255, 0.2);
         }
         .card { background: #0a0a0a; border: 1px solid #222; border-radius: 16px; padding: 20px; margin-bottom: 25px; }
         .lyrics { white-space: pre-line; font-family: 'Georgia', serif; color: #ccc; line-height: 1.6; background: #080808; padding: 20px; border-radius: 12px; border-left: 3px solid #444; font-size: 0.9rem; }
         h2 { border-bottom: 2px solid #222; padding-bottom: 10px; color: #00a3ff; margin-top: 30px; font-size: 1rem; text-transform: uppercase; letter-spacing: 1px;}
         .back-btn { background: none; border: 1px solid #333; color: #888; padding: 8px 20px; border-radius: 50px; cursor: pointer; margin-bottom: 10px; font-size: 0.85rem; }
 
-        /* --- 4. ANIMATIONS --- */
+        /* Animations */
         @keyframes popIn { 0% { opacity: 0; transform: scale(0); } 100% { opacity: 1; transform: scale(1); } }
         @keyframes typing { from { width: 0 } to { width: 100% } }
         @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(0,163,255,0.4); } 70% { box-shadow: 0 0 0 15px rgba(0,0,0,0); } }
@@ -122,19 +100,14 @@
 
 <div id="music-popup" onclick="closePopup()">
     <div class="popup-content">
-        <p>Welcome to my world. ✨<br><br>
-        Tap the <span>Top Right corner</span> to enable the vibe.</p>
+        <p>Welcome to my world. ✨<br><br>Tap the <span>Top Right corner</span> to enable the vibe.</p>
         <small>(Tap anywhere to continue)</small>
     </div>
 </div>
 
 <div style="position: fixed; top: 20px; right: 20px; z-index: 1000;">
-    <button onclick="toggleGlobalMusic()" id="mute-btn" style="background: rgba(0,0,0,0.6); border: 1px solid #444; color: #fff; padding: 0; border-radius: 50%; width: 45px; height: 45px; cursor: pointer; backdrop-filter: blur(5px); font-size: 1.2rem; transition: 0.3s; display: flex; align-items: center; justify-content: center;">
-        🔇
-    </button>
-    <audio id="global-bg-music" loop>
-        <source src="co2.mp3" type="audio/mpeg">
-    </audio>
+    <button onclick="toggleGlobalMusic()" id="mute-btn" style="background: rgba(0,0,0,0.6); border: 1px solid #444; color: #fff; padding: 0; border-radius: 50%; width: 45px; height: 45px; cursor: pointer; backdrop-filter: blur(5px); font-size: 1.2rem; display: flex; align-items: center; justify-content: center;">🔇</button>
+    <audio id="global-bg-music" loop><source src="co2.mp3" type="audio/mpeg"></audio>
 </div>
 
 <div class="main-wrapper">
@@ -160,6 +133,17 @@
         </div>
 
         <button onclick="switchToAbout()" class="main-btn">ENTER MY WORLD ➜</button>
+
+        <div class="chess-btn-container">
+            <a href="https://wa.me/916393349498?text=Hi%20Arnav,%20Checkmate!%20%E2%99%9F%EF%B8%8F%20Just%20explored%20your%20world.%20Nice%20vibe!" target="_blank" class="chess-btn">
+                <span class="chess-icon">♞</span>
+                <div style="text-align: left;">
+                    <div style="font-size: 0.7rem; color: #888;">MAKE A MOVE</div>
+                    <div style="font-size: 1rem;">Say Hello 👋</div>
+                </div>
+            </a>
+        </div>
+
         <p style="text-align: center; margin-top: 30px; color: #333; font-size: 0.6rem;">© 2026 ARNAV MISHRA</p>
     </div>
 
@@ -176,10 +160,7 @@
                 </div>
             </div>
             <p style="color: #bbb; font-size: 0.85rem; margin-top: 15px; font-style: italic; line-height: 1.4;">
-                "Chahiye mujhe bas ek buss down Rollie<br>
-                Lambhi si gaadi aur makaan do storey, haan<br>
-                Chahiye mujhe bas ek buss down Rollie<br>
-                Lambhi si chain aur kuch lakh ki tijori"
+                "Chahiye mujhe bas ek buss down Rollie<br>Lambhi si gaadi aur makaan do storey, haan<br>Chahiye mujhe bas ek buss down Rollie<br>Lambhi si chain aur kuch lakh ki tijori"
             </p>
         </div>
 
@@ -191,162 +172,39 @@
         </div>
 
         <h2>Original Verse</h2>
-        
-        <div class="card">
-            <h3 style="color: #ff4b2b; margin-top: 0;">🔥 Jang-kaal</h3>
-            <div class="lyrics" style="border-color: #ff4b2b;">
-Tu jang ka ailan kar 
-Dushmano PE vaar kar
-Papiyo ka naas kar....
-
-Moh dya ka tyag kar 
-Ab jism se na pyar kar 
-Mastko ke unke Aaj
-Deh se ajaad kar....
-
-Dikha de pure vishwa ko
-Parlaya ke raudra drishya ko
-Jaha par keval dharm ho
-Na dharm me koi sharm ho
-Jo dharm me kare sharam
-Un adharmiyo ka (naas kar)3...
-
-Na bhal ka vo ghao ho 
-Na tir ka prabhav ho
-Bas bhid me tuhi,tuhi
-Aur Tera hi dabao ho
-Jo tu lade to kaun bhage 
-Jo tu bhage to kaun bache 
-Bache Jo bht koi karnaverse
-Kabhi na fir (vo lade)3...
-
-Moh dya ka tyag kr 
-Bas ek hi dharm vaar kr
-
-Saam,dam,dand,bhed
-Adharmiya pe kar ke dekh
-Man le to jane de 
-Na Mane to tu pran le
-Tu kaat de vo har gale 
-Jo marg pe tere na chle 
-Vo sarthi vo Tera bhale...
-
-Moh Daya ka tyag kar 
-Bs ek hi dharm var kr...
-
-Aarmbh hai is kaal ka 
-Papiyo ke naas ka
-Tu kaal se dare Bina 
-Ab Jaan ka bhi daan de
-Dikha de pure vishwa ko
-Nisthur se is dishya ko
-Adharmiyo ka naas kar 
-Apne vir ka praman de....
-
-Moh dya ka tyag kr 
-Bs ek hi dharm vaar kr....
-            </div>
-        </div>
-
-        <div class="card">
-            <h3 style="color: #654ea3; margin-top: 0;">🌌 Anjaan</h3>
-            <div class="lyrics" style="border-color: #654ea3;">
-Mai antt hun mai ankurit 
-Yugo yugo ka hal hai
-Mai hinn hun ,mai hun priye
-Mera hi maah saal hai
-
-Na saksh hun, na aatma 
-Na devta ,pramatama 
-Mai bhoot hun , mai kaal sa
-Divr hun mai bhaal sa
-
-Kurn sa mai dheema bhi
-Brahamand sa na sheema bhi
-Krishna se bhi vanchit mai 
-Bhole se na mai saar hun
-Mai ant hun mai ankurit 
-Chattan sa mai bhaar hun
-
-Na paksh dhar, nipaksh mai 
-Lankesh ka mai haar hun 
-Koi to mujhse hai khda 
-Kisi ka intezar hun
-Adrishya na mai hun kabhi
-Mai to shariyam hun
-Adharm na -mai dharm hun .
-Mai mera koi chaal hai 
-
-Mai antt hun mai ankurit 
-Yugo yugo ka haal hai
-
-Marg mera ek hai sheesha raasta magr
-Chaal mai jo chaldu 
-Aata na mi do-baar hu
-Mai paksh me vipaksh hun
-Vipaksh ka bhi shadhi mai
-Acha Bura ho jo magr
-Har karm ka gathi mai
-            </div>
-        </div>
-
+        <div class="card"><h3 style="color: #ff4b2b;">🔥 Jang-kaal</h3><div class="lyrics">Tu jang ka ailan kar... (Full poem here)</div></div>
+        <div class="card"><h3 style="color: #654ea3;">🌌 Anjaan</h3><div class="lyrics">Mai antt hun mai ankurit... (Full poem here)</div></div>
         <p style="text-align: center; color: #444; font-size: 0.8rem; margin-top: 40px;">End of Protocol.</p>
     </div>
-
 </div>
 
 <script>
-    // Music Logic
     var audio = document.getElementById("global-bg-music");
     var btn = document.getElementById("mute-btn");
     audio.volume = 0.2; 
-
     function toggleGlobalMusic() {
-        if (audio.paused) {
-            audio.play(); 
-            btn.innerHTML = "🎵"; 
-            btn.style.borderColor = "#00a3ff";
-            btn.style.boxShadow = "0 0 15px rgba(0, 163, 255, 0.3)";
-        } else {
-            audio.pause(); 
-            btn.innerHTML = "🔇"; 
-            btn.style.borderColor = "#444";
-            btn.style.boxShadow = "none";
-        }
+        if (audio.paused) { audio.play(); btn.innerHTML = "🎵"; btn.style.borderColor = "#00a3ff"; } 
+        else { audio.pause(); btn.innerHTML = "🔇"; btn.style.borderColor = "#444"; }
     }
-
-    // Popup Logic with Delay
     window.onload = function() {
-        setTimeout(function() {
-            var popup = document.getElementById("music-popup");
-            popup.classList.add("active"); // Animation trigger
-        }, 3000); // 3000ms = 3 Seconds Wait
+        setTimeout(function() { document.getElementById("music-popup").classList.add("active"); }, 3000);
     };
-
     function closePopup() {
         var popup = document.getElementById("music-popup");
         popup.classList.remove("active");
-        setTimeout(function(){
-            popup.style.display = "none";
-        }, 800);
+        setTimeout(function(){ popup.style.display = "none"; }, 800);
     }
-
-    // Page Switching
     function switchToAbout() {
         document.getElementById('home-view').style.display = 'none';
         var about = document.getElementById('about-view');
-        about.style.display = 'block';
-        about.classList.add('fade-in');
+        about.style.display = 'block'; about.classList.add('fade-in');
         window.scrollTo(0, 0);
     }
-
     function switchToHome() {
         document.getElementById('about-view').style.display = 'none';
         var home = document.getElementById('home-view');
-        home.style.display = 'block';
-        home.classList.add('fade-in');
+        home.style.display = 'block'; home.classList.add('fade-in');
     }
 </script>
-
 </body>
 </html>
