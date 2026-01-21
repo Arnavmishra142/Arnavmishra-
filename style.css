@@ -1,8 +1,8 @@
-/* --- GLOBAL STYLES (Original Font) --- */
+/* --- GLOBAL STYLES --- */
 body {
     background-color: #000;
     color: #fff;
-    /* Clean, Modern Font wapas aa gaya */
+    /* Clean Modern Font (Jo tumne bheja tha) */
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     margin: 0; padding: 0;
     overflow-x: hidden;
@@ -15,18 +15,62 @@ body {
     margin: 0 auto;
     padding-bottom: 80px;
     position: relative;
-    z-index: 10; /* Content ko upar rakha */
+    z-index: 10;
 }
 
 /* --- PROFILE SECTION --- */
-.profile-container { position: relative; width: 100px; height: 100px; margin: 0 auto; margin-top: 20px;}
-.profile-img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 2px solid #333; filter: grayscale(100%); }
-.profile-glow { position: absolute; top: -5px; left: -5px; right: -5px; bottom: -5px; border-radius: 50%; background: linear-gradient(45deg, #00a3ff, #ff0099); z-index: -1; animation: spin 4s linear infinite; }
+.profile-container { 
+    position: relative; 
+    width: 100px; 
+    height: 100px; 
+    margin: 0 auto; 
+    margin-top: 20px;
+}
+
+.profile-img { 
+    width: 100%; 
+    height: 100%; 
+    border-radius: 50%; 
+    object-fit: cover; 
+    border: 2px solid #333; 
+    filter: grayscale(100%); 
+    position: relative; 
+    z-index: 2; /* Image upar rahegi */
+}
+
+.profile-glow { 
+    position: absolute; 
+    top: -5px; left: -5px; right: -5px; bottom: -5px; 
+    border-radius: 50%; 
+    background: linear-gradient(45deg, #00a3ff, #ff0099); 
+    z-index: 1; /* Glow peeche rahega */
+    animation: spin 4s linear infinite; 
+    filter: blur(8px); /* Thoda soft glow */
+}
 @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-.name { text-align: center; font-size: 1.8rem; margin-top: 15px; font-weight: bold; letter-spacing: 1px; text-transform: uppercase; color: #fff; }
+/* --- NAME FIX (NEON BLUE) --- */
+.name { 
+    text-align: center; 
+    font-size: 1.8rem; 
+    margin-top: 15px; 
+    font-weight: bold; 
+    letter-spacing: 2px; 
+    text-transform: uppercase; 
+    
+    /* Ye raha correction: Blue Color + Glow */
+    color: #00a3ff; 
+    text-shadow: 0 0 15px rgba(0, 163, 255, 0.7), 0 0 30px rgba(0, 163, 255, 0.4); 
+}
+
 .bio-wrap { display: flex; justify-content: center; margin-bottom: 25px; margin-top: 5px; }
-.bio { color: #00a3ff; font-size: 0.9rem; letter-spacing: 2px; text-transform: lowercase; font-family: 'Courier New', monospace; }
+.bio { 
+    color: #00a3ff; 
+    font-size: 0.9rem; 
+    letter-spacing: 2px; 
+    text-transform: lowercase; 
+    font-family: 'Courier New', monospace; /* Bio ke liye typewriter font rakha hai vibe ke liye */
+}
 
 /* --- QUOTE BOX --- */
 .quote-box {
@@ -64,8 +108,7 @@ body {
     position: fixed; top: 0; left: 0; right: 0; bottom: 0;
     width: 100vw; height: 100vh;
     background: #111;
-    z-index: 5000; /* Sabse upar */
-    /* Flex nahi lagayenge yahan, JS se control karenge */
+    z-index: 5000;
     display: none; 
     flex-direction: column; align-items: center; justify-content: center;
     overflow: hidden; 
