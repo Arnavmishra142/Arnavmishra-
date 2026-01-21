@@ -1,6 +1,4 @@
 /* --- GLOBAL RESET & FONTS --- */
-@import url('https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=Poppins:wght@300;400;600;700&display=swap');
-
 body {
     background-color: #050505;
     color: #e0e0e0;
@@ -9,7 +7,7 @@ body {
     overflow-x: hidden;
 }
 
-/* Scrollbar styling */
+/* Scrollbar */
 ::-webkit-scrollbar { width: 5px; }
 ::-webkit-scrollbar-track { background: #000; }
 ::-webkit-scrollbar-thumb { background: #333; border-radius: 10px; }
@@ -24,52 +22,61 @@ body {
     padding-bottom: 50px;
 }
 
-/* --- FUTURISTIC SOUND CONTROL --- */
-.sound-control {
-    position: fixed; top: 25px; right: 25px; z-index: 10000;
-}
-#mute-btn {
-    background: rgba(0, 0, 0, 0.7);
-    border: 2px solid #00a3ff; color: #00a3ff;
-    width: 50px; height: 50px; border-radius: 50%;
-    cursor: pointer; backdrop-filter: blur(10px);
-    display: flex; align-items: center; justify-content: center;
-    box-shadow: 0 0 15px rgba(0, 163, 255, 0.4);
-    transition: all 0.3s ease; animation: pulseGlow 2s infinite;
-}
-#mute-btn:active { transform: scale(0.9); }
-#mute-btn.playing {
-    border-color: #00ff88; color: #00ff88;
-    box-shadow: 0 0 20px rgba(0, 255, 136, 0.5);
-    animation: rotateBtn 5s linear infinite;
-}
-
-/* --- ATTRACTIVE POPUP STYLING --- */
+/* --- POPUP (Blur & Delay) --- */
 #music-popup { 
-    display: flex; position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-    background: rgba(0,0,0,0.85); z-index: 9999; 
+    display: none; /* Initially hidden, JS will show it */
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+    /* Semi-transparent background */
+    background: rgba(0, 0, 0, 0.6); 
+    z-index: 9999; 
     align-items: center; justify-content: center; 
-    backdrop-filter: blur(15px); transition: opacity 0.5s ease;
+    /* The Blur Effect */
+    backdrop-filter: blur(8px); 
+    opacity: 0; /* For fade-in effect */
+    transition: opacity 1s ease;
 }
 .popup-box {
-    background: rgba(20, 20, 20, 0.9);
-    border: 1px solid #333;
+    background: rgba(20, 20, 20, 0.95);
+    border: 1px solid #444;
     padding: 30px;
     border-radius: 20px;
     text-align: center; color: #fff;
-    box-shadow: 0 0 30px rgba(0, 163, 255, 0.3), inset 0 0 20px rgba(0,0,0,0.5);
-    animation: zoomIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    max-width: 80%;
+    box-shadow: 0 0 40px rgba(0, 163, 255, 0.2);
+    animation: popupFloat 3s infinite ease-in-out;
 }
-.popup-icon { font-size: 3rem; margin-bottom: 15px; animation: float 3s infinite ease-in-out; }
-.tap-hint { color: #00a3ff; font-weight: 700; margin: 15px 0; font-size: 1.2rem; letter-spacing: 1px; }
+@keyframes popupFloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+
+.popup-icon { font-size: 2.5rem; margin-bottom: 10px; }
+.tap-hint { color: #00a3ff; font-weight: 700; margin: 15px 0; font-size: 1.1rem; }
 .vibe-note { 
-    font-size: 0.9rem; color: #ccc; margin-top: 25px; 
-    border: 1px solid #00a3ff; padding: 12px; border-radius: 12px; 
+    font-size: 0.8rem; color: #ccc; margin-top: 20px; 
+    border: 1px solid #00a3ff; padding: 10px; border-radius: 10px; 
     background: rgba(0, 163, 255, 0.1); display: inline-block;
 }
 
-/* --- PROFILE & HOME --- */
+/* --- HOME ENTRY ANIMATIONS --- */
+/* Elements start hidden and slide up */
+#home-view > div, #home-view > button, #home-view > p {
+    opacity: 0;
+    animation: slideUpFade 0.8s ease-out forwards;
+}
+
+/* Staggered Delays for smooth entry */
+.anim-delay-1 { animation-delay: 0.1s !important; }
+.anim-delay-2 { animation-delay: 0.2s !important; }
+.anim-delay-3 { animation-delay: 0.3s !important; }
+.anim-delay-4 { animation-delay: 0.4s !important; }
+.anim-delay-5 { animation-delay: 0.5s !important; }
+.anim-delay-6 { animation-delay: 0.6s !important; }
+.anim-delay-7 { animation-delay: 0.7s !important; }
+.anim-delay-8 { animation-delay: 0.8s !important; }
+
+@keyframes slideUpFade {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* --- PROFILE & NAME --- */
 .profile-container { position: relative; width: 110px; height: 110px; margin: 50px auto 20px; }
 .profile-img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 3px solid #1a1a1a; position: relative; z-index: 2; }
 .profile-glow { 
@@ -79,10 +86,12 @@ body {
 }
 .name { 
     text-align: center; font-size: 2.2rem; font-weight: 700; letter-spacing: 2px; 
-    text-transform: uppercase; margin-bottom: 5px;
+    text-transform: uppercase; margin-bottom: 5px; font-family: 'Cinzel', serif;
     background: linear-gradient(to right, #00a3ff, #fff); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-    text-shadow: 0 0 20px rgba(0,163,255,0.2);
+    text-shadow: 0 0 20px rgba(0,163,255,0.3);
 }
+
+/* --- BIO & QUOTE --- */
 .bio-wrap { height: 25px; display: flex; justify-content: center; margin-bottom: 30px; }
 .bio { color: #00a3ff; font-size: 1rem; font-family: 'Courier Prime', monospace; border-right: 2px solid #00a3ff; animation: blink-caret 0.7s step-end infinite; }
 .quote-box { 
@@ -99,6 +108,7 @@ body {
     font-size: 0.9rem; transition: 0.3s; display: flex; align-items: center; justify-content: center; gap: 8px;
 }
 .btn:hover { border-color: #00a3ff; background: #0a0a0a; color: #fff; transform: translateY(-3px); }
+
 .main-btn { 
     background: linear-gradient(90deg, #00a3ff, #0056b3); 
     color: #fff; border: none; padding: 20px; width: 100%; 
@@ -107,103 +117,86 @@ body {
 }
 .main-btn:hover { transform: scale(1.02); box-shadow: 0 0 35px rgba(0, 163, 255, 0.5); }
 
-/* --- NEW EXACT TEMPLATE MATCH BUTTON --- */
+/* --- WHATSAPP BUTTON --- */
 .chess-msg-container { margin-top: 30px; display: flex; justify-content: center; }
 .chess-btn-styled {
-    display: block;
-    background: #0f0f0f; /* Dark background matching template */
-    border-radius: 16px;
-    text-decoration: none;
-    overflow: hidden;
-    width: 100%; max-width: 350px;
-    box-shadow: 0 5px 20px rgba(0,0,0,0.5);
-    transition: transform 0.2s;
+    display: block; background: #0f0f0f; border-radius: 16px; text-decoration: none; overflow: hidden; width: 100%; max-width: 350px; box-shadow: 0 5px 20px rgba(0,0,0,0.5); transition: transform 0.2s;
 }
 .chess-btn-styled:hover { transform: translateY(-3px); }
-
-.chess-btn-content {
-    display: flex; align-items: center; padding: 15px 25px; gap: 20px;
-}
+.chess-btn-content { display: flex; align-items: center; padding: 15px 25px; gap: 20px; }
 .knight-icon-white { font-size: 2.5rem; color: #fff; }
 .btn-text-group { display: flex; flex-direction: column; }
-.small-text-gray { 
-    font-size: 0.7rem; color: #999; font-weight: 600; 
-    letter-spacing: 1px; text-transform: uppercase; margin-bottom: 3px;
-}
-.big-text-white { 
-    font-size: 1.4rem; font-weight: 700; color: #fff; 
-    display: flex; align-items: center; gap: 10px; 
-}
+.small-text-gray { font-size: 0.7rem; color: #999; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 3px; }
+.big-text-white { font-size: 1.4rem; font-weight: 700; color: #fff; display: flex; align-items: center; gap: 10px; }
 .wave-icon { color: #FFD700; animation: wave 1.5s infinite; }
-.dashed-border-bottom {
-    height: 6px; width: 100%; opacity: 0.3;
-    background: repeating-linear-gradient(to right, #fff, #fff 10px, transparent 10px, transparent 20px);
-}
+.dashed-border-bottom { height: 6px; width: 100%; opacity: 0.3; background: repeating-linear-gradient(to right, #fff, #fff 10px, transparent 10px, transparent 20px); }
 
-/* --- ABOUT VIEW & CARDS --- */
+/* --- 3D LYRICS & VERSES --- */
 .section-title {
-    color: #fff; margin-top: 40px; font-size: 1.4rem; 
+    color: #fff; margin-top: 40px; font-size: 1.5rem; font-family: 'Cinzel', serif;
     border-bottom: 1px solid #333; padding-bottom: 10px; margin-bottom: 20px;
-    font-weight: 600; letter-spacing: 1px;
 }
+
 .card { 
-    background: #111; border: 1px solid #222; 
-    border-radius: 16px; padding: 25px; margin-bottom: 30px; 
-    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    background: #111; border: 1px solid #222; border-radius: 16px; padding: 25px; margin-bottom: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
 }
-.project-card { border-top: 4px solid #d32f2f; }
-.card-desc { color: #bbb; font-size: 1rem; line-height: 1.6; margin-bottom: 20px; }
-.project-link-btn {
-    display: inline-block; margin-top: 5px;
-    color: #ff4b4b; text-decoration: none; font-weight: bold; font-size: 1rem;
-    border: 1px solid #ff4b4b; padding: 12px 25px; border-radius: 50px; transition: 0.3s;
-}
-.project-link-btn:hover { background: #ff4b4b; color: white; }
-
-/* KR$NA Card */
-.krsna-card { border-top: 4px solid #00a3ff; background: linear-gradient(145deg, #0a0a0a, #111); }
-.krsna-header { display: flex; align-items: center; gap: 15px; margin-bottom: 15px; }
-.krsna-icon {
-    width: 50px; height: 50px; border-radius: 50%; background: #151515; 
-    display: flex; align-items: center; justify-content: center; 
-    color: #00a3ff; border: 1px solid #333; font-size: 1.2rem;
-    box-shadow: 0 0 10px rgba(0, 163, 255, 0.2);
-}
-.subtitle { margin: 0; color: #00a3ff; font-size: 0.8rem; opacity: 0.8; }
-.lyrics-box { 
-    color: #bbb; font-size: 0.95rem; font-style: italic; 
-    line-height: 1.8; border-left: 3px solid #333; padding-left: 20px; font-family: 'Courier Prime', monospace;
+.verse-card {
+    /* Subtle gradient for depth */
+    background: linear-gradient(145deg, #0a0a0a, #121212);
+    border: 1px solid #222;
 }
 
-/* Full Lyrics Styling */
-.verse-content {
-    font-family: 'Courier Prime', monospace;
-    color: #ddd; font-size: 1rem; line-height: 1.8;
-    padding: 10px 0;
-}
-.verse-line {
-    display: block; opacity: 0; transform: translateY(10px);
-    animation: fadeInUp 0.5s forwards;
-}
-.verse-title { margin-top: 0; display: flex; align-items: center; gap: 10px; }
+.verse-title { font-size: 1.3rem; margin-top: 0; display: flex; align-items: center; gap: 10px; text-shadow: 0 0 10px rgba(255, 75, 43, 0.4); }
 .verse-title.fire { color: #ff4b2b; }
-.verse-title.cosmic { color: #8e44ad; }
+.verse-title.cosmic { color: #8e44ad; text-shadow: 0 0 10px rgba(142, 68, 173, 0.4); }
 
-.back-btn { 
-    background: transparent; border: none; color: #888; 
-    cursor: pointer; font-size: 1.1rem; margin-bottom: 10px; 
-    display: flex; align-items: center; gap: 8px; transition: 0.3s;
+/* The 3D Text Effect */
+.verse-content {
+    font-family: 'Playfair Display', serif; /* Elegant font */
+    color: #eee; 
+    font-size: 1.1rem; 
+    line-height: 1.9;
+    padding: 10px 0;
+    font-style: italic;
 }
-.back-btn:hover { color: #fff; transform: translateX(-5px); }
 
-/* --- ANIMATIONS --- */
+.verse-line {
+    display: block; 
+    opacity: 0; 
+    transform: translateY(15px); /* Start slightly down */
+    animation: textFloatUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+    
+    /* 3D Shadow Effect */
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+    margin-bottom: 6px;
+}
+
+/* Hover effect on lyrics */
+.verse-line:hover {
+    color: #fff;
+    text-shadow: 0 0 8px rgba(255,255,255,0.4);
+    transform: scale(1.02);
+    transition: all 0.2s ease;
+}
+
+/* Animation Keyframes */
+@keyframes textFloatUp { to { opacity: 1; transform: translateY(0); } }
 @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 @keyframes blink-caret { 50% { border-color: transparent; } }
-@keyframes zoomIn { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
-@keyframes float { 0% { transform: translateY(0px); } 50% { transform: translateY(-10px); } 100% { transform: translateY(0px); } }
 @keyframes wave { 0%, 100% { transform: rotate(0deg); } 25% { transform: rotate(15deg); } 75% { transform: rotate(-15deg); } }
+
+/* Other components (Sound, KR$NA, etc) remain same */
+.sound-control { position: fixed; top: 25px; right: 25px; z-index: 10000; }
+#mute-btn { width: 50px; height: 50px; border-radius: 50%; background: rgba(0,0,0,0.7); border: 2px solid #00a3ff; color: #00a3ff; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(5px); animation: pulseGlow 2s infinite; }
 @keyframes pulseGlow { 0% { box-shadow: 0 0 10px rgba(0, 163, 255, 0.2); } 50% { box-shadow: 0 0 20px rgba(0, 163, 255, 0.6); } 100% { box-shadow: 0 0 10px rgba(0, 163, 255, 0.2); } }
-@keyframes rotateBtn { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-@keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
-.fade-in { animation: fadeIn 0.8s ease-out forwards; }
-@keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+.project-card { border-top: 4px solid #d32f2f; }
+.project-link-btn { display: inline-block; margin-top: 5px; color: #ff4b4b; text-decoration: none; font-weight: bold; border: 1px solid #ff4b4b; padding: 10px 20px; border-radius: 50px; }
+.krsna-card { border-top: 4px solid #00a3ff; }
+.krsna-header { display: flex; align-items: center; gap: 15px; margin-bottom: 15px; }
+.krsna-icon { width: 50px; height: 50px; border-radius: 50%; background: #222; color: #00a3ff; display: flex; align-items: center; justify-content: center; border: 1px solid #333; }
+.lyrics-box { color: #bbb; border-left: 3px solid #333; padding-left: 15px; font-style: italic; font-family: 'Courier Prime', monospace; }
+.back-btn { background: transparent; border: none; color: #888; cursor: pointer; font-size: 1.1rem; margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
+
+/* Responsive */
+@media (max-width: 400px) { .name { font-size: 1.8rem; } .btn-grid { grid-template-columns: 1fr; } }
+    
