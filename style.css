@@ -107,24 +107,38 @@ body {
 }
 .main-btn:hover { transform: scale(1.02); box-shadow: 0 0 35px rgba(0, 163, 255, 0.5); }
 
-/* --- NEW ANIMATED CHESS BUTTON --- */
-.chess-msg-container { margin-top: 30px; }
-.chess-btn-animated {
-    display: flex; align-items: center; justify-content: center; gap: 15px;
-    background: #000; color: #fff;
-    border: 2px solid #333; padding: 15px 25px;
-    border-radius: 15px; text-decoration: none;
-    transition: all 0.3s ease; position: relative; overflow: hidden;
+/* --- NEW EXACT TEMPLATE MATCH BUTTON --- */
+.chess-msg-container { margin-top: 30px; display: flex; justify-content: center; }
+.chess-btn-styled {
+    display: block;
+    background: #0f0f0f; /* Dark background matching template */
+    border-radius: 16px;
+    text-decoration: none;
+    overflow: hidden;
+    width: 100%; max-width: 350px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.5);
+    transition: transform 0.2s;
 }
-.chess-btn-animated:hover {
-    border-color: #00a3ff; box-shadow: 0 0 20px rgba(0, 163, 255, 0.3);
-    transform: translateY(-2px);
+.chess-btn-styled:hover { transform: translateY(-3px); }
+
+.chess-btn-content {
+    display: flex; align-items: center; padding: 15px 25px; gap: 20px;
 }
-.knight-icon { font-size: 2rem; color: #00a3ff; animation: float 3s infinite ease-in-out; }
-.btn-text { display: flex; flex-direction: column; align-items: flex-start; }
-.small-text { font-size: 0.8rem; color: #888; letter-spacing: 1px; font-weight: 600; }
-.big-text { font-size: 1.2rem; font-weight: 700; color: #fff; display: flex; align-items: center; gap: 8px; }
+.knight-icon-white { font-size: 2.5rem; color: #fff; }
+.btn-text-group { display: flex; flex-direction: column; }
+.small-text-gray { 
+    font-size: 0.7rem; color: #999; font-weight: 600; 
+    letter-spacing: 1px; text-transform: uppercase; margin-bottom: 3px;
+}
+.big-text-white { 
+    font-size: 1.4rem; font-weight: 700; color: #fff; 
+    display: flex; align-items: center; gap: 10px; 
+}
 .wave-icon { color: #FFD700; animation: wave 1.5s infinite; }
+.dashed-border-bottom {
+    height: 6px; width: 100%; opacity: 0.3;
+    background: repeating-linear-gradient(to right, #fff, #fff 10px, transparent 10px, transparent 20px);
+}
 
 /* --- ABOUT VIEW & CARDS --- */
 .section-title {
