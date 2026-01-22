@@ -199,4 +199,33 @@ body {
 
 /* Responsive */
 @media (max-width: 400px) { .name { font-size: 1.8rem; } .btn-grid { grid-template-columns: 1fr; } }
-    
+/* Add to the end of style.css */
+.stranger-portal-btn {
+    display: inline-block;
+    background: #000;
+    color: #ff0000; /* Red for danger */
+    text-decoration: none;
+    font-family: 'Courier Prime', monospace;
+    font-weight: bold;
+    font-size: 1.1rem;
+    padding: 15px 30px;
+    border: 2px solid #ff0000;
+    border-radius: 5px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    position: relative;
+    overflow: hidden;
+    transition: 0.3s;
+    animation: redPulse 2s infinite;
+}
+.stranger-portal-btn:hover {
+    background: #ff0000;
+    color: #000;
+    box-shadow: 0 0 30px rgba(255, 0, 0, 0.6);
+}
+@keyframes redPulse {
+    0% { box-shadow: 0 0 10px rgba(255, 0, 0, 0.3); }
+    50% { box-shadow: 0 0 25px rgba(255, 0, 0, 0.7); }
+    100% { box-shadow: 0 0 10px rgba(255, 0, 0, 0.3); }
+}
+
