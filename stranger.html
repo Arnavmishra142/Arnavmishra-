@@ -5,9 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>THE UPSIDE DOWN</title>
     <link href="https://fonts.googleapis.com/css2?family=Creepster&family=Rubik+Glitch&family=VT323&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
-        /* --- PREMIUM CSS (Fixed & Sharp) --- */
+        /* --- PREMIUM CSS --- */
         body {
             background-color: #050000;
             color: #d1d1d1;
@@ -24,15 +25,65 @@
             100% { transform: rotate(0deg) scale(1); filter: blur(0) hue-rotate(0deg); opacity: 1; }
         }
 
-        /* TV Scanlines Effect */
+        /* --- SOUND CONTROL BUTTON (Top Right) --- */
+        .sound-btn-container {
+            position: fixed; top: 20px; right: 20px; z-index: 1000;
+        }
+        .sound-toggle-btn {
+            background: rgba(0, 0, 0, 0.6);
+            border: 2px solid #ff0000;
+            color: #ff0000;
+            width: 50px; height: 50px;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.2rem; cursor: pointer;
+            backdrop-filter: blur(5px);
+            box-shadow: 0 0 15px rgba(255, 0, 0, 0.4);
+            transition: 0.3s;
+        }
+        .sound-toggle-btn:hover {
+            background: #ff0000; color: #000;
+            box-shadow: 0 0 25px #ff0000;
+        }
+
+        /* --- GLASS POPUP (Auto Show) --- */
+        .glass-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.4); /* Semi-transparent */
+            backdrop-filter: blur(8px); /* The Glass Effect */
+            z-index: 2000;
+            display: none; /* Hidden initially */
+            align-items: center; justify-content: center;
+            animation: fadeIn 0.5s ease-out;
+        }
+        .glass-box {
+            background: rgba(20, 0, 0, 0.8);
+            border: 2px solid #ff0000;
+            padding: 30px; border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 0 40px rgba(255, 0, 0, 0.3);
+            max-width: 80%;
+        }
+        .glass-title {
+            font-family: 'Creepster', cursive; font-size: 2rem; color: #ff0000;
+            margin-bottom: 10px; letter-spacing: 2px;
+        }
+        .glass-text { font-size: 1.2rem; margin-bottom: 20px; color: #ccc; }
+        .glass-btn {
+            background: #ff0000; color: #000; border: none;
+            padding: 10px 25px; font-family: 'VT323', monospace;
+            font-size: 1.3rem; font-weight: bold; cursor: pointer;
+            border-radius: 5px; transition: 0.3s;
+        }
+        .glass-btn:hover { background: #fff; box-shadow: 0 0 20px #ff0000; }
+
+        /* --- ATMOSPHERE --- */
         .crt-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
             background-size: 100% 2px, 3px 100%;
             pointer-events: none; z-index: 999;
         }
-
-        /* Red Fog */
         .fog-container {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: linear-gradient(to bottom, rgba(0,0,0,0.9), rgba(50,0,0,0.4));
@@ -43,8 +94,6 @@
             0% { box-shadow: inset 0 0 50px #000; }
             100% { box-shadow: inset 0 0 150px #300; }
         }
-
-        /* Lightning */
         .lightning-flash {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(255, 255, 255, 0.15);
@@ -66,8 +115,7 @@
 
         /* HOST IMAGE */
         .profile-wrapper {
-            position: relative; margin-top: 30px;
-            width: 150px; height: 150px;
+            position: relative; margin-top: 30px; width: 150px; height: 150px;
         }
         .profile-img {
             width: 100%; height: 100%; border-radius: 50%; object-fit: cover;
@@ -76,13 +124,10 @@
             box-shadow: 0 0 30px rgba(255, 0, 0, 0.6);
         }
 
-        /* --- TITLE FIX (Sharp & Clear) --- */
+        /* TITLE */
         h1 {
-            font-family: 'Creepster', cursive;
-            font-size: 3.2rem;
-            color: #ff0000;
+            font-family: 'Creepster', cursive; font-size: 3.2rem; color: #ff0000;
             text-align: center; margin: 20px 0 30px 0; letter-spacing: 3px;
-            /* Dark Outline for readability */
             text-shadow: 3px 3px 0px #1a0000, 0 0 15px rgba(255, 0, 0, 0.6);
             animation: subtleFlicker 5s infinite alternate;
         }
@@ -105,16 +150,12 @@
         @keyframes popIn { to { transform: scale(1); opacity: 1; } }
 
         .steve-header { display: flex; align-items: center; gap: 15px; }
-        .steve-img {
-            width: 70px; height: 70px; border-radius: 50%; object-fit: cover; border: 2px solid #888;
-        }
+        .steve-img { width: 70px; height: 70px; border-radius: 50%; object-fit: cover; border: 2px solid #888; }
         .steve-name { color: #888; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; }
-        
         .steve-msg { 
             font-size: 1.3rem; line-height: 1.4; color: #fff; 
             border-left: 3px solid #ff0000; padding-left: 15px;
         }
-        
         .input-area { display: flex; margin-top: 10px; border: 1px solid #ff0000; }
         input {
             background: #000; border: none; color: #ff0000; padding: 15px; flex: 1;
@@ -132,7 +173,6 @@
             box-shadow: 0 0 50px rgba(0,0,0,0.8);
         }
         .wall-bg { width: 100%; height: auto; display: block; opacity: 0.8; }
-        
         .lights-grid {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
             display: grid; grid-template-columns: repeat(8, 1fr); 
@@ -142,7 +182,6 @@
             width: 14px; height: 14px; border-radius: 50%; margin: auto;
             background: #222; transition: 0.1s;
         }
-        
         .bulb.glow { 
             background: #fff; transform: scale(1.5); 
             box-shadow: 0 0 15px #fff, 0 0 30px currentColor; z-index: 2;
@@ -155,22 +194,16 @@
         }
         @keyframes shake {
             0% { transform: translate(1px, 1px) rotate(0deg); }
-            10% { transform: translate(-1px, -2px) rotate(-1deg); }
-            20% { transform: translate(-3px, 0px) rotate(1deg); }
-            30% { transform: translate(3px, 2px) rotate(0deg); }
-            40% { transform: translate(1px, -1px) rotate(1deg); }
             50% { transform: translate(-1px, 2px) rotate(-1deg); }
-            60% { transform: translate(-3px, 1px) rotate(0deg); }
-            70% { transform: translate(3px, 1px) rotate(-1deg); }
-            80% { transform: translate(-1px, -1px) rotate(1deg); }
-            90% { transform: translate(1px, 2px) rotate(0deg); }
             100% { transform: translate(1px, -2px) rotate(-1deg); }
         }
-
         .back-link {
             margin-top: 50px; color: #555; text-decoration: none; 
-            border-bottom: 1px dashed #555; font-size: 1rem;
+            border-bottom: 1px dashed #555; font-size: 1rem; margin-bottom: 30px;
         }
+        
+        /* Animations */
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
     </style>
 </head>
 <body>
@@ -181,8 +214,21 @@
 
     <audio id="bg-music" loop src="stranger_theme.mp3" preload="auto"></audio>
 
+    <div class="sound-btn-container">
+        <button onclick="toggleSound()" class="sound-toggle-btn" id="soundBtn">
+            <i class="fas fa-volume-mute"></i>
+        </button>
+    </div>
+
+    <div id="startPopup" class="glass-overlay">
+        <div class="glass-box">
+            <div class="glass-title">⚠️ WARNING</div>
+            <p class="glass-text">Entering the Upside Down.<br>Enable sound for full experience?</p>
+            <button onclick="enableSound()" class="glass-btn">TURN ON 🔊</button>
+        </div>
+    </div>
+
     <div class="container">
-        
         <div class="profile-wrapper">
             <img src="me_stranger.jpg" alt="Host" class="profile-img">
         </div>
@@ -207,7 +253,6 @@
 
         <div id="wall-panel" class="wall-section">
             <img src="wall.jpg" alt="Wall" class="wall-bg">
-            
             <div class="lights-grid">
                 <div class="bulb" id="l-a"></div><div class="bulb" id="l-b"></div><div class="bulb" id="l-c"></div><div class="bulb" id="l-d"></div>
                 <div class="bulb" id="l-e"></div><div class="bulb" id="l-f"></div><div class="bulb" id="l-g"></div><div class="bulb" id="l-h"></div>
@@ -225,22 +270,62 @@
 
     <script>
         const music = document.getElementById('bg-music');
-        
-        // Music plays on first click anywhere
-        window.addEventListener('click', () => {
-            if(music.paused) { music.volume = 0.6; music.play(); }
-        }, { once: true });
+        const popup = document.getElementById('startPopup');
+        const soundBtn = document.getElementById('soundBtn');
+        let isPlaying = false;
 
+        // 1. Show Popup after 1 second
+        window.onload = () => {
+            setTimeout(() => {
+                popup.style.display = 'flex';
+            }, 1000);
+        };
+
+        // 2. Enable Sound Function (Called by Popup)
+        function enableSound() {
+            music.volume = 0.6;
+            music.play().then(() => {
+                isPlaying = true;
+                updateIcon();
+                popup.style.display = 'none'; // Hide popup
+            }).catch(e => console.log("Audio blocked"));
+        }
+
+        // 3. Toggle Sound Button Function
+        function toggleSound() {
+            if (isPlaying) {
+                music.pause();
+                isPlaying = false;
+            } else {
+                music.play();
+                isPlaying = true;
+            }
+            updateIcon();
+        }
+
+        function updateIcon() {
+            if (isPlaying) {
+                soundBtn.innerHTML = '<i class="fas fa-volume-up"></i>';
+                soundBtn.style.boxShadow = "0 0 25px #00ff00"; // Green glow when on
+                soundBtn.style.borderColor = "#00ff00";
+                soundBtn.style.color = "#00ff00";
+            } else {
+                soundBtn.innerHTML = '<i class="fas fa-volume-mute"></i>';
+                soundBtn.style.boxShadow = "0 0 15px #ff0000"; // Red glow when off
+                soundBtn.style.borderColor = "#ff0000";
+                soundBtn.style.color = "#ff0000";
+            }
+        }
+
+        // --- GAME LOGIC ---
         function startExperience() {
             const name = document.getElementById('nameInput').value;
             if(!name) return;
 
-            // Steve Reacts
             document.getElementById('input-box').style.display = 'none';
             document.getElementById('steve-text').innerHTML = `"Okay <strong>${name}</strong>... stay quiet. Something is coming."`;
 
             setTimeout(() => {
-                // Switch to Wall
                 document.getElementById('steve-panel').style.opacity = '0';
                 setTimeout(() => {
                     document.getElementById('steve-panel').style.display = 'none';
@@ -253,27 +338,22 @@
         function playLightSequence() {
             const msg = "HESHERE";
             let i = 0;
-            
             const interval = setInterval(() => {
                 if(i >= msg.length) {
                     clearInterval(interval);
                     showFinalScare();
                     return;
                 }
-
                 const char = msg[i].toLowerCase();
                 let bulbId = 'l-' + char;
                 let bulb = document.getElementById(bulbId);
                 
                 if(bulb) {
-                    // Random colors logic
                     const colors = ['#ff0000', '#00ffff', '#ffff00', '#ff00ff'];
                     const color = colors[Math.floor(Math.random() * colors.length)];
-                    
                     bulb.style.backgroundColor = color;
-                    bulb.style.color = color; // For shadow
+                    bulb.style.color = color;
                     bulb.classList.add('glow');
-                    
                     setTimeout(() => {
                         bulb.classList.remove('glow');
                         bulb.style.backgroundColor = '#222';
