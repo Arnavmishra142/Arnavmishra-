@@ -3,227 +3,264 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Upside Down | Arnav Mishra</title>
+    <title>The Upside Down</title>
     <link href="https://fonts.googleapis.com/css2?family=Creepster&family=VT323&display=swap" rel="stylesheet">
     
     <style>
-        /* --- CSS YAHIN PAR HAI AB --- */
-        body.upside-down-body {
-            background-color: #0a0000;
-            color: #e0e0e0;
+        /* --- PREMIUM STRANGER THINGS THEME --- */
+        body {
+            background-color: #050000;
+            color: #d1d1d1;
             font-family: 'VT323', monospace;
             margin: 0; padding: 0;
             overflow-x: hidden;
-            background-image: repeating-linear-gradient(
-                0deg, rgba(0, 0, 0, 0.2) 0px, rgba(0, 0, 0, 0.2) 1px, transparent 1px, transparent 2px
-            ), linear-gradient(to bottom, #1a0000, #000);
-            /* Flip Animation */
-            animation: rotateEntrance 1.5s ease-out forwards;
+            height: 100vh;
+            /* The Flip Entrance */
+            animation: turnUpsideDown 2s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards;
         }
 
-        @keyframes rotateEntrance {
-            0% { transform: rotate(180deg) scale(0.8); opacity: 0; filter: blur(5px); }
-            100% { transform: rotate(0deg) scale(1); opacity: 1; filter: blur(0); }
+        @keyframes turnUpsideDown {
+            0% { transform: rotate(180deg) scale(0.5); filter: blur(10px) hue-rotate(90deg); opacity: 0; }
+            100% { transform: rotate(0deg) scale(1); filter: blur(0) hue-rotate(0deg); opacity: 1; }
         }
 
-        .stranger-wrapper {
-            padding: 20px; max-width: 600px; margin: 0 auto; min-height: 100vh; 
-            position: relative; z-index: 10;
+        /* --- CRT TV SCANLINE EFFECT (The 80s Vibe) --- */
+        .crt-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            background-size: 100% 2px, 3px 100%;
+            pointer-events: none; z-index: 999;
+        }
+
+        .container {
+            max-width: 600px; margin: 0 auto; padding: 20px;
             display: flex; flex-direction: column; align-items: center;
+            position: relative; z-index: 10;
         }
 
-        /* Spores */
-        .spores-container { position: fixed; top:0; left:0; width:100%; height:100%; pointer-events: none; z-index: 1; }
+        /* --- SPORES (Atmosphere) --- */
         .spore {
-            position: absolute; width: 3px; height: 3px; background: rgba(255, 50, 50, 0.6); border-radius: 50%;
-            animation: floatUp 10s infinite linear; bottom: -10px;
+            position: absolute; background: rgba(255, 50, 50, 0.8); border-radius: 50%;
+            width: 4px; height: 4px; box-shadow: 0 0 10px #ff0000;
+            animation: float 8s infinite linear; opacity: 0.7;
         }
-        .spore:nth-child(1) { left: 20%; animation-duration: 8s; }
-        .spore:nth-child(2) { left: 50%; animation-duration: 12s; animation-delay: 2s; }
-        .spore:nth-child(3) { left: 80%; animation-duration: 15s; animation-delay: 1s; }
-        @keyframes floatUp { to { transform: translateY(-110vh) rotate(360deg); } }
-
-        /* Host Section */
-        .host-section { text-align: center; margin-top: 40px; }
-        .host-img {
-            width: 150px; height: 150px; border-radius: 50%; object-fit: cover;
-            border: 3px solid #ff0000;
-            box-shadow: 0 0 20px rgba(255, 0, 0, 0.5);
-            filter: sepia(0.3) contrast(1.2);
-        }
-        .stranger-title {
-            font-family: 'Creepster', cursive; color: #ff0000; font-size: 2.5rem;
-            text-shadow: 0 0 10px #ff0000, 0 0 20px #000; margin-top: 15px; letter-spacing: 2px;
+        @keyframes float { 
+            0% { transform: translateY(100vh) scale(0.5); opacity: 0; } 
+            50% { opacity: 1; } 
+            100% { transform: translateY(-10vh) scale(1.2); opacity: 0; } 
         }
 
-        /* Steve Interaction */
-        .interaction-box { margin-top: 30px; width: 100%; }
-        .steve-container {
-            display: flex; align-items: center; gap: 15px;
-            background: rgba(20, 0, 0, 0.8); border: 2px solid #550000; 
-            padding: 15px; border-radius: 10px;
+        /* --- PROFILE IMAGE (Host) --- */
+        .profile-wrapper {
+            position: relative; margin-top: 30px;
+            width: 140px; height: 140px;
         }
-        .steve-gif { width: 80px; height: 80px; border-radius: 50%; border: 2px solid #888; object-fit: cover; }
-        .dialogue-box { flex: 1; }
-        .steve-text { color: #ccc; font-size: 1.2rem; margin: 0 0 10px 0; }
-        .input-group { display: flex; gap: 10px; }
-        #userNameInput {
-            flex: 1; padding: 10px; background: #000; border: 1px solid #ff0000; 
-            color: #ff0000; font-family: 'VT323', monospace; font-size: 1.1rem;
+        .profile-img {
+            width: 100%; height: 100%; border-radius: 50%; object-fit: cover;
+            border: 3px solid #aa0000;
+            filter: contrast(1.2) sepia(0.4);
+            box-shadow: 0 0 30px rgba(170, 0, 0, 0.6);
         }
-        .submit-btn {
-            padding: 10px 15px; background: #ff0000; border: none; color: #000; 
-            font-family: 'VT323', monospace; font-weight: bold; cursor: pointer;
+        /* Red Glowing Ring */
+        .profile-wrapper::before {
+            content: ''; position: absolute; top: -10px; left: -10px; right: -10px; bottom: -10px;
+            border-radius: 50%; border: 2px dashed #ff0000;
+            animation: spin 10s linear infinite; opacity: 0.5;
         }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
 
-        /* Wall & Lights */
-        .wall-container { margin-top: 40px; width: 100%; text-align: center; }
-        .vt323-text { font-size: 1.4rem; color: #ff0000; margin-bottom: 20px; }
+        h1 {
+            font-family: 'Creepster', cursive; font-size: 3.5rem; color: #cc0000;
+            text-shadow: 0 0 10px #ff0000, 4px 4px 0px #000;
+            margin: 10px 0 30px 0; text-align: center; letter-spacing: 2px;
+            animation: pulseText 3s infinite;
+        }
+        @keyframes pulseText { 50% { text-shadow: 0 0 25px #ff0000, 4px 4px 0px #000; } }
+
+        /* --- STEVE DIALOG BOX --- */
+        .steve-box {
+            background: rgba(10, 0, 0, 0.9); border: 2px solid #550000;
+            border-radius: 12px; padding: 15px; width: 100%;
+            display: flex; gap: 15px; align-items: center;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
+            transform: translateY(20px); opacity: 0;
+            animation: slideUp 0.8s forwards 1s;
+        }
+        @keyframes slideUp { to { transform: translateY(0); opacity: 1; } }
+
+        .steve-img {
+            width: 70px; height: 70px; border-radius: 10px; object-fit: cover; border: 2px solid #888;
+        }
+        .dialog-content { flex: 1; }
+        .steve-name { color: #888; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px; }
+        .steve-msg { font-size: 1.2rem; line-height: 1.3; color: #ddd; }
         
-        .alphabet-wall {
-            display: grid; grid-template-columns: repeat(8, 1fr); gap: 5px;
-            /* Wall Texture Image */
-            background: #2b1d1d url('https://img.freepik.com/free-photo/grunge-concrete-texture_1194-6644.jpg') no-repeat center center;
-            background-size: cover;
-            padding: 20px; border-radius: 10px; border: 3px solid #330000;
+        .input-area {
+            display: flex; margin-top: 10px; border: 1px solid #550000;
         }
-        .light-bulb {
-            font-family: 'Creepster', cursive; font-size: 1.5rem; color: #444;
-            position: relative; height: 40px; display: flex; align-items: center; justify-content: center;
+        input {
+            background: #000; border: none; color: #ff0000; padding: 10px; flex: 1;
+            font-family: 'VT323', monospace; font-size: 1.2rem; outline: none;
         }
-        /* Glow Classes */
-        .glow { color: #ff0000; text-shadow: 0 0 15px #ff0000, 0 0 30px #ff0000; transform: scale(1.2); }
-        
-        .final-text {
-            font-family: 'Creepster', cursive; color: #ff0000; font-size: 2.5rem; margin-top: 30px;
-            text-shadow: 0 0 20px #ff0000; animation: glitchText 0.3s infinite;
-        }
-        @keyframes glitchText {
-            0% { transform: translate(0); } 25% { transform: translate(-2px, 2px); } 50% { transform: translate(2px, -2px); } 75% { transform: translate(-2px, 0); } 100% { transform: translate(0); }
+        button {
+            background: #990000; color: #fff; border: none; padding: 0 20px;
+            font-family: 'VT323', monospace; font-size: 1.1rem; cursor: pointer;
         }
 
-        .escape-btn { 
-            margin-top: 50px; display: inline-block; color: #888; text-decoration: none; 
-            font-size: 1rem; border: 1px solid #333; padding: 10px 20px; margin-bottom: 50px;
+        /* --- THE WALL (Background Image) --- */
+        .wall-section {
+            margin-top: 40px; width: 100%; position: relative; display: none;
+        }
+        .wall-bg {
+            width: 100%; border-radius: 10px; border: 4px solid #3e2723;
+            box-shadow: inset 0 0 50px #000;
+            display: block;
         }
         
-        /* Animations */
-        .fade-in { animation: fadeIn 1s ease-out; }
-        .fade-in-delay { opacity: 0; animation: fadeIn 1s ease-out 1s forwards; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        /* Lights Overlay Grid */
+        .lights-grid {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            display: grid; grid-template-columns: repeat(8, 1fr); grid-template-rows: repeat(3, 1fr);
+            padding: 10% 5%; box-sizing: border-box;
+        }
+        
+        .bulb {
+            width: 15px; height: 15px; border-radius: 50%; margin: auto;
+            background: #333; opacity: 0.3; transition: 0.1s;
+            box-shadow: 0 0 0 transparent;
+        }
+        
+        /* Glow Colors */
+        .bulb.active-red { background: #ff0000; opacity: 1; box-shadow: 0 0 20px #ff0000, 0 0 40px #ff0000; }
+        .bulb.active-green { background: #00ff00; opacity: 1; box-shadow: 0 0 20px #00ff00, 0 0 40px #00ff00; }
+        .bulb.active-blue { background: #0088ff; opacity: 1; box-shadow: 0 0 20px #0088ff, 0 0 40px #0088ff; }
+        .bulb.active-yellow { background: #ffff00; opacity: 1; box-shadow: 0 0 20px #ffff00, 0 0 40px #ffff00; }
+
+        .message-display {
+            text-align: center; color: #ff0000; font-size: 1.5rem; margin-bottom: 10px; min-height: 30px;
+        }
+
+        .back-link {
+            margin-top: 50px; color: #444; text-decoration: none; border-bottom: 1px dashed #444; font-size: 0.9rem;
+        }
     </style>
 </head>
-<body class="upside-down-body">
+<body>
 
-    <audio id="stranger-music" loop src="stranger_theme.mp3"></audio>
+    <div class="crt-overlay"></div>
 
-    <div class="spores-container">
-        <div class="spore"></div><div class="spore"></div><div class="spore"></div>
-    </div>
+    <audio id="bg-music" loop src="stranger_theme.mp3"></audio>
 
-    <div class="stranger-wrapper">
+    <div class="spore" style="left: 10%; animation-duration: 6s;"></div>
+    <div class="spore" style="left: 30%; animation-duration: 9s;"></div>
+    <div class="spore" style="left: 70%; animation-duration: 7s;"></div>
+    <div class="spore" style="left: 90%; animation-duration: 11s;"></div>
+
+    <div class="container">
         
-        <div class="host-section fade-in">
-            <img src="https://imarnavin.wordpress.com/wp-content/uploads/2026/01/image_editor_output_image-900633096-17689630363507786449788545237875.jpg" alt="Host Arnav" class="host-img">
-            <h1 class="stranger-title">Welcome to the <br> Upside Down.</h1>
+        <div class="profile-wrapper">
+            <img src="me_stranger.jpg" alt="Arnav" class="profile-img">
         </div>
 
-        <div id="steve-section" class="interaction-box fade-in-delay">
-            <div class="steve-container">
-                <img src="https://media.tenor.com/images/7a867076404476507106600557766072/tenor.gif" alt="Steve" class="steve-gif">
-                <div class="dialogue-box">
-                    <p class="steve-text">"Steve here. Who are you? We don't have much time..."</p>
-                    <div class="input-group">
-                        <input type="text" id="userNameInput" placeholder="ENTER YOUR NAME" autocomplete="off">
-                        <button onclick="submitName()" class="submit-btn">TELL HIM</button>
-                    </div>
+        <h1>WELCOME TO THE<br>UPSIDE DOWN.</h1>
+
+        <div id="steve-panel" class="steve-box">
+            <img src="steve.png" alt="Steve" class="steve-img">
+            <div class="dialog-content">
+                <div class="steve-name">Steve Harrington</div>
+                <div class="steve-msg" id="steve-text">"Wait.. I don't recognize you. Who are you?"</div>
+                
+                <div class="input-area" id="input-box">
+                    <input type="text" id="nameInput" placeholder="TYPE YOUR NAME..." autocomplete="off">
+                    <button onclick="startExperience()">SEND</button>
                 </div>
             </div>
         </div>
 
-        <div id="wall-section" class="wall-container" style="display: none;">
-            <p id="wall-message" class="vt323-text"></p>
+        <div id="wall-panel" class="wall-section">
+            <div class="message-display" id="wall-status"></div>
             
-            <div class="alphabet-wall">
-                <div class="light-bulb" id="light-H">H</div><div class="light-bulb" id="light-E">E</div><div class="light-bulb" id="light-S">S</div><div class="light-bulb" id="light-C">C</div>
-                <div class="light-bulb" id="light-O">O</div><div class="light-bulb" id="light-M">M</div><div class="light-bulb" id="light-I">I</div><div class="light-bulb" id="light-N">N</div>
-                <div class="light-bulb" id="light-G">G</div><div class="light-bulb">R</div><div class="light-bulb">U</div><div class="light-bulb">N</div>
-                <div class="light-bulb">A</div><div class="light-bulb">B</div><div class="light-bulb">D</div><div class="light-bulb">F</div>
+            <div style="position: relative;">
+                <img src="wall.jpg" alt="Wall" class="wall-bg">
+                
+                <div class="lights-grid">
+                    <div class="bulb" id="l-a"></div><div class="bulb" id="l-b"></div><div class="bulb" id="l-c"></div><div class="bulb" id="l-d"></div>
+                    <div class="bulb" id="l-e"></div><div class="bulb" id="l-f"></div><div class="bulb" id="l-g"></div><div class="bulb" id="l-h"></div>
+                    <div class="bulb" id="l-i"></div><div class="bulb" id="l-j"></div><div class="bulb" id="l-k"></div><div class="bulb" id="l-l"></div>
+                    <div class="bulb" id="l-m"></div><div class="bulb" id="l-n"></div><div class="bulb" id="l-o"></div><div class="bulb" id="l-p"></div>
+                    <div class="bulb" id="l-q"></div><div class="bulb" id="l-r"></div><div class="bulb" id="l-s"></div><div class="bulb" id="l-t"></div>
+                    <div class="bulb" id="l-u"></div><div class="bulb" id="l-v"></div><div class="bulb" id="l-w"></div><div class="bulb" id="l-x"></div>
+                </div>
             </div>
-
-            <div id="final-warning" class="final-text" style="opacity: 0;">
-                HE IS COMING. RUN.
-            </div>
+            
+            <h2 id="run-warning" style="color: red; font-family: 'Creepster'; font-size: 3rem; text-align: center; display: none; text-shadow: 0 0 20px red;">HE IS HERE. RUN!</h2>
         </div>
 
-        <a href="index.html" class="escape-btn">ESCAPE TO REALITY</a>
-
+        <a href="index.html" class="back-link">ESCAPE TO REALITY</a>
     </div>
 
     <script>
-        const music = document.getElementById('stranger-music');
-        const steveSection = document.getElementById('steve-section');
-        const wallSection = document.getElementById('wall-section');
-        const wallMessage = document.getElementById('wall-message');
-        const steveText = document.querySelector('.steve-text');
-        const nameInput = document.getElementById('userNameInput');
+        const music = document.getElementById('bg-music');
+        
+        // Music starts on first click anywhere
+        window.addEventListener('click', () => {
+            if(music.paused) {
+                music.volume = 0.6;
+                music.play();
+            }
+        }, { once: true });
 
-        window.addEventListener('load', () => {
-            // Try to play audio, user might need to interact first
-            music.volume = 0.5;
-            document.body.addEventListener('click', () => music.play(), { once: true });
-        });
+        function startExperience() {
+            const name = document.getElementById('nameInput').value;
+            if(!name) return;
 
-        function submitName() {
-            const name = nameInput.value.trim();
-            if (name === "") return;
-
-            steveText.innerHTML = `"Hold on <strong>${name}</strong>... Watch the wall..."`;
-            music.play();
+            // Steve Reacts
+            document.getElementById('input-box').style.display = 'none';
+            document.getElementById('steve-text').innerHTML = `"Okay <strong>${name}</strong>... stay quiet. Something is trying to communicate."`;
 
             setTimeout(() => {
-                steveSection.style.opacity = '0';
-                steveSection.style.transition = 'opacity 1s';
+                // Hide Steve, Show Wall
+                document.getElementById('steve-panel').style.display = 'none';
+                document.getElementById('wall-panel').style.display = 'block';
                 
-                setTimeout(() => {
-                    steveSection.style.display = 'none';
-                    wallSection.style.display = 'block';
-                    startLightMessage();
-                }, 1000);
-            }, 2000);
+                setTimeout(playLightSequence, 1000);
+            }, 3000);
         }
 
-        const messageSequence = ['H', 'E', 'S', 'C', 'O', 'M', 'I', 'N', 'G'];
-        let seqIndex = 0;
+        function playLightSequence() {
+            const msg = "HESCOMING";
+            const colors = ['active-red', 'active-blue', 'active-green', 'active-yellow'];
+            let i = 0;
 
-        function startLightMessage() {
-            wallMessage.textContent = "SOMETHING IS SPEAKING...";
-            
+            document.getElementById('wall-status').innerText = "LISTENING...";
+
             const interval = setInterval(() => {
-                if (seqIndex >= messageSequence.length) {
+                if(i >= msg.length) {
                     clearInterval(interval);
-                    endSequence();
+                    showFinalScare();
                     return;
                 }
 
-                const letter = messageSequence[seqIndex];
-                const bulb = document.getElementById(`light-${letter}`);
+                const char = msg[i].toLowerCase();
+                // Map letters to grid positions roughly
+                // (Using logic: a-h row 1, i-p row 2, q-x row 3)
+                // This is a simplified mapping for visual effect
+                let bulbId = 'l-' + char;
+                let bulb = document.getElementById(bulbId);
                 
                 if(bulb) {
-                    bulb.classList.add('glow');
-                    setTimeout(() => bulb.classList.remove('glow'), 600);
+                    let randomColor = colors[Math.floor(Math.random() * colors.length)];
+                    bulb.classList.add(randomColor);
+                    setTimeout(() => bulb.classList.remove(randomColor), 600);
                 }
-
-                seqIndex++;
+                i++;
             }, 800);
         }
 
-        function endSequence() {
-            setTimeout(() => {
-                document.getElementById('final-warning').style.opacity = '1';
-                wallMessage.textContent = "";
-                music.volume = 1.0; 
-            }, 1000);
+        function showFinalScare() {
+            document.getElementById('wall-status').innerText = "";
+            document.getElementById('run-warning').style.display = 'block';
+            music.volume = 1.0; // Full volume
         }
     </script>
 </body>
