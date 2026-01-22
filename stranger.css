@@ -1,1 +1,112 @@
+/* --- STRANGER THINGS THEME --- */
+body.upside-down-body {
+    background-color: #0a0000; /* Deep dark red/black */
+    color: #e0e0e0;
+    font-family: 'VT323', monospace; /* Retro terminal font */
+    margin: 0; padding: 0;
+    overflow-x: hidden;
+    /* The FLIP animation on load */
+    animation: rotateEntrance 1.5s ease-out forwards;
+    background-image: repeating-linear-gradient(
+        0deg,
+        rgba(0, 0, 0, 0.2) 0px,
+        rgba(0, 0, 0, 0.2) 1px,
+        transparent 1px,
+        transparent 2px
+      ), linear-gradient(to bottom, #1a0000, #000);
+}
+
+@keyframes rotateEntrance {
+    0% { transform: rotate(180deg) scale(0.8); opacity: 0; filter: blur(5px); }
+    100% { transform: rotate(0deg) scale(1); opacity: 1; filter: blur(0); }
+}
+
+.stranger-wrapper {
+    padding: 20px; max-width: 600px; margin: 0 auto; min-height: 100vh; position: relative; z-index: 10;
+    display: flex; flex-direction: column; align-items: center;
+}
+
+/* --- SPORES ATMOSPHERE --- */
+.spores-container { position: fixed; top:0; left:0; width:100%; height:100%; pointer-events: none; z-index: 1; }
+.spore {
+    position: absolute; width: 3px; height: 3px; background: rgba(255, 50, 50, 0.6); border-radius: 50%;
+    animation: floatUp 10s infinite linear; bottom: -10px;
+}
+.spore:nth-child(1) { left: 20%; animation-duration: 8s; animation-delay: 0s; }
+.spore:nth-child(2) { left: 50%; animation-duration: 12s; animation-delay: 2s; }
+.spore:nth-child(3) { left: 80%; animation-duration: 15s; animation-delay: 1s; }
+.spore:nth-child(4) { left: 35%; animation-duration: 9s; animation-delay: 4s; }
+@keyframes floatUp { to { transform: translateY(-110vh) rotate(360deg); } }
+
+/* --- HOST SECTION --- */
+.host-section { text-align: center; margin-top: 40px; }
+.host-img {
+    width: 120px; height: 120px; border-radius: 50%; object-fit: cover;
+    border: 3px solid #ff0000;
+    box-shadow: 0 0 20px rgba(255, 0, 0, 0.5);
+    filter: sepia(0.3) contrast(1.2);
+}
+.stranger-title {
+    font-family: 'Creepster', cursive; color: #ff0000; font-size: 2.5rem;
+    text-shadow: 0 0 10px #ff0000, 0 0 20px #000; margin-top: 15px;
+    letter-spacing: 2px;
+}
+
+/* --- STEVE INTERACTION --- */
+.interaction-box { margin-top: 30px; width: 100%; }
+.steve-container {
+    display: flex; align-items: center; gap: 15px;
+    background: rgba(20, 0, 0, 0.8); border: 2px solid #550000; padding: 15px; border-radius: 10px;
+}
+.steve-gif { width: 80px; height: 80px; border-radius: 50%; border: 2px solid #888; object-fit: cover; }
+.dialogue-box { flex: 1; }
+.steve-text { color: #ccc; font-size: 1.2rem; margin-bottom: 15px; }
+.input-group { display: flex; gap: 10px; }
+#userNameInput {
+    flex: 1; padding: 10px; background: #000; border: 1px solid #ff0000; color: #ff0000; font-family: 'VT323', monospace; font-size: 1.1rem;
+}
+.submit-btn {
+    padding: 10px 15px; background: #ff0000; border: none; color: #000; font-family: 'VT323', monospace; font-weight: bold; cursor: pointer; transition: 0.3s;
+}
+.submit-btn:hover { background: #fff; box-shadow: 0 0 15px #ff0000; }
+
+/* --- WALL & LIGHTS --- */
+.wall-container { margin-top: 40px; width: 100%; text-align: center; }
+.vt323-text { font-size: 1.4rem; color: #ff0000; margin-bottom: 20px; }
+
+.alphabet-wall {
+    display: grid; grid-template-columns: repeat(8, 1fr); gap: 10px;
+    background: url('https://i.pinimg.com/originals/23/06/76/230676345727d8234b61371033331661.jpg'); /* Wall texture */
+    background-size: cover; padding: 20px; border-radius: 10px; border: 3px solid #330000;
+}
+.light-bulb {
+    font-family: 'Creepster', cursive; font-size: 1.5rem; color: #333;
+    text-shadow: none; position: relative; height: 40px; display: flex; align-items: center; justify-content: center;
+}
+/* Bulb wires aesthetic */
+.light-bulb::before {
+    content: ''; position: absolute; top: -15px; left: 50%; transform: translateX(-50%);
+    width: 2px; height: 15px; background: #222;
+}
+
+/* Light Colors & Glow Classes */
+.c1.glow { color: #ff0000; text-shadow: 0 0 15px #ff0000, 0 0 30px #ff0000; } /* Red */
+.c2.glow { color: #00ff00; text-shadow: 0 0 15px #00ff00, 0 0 30px #00ff00; } /* Green */
+.c3.glow { color: #0088ff; text-shadow: 0 0 15px #0088ff, 0 0 30px #0088ff; } /* Blue */
+.c4.glow { color: #ffff00; text-shadow: 0 0 15px #ffff00, 0 0 30px #ffff00; } /* Yellow */
+
+.final-text {
+    font-family: 'Creepster', cursive; color: #ff0000; font-size: 3rem; margin-top: 30px;
+    text-shadow: 0 0 20px #ff0000; animation: glitchText 0.3s infinite;
+}
+@keyframes glitchText {
+    0% { transform: translate(0); } 20% { transform: translate(-2px, 2px); color: #fff; } 40% { transform: translate(2px, -2px); } 60% { transform: translate(-2px, 0); color: #ff0000; } 100% { transform: translate(0); }
+}
+
+.escape-btn { margin-top: 50px; color: #888; text-decoration: none; font-size: 1rem; border: 1px solid #333; padding: 10px 20px; }
+
+/* Animations */
+.fade-in { animation: fadeIn 1s ease-out; }
+.fade-in-delay { opacity: 0; animation: fadeIn 1s ease-out 1s forwards; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
