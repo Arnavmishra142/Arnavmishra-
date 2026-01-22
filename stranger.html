@@ -1,1 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Upside Down | Arnav Mishra</title>
+    <link rel="stylesheet" href="stranger.css">
+    <link href="https://fonts.googleapis.com/css2?family=Creepster&family=VT323&display=swap" rel="stylesheet">
+</head>
+<body class="upside-down-body">
+
+    <audio id="stranger-music" loop src="stranger_theme.mp3"></audio>
+
+    <div class="spores-container">
+        <div class="spore"></div><div class="spore"></div><div class="spore"></div><div class="spore"></div>
+    </div>
+
+    <div class="stranger-wrapper">
+        
+        <div class="host-section fade-in">
+            <img src="https://imarnavin.wordpress.com/wp-content/uploads/2026/01/image_editor_output_image-900633096-17689630363507786449788545237875.jpg" alt="Host Arnav" class="host-img">
+            <h1 class="stranger-title">Welcome to the <br> Upside Down.</h1>
+        </div>
+
+        <div id="steve-section" class="interaction-box fade-in-delay">
+            <div class="steve-container">
+                <img src="https://media.tenor.com/images/7a867076404476507106600557766072/tenor.gif" alt="Steve Harrington" class="steve-gif">
+                <div class="dialogue-box">
+                    <p class="steve-text">"Steve here. Who are you? We don't have much time..."</p>
+                    <div class="input-group">
+                        <input type="text" id="userNameInput" placeholder="ENTER YOUR NAME" autocomplete="off">
+                        <button onclick="submitName()" class="submit-btn">TELL HIM</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="wall-section" class="wall-container" style="display: none;">
+            <p id="wall-message" class="vt323-text"></p>
+            
+            <div class="alphabet-wall">
+                <div class="light-bulb c1">A</div><div class="light-bulb c2">B</div><div class="light-bulb c3">C</div><div class="light-bulb c4">D</div><div class="light-bulb c1">E</div><div class="light-bulb c2">F</div><div class="light-bulb c3">G</div><div class="light-bulb c4" id="light-H">H</div>
+                <div class="light-bulb c1" id="light-I">I</div><div class="light-bulb c2">J</div><div class="light-bulb c3">K</div><div class="light-bulb c4">L</div><div class="light-bulb c1" id="light-M">M</div><div class="light-bulb c2" id="light-N">N</div><div class="light-bulb c3" id="light-O">O</div><div class="light-bulb c4">P</div>
+                <div class="light-bulb c1">Q</div><div class="light-bulb c2">R</div><div class="light-bulb c3" id="light-S">S</div><div class="light-bulb c4">T</div><div class="light-bulb c1">U</div><div class="light-bulb c2">V</div><div class="light-bulb c3">W</div><div class="light-bulb c4">X</div>
+                <div class="light-bulb c1">Y</div><div class="light-bulb c2">Z</div>
+            </div>
+
+            <div id="final-warning" class="final-text" style="opacity: 0;">
+                HE IS COMING. RUN.
+            </div>
+        </div>
+
+        <a href="index.html" class="escape-btn">ESCAPE TO REALITY</a>
+
+    </div>
+
+<script src="stranger.js"></script>
+</body>
+                            </html>
 
