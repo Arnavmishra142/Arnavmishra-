@@ -4,15 +4,121 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>The Upside Down | Arnav Mishra</title>
-    <link rel="stylesheet" href="stranger.css">
     <link href="https://fonts.googleapis.com/css2?family=Creepster&family=VT323&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --- CSS YAHIN PAR HAI AB --- */
+        body.upside-down-body {
+            background-color: #0a0000;
+            color: #e0e0e0;
+            font-family: 'VT323', monospace;
+            margin: 0; padding: 0;
+            overflow-x: hidden;
+            background-image: repeating-linear-gradient(
+                0deg, rgba(0, 0, 0, 0.2) 0px, rgba(0, 0, 0, 0.2) 1px, transparent 1px, transparent 2px
+            ), linear-gradient(to bottom, #1a0000, #000);
+            /* Flip Animation */
+            animation: rotateEntrance 1.5s ease-out forwards;
+        }
+
+        @keyframes rotateEntrance {
+            0% { transform: rotate(180deg) scale(0.8); opacity: 0; filter: blur(5px); }
+            100% { transform: rotate(0deg) scale(1); opacity: 1; filter: blur(0); }
+        }
+
+        .stranger-wrapper {
+            padding: 20px; max-width: 600px; margin: 0 auto; min-height: 100vh; 
+            position: relative; z-index: 10;
+            display: flex; flex-direction: column; align-items: center;
+        }
+
+        /* Spores */
+        .spores-container { position: fixed; top:0; left:0; width:100%; height:100%; pointer-events: none; z-index: 1; }
+        .spore {
+            position: absolute; width: 3px; height: 3px; background: rgba(255, 50, 50, 0.6); border-radius: 50%;
+            animation: floatUp 10s infinite linear; bottom: -10px;
+        }
+        .spore:nth-child(1) { left: 20%; animation-duration: 8s; }
+        .spore:nth-child(2) { left: 50%; animation-duration: 12s; animation-delay: 2s; }
+        .spore:nth-child(3) { left: 80%; animation-duration: 15s; animation-delay: 1s; }
+        @keyframes floatUp { to { transform: translateY(-110vh) rotate(360deg); } }
+
+        /* Host Section */
+        .host-section { text-align: center; margin-top: 40px; }
+        .host-img {
+            width: 150px; height: 150px; border-radius: 50%; object-fit: cover;
+            border: 3px solid #ff0000;
+            box-shadow: 0 0 20px rgba(255, 0, 0, 0.5);
+            filter: sepia(0.3) contrast(1.2);
+        }
+        .stranger-title {
+            font-family: 'Creepster', cursive; color: #ff0000; font-size: 2.5rem;
+            text-shadow: 0 0 10px #ff0000, 0 0 20px #000; margin-top: 15px; letter-spacing: 2px;
+        }
+
+        /* Steve Interaction */
+        .interaction-box { margin-top: 30px; width: 100%; }
+        .steve-container {
+            display: flex; align-items: center; gap: 15px;
+            background: rgba(20, 0, 0, 0.8); border: 2px solid #550000; 
+            padding: 15px; border-radius: 10px;
+        }
+        .steve-gif { width: 80px; height: 80px; border-radius: 50%; border: 2px solid #888; object-fit: cover; }
+        .dialogue-box { flex: 1; }
+        .steve-text { color: #ccc; font-size: 1.2rem; margin: 0 0 10px 0; }
+        .input-group { display: flex; gap: 10px; }
+        #userNameInput {
+            flex: 1; padding: 10px; background: #000; border: 1px solid #ff0000; 
+            color: #ff0000; font-family: 'VT323', monospace; font-size: 1.1rem;
+        }
+        .submit-btn {
+            padding: 10px 15px; background: #ff0000; border: none; color: #000; 
+            font-family: 'VT323', monospace; font-weight: bold; cursor: pointer;
+        }
+
+        /* Wall & Lights */
+        .wall-container { margin-top: 40px; width: 100%; text-align: center; }
+        .vt323-text { font-size: 1.4rem; color: #ff0000; margin-bottom: 20px; }
+        
+        .alphabet-wall {
+            display: grid; grid-template-columns: repeat(8, 1fr); gap: 5px;
+            /* Wall Texture Image */
+            background: #2b1d1d url('https://img.freepik.com/free-photo/grunge-concrete-texture_1194-6644.jpg') no-repeat center center;
+            background-size: cover;
+            padding: 20px; border-radius: 10px; border: 3px solid #330000;
+        }
+        .light-bulb {
+            font-family: 'Creepster', cursive; font-size: 1.5rem; color: #444;
+            position: relative; height: 40px; display: flex; align-items: center; justify-content: center;
+        }
+        /* Glow Classes */
+        .glow { color: #ff0000; text-shadow: 0 0 15px #ff0000, 0 0 30px #ff0000; transform: scale(1.2); }
+        
+        .final-text {
+            font-family: 'Creepster', cursive; color: #ff0000; font-size: 2.5rem; margin-top: 30px;
+            text-shadow: 0 0 20px #ff0000; animation: glitchText 0.3s infinite;
+        }
+        @keyframes glitchText {
+            0% { transform: translate(0); } 25% { transform: translate(-2px, 2px); } 50% { transform: translate(2px, -2px); } 75% { transform: translate(-2px, 0); } 100% { transform: translate(0); }
+        }
+
+        .escape-btn { 
+            margin-top: 50px; display: inline-block; color: #888; text-decoration: none; 
+            font-size: 1rem; border: 1px solid #333; padding: 10px 20px; margin-bottom: 50px;
+        }
+        
+        /* Animations */
+        .fade-in { animation: fadeIn 1s ease-out; }
+        .fade-in-delay { opacity: 0; animation: fadeIn 1s ease-out 1s forwards; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
 </head>
 <body class="upside-down-body">
 
     <audio id="stranger-music" loop src="stranger_theme.mp3"></audio>
 
     <div class="spores-container">
-        <div class="spore"></div><div class="spore"></div><div class="spore"></div><div class="spore"></div>
+        <div class="spore"></div><div class="spore"></div><div class="spore"></div>
     </div>
 
     <div class="stranger-wrapper">
@@ -24,7 +130,7 @@
 
         <div id="steve-section" class="interaction-box fade-in-delay">
             <div class="steve-container">
-                <img src="https://media.tenor.com/images/7a867076404476507106600557766072/tenor.gif" alt="Steve Harrington" class="steve-gif">
+                <img src="https://media.tenor.com/images/7a867076404476507106600557766072/tenor.gif" alt="Steve" class="steve-gif">
                 <div class="dialogue-box">
                     <p class="steve-text">"Steve here. Who are you? We don't have much time..."</p>
                     <div class="input-group">
@@ -39,10 +145,10 @@
             <p id="wall-message" class="vt323-text"></p>
             
             <div class="alphabet-wall">
-                <div class="light-bulb c1">A</div><div class="light-bulb c2">B</div><div class="light-bulb c3">C</div><div class="light-bulb c4">D</div><div class="light-bulb c1">E</div><div class="light-bulb c2">F</div><div class="light-bulb c3">G</div><div class="light-bulb c4" id="light-H">H</div>
-                <div class="light-bulb c1" id="light-I">I</div><div class="light-bulb c2">J</div><div class="light-bulb c3">K</div><div class="light-bulb c4">L</div><div class="light-bulb c1" id="light-M">M</div><div class="light-bulb c2" id="light-N">N</div><div class="light-bulb c3" id="light-O">O</div><div class="light-bulb c4">P</div>
-                <div class="light-bulb c1">Q</div><div class="light-bulb c2">R</div><div class="light-bulb c3" id="light-S">S</div><div class="light-bulb c4">T</div><div class="light-bulb c1">U</div><div class="light-bulb c2">V</div><div class="light-bulb c3">W</div><div class="light-bulb c4">X</div>
-                <div class="light-bulb c1">Y</div><div class="light-bulb c2">Z</div>
+                <div class="light-bulb" id="light-H">H</div><div class="light-bulb" id="light-E">E</div><div class="light-bulb" id="light-S">S</div><div class="light-bulb" id="light-C">C</div>
+                <div class="light-bulb" id="light-O">O</div><div class="light-bulb" id="light-M">M</div><div class="light-bulb" id="light-I">I</div><div class="light-bulb" id="light-N">N</div>
+                <div class="light-bulb" id="light-G">G</div><div class="light-bulb">R</div><div class="light-bulb">U</div><div class="light-bulb">N</div>
+                <div class="light-bulb">A</div><div class="light-bulb">B</div><div class="light-bulb">D</div><div class="light-bulb">F</div>
             </div>
 
             <div id="final-warning" class="final-text" style="opacity: 0;">
@@ -54,7 +160,71 @@
 
     </div>
 
-<script src="stranger.js"></script>
-</body>
-                            </html>
+    <script>
+        const music = document.getElementById('stranger-music');
+        const steveSection = document.getElementById('steve-section');
+        const wallSection = document.getElementById('wall-section');
+        const wallMessage = document.getElementById('wall-message');
+        const steveText = document.querySelector('.steve-text');
+        const nameInput = document.getElementById('userNameInput');
 
+        window.addEventListener('load', () => {
+            // Try to play audio, user might need to interact first
+            music.volume = 0.5;
+            document.body.addEventListener('click', () => music.play(), { once: true });
+        });
+
+        function submitName() {
+            const name = nameInput.value.trim();
+            if (name === "") return;
+
+            steveText.innerHTML = `"Hold on <strong>${name}</strong>... Watch the wall..."`;
+            music.play();
+
+            setTimeout(() => {
+                steveSection.style.opacity = '0';
+                steveSection.style.transition = 'opacity 1s';
+                
+                setTimeout(() => {
+                    steveSection.style.display = 'none';
+                    wallSection.style.display = 'block';
+                    startLightMessage();
+                }, 1000);
+            }, 2000);
+        }
+
+        const messageSequence = ['H', 'E', 'S', 'C', 'O', 'M', 'I', 'N', 'G'];
+        let seqIndex = 0;
+
+        function startLightMessage() {
+            wallMessage.textContent = "SOMETHING IS SPEAKING...";
+            
+            const interval = setInterval(() => {
+                if (seqIndex >= messageSequence.length) {
+                    clearInterval(interval);
+                    endSequence();
+                    return;
+                }
+
+                const letter = messageSequence[seqIndex];
+                const bulb = document.getElementById(`light-${letter}`);
+                
+                if(bulb) {
+                    bulb.classList.add('glow');
+                    setTimeout(() => bulb.classList.remove('glow'), 600);
+                }
+
+                seqIndex++;
+            }, 800);
+        }
+
+        function endSequence() {
+            setTimeout(() => {
+                document.getElementById('final-warning').style.opacity = '1';
+                wallMessage.textContent = "";
+                music.volume = 1.0; 
+            }, 1000);
+        }
+    </script>
+</body>
+</html>
