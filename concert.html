@@ -26,7 +26,7 @@
         .flashlight { position: absolute; bottom: 0; width: 4px; height: 4px; background: #fff; border-radius: 50%; box-shadow: 0 0 10px 2px rgba(255, 255, 255, 0.8); opacity: 0; animation: waveLight 4s infinite alternate; }
         @keyframes waveLight { 50% { opacity: 0.8; transform: translateY(-10px); } }
 
-        /* --- MAIN LAYOUT (SPLIT SCREEN) --- */
+        /* --- MAIN LAYOUT --- */
         .app-container {
             display: flex; width: 95%; max-width: 1200px; height: 85vh;
             background: rgba(20, 20, 20, 0.85); border: 1px solid rgba(255, 255, 255, 0.1);
@@ -38,12 +38,10 @@
         .library-panel {
             flex: 1; padding: 20px; display: flex; flex-direction: column;
             border-right: 1px solid rgba(255,255,255,0.05);
-            transition: transform 0.4s ease, opacity 0.4s ease;
         }
 
         .header-title { font-family: 'Rock Salt', cursive; color: #FFD700; font-size: 1.2rem; margin-bottom: 5px; text-align: center; }
         .header-subtitle { text-align: center; color: #888; font-size: 0.7rem; margin-bottom: 20px; }
-
         .search-box { width: 100%; margin-bottom: 15px; }
         .search-input { width: 100%; padding: 12px; box-sizing: border-box; border-radius: 30px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.05); color: #fff; font-family: 'Montserrat', sans-serif; outline: none; }
         .search-input:focus { border-color: #FFD700; background: rgba(0,0,0,0.3); }
@@ -57,7 +55,7 @@
         .song-info h4 { margin: 0; font-size: 1rem; font-weight: 600; }
         .song-info p { margin: 0; font-size: 0.8rem; color: #aaa; }
 
-        /* --- RIGHT PANEL: PLAYER (SPOTIFY STYLE) --- */
+        /* --- RIGHT PANEL: PLAYER --- */
         .player-panel {
             flex: 1.5; padding: 30px; display: flex; flex-direction: column; align-items: center;
             background: radial-gradient(circle at center, rgba(30,30,30,0.8), rgba(10,10,10,0.95));
@@ -65,14 +63,17 @@
             transition: transform 0.4s ease, opacity 0.4s ease;
         }
 
-        .back-btn { 
-            position: absolute; top: 20px; left: 20px; background: none; border: none; 
-            color: #fff; font-size: 1.2rem; cursor: pointer; display: none; /* Hidden on Desktop */
-            z-index: 100;
+        /* NEW BACK BUTTON (Only for Mobile) */
+        .nav-btn {
+            position: absolute; top: 20px; left: 20px; 
+            background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); 
+            color: #fff; padding: 8px 15px; border-radius: 30px; cursor: pointer; 
+            display: none; z-index: 100; font-size: 0.9rem; align-items: center; gap: 5px;
         }
+        .nav-btn:hover { background: rgba(255,255,255,0.2); }
 
         .now-playing-art { 
-            width: 180px; margin-bottom: 20px; 
+            width: 180px; margin-bottom: 20px; margin-top: 40px;
             filter: drop-shadow(0 0 25px rgba(255, 215, 0, 0.3)); 
             animation: float 6s ease-in-out infinite;
         }
@@ -82,7 +83,7 @@
         .now-playing-title { font-size: 1.5rem; font-weight: 700; color: #FFD700; margin: 0; }
         .now-playing-artist { font-size: 1rem; color: #aaa; margin: 5px 0 0 0; }
 
-        /* FULL LYRICS BOX */
+        /* LYRICS BOX */
         .lyrics-box {
             width: 100%; flex-grow: 1; 
             background: rgba(0, 0, 0, 0.3); border-radius: 15px; 
@@ -90,8 +91,7 @@
             mask-image: linear-gradient(to bottom, transparent, black 10%, black 90%, transparent);
             -webkit-mask-image: linear-gradient(to bottom, transparent, black 10%, black 90%, transparent);
             scroll-behavior: smooth;
-            /* Scrollbar styling */
-            scrollbar-width: none; /* Hide scrollbar for cleaner look */
+            scrollbar-width: none;
         }
         .lyrics-box::-webkit-scrollbar { display: none; }
 
@@ -109,24 +109,21 @@
         .playing .bar { animation: bounce 0.5s infinite alternate; }
         @keyframes bounce { to { height: 100%; } }
 
-        /* --- MOBILE RESPONSIVENESS (THE MAGIC) --- */
+        /* --- MOBILE VIEW --- */
         @media (max-width: 768px) {
             .app-container { border: none; width: 100%; height: 100vh; border-radius: 0; background: transparent; }
-            .library-panel { width: 100%; border: none; padding-top: 50px; } /* Full width on mobile */
+            .library-panel { width: 100%; border: none; padding-top: 50px; } 
             
-            /* Player hidden by default on mobile */
+            /* Hide Player Initially */
             .player-panel { 
                 position: absolute; top: 0; left: 0; width: 100%; height: 100%; 
                 z-index: 20; transform: translateY(100%); opacity: 0; 
-                padding-top: 60px; box-sizing: border-box;
+                padding-top: 20px; box-sizing: border-box; background: #111;
             }
             
-            /* Class to trigger player slide-up */
             .player-panel.active { transform: translateY(0); opacity: 1; }
-            
-            .back-btn { display: block; } /* Show back button only on mobile */
-            .now-playing-art { width: 140px; }
-            .lyric-line.active { font-size: 1.2rem; }
+            .nav-btn { display: flex; } /* Show Back Button */
+            .now-playing-art { width: 140px; margin-top: 50px; }
         }
 
         .exit-btn {
@@ -142,7 +139,7 @@
     <div class="crowd-container" id="crowd-lights"></div>
 
     <audio id="audio-player"></audio>
-    <a href="index.html" class="exit-btn">EXIT</a>
+    <a href="index.html" class="exit-btn">EXIT CONCERT</a>
 
     <div class="app-container">
         
@@ -160,7 +157,9 @@
         </div>
 
         <div class="player-panel" id="player-panel">
-            <button class="back-btn" onclick="closePlayer()"><i class="fas fa-chevron-down"></i></button>
+            <button class="nav-btn" onclick="closePlayer()">
+                <i class="fas fa-arrow-left"></i> Songs
+            </button>
             
             <img src="guitarist.png" class="now-playing-art">
             
@@ -189,7 +188,6 @@
         const playerPanel = document.getElementById('player-panel');
         const crowdContainer = document.getElementById('crowd-lights');
         
-        // Elements for Player Info
         const npTitle = document.getElementById('np-title');
         const npArtist = document.getElementById('np-artist');
 
@@ -197,7 +195,6 @@
         let currentLyrics = [];
         let activeLineIndex = -1;
 
-        // 1. FETCH LIBRARY
         async function loadLibrary() {
             try {
                 const response = await fetch('songs.json');
@@ -210,13 +207,11 @@
         }
         loadLibrary();
 
-        // 2. RENDER SONGS
         function renderSongs(songs) {
             songListContainer.innerHTML = "";
             songs.forEach((song) => {
                 const li = document.createElement('li');
                 li.classList.add('song-item');
-                // Unique check for active state
                 if(audioPlayer.src.includes(encodeURI(song.file))) li.classList.add('active');
                 
                 li.innerHTML = `
@@ -228,23 +223,18 @@
             });
         }
 
-        // 3. SEARCH
         searchInput.addEventListener('input', (e) => {
             const term = e.target.value.toLowerCase();
             const filtered = allSongs.filter(s => s.title.toLowerCase().includes(term) || s.artist.toLowerCase().includes(term));
             renderSongs(filtered);
         });
 
-        // 4. PLAY LOGIC (TRANSITION TO PLAYER)
         async function playSong(song) {
-            // UI Update
             npTitle.innerText = song.title;
             npArtist.innerText = song.artist;
             
-            // Highlight in list
             document.querySelectorAll('.song-item').forEach(el => el.classList.remove('active'));
             
-            // Audio
             if (!audioPlayer.src.includes(encodeURI(song.file))) {
                 audioPlayer.src = song.file;
                 audioPlayer.play();
@@ -253,15 +243,10 @@
             }
 
             visualizer.classList.add('playing');
-            
-            // OPEN PLAYER (MOBILE)
-            openPlayer();
-
-            // Load Lyrics
+            openPlayer(); // Slide up on mobile
             loadLyrics(song);
         }
 
-        // 5. LYRICS LOGIC
         async function loadLyrics(song) {
             let text = "";
             if(song.lrc && song.lrc.endsWith('.lrc')) {
@@ -290,14 +275,16 @@
                     if(text) result.push({ time, text });
                 }
             });
-            return result.length ? result : [{time:0, text:"(Music)"}];
+            return result.length ? result : [{time:0, text:"(Instrumental / No Lyrics)"}];
         }
 
         function renderLyricsHTML() {
             lyricsDisplay.innerHTML = "";
+            // FIX 1: Reset Scroll to Top immediately
+            lyricsDisplay.scrollTop = 0;
             activeLineIndex = -1;
-            // Add extra space at top/bottom for better scrolling center
-            let spacer = document.createElement('div'); spacer.style.height = "50%"; lyricsDisplay.appendChild(spacer.cloneNode());
+
+            let spacer = document.createElement('div'); spacer.style.height = "40%"; lyricsDisplay.appendChild(spacer.cloneNode());
             
             currentLyrics.forEach((line, i) => {
                 let div = document.createElement('div');
@@ -310,31 +297,30 @@
             lyricsDisplay.appendChild(spacer.cloneNode());
         }
 
-        // 6. SYNC ENGINE
         audioPlayer.addEventListener('timeupdate', () => {
             const time = audioPlayer.currentTime;
-            let idx = currentLyrics.findIndex(l => l.time > time) - 1;
-            if (idx < 0) idx = currentLyrics.length - 1; 
-            // Better logic: find last line where time <= current
+            let idx = -1;
+            
             for(let i=0; i<currentLyrics.length; i++) {
                 if(time >= currentLyrics[i].time) idx = i;
                 else break;
             }
 
-            if (idx !== activeLineIndex && idx !== -1) {
+            if (idx !== activeLineIndex) {
                 activeLineIndex = idx;
                 document.querySelectorAll('.lyric-line').forEach(l => l.classList.remove('active'));
-                const activeEl = document.getElementById(`line-${idx}`);
-                if (activeEl) {
-                    activeEl.classList.add('active');
-                    activeEl.scrollIntoView({ behavior: "smooth", block: "center" });
+                
+                if(activeLineIndex !== -1) {
+                    const activeEl = document.getElementById(`line-${idx}`);
+                    if (activeEl) {
+                        activeEl.classList.add('active');
+                        activeEl.scrollIntoView({ behavior: "smooth", block: "center" });
+                    }
                 }
             }
         });
 
-        // 7. UI CONTROLS
         function openPlayer() {
-            // On mobile, this slides the player up
             if(window.innerWidth <= 768) {
                 playerPanel.classList.add('active');
             }
@@ -344,7 +330,6 @@
             playerPanel.classList.remove('active');
         }
 
-        // Crowd Effect
         function createCrowd() {
             for(let i=0; i<30; i++) {
                 let light = document.createElement('div');
