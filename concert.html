@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arnav's Unplugged</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;600&family=Rock+Salt&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* --- CONCERT THEME CSS --- */
+        body {
+            margin: 0; padding: 0;
+            background-color: #050505;
+            color: #fff;
+            font-family: 'Montserrat', sans-serif;
+            overflow: hidden; /* No scroll, full immersive */
+            height: 100vh;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+        }
+
+        /* Background Stage */
+        .stage-bg {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: url('stage_bg.jpg') no-repeat center center/cover;
+            filter: brightness(0.4); z-index: -2;
+        }
+
+        /* Spotlights Animation */
+        .spotlight {
+            position: fixed; top: -50%; left: 50%; width: 200px; height: 150vh;
+            background: linear-gradient(to bottom, rgba(255, 215, 0, 0.3), transparent);
+            transform: translateX(-50%) rotate(0deg);
+            filter: blur(20px); z-index: -1;
+            transform-origin: top center;
+            animation: spotMove 8s infinite ease-in-out;
+        }
+        @keyframes spotMove {
+            0%, 100% { transform: translateX(-50%) rotate(-15deg); opacity: 0.5; }
+            50% { transform: translateX(-50%) rotate(15deg); opacity: 0.8; }
+        }
+
+        /* Main Container */
+        .concert-container {
+            position: relative; z-index: 10;
+            width: 90%; max-width: 1000px;
+            display: flex; flex-wrap: wrap; justify-content: center; align-items: center;
+            gap: 40px;
+        }
+
+        /* --- THE ARTIST (Guitarist) --- */
+        .artist-section {
+            flex: 1; text-align: center; min-width: 300px;
+            position: relative;
+        }
+        .guitarist-img {
+            width: 100%; max-width: 350px;
+            filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.2));
+            transition: transform 0.3s;
+        }
+        .guitarist-img:hover { transform: scale(1.05) rotate(2deg); }
+
+        /* --- MUSIC PLAYER UI --- */
+        .player-card {
+            flex: 1; min-width: 300px;
+            background: rgba(20, 20, 20, 0.85);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px; padding: 30px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+        }
+
+        .concert-title {
+            font-family: 'Rock Salt', cursive; color: #FFD700;
+            font-size: 1.8rem; margin-bottom: 5px; text-align: center;
+            text-shadow: 0 0 10px #FFD700;
+        }
+        .concert-subtitle {
+            text-align: center; color: #aaa; font-size: 0.9rem; margin-bottom: 25px; letter-spacing: 2px;
+        }
+
+        /* Song List */
+        .song-list { list-style: none; padding: 0; margin: 0; }
+        .song-item {
+            padding: 15px; border-bottom: 1px solid rgba(255,255,255,0.05);
+            cursor: pointer; transition: 0.3s; display: flex; align-items: center; gap: 15px;
+            border-radius: 10px; margin-bottom: 5px;
+        }
+        .song-item:hover { background: rgba(255, 215, 0, 0.1); padding-left: 20px; }
+        .song-item.active {
+            background: linear-gradient(90deg, rgba(255, 215, 0, 0.2), transparent);
+            border-left: 4px solid #FFD700;
+        }
+
+        .play-icon { font-size: 1.2rem; width: 30px; text-align: center; }
+        .song-info h4 { margin: 0; font-size: 1rem; font-weight: 600; }
+        .song-info p { margin: 3px 0 0; font-size: 0.8rem; color: #888; }
+
+        /* Visualizer Bars */
+        .visualizer {
+            display: flex; justify-content: center; gap: 4px; height: 30px; margin-top: 20px; align-items: flex-end;
+        }
+        .bar { width: 6px; background: #FFD700; border-radius: 3px; height: 5px; transition: 0.1s; }
+        
+        /* Playing Animation */
+        .playing .bar { animation: bounce 0.5s infinite ease-in-out alternate; }
+        .playing .bar:nth-child(1) { animation-delay: 0.1s; }
+        .playing .bar:nth-child(2) { animation-delay: 0.3s; }
+        .playing .bar:nth-child(3) { animation-delay: 0.2s; }
+        .playing .bar:nth-child(4) { animation-delay: 0.4s; }
+        .playing .bar:nth-child(5) { animation-delay: 0.1s; }
+
+        @keyframes bounce { 0% { height: 5px; } 100% { height: 30px; opacity: 0.7; } }
+
+        .back-btn {
+            position: fixed; bottom: 30px; left: 30px;
+            color: rgba(255,255,255,0.5); text-decoration: none;
+            font-size: 0.9rem; border: 1px solid rgba(255,255,255,0.2);
+            padding: 10px 20px; border-radius: 30px; transition: 0.3s;
+        }
+        .back-btn:hover { background: #fff; color: #000; }
+
+        /* Mobile Adjustments */
+        @media (max-width: 768px) {
+            .concert-container { flex-direction: column; }
+            .guitarist-img { max-width: 200px; margin-bottom: -20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="stage-bg"></div>
+    <div class="spotlight"></div>
+
+    <audio id="audio-player"></audio>
+
+    <div class="concert-container">
+        
+        <div class="artist-section">
+            <img src="guitarist.png" alt="Arnav Guitar" class="guitarist-img">
+        </div>
+
+        <div class="player-card">
+            <div class="concert-title">ARNAV'S UNPLUGGED</div>
+            <div class="concert-subtitle">LIVE SESSION • 2026</div>
+
+            <ul class="song-list">
+                <li class="song-item active" onclick="playSong('song1.mp3', 'Tum Se Hi', 'Soft Acoustic', this)">
+                    <div class="play-icon"><i class="fas fa-play"></i></div>
+                    <div class="song-info">
+                        <h4>Tum Se Hi</h4> <p>Acoustic Vibes</p>
+                    </div>
+                </li>
+
+                <li class="song-item" onclick="playSong('song2.mp3', 'Kun Faya Kun', 'Soulful', this)">
+                    <div class="play-icon"><i class="fas fa-play"></i></div>
+                    <div class="song-info">
+                        <h4>Kun Faya Kun</h4> <p>Soulful</p>
+                    </div>
+                </li>
+
+                <li class="song-item" onclick="playSong('song3.mp3', 'Perfect', 'English Classic', this)">
+                    <div class="play-icon"><i class="fas fa-play"></i></div>
+                    <div class="song-info">
+                        <h4>Perfect</h4> <p>Ed Sheeran</p>
+                    </div>
+                </li>
+
+                <li class="song-item" onclick="playSong('song4.mp3', 'Iktara', 'Feel Good', this)">
+                    <div class="play-icon"><i class="fas fa-play"></i></div>
+                    <div class="song-info">
+                        <h4>Iktara</h4> <p>Wake Up Sid</p>
+                    </div>
+                </li>
+            </ul>
+
+            <div class="visualizer" id="visualizer-box">
+                <div class="bar"></div><div class="bar"></div><div class="bar"></div>
+                <div class="bar"></div><div class="bar"></div>
+            </div>
+            
+            <p id="now-playing-text" style="text-align: center; font-size: 0.8rem; color: #FFD700; margin-top: 15px; min-height: 20px;"></p>
+
+        </div>
+    </div>
+
+    <a href="index.html" class="back-btn">EXIT CONCERT</a>
+
+    <script>
+        const audioPlayer = document.getElementById('audio-player');
+        const visualizer = document.getElementById('visualizer-box');
+        const nowPlayingText = document.getElementById('now-playing-text');
+        const songItems = document.querySelectorAll('.song-item');
+        let isPlaying = false;
+
+        function playSong(file, title, subtitle, element) {
+            // Update Active UI
+            songItems.forEach(item => {
+                item.classList.remove('active');
+                item.querySelector('.play-icon').innerHTML = '<i class="fas fa-play"></i>';
+            });
+
+            // If clicking the same song that is playing, toggle pause
+            if (audioPlayer.getAttribute('src') === file && !audioPlayer.paused) {
+                audioPlayer.pause();
+                visualizer.classList.remove('playing');
+                element.querySelector('.play-icon').innerHTML = '<i class="fas fa-play"></i>';
+                nowPlayingText.innerText = "Paused";
+                return;
+            }
+
+            // Play New Song
+            element.classList.add('active');
+            element.querySelector('.play-icon').innerHTML = '<i class="fas fa-pause"></i>';
+            
+            audioPlayer.src = file;
+            audioPlayer.play();
+            visualizer.classList.add('playing');
+            nowPlayingText.innerText = "Now Playing: " + title;
+        }
+    </script>
+</body>
+</html>
