@@ -16,7 +16,7 @@
     </script>
 
     <style>
-        /* --- CONCERT THEME CSS --- */
+        /* --- CORE THEME --- */
         body {
             margin: 0; padding: 0; background-color: #050505; color: #fff;
             font-family: 'Montserrat', sans-serif; overflow: hidden; height: 100vh;
@@ -50,6 +50,7 @@
         }
         @keyframes waveLight { 50% { opacity: 0.8; transform: translateY(-10px); } }
 
+        /* --- LAYOUT --- */
         .concert-container {
             position: relative; z-index: 10; width: 95%; max-width: 1000px;
             display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 20px;
@@ -69,11 +70,25 @@
         .concert-title { font-family: 'Rock Salt', cursive; color: #FFD700; text-align: center; font-size: 1.5rem; }
         .concert-subtitle { text-align: center; color: #aaa; font-size: 0.8rem; margin-bottom: 15px; }
 
+        /* --- SEARCH BAR --- */
+        .search-box {
+            width: 100%; margin-bottom: 10px;
+        }
+        .search-input {
+            width: 93%; padding: 10px 15px;
+            border-radius: 30px; border: 1px solid rgba(255,255,255,0.2);
+            background: rgba(255,255,255,0.1); color: #fff; font-family: 'Montserrat', sans-serif;
+            outline: none; transition: 0.3s;
+        }
+        .search-input:focus { background: rgba(255,255,255,0.2); border-color: #FFD700; }
+        .search-input::placeholder { color: rgba(255,255,255,0.5); }
+
+        /* --- SONG LIST --- */
         .song-list { list-style: none; padding: 0; margin: 0 0 15px 0; max-height: 200px; overflow-y: auto; }
         .song-item {
             padding: 8px 12px; border-bottom: 1px solid rgba(255,255,255,0.05);
             cursor: pointer; display: flex; align-items: center; gap: 10px;
-            border-radius: 8px; margin-bottom: 4px;
+            border-radius: 8px; margin-bottom: 4px; transition: 0.2s;
         }
         .song-item:hover { background: rgba(255, 215, 0, 0.1); }
         .song-item.active { background: linear-gradient(90deg, rgba(255, 215, 0, 0.2), transparent); border-left: 3px solid #FFD700; }
@@ -81,7 +96,7 @@
         .song-info h4 { margin: 0; font-size: 0.9rem; }
         .song-info p { margin: 0; font-size: 0.7rem; color: #888; }
 
-        /* --- UPGRADED LYRICS BOX (SMOOTH & LAG-FREE) --- */
+        /* --- LYRICS BOX --- */
         .lyrics-box {
             background: rgba(0, 0, 0, 0.4); border-radius: 12px; padding: 15px;
             height: 140px; overflow: hidden; text-align: center;
@@ -89,29 +104,21 @@
             mask-image: linear-gradient(to bottom, transparent, black 15%, black 85%, transparent);
             -webkit-mask-image: linear-gradient(to bottom, transparent, black 15%, black 85%, transparent);
             display: flex; flex-direction: column; align-items: center;
-            /* New: Better Scrolling */
             scroll-behavior: smooth; 
         }
 
         .lyric-line {
             font-size: 0.9rem; color: rgba(255, 255, 255, 0.3); margin: 10px 0;
             min-height: 20px; flex-shrink: 0;
-            
-            /* MAGIC FIX FOR LAG & SMOOTHNESS */
             transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1), 
-                        color 0.5s ease, 
-                        text-shadow 0.5s ease,
-                        opacity 0.5s ease;
-            will-change: transform, opacity; /* Tells browser to optimize */
-            transform-origin: center;
-            opacity: 0.5;
+                        color 0.5s ease, text-shadow 0.5s ease, opacity 0.5s ease;
+            will-change: transform, opacity; transform-origin: center; opacity: 0.5;
         }
 
         .lyric-line.active {
             font-size: 1.15rem; color: #FFD700; font-weight: 600;
             text-shadow: 0 0 15px rgba(255, 215, 0, 0.5); 
-            transform: scale(1.1); /* Slightly larger scale */
-            opacity: 1;
+            transform: scale(1.1); opacity: 1;
         }
 
         .visualizer { display: flex; justify-content: center; gap: 4px; height: 15px; margin-top: 10px; align-items: flex-end; }
@@ -149,27 +156,16 @@
             <div class="concert-title">ARNAV'S UNPLUGGED</div>
             <div class="concert-subtitle">LIVE SESSION • 2026</div>
 
-            <ul class="song-list">
-                <li class="song-item" onclick="playSong('song1.mp3', 'Still Here', 'Dino James', this)">
-                    <div class="play-icon"><i class="fas fa-play"></i></div>
-                    <div class="song-info"><h4>Still Here</h4><p>Dino James</p></div>
-                </li>
-                <li class="song-item" onclick="playSong('song2.mp3', '3:59 AM', 'Divine', this)">
-                    <div class="play-icon"><i class="fas fa-play"></i></div>
-                    <div class="song-info"><h4>3:59 AM</h4><p>Divine</p></div>
-                </li>
-                <li class="song-item active" onclick="playSong('song3.mp3', 'CO2', 'Prateek Kuhad', this)">
-                    <div class="play-icon"><i class="fas fa-play"></i></div>
-                    <div class="song-info"><h4>CO2</h4><p>Prateek Kuhad</p></div>
-                </li>
-                <li class="song-item" onclick="playSong('song4.mp3', 'From the Start', 'Laufey', this)">
-                    <div class="play-icon"><i class="fas fa-play"></i></div>
-                    <div class="song-info"><h4>From the Start</h4><p>Laufey</p></div>
-                </li>
+            <div class="search-box">
+                <input type="text" id="search-input" class="search-input" placeholder="Search song or artist...">
+            </div>
+
+            <ul class="song-list" id="song-list-container">
+                <li style="padding:10px; text-align:center; color:#888;">Loading Library...</li>
             </ul>
 
             <div class="lyrics-box" id="lyrics-display">
-                <div class="lyric-line">Select a song to see lyrics...</div>
+                <div class="lyric-line">Select a song to start...</div>
             </div>
 
             <div class="visualizer" id="visualizer-box">
@@ -183,65 +179,95 @@
         const audioPlayer = document.getElementById('audio-player');
         const visualizer = document.getElementById('visualizer-box');
         const nowPlayingText = document.getElementById('now-playing-text');
-        const songItems = document.querySelectorAll('.song-item');
         const lyricsDisplay = document.getElementById('lyrics-display');
+        const songListContainer = document.getElementById('song-list-container');
+        const searchInput = document.getElementById('search-input');
         const crowdContainer = document.getElementById('crowd-lights');
 
-        // --- NEW UPDATED LRC DATA (From Your File) ---
-        const lrcFiles = {
-            'CO2': `
-[00:01.24]MAYBE I WAS WRONG AND YOU WERE RIGHT
-[00:03.83]BUT I DON′T REALLY WANNA HAVE THIS FIGHT
-[00:06.96]I JUST WANNA FEEL LIKE I BELONG
-[00:12.35]AND EVERY TIME MY HEART SWINGS BACK TO YOU
-[00:15.47]YOU ARE MY MORNING AND MY TRUTH
-[00:18.64]AND ALL THAT I CAN DO IS SING THIS SONG
-[00:23.29]IT AIN'T THAT LONG, HM
-[00:26.68]AND NOTHING SAYS "I LOVE YOU" LIKE YOUR EYES
-[00:30.24]FILL MY LIPS WITH CARBON DIOXIDE
-[00:33.58]I JUST WANNA FEEL LIKE I DESERVE YOU
-[00:37.11]′CAUSE YOU DESERVE ME
-[00:39.31]BABY, IT'S THE WAY THAT YOU CAN SEE
-[00:42.18]WHAT I MISS AND WHAT I CAN NEVER BE
-[00:45.50]I JUST WANNA FEEL LIKE I DESERVE YOU
-[00:48.81]'CAUSE YOU DESERVE ME
-[00:51.91]MAYBE YOU WERE WRONG AND I WAS RIGHT
-[00:54.07]I DON′T CARE, WON′T YOU STAY ANOTHER NIGHT?
-[00:57.12]I JUST NEED SOME TIME TO BE MYSELF
-[01:02.75]I COULDN'T SAY "I NEED YOU" ON THAT NIGHT
-[01:06.07]WHEN YOU LEFT AND I LOST ALL TRACK OF TIME
-[01:08.92]I JUST WANT YOU CLOSE SO I CAN FEEL YOU
-[01:13.55]CAN YOU FEEL ME?
-[01:16.99]AND NOTHING SAYS "I LOVE YOU" LIKE THE WORDS
-[01:20.79]THAT WERE NEVER SAID, BUT COULD BE HEARD
-[01:23.99]IF ONLY THERE WAS PEACE AROUND US, BABY
-[01:27.47]YOU WOULD HEAR ME
-[01:29.58]AND MAYBE IT′S THE WAY THAT LOVERS DO
-[01:32.68]I JUST WANT FOR ME WHAT I WANT FOR YOU
-[01:35.72]ONLY WITH THE SUN ABOVE US MAYBE
-[01:39.31]YOU WOULD SEE ME
-[01:55.59]AND EVEN IF YOU LEAVE, I MAY BE FINE
-[01:59.11]'CAUSE MY HEART, IT HAS ITS OWN DESIGN
-[02:02.39]AND EVEN IF YOU NEVER SEE IT, BABY
-[02:05.88]YOU′RE ALL THAT I NEED
-[02:08.12]MAYBE IT'S THE SILENCE IN YOUR EYES
-[02:10.97]MAYBE IT′S THE LILAC WHEN YOU'RE SHY
-[02:14.18]MAYBE IT'S THE MYSTERY OF YOUR LOVE
-[02:16.94]ALL I NEED IS A SIGN FROM THE STARS ABOVE
-[02:20.30]MAYBE IT′S THE WAY THAT YOU BREATHE IN ME
-[02:22.84]MAYBE IT′S THE MAN THAT YOU SEE IN ME
-[02:25.84]MAYBE IT'S THE FRAGRANCE OF YOUR HAIR
-[02:29.03]YEAH, I JUST WANNA KISS YOU WHEN YOU′RE THERE
-[02:32.21]I JUST WANT YOU ALL AROUND ME, BABY
-[02:35.50]CAN WE MAKE THAT HAPPEN, PLEASE?
-            `,
-            'Still Here': `[00:05.00] Sab kuch hai yahan... [00:10.00] Par tu nahi hai...`
-        };
-
-        // --- SMART PARSER ---
+        let allSongs = []; // Holds all song data
         let currentLyrics = [];
         let activeLineIndex = -1;
 
+        // --- 1. FETCH SONGS FROM JSON ---
+        async function loadLibrary() {
+            try {
+                const response = await fetch('songs.json');
+                if (!response.ok) throw new Error("Failed to load songs");
+                allSongs = await response.json();
+                renderSongs(allSongs); // Initial render
+            } catch (error) {
+                songListContainer.innerHTML = `<li style="padding:10px; text-align:center; color:red;">Error loading songs. Check songs.json!</li>`;
+                console.error(error);
+            }
+        }
+        loadLibrary();
+
+        // --- 2. RENDER SONG LIST ---
+        function renderSongs(songsToRender) {
+            songListContainer.innerHTML = "";
+            if(songsToRender.length === 0) {
+                songListContainer.innerHTML = `<li style="padding:10px; text-align:center; color:#888;">No songs found.</li>`;
+                return;
+            }
+
+            songsToRender.forEach((song, index) => {
+                const li = document.createElement('li');
+                li.classList.add('song-item');
+                // We use the unique filename to identify active state
+                if(audioPlayer.getAttribute('src') === song.file) li.classList.add('active');
+                
+                li.innerHTML = `
+                    <div class="play-icon"><i class="fas fa-${audioPlayer.getAttribute('src') === song.file && !audioPlayer.paused ? 'pause' : 'play'}"></i></div>
+                    <div class="song-info"><h4>${song.title}</h4><p>${song.artist}</p></div>
+                `;
+                
+                li.onclick = () => playSong(song, li);
+                songListContainer.appendChild(li);
+            });
+        }
+
+        // --- 3. SEARCH FUNCTIONALITY ---
+        searchInput.addEventListener('input', (e) => {
+            const term = e.target.value.toLowerCase();
+            const filtered = allSongs.filter(song => 
+                song.title.toLowerCase().includes(term) || 
+                song.artist.toLowerCase().includes(term)
+            );
+            renderSongs(filtered);
+        });
+
+        // --- 4. PLAY & LYRICS LOGIC ---
+        function playSong(song, element) {
+            // UI Update
+            document.querySelectorAll('.song-item').forEach(item => {
+                item.classList.remove('active');
+                item.querySelector('.play-icon').innerHTML = '<i class="fas fa-play"></i>';
+            });
+
+            if (audioPlayer.getAttribute('src') === song.file && !audioPlayer.paused) {
+                audioPlayer.pause();
+                document.body.classList.remove('music-on');
+                visualizer.classList.remove('playing');
+                element.querySelector('.play-icon').innerHTML = '<i class="fas fa-play"></i>';
+                return;
+            }
+
+            element.classList.add('active');
+            element.querySelector('.play-icon').innerHTML = '<i class="fas fa-pause"></i>';
+            
+            audioPlayer.src = song.file;
+            audioPlayer.play();
+            document.body.classList.add('music-on');
+            visualizer.classList.add('playing');
+            nowPlayingText.innerText = "Now Playing: " + song.title;
+
+            // Load Lyrics from JSON object
+            const rawLRC = song.lrc || `[00:00.00] Lyrics not available.`;
+            currentLyrics = parseLRC(rawLRC);
+            loadLyricsDisplay();
+        }
+
+        // --- 5. PARSER & SCROLL ---
         function parseLRC(lrcText) {
             const lines = lrcText.split('\n');
             const result = [];
@@ -257,48 +283,7 @@
                     if(text) result.push({ time, text });
                 }
             });
-            return result.length > 0 ? result : [{ time: 0, text: "Lyrics not available or bad format." }];
-        }
-
-        // --- STANDARD FUNCTIONS ---
-        function createCrowd() {
-            for(let i=0; i<30; i++) {
-                let light = document.createElement('div');
-                light.classList.add('flashlight');
-                light.style.left = Math.random() * 100 + '%';
-                light.style.bottom = Math.random() * 20 + '%';
-                light.style.animationDelay = Math.random() * 3 + 's';
-                crowdContainer.appendChild(light);
-            }
-        }
-        createCrowd();
-
-        function playSong(file, title, artist, element) {
-            songItems.forEach(item => {
-                item.classList.remove('active');
-                item.querySelector('.play-icon').innerHTML = '<i class="fas fa-play"></i>';
-            });
-
-            if (audioPlayer.getAttribute('src') === file && !audioPlayer.paused) {
-                audioPlayer.pause();
-                document.body.classList.remove('music-on');
-                visualizer.classList.remove('playing');
-                element.querySelector('.play-icon').innerHTML = '<i class="fas fa-play"></i>';
-                return;
-            }
-
-            element.classList.add('active');
-            element.querySelector('.play-icon').innerHTML = '<i class="fas fa-pause"></i>';
-            
-            audioPlayer.src = file;
-            audioPlayer.play();
-            document.body.classList.add('music-on');
-            visualizer.classList.add('playing');
-            nowPlayingText.innerText = "Now Playing: " + title;
-
-            const rawLRC = lrcFiles[title] || `[00:00.00] Enjoy the Music 🎵`;
-            currentLyrics = parseLRC(rawLRC);
-            loadLyricsDisplay();
+            return result.length > 0 ? result : [{ time: 0, text: "Enjoy the Music 🎵" }];
         }
 
         function loadLyricsDisplay() {
@@ -317,7 +302,6 @@
             let currentTime = audioPlayer.currentTime;
             let newActiveIndex = -1;
 
-            // Optimized Search
             for (let i = 0; i < currentLyrics.length; i++) {
                 if (currentTime >= currentLyrics[i].time) {
                     newActiveIndex = i;
@@ -334,12 +318,24 @@
                     let activeLine = document.getElementById("line-" + activeLineIndex);
                     if (activeLine) {
                         activeLine.classList.add('active');
-                        // SMOOTHER SCROLL LOGIC
                         activeLine.scrollIntoView({ behavior: "smooth", block: "center" });
                     }
                 }
             }
         });
+
+        // Crowd Effect
+        function createCrowd() {
+            for(let i=0; i<30; i++) {
+                let light = document.createElement('div');
+                light.classList.add('flashlight');
+                light.style.left = Math.random() * 100 + '%';
+                light.style.bottom = Math.random() * 20 + '%';
+                light.style.animationDelay = Math.random() * 3 + 's';
+                crowdContainer.appendChild(light);
+            }
+        }
+        createCrowd();
     </script>
 </body>
 </html>
