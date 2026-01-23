@@ -95,34 +95,50 @@
             text-shadow: 0 0 20px rgba(255, 215, 0, 0.6); transform: scale(1.05);
         }
 
-        .visualizer { display: flex; gap: 5px; height: 30px; align-items: flex-end; margin-top: 15px; }
-        .bar { width: 6px; background: #FFD700; border-radius: 3px; height: 5px; }
-        .playing .bar { animation: bounce 0.5s infinite alternate; }
-        @keyframes bounce { to { height: 100%; } }
+        /* --- DANCING MONKEY GIF --- */
+        .dancing-gif {
+            width: 100px; /* Size of the monkey */
+            height: auto;
+            margin-top: 20px;
+            opacity: 0; /* Hidden by default */
+            transform: scale(0.8);
+            transition: all 0.3s ease;
+            pointer-events: none;
+        }
+        .dancing-gif.playing {
+            opacity: 1; /* Show when playing */
+            transform: scale(1);
+        }
 
-        /* --- BUTTONS (FIXED OUTSIDE) --- */
+        /* --- BUTTONS --- */
         .exit-btn {
             position: fixed; top: 15px; right: 15px; z-index: 10001;
             color: rgba(255,255,255,0.6); text-decoration: none; font-size: 0.8rem;
             border: 1px solid rgba(255,255,255,0.2); padding: 5px 12px; border-radius: 20px;
         }
 
-        /* THE MAGIC BACK BUTTON (Now outside the player panel) */
         .nav-btn {
-            position: fixed; top: 15px; left: 15px; /* Top Left Corner */
+            position: fixed; top: 15px; left: 15px;
             background: rgba(0,0,0,0.8); border: 1px solid rgba(255,215,0,0.5); 
             color: #FFD700; padding: 8px 16px; border-radius: 30px; cursor: pointer; 
-            z-index: 10002; /* Higher than everything */
-            font-size: 0.9rem; display: none; /* Hidden by default */
+            z-index: 10002; font-size: 0.9rem; 
+            display: none; /* Hidden by default */
             align-items: center; gap: 8px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.8);
             backdrop-filter: blur(10px);
         }
+        /* Class to show button */
+        .nav-btn.show { display: flex !important; }
 
-        /* --- MOBILE VIEW --- */
+        /* --- MOBILE VIEW FIXES --- */
         @media (max-width: 768px) {
             .app-container { border: none; width: 100%; height: 100vh; border-radius: 0; background: transparent; }
-            .library-panel { width: 100%; border: none; padding-top: 50px; } 
+            
+            /* FIX: Added background to library panel on mobile */
+            .library-panel { 
+                width: 100%; border: none; padding-top: 50px; 
+                background: rgba(20, 20, 20, 0.85); 
+            } 
             
             .player-panel { 
                 position: absolute; top: 0; left: 0; width: 100%; height: 100%; 
@@ -143,7 +159,7 @@
     <audio id="audio-player"></audio>
 
     <a href="index.html" class="exit-btn">EXIT</a>
-    <button class="nav-btn" id="back-button" onclick="closePlayer()">
+    <button class="nav-btn" id="back-to-songs-btn" onclick="closePlayer()">
         <i class="fas fa-arrow-left"></i> SONGS
     </button>
 
@@ -174,22 +190,21 @@
                 <div class="lyric-line">Lyrics will appear here...</div>
             </div>
 
-            <div class="visualizer" id="visualizer-box">
-                <div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div>
-            </div>
+            <img src="https://media4.giphy.com/media/JVdF1ZxvkRynUscRNY/giphy.gif?cid=ecf05e47cg8542454545454545454545454545454545454&rid=giphy.gif&ct=s" id="visualizer-box" class="dancing-gif" alt="Dancing Monkey">
         </div>
 
     </div>
 
     <script>
         const audioPlayer = document.getElementById('audio-player');
-        const visualizer = document.getElementById('visualizer-box');
+        // Changed variable name to reflect it's now a GIF
+        const dancingMonkey = document.getElementById('visualizer-box');
         const lyricsDisplay = document.getElementById('lyrics-display');
         const songListContainer = document.getElementById('song-list-container');
         const searchInput = document.getElementById('search-input');
         const playerPanel = document.getElementById('player-panel');
         const crowdContainer = document.getElementById('crowd-lights');
-        const backButton = document.getElementById('back-button'); // Get Button Ref
+        const backButton = document.getElementById('back-to-songs-btn');
         
         const npTitle = document.getElementById('np-title');
         const npArtist = document.getElementById('np-artist');
@@ -245,10 +260,20 @@
                 if(audioPlayer.paused) audioPlayer.play();
             }
 
-            visualizer.classList.add('playing');
+            // Show the monkey!
+            dancingMonkey.classList.add('playing');
             openPlayer(); 
             loadLyrics(song);
         }
+
+        // Hide monkey on pause
+        audioPlayer.addEventListener('pause', () => {
+            dancingMonkey.classList.remove('playing');
+        });
+        // Show monkey on play
+        audioPlayer.addEventListener('play', () => {
+            dancingMonkey.classList.add('playing');
+        });
 
         async function loadLyrics(song) {
             let text = "";
@@ -325,17 +350,15 @@
         function openPlayer() {
             if(window.innerWidth <= 768) {
                 playerPanel.classList.add('active');
-                // SHOW BUTTON FORCEFULLY
-                backButton.style.display = 'flex';
+                // Show button using class
+                backButton.classList.add('show');
             }
         }
         
         function closePlayer() {
             playerPanel.classList.remove('active');
-            // HIDE BUTTON FORCEFULLY
-            if(window.innerWidth <= 768) {
-                backButton.style.display = 'none';
-            }
+            // Hide button using class
+            backButton.classList.remove('show');
         }
 
         function createCrowd() {
