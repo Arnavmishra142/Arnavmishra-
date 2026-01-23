@@ -16,59 +16,124 @@
     </script>
 
     <style>
-        /* --- STYLES SAME AS BEFORE --- */
+        /* --- CORE THEME --- */
         body { margin: 0; padding: 0; background-color: #050505; color: #fff; font-family: 'Montserrat', sans-serif; overflow: hidden; height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; opacity: 0; animation: entranceFade 1.2s forwards; }
         @keyframes entranceFade { to { opacity: 1; } }
-        .stage-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: url('stage_bg.jpg') no-repeat center center/cover; filter: brightness(0.4); z-index: -2; }
-        .spotlight { position: fixed; top: -50%; left: 50%; width: 200px; height: 150vh; background: linear-gradient(to bottom, rgba(255, 215, 0, 0.3), transparent); transform: translateX(-50%); filter: blur(20px); z-index: -1; transform-origin: top center; animation: spotMove 8s infinite ease-in-out; }
-        @keyframes spotMove { 0%, 100% { transform: translateX(-50%) rotate(-15deg); } 50% { transform: translateX(-50%) rotate(15deg); } }
+        
+        .stage-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: url('stage_bg.jpg') no-repeat center center/cover; filter: brightness(0.3); z-index: -2; }
+        .spotlight { position: fixed; top: -50%; left: 50%; width: 200px; height: 150vh; background: linear-gradient(to bottom, rgba(255, 215, 0, 0.2), transparent); transform: translateX(-50%); filter: blur(30px); z-index: -1; pointer-events: none; }
         .crowd-container { position: fixed; bottom: 0; left: 0; width: 100%; height: 30vh; z-index: -1; pointer-events: none; }
         .flashlight { position: absolute; bottom: 0; width: 4px; height: 4px; background: #fff; border-radius: 50%; box-shadow: 0 0 10px 2px rgba(255, 255, 255, 0.8); opacity: 0; animation: waveLight 4s infinite alternate; }
         @keyframes waveLight { 50% { opacity: 0.8; transform: translateY(-10px); } }
-        .concert-container { position: relative; z-index: 10; width: 95%; max-width: 1000px; display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 20px; }
-        .artist-section { flex: 1; text-align: center; max-width: 300px; }
-        .guitarist-img { width: 100%; filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.2)); }
-        .player-card { flex: 1.5; min-width: 300px; max-width: 500px; background: rgba(20, 20, 20, 0.9); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 20px; padding: 25px; box-shadow: 0 10px 40px rgba(0,0,0,0.6); display: flex; flex-direction: column; }
-        .concert-title { font-family: 'Rock Salt', cursive; color: #FFD700; text-align: center; font-size: 1.5rem; }
-        .concert-subtitle { text-align: center; color: #aaa; font-size: 0.8rem; margin-bottom: 15px; }
-        .search-box { width: 100%; margin-bottom: 10px; }
-        .search-input { width: 93%; padding: 10px 15px; border-radius: 30px; border: 1px solid rgba(255,255,255,0.2); background: rgba(255,255,255,0.1); color: #fff; font-family: 'Montserrat', sans-serif; outline: none; transition: 0.3s; }
-        .search-input:focus { background: rgba(255,255,255,0.2); border-color: #FFD700; }
-        
-        /* --- UPDATED SONG LIST (SCROLLBAR & HEIGHT) --- */
-        .song-list { 
-            list-style: none; padding: 0; margin: 0 0 15px 0; 
-            
-            /* Height increased slightly to cut off the 5th item (Visual Hint) */
-            max-height: 230px; 
-            
-            overflow-y: auto; 
-            
-            /* Firefox Scrollbar */
-            scrollbar-width: thin;
-            scrollbar-color: #FFD700 rgba(255,255,255,0.1);
+
+        /* --- MAIN LAYOUT (SPLIT SCREEN) --- */
+        .app-container {
+            display: flex; width: 95%; max-width: 1200px; height: 85vh;
+            background: rgba(20, 20, 20, 0.85); border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px; overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,0.8);
+            position: relative;
         }
 
-        /* Chrome/Safari Custom Gold Scrollbar */
-        .song-list::-webkit-scrollbar { width: 6px; }
-        .song-list::-webkit-scrollbar-track { background: rgba(255,255,255,0.05); border-radius: 4px; }
-        .song-list::-webkit-scrollbar-thumb { background-color: #FFD700; border-radius: 10px; border: 1px solid #000; }
+        /* --- LEFT PANEL: LIBRARY --- */
+        .library-panel {
+            flex: 1; padding: 20px; display: flex; flex-direction: column;
+            border-right: 1px solid rgba(255,255,255,0.05);
+            transition: transform 0.4s ease, opacity 0.4s ease;
+        }
 
-        .song-item { padding: 8px 12px; border-bottom: 1px solid rgba(255,255,255,0.05); cursor: pointer; display: flex; align-items: center; gap: 10px; border-radius: 8px; margin-bottom: 4px; transition: 0.2s; }
+        .header-title { font-family: 'Rock Salt', cursive; color: #FFD700; font-size: 1.2rem; margin-bottom: 5px; text-align: center; }
+        .header-subtitle { text-align: center; color: #888; font-size: 0.7rem; margin-bottom: 20px; }
+
+        .search-box { width: 100%; margin-bottom: 15px; }
+        .search-input { width: 100%; padding: 12px; box-sizing: border-box; border-radius: 30px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.05); color: #fff; font-family: 'Montserrat', sans-serif; outline: none; }
+        .search-input:focus { border-color: #FFD700; background: rgba(0,0,0,0.3); }
+
+        .song-list { list-style: none; padding: 0; margin: 0; overflow-y: auto; flex-grow: 1; scrollbar-width: thin; scrollbar-color: #FFD700 rgba(0,0,0,0.3); }
+        .song-item { padding: 15px; border-bottom: 1px solid rgba(255,255,255,0.05); cursor: pointer; display: flex; align-items: center; gap: 15px; border-radius: 8px; transition: 0.2s; }
         .song-item:hover { background: rgba(255, 215, 0, 0.1); }
-        .song-item.active { background: linear-gradient(90deg, rgba(255, 215, 0, 0.2), transparent); border-left: 3px solid #FFD700; }
-        .play-icon { width: 20px; text-align: center; }
-        .song-info h4 { margin: 0; font-size: 0.9rem; }
-        .song-info p { margin: 0; font-size: 0.7rem; color: #888; }
-        .lyrics-box { background: rgba(0, 0, 0, 0.4); border-radius: 12px; padding: 15px; height: 140px; overflow: hidden; text-align: center; border-top: 1px solid rgba(255,255,255,0.1); mask-image: linear-gradient(to bottom, transparent, black 15%, black 85%, transparent); -webkit-mask-image: linear-gradient(to bottom, transparent, black 15%, black 85%, transparent); display: flex; flex-direction: column; align-items: center; scroll-behavior: smooth; }
-        .lyric-line { font-size: 0.9rem; color: rgba(255, 255, 255, 0.3); margin: 10px 0; min-height: 20px; flex-shrink: 0; transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1), color 0.5s ease, text-shadow 0.5s ease, opacity 0.5s ease; will-change: transform, opacity; transform-origin: center; opacity: 0.5; }
-        .lyric-line.active { font-size: 1.15rem; color: #FFD700; font-weight: 600; text-shadow: 0 0 15px rgba(255, 215, 0, 0.5); transform: scale(1.1); opacity: 1; }
-        .visualizer { display: flex; justify-content: center; gap: 4px; height: 15px; margin-top: 10px; align-items: flex-end; }
-        .bar { width: 4px; background: #FFD700; border-radius: 2px; height: 3px; }
+        .song-item.active { background: linear-gradient(90deg, rgba(255, 215, 0, 0.15), transparent); border-left: 4px solid #FFD700; }
+        
+        .song-thumb { width: 40px; height: 40px; background: #333; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; color: #888; }
+        .song-info h4 { margin: 0; font-size: 1rem; font-weight: 600; }
+        .song-info p { margin: 0; font-size: 0.8rem; color: #aaa; }
+
+        /* --- RIGHT PANEL: PLAYER (SPOTIFY STYLE) --- */
+        .player-panel {
+            flex: 1.5; padding: 30px; display: flex; flex-direction: column; align-items: center;
+            background: radial-gradient(circle at center, rgba(30,30,30,0.8), rgba(10,10,10,0.95));
+            position: relative; overflow: hidden;
+            transition: transform 0.4s ease, opacity 0.4s ease;
+        }
+
+        .back-btn { 
+            position: absolute; top: 20px; left: 20px; background: none; border: none; 
+            color: #fff; font-size: 1.2rem; cursor: pointer; display: none; /* Hidden on Desktop */
+            z-index: 100;
+        }
+
+        .now-playing-art { 
+            width: 180px; margin-bottom: 20px; 
+            filter: drop-shadow(0 0 25px rgba(255, 215, 0, 0.3)); 
+            animation: float 6s ease-in-out infinite;
+        }
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+
+        .now-playing-info { text-align: center; margin-bottom: 20px; }
+        .now-playing-title { font-size: 1.5rem; font-weight: 700; color: #FFD700; margin: 0; }
+        .now-playing-artist { font-size: 1rem; color: #aaa; margin: 5px 0 0 0; }
+
+        /* FULL LYRICS BOX */
+        .lyrics-box {
+            width: 100%; flex-grow: 1; 
+            background: rgba(0, 0, 0, 0.3); border-radius: 15px; 
+            padding: 20px; text-align: center; overflow-y: auto;
+            mask-image: linear-gradient(to bottom, transparent, black 10%, black 90%, transparent);
+            -webkit-mask-image: linear-gradient(to bottom, transparent, black 10%, black 90%, transparent);
+            scroll-behavior: smooth;
+            /* Scrollbar styling */
+            scrollbar-width: none; /* Hide scrollbar for cleaner look */
+        }
+        .lyrics-box::-webkit-scrollbar { display: none; }
+
+        .lyric-line {
+            font-size: 1rem; color: rgba(255, 255, 255, 0.4); margin: 12px 0;
+            transition: all 0.4s ease; min-height: 24px;
+        }
+        .lyric-line.active {
+            font-size: 1.3rem; color: #fff; font-weight: 700;
+            text-shadow: 0 0 20px rgba(255, 215, 0, 0.6); transform: scale(1.05);
+        }
+
+        .visualizer { display: flex; gap: 5px; height: 30px; align-items: flex-end; margin-top: 15px; }
+        .bar { width: 6px; background: #FFD700; border-radius: 3px; height: 5px; }
         .playing .bar { animation: bounce 0.5s infinite alternate; }
-        @keyframes bounce { to { height: 20px; } }
-        .back-btn { position: fixed; top: 20px; left: 20px; color: rgba(255,255,255,0.7); text-decoration: none; font-size: 0.8rem; border: 1px solid rgba(255,255,255,0.3); padding: 8px 16px; border-radius: 30px; z-index: 1000; background: rgba(0, 0, 0, 0.4); }
-        @media (max-width: 768px) { .concert-container { flex-direction: column; padding-bottom: 50px; } .guitarist-img { max-width: 150px; margin-bottom: -20px; } .player-card { width: 90%; } }
+        @keyframes bounce { to { height: 100%; } }
+
+        /* --- MOBILE RESPONSIVENESS (THE MAGIC) --- */
+        @media (max-width: 768px) {
+            .app-container { border: none; width: 100%; height: 100vh; border-radius: 0; background: transparent; }
+            .library-panel { width: 100%; border: none; padding-top: 50px; } /* Full width on mobile */
+            
+            /* Player hidden by default on mobile */
+            .player-panel { 
+                position: absolute; top: 0; left: 0; width: 100%; height: 100%; 
+                z-index: 20; transform: translateY(100%); opacity: 0; 
+                padding-top: 60px; box-sizing: border-box;
+            }
+            
+            /* Class to trigger player slide-up */
+            .player-panel.active { transform: translateY(0); opacity: 1; }
+            
+            .back-btn { display: block; } /* Show back button only on mobile */
+            .now-playing-art { width: 140px; }
+            .lyric-line.active { font-size: 1.2rem; }
+        }
+
+        .exit-btn {
+            position: fixed; top: 15px; right: 15px; z-index: 1000;
+            color: rgba(255,255,255,0.6); text-decoration: none; font-size: 0.8rem;
+            border: 1px solid rgba(255,255,255,0.2); padding: 5px 12px; border-radius: 20px;
+        }
     </style>
 </head>
 <body>
@@ -77,44 +142,56 @@
     <div class="crowd-container" id="crowd-lights"></div>
 
     <audio id="audio-player"></audio>
-    <a href="index.html" class="back-btn"><i class="fas fa-arrow-left"></i> EXIT CONCERT</a>
+    <a href="index.html" class="exit-btn">EXIT</a>
 
-    <div class="concert-container">
-        <div class="artist-section">
-            <img src="guitarist.png" alt="Arnav Guitar" class="guitarist-img">
-        </div>
-
-        <div class="player-card">
-            <div class="concert-title">ARNAV'S UNPLUGGED</div>
-            <div class="concert-subtitle">LIVE SESSION • 2026</div>
-
+    <div class="app-container">
+        
+        <div class="library-panel" id="library-panel">
+            <div class="header-title">ARNAV'S UNPLUGGED</div>
+            <div class="header-subtitle">Select a track to start the vibe</div>
+            
             <div class="search-box">
-                <input type="text" id="search-input" class="search-input" placeholder="Search song or artist...">
+                <input type="text" id="search-input" class="search-input" placeholder="Search song...">
             </div>
 
             <ul class="song-list" id="song-list-container">
-                <li style="padding:10px; text-align:center; color:#888;">Loading Library...</li>
+                <li style="padding:20px; text-align:center; color:#666;">Loading Library...</li>
             </ul>
+        </div>
+
+        <div class="player-panel" id="player-panel">
+            <button class="back-btn" onclick="closePlayer()"><i class="fas fa-chevron-down"></i></button>
+            
+            <img src="guitarist.png" class="now-playing-art">
+            
+            <div class="now-playing-info">
+                <h2 class="now-playing-title" id="np-title">Choose a Song</h2>
+                <p class="now-playing-artist" id="np-artist">...</p>
+            </div>
 
             <div class="lyrics-box" id="lyrics-display">
-                <div class="lyric-line">Select a song to start...</div>
+                <div class="lyric-line">Lyrics will appear here...</div>
             </div>
 
             <div class="visualizer" id="visualizer-box">
                 <div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div>
             </div>
-            <p id="now-playing-text" style="text-align: center; font-size: 0.8rem; color: #FFD700; margin-top: 5px;"></p>
         </div>
+
     </div>
 
     <script>
         const audioPlayer = document.getElementById('audio-player');
         const visualizer = document.getElementById('visualizer-box');
-        const nowPlayingText = document.getElementById('now-playing-text');
         const lyricsDisplay = document.getElementById('lyrics-display');
         const songListContainer = document.getElementById('song-list-container');
         const searchInput = document.getElementById('search-input');
+        const playerPanel = document.getElementById('player-panel');
         const crowdContainer = document.getElementById('crowd-lights');
+        
+        // Elements for Player Info
+        const npTitle = document.getElementById('np-title');
+        const npArtist = document.getElementById('np-artist');
 
         let allSongs = [];
         let currentLyrics = [];
@@ -124,35 +201,29 @@
         async function loadLibrary() {
             try {
                 const response = await fetch('songs.json');
-                if (!response.ok) throw new Error("Failed to load songs");
+                if (!response.ok) throw new Error("Failed");
                 allSongs = await response.json();
                 renderSongs(allSongs);
             } catch (error) {
-                songListContainer.innerHTML = `<li style="padding:10px; text-align:center; color:red;">Error loading library!</li>`;
-                console.error(error);
+                songListContainer.innerHTML = `<li style="padding:20px; text-align:center; color:#FF5555;">Error loading songs.json</li>`;
             }
         }
         loadLibrary();
 
         // 2. RENDER SONGS
-        function renderSongs(songsToRender) {
+        function renderSongs(songs) {
             songListContainer.innerHTML = "";
-            if(songsToRender.length === 0) {
-                songListContainer.innerHTML = `<li style="padding:10px; text-align:center; color:#888;">No songs found.</li>`;
-                return;
-            }
-
-            songsToRender.forEach((song) => {
+            songs.forEach((song) => {
                 const li = document.createElement('li');
                 li.classList.add('song-item');
-                if(audioPlayer.getAttribute('src') === song.file) li.classList.add('active');
+                // Unique check for active state
+                if(audioPlayer.src.includes(encodeURI(song.file))) li.classList.add('active');
                 
                 li.innerHTML = `
-                    <div class="play-icon"><i class="fas fa-${audioPlayer.getAttribute('src') === song.file && !audioPlayer.paused ? 'pause' : 'play'}"></i></div>
+                    <div class="song-thumb"><i class="fas fa-music"></i></div>
                     <div class="song-info"><h4>${song.title}</h4><p>${song.artist}</p></div>
                 `;
-                
-                li.onclick = () => playSong(song, li);
+                li.onclick = () => playSong(song);
                 songListContainer.appendChild(li);
             });
         }
@@ -160,121 +231,118 @@
         // 3. SEARCH
         searchInput.addEventListener('input', (e) => {
             const term = e.target.value.toLowerCase();
-            const filtered = allSongs.filter(song => 
-                song.title.toLowerCase().includes(term) || 
-                song.artist.toLowerCase().includes(term)
-            );
+            const filtered = allSongs.filter(s => s.title.toLowerCase().includes(term) || s.artist.toLowerCase().includes(term));
             renderSongs(filtered);
         });
 
-        // 4. PLAY & FETCH LYRICS (UPDATED LOGIC)
-        async function playSong(song, element) {
-            // UI Reset
-            document.querySelectorAll('.song-item').forEach(item => {
-                item.classList.remove('active');
-                item.querySelector('.play-icon').innerHTML = '<i class="fas fa-play"></i>';
-            });
-
-            // Pause toggle
-            if (audioPlayer.getAttribute('src') === song.file && !audioPlayer.paused) {
-                audioPlayer.pause();
-                document.body.classList.remove('music-on');
-                visualizer.classList.remove('playing');
-                element.querySelector('.play-icon').innerHTML = '<i class="fas fa-play"></i>';
-                return;
-            }
-
-            // Play Logic
-            element.classList.add('active');
-            element.querySelector('.play-icon').innerHTML = '<i class="fas fa-pause"></i>';
-            audioPlayer.src = song.file;
-            audioPlayer.play();
-            document.body.classList.add('music-on');
-            visualizer.classList.add('playing');
-            nowPlayingText.innerText = "Now Playing: " + song.title;
-
-            // --- SMART LYRICS LOADER ---
-            let lrcContent = "";
+        // 4. PLAY LOGIC (TRANSITION TO PLAYER)
+        async function playSong(song) {
+            // UI Update
+            npTitle.innerText = song.title;
+            npArtist.innerText = song.artist;
             
-            // Check if "lrc" is a filename (ends with .lrc) OR raw text
-            if (song.lrc && song.lrc.endsWith('.lrc')) {
-                try {
-                    lyricsDisplay.innerHTML = `<div class="lyric-line">Loading Lyrics...</div>`;
-                    const res = await fetch(song.lrc);
-                    if(res.ok) {
-                        lrcContent = await res.text();
-                    } else {
-                        lrcContent = "[00:00.00] Lyrics file not found.";
-                    }
-                } catch (e) {
-                    lrcContent = "[00:00.00] Error fetching lyrics.";
-                }
+            // Highlight in list
+            document.querySelectorAll('.song-item').forEach(el => el.classList.remove('active'));
+            
+            // Audio
+            if (!audioPlayer.src.includes(encodeURI(song.file))) {
+                audioPlayer.src = song.file;
+                audioPlayer.play();
             } else {
-                // Use raw text if it's not a file
-                lrcContent = song.lrc || "[00:00.00] Lyrics not available.";
+                if(audioPlayer.paused) audioPlayer.play();
             }
 
-            currentLyrics = parseLRC(lrcContent);
-            loadLyricsDisplay();
+            visualizer.classList.add('playing');
+            
+            // OPEN PLAYER (MOBILE)
+            openPlayer();
+
+            // Load Lyrics
+            loadLyrics(song);
         }
 
-        // 5. PARSER
+        // 5. LYRICS LOGIC
+        async function loadLyrics(song) {
+            let text = "";
+            if(song.lrc && song.lrc.endsWith('.lrc')) {
+                try {
+                    lyricsDisplay.innerHTML = `<div class="lyric-line">Loading...</div>`;
+                    const res = await fetch(song.lrc);
+                    text = await res.text();
+                } catch { text = "[00:00.00] Lyrics not found."; }
+            } else {
+                text = song.lrc || "[00:00.00] Enjoy the music.";
+            }
+            
+            currentLyrics = parseLRC(text);
+            renderLyricsHTML();
+        }
+
         function parseLRC(lrcText) {
             const lines = lrcText.split('\n');
             const result = [];
             const timeRegex = /\[(\d{2}):(\d{2}\.\d{2})\]/; 
-
             lines.forEach(line => {
                 const match = timeRegex.exec(line);
                 if (match) {
-                    const min = parseInt(match[1]);
-                    const sec = parseFloat(match[2]);
-                    const time = min * 60 + sec;
+                    const time = parseInt(match[1]) * 60 + parseFloat(match[2]);
                     const text = line.replace(timeRegex, '').trim();
                     if(text) result.push({ time, text });
                 }
             });
-            return result.length > 0 ? result : [{ time: 0, text: "Enjoy the Music 🎵" }];
+            return result.length ? result : [{time:0, text:"(Music)"}];
         }
 
-        function loadLyricsDisplay() {
+        function renderLyricsHTML() {
             lyricsDisplay.innerHTML = "";
             activeLineIndex = -1;
-            currentLyrics.forEach((line, index) => {
+            // Add extra space at top/bottom for better scrolling center
+            let spacer = document.createElement('div'); spacer.style.height = "50%"; lyricsDisplay.appendChild(spacer.cloneNode());
+            
+            currentLyrics.forEach((line, i) => {
                 let div = document.createElement('div');
                 div.classList.add('lyric-line');
-                div.id = "line-" + index;
+                div.id = `line-${i}`;
                 div.innerText = line.text;
                 lyricsDisplay.appendChild(div);
             });
+            
+            lyricsDisplay.appendChild(spacer.cloneNode());
         }
 
         // 6. SYNC ENGINE
         audioPlayer.addEventListener('timeupdate', () => {
-            let currentTime = audioPlayer.currentTime;
-            let newActiveIndex = -1;
-
-            for (let i = 0; i < currentLyrics.length; i++) {
-                if (currentTime >= currentLyrics[i].time) {
-                    newActiveIndex = i;
-                } else {
-                    break;
-                }
+            const time = audioPlayer.currentTime;
+            let idx = currentLyrics.findIndex(l => l.time > time) - 1;
+            if (idx < 0) idx = currentLyrics.length - 1; 
+            // Better logic: find last line where time <= current
+            for(let i=0; i<currentLyrics.length; i++) {
+                if(time >= currentLyrics[i].time) idx = i;
+                else break;
             }
 
-            if (newActiveIndex !== activeLineIndex) {
-                activeLineIndex = newActiveIndex;
+            if (idx !== activeLineIndex && idx !== -1) {
+                activeLineIndex = idx;
                 document.querySelectorAll('.lyric-line').forEach(l => l.classList.remove('active'));
-                
-                if (activeLineIndex !== -1) {
-                    let activeLine = document.getElementById("line-" + activeLineIndex);
-                    if (activeLine) {
-                        activeLine.classList.add('active');
-                        activeLine.scrollIntoView({ behavior: "smooth", block: "center" });
-                    }
+                const activeEl = document.getElementById(`line-${idx}`);
+                if (activeEl) {
+                    activeEl.classList.add('active');
+                    activeEl.scrollIntoView({ behavior: "smooth", block: "center" });
                 }
             }
         });
+
+        // 7. UI CONTROLS
+        function openPlayer() {
+            // On mobile, this slides the player up
+            if(window.innerWidth <= 768) {
+                playerPanel.classList.add('active');
+            }
+        }
+        
+        function closePlayer() {
+            playerPanel.classList.remove('active');
+        }
 
         // Crowd Effect
         function createCrowd() {
