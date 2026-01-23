@@ -1,21 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-KK3QZ8M8D3"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-KK3QZ8M8D3');
-</script>
-    
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Arnav's Unplugged</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;600&family=Rock+Salt&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-KK3QZ8M8D3"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-KK3QZ8M8D3');
+    </script>
+
     <style>
         /* --- CONCERT THEME CSS --- */
         body {
@@ -26,40 +25,26 @@
             overflow: hidden;
             height: 100vh;
             display: flex; flex-direction: column; align-items: center; justify-content: center;
-
-            /* SMOOTH ENTRANCE ANIMATION */
             opacity: 0; 
             animation: entranceFade 1.2s cubic-bezier(0.22, 1, 0.36, 1) forwards;
         }
 
-        /* Animation Keyframes */
         @keyframes entranceFade {
-            0% {
-                opacity: 0;
-                transform: scale(0.96); /* Halka sa chota */
-                filter: blur(5px); /* Dhundhla */
-            }
-            100% {
-                opacity: 1;
-                transform: scale(1); /* Normal size */
-                filter: blur(0); /* Saaf */
-            }
+            0% { opacity: 0; transform: scale(0.96); filter: blur(5px); }
+            100% { opacity: 1; transform: scale(1); filter: blur(0); }
         }
 
-        /* Background Stage */
+        /* Background & Atmosphere */
         .stage-bg {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: url('stage_bg.jpg') no-repeat center center/cover;
             filter: brightness(0.4); z-index: -2;
             transition: filter 0.5s;
         }
-
-        /* Dynamic Spotlights */
         .spotlight {
             position: fixed; top: -50%; left: 50%; width: 200px; height: 150vh;
             background: linear-gradient(to bottom, rgba(255, 215, 0, 0.3), transparent);
-            transform: translateX(-50%) rotate(0deg);
-            filter: blur(20px); z-index: -1;
+            transform: translateX(-50%); filter: blur(20px); z-index: -1;
             transform-origin: top center;
             animation: spotMove 8s infinite ease-in-out;
             transition: opacity 0.5s;
@@ -72,91 +57,109 @@
             50% { transform: translateX(-50%) rotate(15deg); }
         }
 
-        /* Crowd Flashlights */
         .crowd-container {
             position: fixed; bottom: 0; left: 0; width: 100%; height: 30vh;
             z-index: -1; pointer-events: none;
-            overflow: hidden;
             mask-image: linear-gradient(to top, black, transparent);
             -webkit-mask-image: linear-gradient(to top, black, transparent);
         }
         .flashlight {
-            position: absolute; bottom: 0;
-            width: 4px; height: 4px;
-            background: #fff;
-            border-radius: 50%;
-            box-shadow: 0 0 10px 2px rgba(255, 255, 255, 0.8);
-            opacity: 0;
-            animation: waveLight 4s infinite ease-in-out alternate;
+            position: absolute; bottom: 0; width: 4px; height: 4px; background: #fff;
+            border-radius: 50%; box-shadow: 0 0 10px 2px rgba(255, 255, 255, 0.8);
+            opacity: 0; animation: waveLight 4s infinite ease-in-out alternate;
         }
-
         @keyframes waveLight {
             0% { transform: translateY(0) translateX(0); opacity: 0.2; }
             50% { opacity: 0.8; transform: translateY(-10px) translateX(5px); }
             100% { transform: translateY(0) translateX(-5px); opacity: 0.3; }
         }
 
-        /* Main Container */
+        /* --- LAYOUT --- */
         .concert-container {
             position: relative; z-index: 10;
-            width: 90%; max-width: 1000px;
+            width: 95%; max-width: 1100px;
             display: flex; flex-wrap: wrap; justify-content: center; align-items: center;
-            gap: 40px;
+            gap: 30px; height: 85vh;
         }
 
-        /* Artist Section */
-        .artist-section {
-            flex: 1; text-align: center; min-width: 300px; position: relative;
-        }
+        .artist-section { flex: 1; text-align: center; max-width: 350px; }
         .guitarist-img {
-            width: 100%; max-width: 350px;
-            filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.2));
+            width: 100%; filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.2));
             transition: transform 0.3s;
         }
         .guitarist-img:hover { transform: scale(1.05) rotate(2deg); }
 
         /* Player Card */
         .player-card {
-            flex: 1; min-width: 300px;
+            flex: 1; min-width: 300px; max-width: 450px;
             background: rgba(20, 20, 20, 0.85);
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 20px; padding: 30px;
+            border-radius: 20px; padding: 25px;
             box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+            display: flex; flex-direction: column;
+            max-height: 80vh; /* Fixed height to allow scrolling inside */
         }
 
         .concert-title {
             font-family: 'Rock Salt', cursive; color: #FFD700;
-            font-size: 1.8rem; margin-bottom: 5px; text-align: center;
+            font-size: 1.5rem; text-align: center; margin-bottom: 5px;
             text-shadow: 0 0 10px #FFD700;
         }
         .concert-subtitle {
-            text-align: center; color: #aaa; font-size: 0.9rem; margin-bottom: 25px; letter-spacing: 2px;
+            text-align: center; color: #aaa; font-size: 0.8rem; margin-bottom: 20px; letter-spacing: 2px;
         }
 
         /* Song List */
-        .song-list { list-style: none; padding: 0; margin: 0; }
+        .song-list { list-style: none; padding: 0; margin: 0 0 20px 0; max-height: 150px; overflow-y: auto; }
         .song-item {
-            padding: 15px; border-bottom: 1px solid rgba(255,255,255,0.05);
-            cursor: pointer; transition: 0.3s; display: flex; align-items: center; gap: 15px;
-            border-radius: 10px; margin-bottom: 5px;
+            padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.05);
+            cursor: pointer; transition: 0.3s; display: flex; align-items: center; gap: 10px;
+            border-radius: 8px;
         }
-        .song-item:hover { background: rgba(255, 215, 0, 0.1); padding-left: 20px; }
+        .song-item:hover { background: rgba(255, 215, 0, 0.1); }
         .song-item.active {
             background: linear-gradient(90deg, rgba(255, 215, 0, 0.2), transparent);
-            border-left: 4px solid #FFD700;
+            border-left: 3px solid #FFD700;
+        }
+        .play-icon { font-size: 1rem; width: 20px; text-align: center; }
+        .song-info h4 { margin: 0; font-size: 0.9rem; }
+        .song-info p { margin: 0; font-size: 0.7rem; color: #888; }
+
+        /* --- LYRICS SECTION (NEW) --- */
+        .lyrics-box {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
+            padding: 20px;
+            height: 180px; /* Fixed height for lyrics */
+            overflow-y: hidden; /* Hide scrollbar */
+            text-align: center;
+            position: relative;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            mask-image: linear-gradient(to bottom, transparent, black 20%, black 80%, transparent);
+            -webkit-mask-image: linear-gradient(to bottom, transparent, black 20%, black 80%, transparent);
         }
 
-        .play-icon { font-size: 1.2rem; width: 30px; text-align: center; }
-        .song-info h4 { margin: 0; font-size: 1rem; font-weight: 600; }
-        .song-info p { margin: 3px 0 0; font-size: 0.8rem; color: #888; }
+        .lyric-line {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.4);
+            margin: 15px 0;
+            transition: all 0.5s ease;
+            filter: blur(1px);
+        }
+
+        .lyric-line.active {
+            font-size: 1.2rem;
+            color: #FFD700;
+            font-weight: 600;
+            filter: blur(0);
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.6);
+            transform: scale(1.05);
+        }
 
         /* Visualizer */
-        .visualizer {
-            display: flex; justify-content: center; gap: 4px; height: 30px; margin-top: 20px; align-items: flex-end;
-        }
-        .bar { width: 6px; background: #FFD700; border-radius: 3px; height: 5px; transition: 0.1s; }
-        
+        .visualizer { display: flex; justify-content: center; gap: 4px; height: 20px; margin-top: 10px; align-items: flex-end; }
+        .bar { width: 5px; background: #FFD700; border-radius: 3px; height: 3px; }
         .playing .bar { animation: bounce 0.5s infinite ease-in-out alternate; }
         .playing .bar:nth-child(1) { animation-delay: 0.1s; }
         .playing .bar:nth-child(2) { animation-delay: 0.3s; }
@@ -164,31 +167,19 @@
         .playing .bar:nth-child(4) { animation-delay: 0.4s; }
         .playing .bar:nth-child(5) { animation-delay: 0.1s; }
 
-        @keyframes bounce { 0% { height: 5px; } 100% { height: 30px; opacity: 0.7; } }
-
-        /* --- EXIT BUTTON (TOP LEFT) --- */
+        /* Exit Button */
         .back-btn {
-            position: fixed; 
-            top: 30px; 
-            left: 30px;
-            color: rgba(255,255,255,0.7); 
-            text-decoration: none;
-            font-size: 0.9rem; 
-            border: 1px solid rgba(255,255,255,0.3);
-            padding: 10px 20px; 
-            border-radius: 30px; 
-            transition: 0.3s; 
-            z-index: 1000;
-            background: rgba(0, 0, 0, 0.4);
-            backdrop-filter: blur(4px);
+            position: fixed; top: 30px; left: 30px;
+            color: rgba(255,255,255,0.7); text-decoration: none; font-size: 0.9rem;
+            border: 1px solid rgba(255,255,255,0.3); padding: 10px 20px; border-radius: 30px;
+            transition: 0.3s; z-index: 1000; background: rgba(0, 0, 0, 0.4); backdrop-filter: blur(4px);
         }
         .back-btn:hover { background: #fff; color: #000; }
-        .back-btn i { margin-right: 8px; }
 
         @media (max-width: 768px) {
-            .concert-container { flex-direction: column; }
-            .guitarist-img { max-width: 200px; margin-bottom: -20px; }
-            .back-btn { top: 20px; left: 20px; padding: 8px 15px; font-size: 0.8rem; }
+            .concert-container { flex-direction: column; gap: 20px; height: auto; padding-bottom: 50px; }
+            .guitarist-img { max-width: 180px; }
+            .player-card { width: 90%; }
         }
     </style>
 </head>
@@ -199,7 +190,6 @@
     <div class="crowd-container" id="crowd-lights"></div>
 
     <audio id="audio-player"></audio>
-
     <a href="index.html" class="back-btn"><i class="fas fa-arrow-left"></i> EXIT CONCERT</a>
 
     <div class="concert-container">
@@ -212,7 +202,7 @@
             <div class="concert-subtitle">LIVE SESSION • 2026</div>
 
             <ul class="song-list">
-                <li class="song-item active" onclick="playSong('song1.mp3', 'Still Here', 'Dino James', this)">
+                <li class="song-item" onclick="playSong('song1.mp3', 'Still Here', 'Dino James', this)">
                     <div class="play-icon"><i class="fas fa-play"></i></div>
                     <div class="song-info"><h4>Still Here</h4><p>Dino James</p></div>
                 </li>
@@ -220,7 +210,7 @@
                     <div class="play-icon"><i class="fas fa-play"></i></div>
                     <div class="song-info"><h4>3:59 AM</h4><p>Divine</p></div>
                 </li>
-                <li class="song-item" onclick="playSong('song3.mp3', 'CO2', 'Prateek Kuhad', this)">
+                <li class="song-item active" onclick="playSong('song3.mp3', 'CO2', 'Prateek Kuhad', this)">
                     <div class="play-icon"><i class="fas fa-play"></i></div>
                     <div class="song-info"><h4>CO2</h4><p>Prateek Kuhad</p></div>
                 </li>
@@ -230,12 +220,16 @@
                 </li>
             </ul>
 
+            <div class="lyrics-box" id="lyrics-display">
+                <div class="lyric-line">Select a song to see lyrics...</div>
+            </div>
+
             <div class="visualizer" id="visualizer-box">
                 <div class="bar"></div><div class="bar"></div><div class="bar"></div>
                 <div class="bar"></div><div class="bar"></div>
             </div>
             
-            <p id="now-playing-text" style="text-align: center; font-size: 0.8rem; color: #FFD700; margin-top: 15px; min-height: 20px;"></p>
+            <p id="now-playing-text" style="text-align: center; font-size: 0.8rem; color: #FFD700; margin-top: 10px;"></p>
         </div>
     </div>
 
@@ -244,9 +238,39 @@
         const visualizer = document.getElementById('visualizer-box');
         const nowPlayingText = document.getElementById('now-playing-text');
         const songItems = document.querySelectorAll('.song-item');
+        const lyricsDisplay = document.getElementById('lyrics-display');
         const crowdContainer = document.getElementById('crowd-lights');
 
-        // GENERATE CROWD FLASHLIGHTS
+        // --- LYRICS DATA (CO2 Example) ---
+        // Bhai, 'time' wo second hai jab line gaane mein aati hai.
+        const lyricsData = {
+            'CO2': [
+                { time: 0, text: "🎵 (Music Starts) 🎵" },
+                { time: 12, text: "Maybe I was wrong and you were right" },
+                { time: 16, text: "But I don't really wanna have this fight" },
+                { time: 20, text: "I just wanna feel like I belong" },
+                { time: 24, text: "And every time my heart swings back to you" },
+                { time: 28, text: "You are my morning and my truth" },
+                { time: 32, text: "And all that I can do is sing this song" },
+                { time: 36, text: "It ain't that long, hm..." },
+                { time: 42, text: "And nothing says I love you like your eyes" },
+                { time: 48, text: "Fill my lips with carbon dioxide" },
+                { time: 54, text: "I just wanna feel like I deserve you" },
+                { time: 58, text: "'Cause you deserve me..." },
+                { time: 65, text: "Baby it's the way that you can see" },
+                { time: 70, text: "What I miss and what I can never be" },
+                { time: 75, text: "I just wanna feel like I deserve you" },
+                { time: 80, text: "🎵 (Music Fades) 🎵" }
+            ],
+            'Still Here': [
+                { time: 0, text: "Yeah... Dino James..." },
+                { time: 5, text: "Sab kuch hai yahan..." },
+                { time: 10, text: "Par tu nahi hai..." }
+            ]
+        };
+
+        let currentLyrics = [];
+
         function createCrowd() {
             for(let i=0; i<30; i++) {
                 let light = document.createElement('div');
@@ -259,7 +283,7 @@
         }
         createCrowd();
 
-        function playSong(file, title, subtitle, element) {
+        function playSong(file, title, artist, element) {
             songItems.forEach(item => {
                 item.classList.remove('active');
                 item.querySelector('.play-icon').innerHTML = '<i class="fas fa-play"></i>';
@@ -270,7 +294,6 @@
                 document.body.classList.remove('music-on');
                 visualizer.classList.remove('playing');
                 element.querySelector('.play-icon').innerHTML = '<i class="fas fa-play"></i>';
-                nowPlayingText.innerText = "Paused";
                 return;
             }
 
@@ -282,7 +305,43 @@
             document.body.classList.add('music-on');
             visualizer.classList.add('playing');
             nowPlayingText.innerText = "Now Playing: " + title;
+
+            // Load Lyrics
+            loadLyrics(title);
         }
+
+        function loadLyrics(title) {
+            lyricsDisplay.innerHTML = "";
+            currentLyrics = lyricsData[title] || [{ time: 0, text: "Lyrics not available for this song." }];
+            
+            currentLyrics.forEach((line, index) => {
+                let div = document.createElement('div');
+                div.classList.add('lyric-line');
+                div.id = "line-" + index;
+                div.innerText = line.text;
+                lyricsDisplay.appendChild(div);
+            });
+        }
+
+        // SYNC LOGIC
+        audioPlayer.addEventListener('timeupdate', () => {
+            let currentTime = audioPlayer.currentTime;
+            
+            currentLyrics.forEach((line, index) => {
+                if (currentTime >= line.time) {
+                    // Remove active class from all
+                    document.querySelectorAll('.lyric-line').forEach(l => l.classList.remove('active'));
+                    
+                    // Add active class to current line
+                    let activeLine = document.getElementById("line-" + index);
+                    if (activeLine) {
+                        activeLine.classList.add('active');
+                        // Smooth Scroll to active line
+                        activeLine.scrollIntoView({ behavior: "smooth", block: "center" });
+                    }
+                }
+            });
+        });
     </script>
 </body>
 </html>
