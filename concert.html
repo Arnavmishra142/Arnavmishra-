@@ -95,18 +95,18 @@
             text-shadow: 0 0 20px rgba(255, 215, 0, 0.6); transform: scale(1.05);
         }
 
-        /* --- DANCING MONKEY GIF --- */
+        /* --- DANCING ANIMATION --- */
         .dancing-gif {
-            width: 100px; /* Size of the monkey */
+            width: 140px; /* Thoda aur bada size */
             height: auto;
             margin-top: 20px;
-            opacity: 0; /* Hidden by default */
+            opacity: 0;
             transform: scale(0.8);
             transition: all 0.3s ease;
             pointer-events: none;
         }
         .dancing-gif.playing {
-            opacity: 1; /* Show when playing */
+            opacity: 1;
             transform: scale(1);
         }
 
@@ -122,22 +122,21 @@
             background: rgba(0,0,0,0.8); border: 1px solid rgba(255,215,0,0.5); 
             color: #FFD700; padding: 8px 16px; border-radius: 30px; cursor: pointer; 
             z-index: 10002; font-size: 0.9rem; 
-            display: none; /* Hidden by default */
+            display: none;
             align-items: center; gap: 8px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.8);
             backdrop-filter: blur(10px);
         }
-        /* Class to show button */
         .nav-btn.show { display: flex !important; }
 
-        /* --- MOBILE VIEW FIXES --- */
+        /* --- MOBILE FIXES --- */
         @media (max-width: 768px) {
             .app-container { border: none; width: 100%; height: 100vh; border-radius: 0; background: transparent; }
             
-            /* FIX: Added background to library panel on mobile */
+            /* Background fix for list wipe-out */
             .library-panel { 
                 width: 100%; border: none; padding-top: 50px; 
-                background: rgba(20, 20, 20, 0.85); 
+                background: rgba(20, 20, 20, 0.95); /* Solid Dark BG */
             } 
             
             .player-panel { 
@@ -190,14 +189,13 @@
                 <div class="lyric-line">Lyrics will appear here...</div>
             </div>
 
-            <img src="https://media4.giphy.com/media/JVdF1ZxvkRynUscRNY/giphy.gif?cid=ecf05e47cg8542454545454545454545454545454545454&rid=giphy.gif&ct=s" id="visualizer-box" class="dancing-gif" alt="Dancing Monkey">
+            <img src="dancin-monkey.gif" id="visualizer-box" class="dancing-gif" alt="Enjoy the vibe">
         </div>
 
     </div>
 
     <script>
         const audioPlayer = document.getElementById('audio-player');
-        // Changed variable name to reflect it's now a GIF
         const dancingMonkey = document.getElementById('visualizer-box');
         const lyricsDisplay = document.getElementById('lyrics-display');
         const songListContainer = document.getElementById('song-list-container');
@@ -205,7 +203,6 @@
         const playerPanel = document.getElementById('player-panel');
         const crowdContainer = document.getElementById('crowd-lights');
         const backButton = document.getElementById('back-to-songs-btn');
-        
         const npTitle = document.getElementById('np-title');
         const npArtist = document.getElementById('np-artist');
 
@@ -260,20 +257,13 @@
                 if(audioPlayer.paused) audioPlayer.play();
             }
 
-            // Show the monkey!
             dancingMonkey.classList.add('playing');
             openPlayer(); 
             loadLyrics(song);
         }
 
-        // Hide monkey on pause
-        audioPlayer.addEventListener('pause', () => {
-            dancingMonkey.classList.remove('playing');
-        });
-        // Show monkey on play
-        audioPlayer.addEventListener('play', () => {
-            dancingMonkey.classList.add('playing');
-        });
+        audioPlayer.addEventListener('pause', () => dancingMonkey.classList.remove('playing'));
+        audioPlayer.addEventListener('play', () => dancingMonkey.classList.add('playing'));
 
         async function loadLyrics(song) {
             let text = "";
@@ -310,9 +300,7 @@
             lyricsDisplay.innerHTML = "";
             lyricsDisplay.scrollTop = 0; 
             activeLineIndex = -1;
-
             let spacer = document.createElement('div'); spacer.style.height = "40%"; lyricsDisplay.appendChild(spacer.cloneNode());
-            
             currentLyrics.forEach((line, i) => {
                 let div = document.createElement('div');
                 div.classList.add('lyric-line');
@@ -320,23 +308,19 @@
                 div.innerText = line.text;
                 lyricsDisplay.appendChild(div);
             });
-            
             lyricsDisplay.appendChild(spacer.cloneNode());
         }
 
         audioPlayer.addEventListener('timeupdate', () => {
             const time = audioPlayer.currentTime;
             let idx = -1;
-            
             for(let i=0; i<currentLyrics.length; i++) {
                 if(time >= currentLyrics[i].time) idx = i;
                 else break;
             }
-
             if (idx !== activeLineIndex) {
                 activeLineIndex = idx;
                 document.querySelectorAll('.lyric-line').forEach(l => l.classList.remove('active'));
-                
                 if(activeLineIndex !== -1) {
                     const activeEl = document.getElementById(`line-${idx}`);
                     if (activeEl) {
@@ -350,14 +334,12 @@
         function openPlayer() {
             if(window.innerWidth <= 768) {
                 playerPanel.classList.add('active');
-                // Show button using class
                 backButton.classList.add('show');
             }
         }
         
         function closePlayer() {
             playerPanel.classList.remove('active');
-            // Hide button using class
             backButton.classList.remove('show');
         }
 
