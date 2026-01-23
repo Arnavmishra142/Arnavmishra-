@@ -14,7 +14,7 @@
             background-color: #050505;
             color: #fff;
             font-family: 'Montserrat', sans-serif;
-            overflow: hidden; /* No scroll, full immersive */
+            overflow: hidden;
             height: 100vh;
             display: flex; flex-direction: column; align-items: center; justify-content: center;
         }
@@ -24,9 +24,10 @@
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: url('stage_bg.jpg') no-repeat center center/cover;
             filter: brightness(0.4); z-index: -2;
+            transition: filter 0.5s;
         }
 
-        /* Spotlights Animation */
+        /* Dynamic Spotlights */
         .spotlight {
             position: fixed; top: -50%; left: 50%; width: 200px; height: 150vh;
             background: linear-gradient(to bottom, rgba(255, 215, 0, 0.3), transparent);
@@ -34,10 +35,39 @@
             filter: blur(20px); z-index: -1;
             transform-origin: top center;
             animation: spotMove 8s infinite ease-in-out;
+            transition: opacity 0.5s;
         }
+        /* When Music Plays, Lights get brighter */
+        body.music-on .spotlight { opacity: 1; filter: blur(15px) brightness(1.5); }
+        body.music-on .stage-bg { filter: brightness(0.6); }
+
         @keyframes spotMove {
-            0%, 100% { transform: translateX(-50%) rotate(-15deg); opacity: 0.5; }
-            50% { transform: translateX(-50%) rotate(15deg); opacity: 0.8; }
+            0%, 100% { transform: translateX(-50%) rotate(-15deg); }
+            50% { transform: translateX(-50%) rotate(15deg); }
+        }
+
+        /* --- CROWD FLASHLIGHTS (New Feature) --- */
+        .crowd-container {
+            position: fixed; bottom: 0; left: 0; width: 100%; height: 30vh;
+            z-index: -1; pointer-events: none;
+            overflow: hidden;
+            mask-image: linear-gradient(to top, black, transparent);
+            -webkit-mask-image: linear-gradient(to top, black, transparent);
+        }
+        .flashlight {
+            position: absolute; bottom: 0;
+            width: 4px; height: 4px;
+            background: #fff;
+            border-radius: 50%;
+            box-shadow: 0 0 10px 2px rgba(255, 255, 255, 0.8);
+            opacity: 0;
+            animation: waveLight 4s infinite ease-in-out alternate;
+        }
+
+        @keyframes waveLight {
+            0% { transform: translateY(0) translateX(0); opacity: 0.2; }
+            50% { opacity: 0.8; transform: translateY(-10px) translateX(5px); }
+            100% { transform: translateY(0) translateX(-5px); opacity: 0.3; }
         }
 
         /* Main Container */
@@ -48,10 +78,9 @@
             gap: 40px;
         }
 
-        /* --- THE ARTIST (Guitarist) --- */
+        /* --- THE ARTIST --- */
         .artist-section {
-            flex: 1; text-align: center; min-width: 300px;
-            position: relative;
+            flex: 1; text-align: center; min-width: 300px; position: relative;
         }
         .guitarist-img {
             width: 100%; max-width: 350px;
@@ -96,13 +125,12 @@
         .song-info h4 { margin: 0; font-size: 1rem; font-weight: 600; }
         .song-info p { margin: 3px 0 0; font-size: 0.8rem; color: #888; }
 
-        /* Visualizer Bars */
+        /* Visualizer */
         .visualizer {
             display: flex; justify-content: center; gap: 4px; height: 30px; margin-top: 20px; align-items: flex-end;
         }
         .bar { width: 6px; background: #FFD700; border-radius: 3px; height: 5px; transition: 0.1s; }
         
-        /* Playing Animation */
         .playing .bar { animation: bounce 0.5s infinite ease-in-out alternate; }
         .playing .bar:nth-child(1) { animation-delay: 0.1s; }
         .playing .bar:nth-child(2) { animation-delay: 0.3s; }
@@ -116,11 +144,10 @@
             position: fixed; bottom: 30px; left: 30px;
             color: rgba(255,255,255,0.5); text-decoration: none;
             font-size: 0.9rem; border: 1px solid rgba(255,255,255,0.2);
-            padding: 10px 20px; border-radius: 30px; transition: 0.3s;
+            padding: 10px 20px; border-radius: 30px; transition: 0.3s; z-index: 100;
         }
         .back-btn:hover { background: #fff; color: #000; }
 
-        /* Mobile Adjustments */
         @media (max-width: 768px) {
             .concert-container { flex-direction: column; }
             .guitarist-img { max-width: 200px; margin-bottom: -20px; }
@@ -131,6 +158,9 @@
 
     <div class="stage-bg"></div>
     <div class="spotlight"></div>
+    
+    <div class="crowd-container" id="crowd-lights">
+        </div>
 
     <audio id="audio-player"></audio>
 
@@ -145,32 +175,21 @@
             <div class="concert-subtitle">LIVE SESSION • 2026</div>
 
             <ul class="song-list">
-                <li class="song-item active" onclick="playSong('song1.mp3', 'Tum Se Hi', 'Soft Acoustic', this)">
+                <li class="song-item active" onclick="playSong('song1.mp3', 'Still Here', 'Dino James', this)">
                     <div class="play-icon"><i class="fas fa-play"></i></div>
-                    <div class="song-info">
-                        <h4>still here</h4> <p>Dino james</p>
-                    </div>
+                    <div class="song-info"><h4>Still Here</h4><p>Dino James</p></div>
                 </li>
-
-                <li class="song-item" onclick="playSong('song2.mp3', 'Kun Faya Kun', 'Soulful', this)">
+                <li class="song-item" onclick="playSong('song2.mp3', '3:59 AM', 'Divine', this)">
                     <div class="play-icon"><i class="fas fa-play"></i></div>
-                    <div class="song-info">
-                        <h4>3:59</h4> <p>Divine</p>
-                    </div>
+                    <div class="song-info"><h4>3:59 AM</h4><p>Divine</p></div>
                 </li>
-
-                <li class="song-item" onclick="playSong('song3.mp3', 'Perfect', 'English Classic', this)">
+                <li class="song-item" onclick="playSong('song3.mp3', 'CO2', 'Prateek Kuhad', this)">
                     <div class="play-icon"><i class="fas fa-play"></i></div>
-                    <div class="song-info">
-                        <h4>co2</h4> <p>Prateek Kuhad</p>
-                    </div>
+                    <div class="song-info"><h4>CO2</h4><p>Prateek Kuhad</p></div>
                 </li>
-
-                <li class="song-item" onclick="playSong('song4.mp3', 'Iktara', 'Feel Good', this)">
+                <li class="song-item" onclick="playSong('song4.mp3', 'From the Start', 'Laufey', this)">
                     <div class="play-icon"><i class="fas fa-play"></i></div>
-                    <div class="song-info">
-                        <h4>From the Start</h4> <p>Laufey</p>
-                    </div>
+                    <div class="song-info"><h4>From the Start</h4><p>Laufey</p></div>
                 </li>
             </ul>
 
@@ -180,7 +199,6 @@
             </div>
             
             <p id="now-playing-text" style="text-align: center; font-size: 0.8rem; color: #FFD700; margin-top: 15px; min-height: 20px;"></p>
-
         </div>
     </div>
 
@@ -191,30 +209,48 @@
         const visualizer = document.getElementById('visualizer-box');
         const nowPlayingText = document.getElementById('now-playing-text');
         const songItems = document.querySelectorAll('.song-item');
+        const crowdContainer = document.getElementById('crowd-lights');
         let isPlaying = false;
 
+        // GENERATE CROWD FLASHLIGHTS
+        function createCrowd() {
+            for(let i=0; i<30; i++) {
+                let light = document.createElement('div');
+                light.classList.add('flashlight');
+                // Random position
+                light.style.left = Math.random() * 100 + '%';
+                light.style.bottom = Math.random() * 20 + '%';
+                // Random delay so they don't wave together
+                light.style.animationDelay = Math.random() * 3 + 's';
+                crowdContainer.appendChild(light);
+            }
+        }
+        createCrowd();
+
         function playSong(file, title, subtitle, element) {
-            // Update Active UI
+            // Reset UI
             songItems.forEach(item => {
                 item.classList.remove('active');
                 item.querySelector('.play-icon').innerHTML = '<i class="fas fa-play"></i>';
             });
 
-            // If clicking the same song that is playing, toggle pause
+            // Toggle Pause if same song
             if (audioPlayer.getAttribute('src') === file && !audioPlayer.paused) {
                 audioPlayer.pause();
+                document.body.classList.remove('music-on');
                 visualizer.classList.remove('playing');
                 element.querySelector('.play-icon').innerHTML = '<i class="fas fa-play"></i>';
                 nowPlayingText.innerText = "Paused";
                 return;
             }
 
-            // Play New Song
+            // Play New
             element.classList.add('active');
             element.querySelector('.play-icon').innerHTML = '<i class="fas fa-pause"></i>';
             
             audioPlayer.src = file;
             audioPlayer.play();
+            document.body.classList.add('music-on'); // Triggers stage lights
             visualizer.classList.add('playing');
             nowPlayingText.innerText = "Now Playing: " + title;
         }
