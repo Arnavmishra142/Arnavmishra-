@@ -37,7 +37,6 @@
             animation: spotMove 8s infinite ease-in-out;
             transition: opacity 0.5s;
         }
-        /* When Music Plays, Lights get brighter */
         body.music-on .spotlight { opacity: 1; filter: blur(15px) brightness(1.5); }
         body.music-on .stage-bg { filter: brightness(0.6); }
 
@@ -46,7 +45,7 @@
             50% { transform: translateX(-50%) rotate(15deg); }
         }
 
-        /* --- CROWD FLASHLIGHTS (New Feature) --- */
+        /* Crowd Flashlights */
         .crowd-container {
             position: fixed; bottom: 0; left: 0; width: 100%; height: 30vh;
             z-index: -1; pointer-events: none;
@@ -78,7 +77,7 @@
             gap: 40px;
         }
 
-        /* --- THE ARTIST --- */
+        /* Artist Section */
         .artist-section {
             flex: 1; text-align: center; min-width: 300px; position: relative;
         }
@@ -89,7 +88,7 @@
         }
         .guitarist-img:hover { transform: scale(1.05) rotate(2deg); }
 
-        /* --- MUSIC PLAYER UI --- */
+        /* Player Card */
         .player-card {
             flex: 1; min-width: 300px;
             background: rgba(20, 20, 20, 0.85);
@@ -140,17 +139,29 @@
 
         @keyframes bounce { 0% { height: 5px; } 100% { height: 30px; opacity: 0.7; } }
 
+        /* --- UPDATED EXIT BUTTON (TOP LEFT) --- */
         .back-btn {
-            position: fixed; bottom: 30px; left: 30px;
-            color: rgba(255,255,255,0.5); text-decoration: none;
-            font-size: 0.9rem; border: 1px solid rgba(255,255,255,0.2);
-            padding: 10px 20px; border-radius: 30px; transition: 0.3s; z-index: 100;
+            position: fixed; 
+            top: 30px; 
+            left: 30px;
+            color: rgba(255,255,255,0.7); 
+            text-decoration: none;
+            font-size: 0.9rem; 
+            border: 1px solid rgba(255,255,255,0.3);
+            padding: 10px 20px; 
+            border-radius: 30px; 
+            transition: 0.3s; 
+            z-index: 1000;
+            background: rgba(0, 0, 0, 0.4); /* Slight dark bg for contrast */
+            backdrop-filter: blur(4px);
         }
         .back-btn:hover { background: #fff; color: #000; }
+        .back-btn i { margin-right: 8px; }
 
         @media (max-width: 768px) {
             .concert-container { flex-direction: column; }
             .guitarist-img { max-width: 200px; margin-bottom: -20px; }
+            .back-btn { top: 20px; left: 20px; padding: 8px 15px; font-size: 0.8rem; }
         }
     </style>
 </head>
@@ -158,14 +169,13 @@
 
     <div class="stage-bg"></div>
     <div class="spotlight"></div>
-    
-    <div class="crowd-container" id="crowd-lights">
-        </div>
+    <div class="crowd-container" id="crowd-lights"></div>
 
     <audio id="audio-player"></audio>
 
+    <a href="index.html" class="back-btn"><i class="fas fa-arrow-left"></i> EXIT CONCERT</a>
+
     <div class="concert-container">
-        
         <div class="artist-section">
             <img src="guitarist.png" alt="Arnav Guitar" class="guitarist-img">
         </div>
@@ -202,25 +212,20 @@
         </div>
     </div>
 
-    <a href="index.html" class="back-btn">EXIT CONCERT</a>
-
     <script>
         const audioPlayer = document.getElementById('audio-player');
         const visualizer = document.getElementById('visualizer-box');
         const nowPlayingText = document.getElementById('now-playing-text');
         const songItems = document.querySelectorAll('.song-item');
         const crowdContainer = document.getElementById('crowd-lights');
-        let isPlaying = false;
 
         // GENERATE CROWD FLASHLIGHTS
         function createCrowd() {
             for(let i=0; i<30; i++) {
                 let light = document.createElement('div');
                 light.classList.add('flashlight');
-                // Random position
                 light.style.left = Math.random() * 100 + '%';
                 light.style.bottom = Math.random() * 20 + '%';
-                // Random delay so they don't wave together
                 light.style.animationDelay = Math.random() * 3 + 's';
                 crowdContainer.appendChild(light);
             }
@@ -228,13 +233,11 @@
         createCrowd();
 
         function playSong(file, title, subtitle, element) {
-            // Reset UI
             songItems.forEach(item => {
                 item.classList.remove('active');
                 item.querySelector('.play-icon').innerHTML = '<i class="fas fa-play"></i>';
             });
 
-            // Toggle Pause if same song
             if (audioPlayer.getAttribute('src') === file && !audioPlayer.paused) {
                 audioPlayer.pause();
                 document.body.classList.remove('music-on');
@@ -244,13 +247,12 @@
                 return;
             }
 
-            // Play New
             element.classList.add('active');
             element.querySelector('.play-icon').innerHTML = '<i class="fas fa-pause"></i>';
             
             audioPlayer.src = file;
             audioPlayer.play();
-            document.body.classList.add('music-on'); // Triggers stage lights
+            document.body.classList.add('music-on');
             visualizer.classList.add('playing');
             nowPlayingText.innerText = "Now Playing: " + title;
         }
