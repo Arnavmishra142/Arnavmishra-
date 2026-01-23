@@ -16,12 +16,13 @@
     </script>
 
     <style>
+        /* --- CONCERT THEME CSS --- */
         body {
             margin: 0; padding: 0;
             background-color: #050505;
             color: #fff;
             font-family: 'Montserrat', sans-serif;
-            overflow: hidden; /* Stops scrollbars on body */
+            overflow: hidden; 
             height: 100vh;
             display: flex; flex-direction: column; align-items: center; justify-content: center;
             opacity: 0; animation: entranceFade 1.2s forwards;
@@ -29,7 +30,7 @@
 
         @keyframes entranceFade { to { opacity: 1; } }
 
-        /* Backgrounds */
+        /* Background & Atmosphere */
         .stage-bg {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: url('stage_bg.jpg') no-repeat center center/cover;
@@ -84,10 +85,11 @@
         .concert-title { font-family: 'Rock Salt', cursive; color: #FFD700; text-align: center; font-size: 1.5rem; }
         .concert-subtitle { text-align: center; color: #aaa; font-size: 0.8rem; margin-bottom: 15px; }
 
-        /* Song List - Fixed height issue */
+        /* Song List - Fixed Height & Scroll */
         .song-list { 
             list-style: none; padding: 0; margin: 0 0 15px 0; 
-            max-height: 180px; overflow-y: auto; /* Increased height */
+            max-height: 200px; /* Increased height so all songs fit */
+            overflow-y: auto; 
         }
         .song-item {
             padding: 8px 12px; border-bottom: 1px solid rgba(255,255,255,0.05);
@@ -101,13 +103,13 @@
         .song-info h4 { margin: 0; font-size: 0.9rem; }
         .song-info p { margin: 0; font-size: 0.7rem; color: #888; }
 
-        /* Lyrics Box - Optimized */
+        /* Lyrics Box - Fixed Shaking */
         .lyrics-box {
             background: rgba(0, 0, 0, 0.4);
             border-radius: 12px;
             padding: 15px;
-            height: 140px; /* Fixed height strictly for lyrics */
-            overflow-y: hidden; /* Hide manual scrollbar, JS handles it */
+            height: 140px; 
+            overflow: hidden; /* No scrollbar shown */
             text-align: center;
             border-top: 1px solid rgba(255,255,255,0.1);
             mask-image: linear-gradient(to bottom, transparent, black 10%, black 90%, transparent);
@@ -118,7 +120,7 @@
         .lyric-line {
             font-size: 0.9rem; color: rgba(255, 255, 255, 0.3);
             margin: 8px 0; transition: all 0.4s ease;
-            min-height: 20px;
+            min-height: 20px; flex-shrink: 0;
         }
 
         .lyric-line.active {
@@ -205,28 +207,34 @@
         const lyricsDisplay = document.getElementById('lyrics-display');
         const crowdContainer = document.getElementById('crowd-lights');
 
-        // --- LYRICS DATA (Adjust 'time' for perfect sync) ---
+        // --- FIXED LYRICS TIMESTAMPS (Studio Version) ---
         const lyricsData = {
             'CO2': [
                 { time: 0, text: "🎵 (Music Starts) 🎵" },
-                { time: 12, text: "Maybe I was wrong and you were right" },
-                { time: 16, text: "But I don't really wanna have this fight" },
-                { time: 20, text: "I just wanna feel like I belong" },
-                { time: 24, text: "And every time my heart swings back to you" },
-                { time: 28, text: "You are my morning and my truth" },
+                { time: 11, text: "Maybe I was wrong and you were right" }, 
+                { time: 15, text: "But I don't really wanna have this fight" },
+                { time: 19, text: "I just wanna feel like I belong" },
+                { time: 23, text: "And every time my heart swings back to you" },
+                { time: 27, text: "You are my morning and my truth" },
                 { time: 32, text: "And all that I can do is sing this song" },
-                { time: 36, text: "It ain't that long, hm..." },
-                { time: 42, text: "And nothing says I love you like your eyes" },
-                { time: 48, text: "Fill my lips with carbon dioxide" },
-                { time: 54, text: "I just wanna feel like I deserve you" },
+                { time: 37, text: "It ain't that long, hm..." },
+                { time: 41, text: "And nothing says I love you like your eyes" },
+                { time: 47, text: "Fill my lips with carbon dioxide" },
+                { time: 53, text: "I just wanna feel like I deserve you" },
                 { time: 58, text: "'Cause you deserve me..." },
+                { time: 64, text: "Baby it's the way that you can see" },
+                { time: 69, text: "What I miss and what I can never be" },
+                { time: 74, text: "I just wanna feel like I deserve you" },
                 { time: 80, text: "🎵 (Music Fades) 🎵" }
+            ],
+            'Still Here': [
+                { time: 0, text: "Lyrics coming soon..." }
             ]
         };
 
-        // --- FIXED LOGIC FOR SYNC & SHAKE ---
+        // --- FIXED LOGIC (No More Shaking) ---
         let currentLyrics = [];
-        let activeLineIndex = -1; // Tracks current active line
+        let activeLineIndex = -1;
 
         function createCrowd() {
             for(let i=0; i<30; i++) {
@@ -268,8 +276,8 @@
 
         function loadLyrics(title) {
             lyricsDisplay.innerHTML = "";
-            activeLineIndex = -1; // Reset tracker
-            currentLyrics = lyricsData[title] || [{ time: 0, text: "Lyrics not available for this song." }];
+            activeLineIndex = -1;
+            currentLyrics = lyricsData[title] || [{ time: 0, text: "Enjoy the Music 🎵" }];
             
             currentLyrics.forEach((line, index) => {
                 let div = document.createElement('div');
@@ -280,28 +288,26 @@
             });
         }
 
-        // --- NEW OPTIMIZED SCROLL LOGIC (No Shaking) ---
+        // --- NEW SMOOTH SCROLL LOGIC ---
         audioPlayer.addEventListener('timeupdate', () => {
             let currentTime = audioPlayer.currentTime;
             let newActiveIndex = -1;
 
-            // Find which line should be active right now
+            // Find correct line
             for (let i = 0; i < currentLyrics.length; i++) {
                 if (currentTime >= currentLyrics[i].time) {
                     newActiveIndex = i;
                 } else {
-                    break; // Stop checking if next line is in future
+                    break;
                 }
             }
 
-            // Only update DOM if the line CHANGED
+            // Update only if line changes (Prevents Shaking)
             if (newActiveIndex !== activeLineIndex) {
                 activeLineIndex = newActiveIndex;
 
-                // Clear all active classes
                 document.querySelectorAll('.lyric-line').forEach(l => l.classList.remove('active'));
 
-                // Set new active class and scroll ONLY ONCE
                 if (activeLineIndex !== -1) {
                     let activeLine = document.getElementById("line-" + activeLineIndex);
                     if (activeLine) {
