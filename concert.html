@@ -34,7 +34,26 @@
         .search-box { width: 100%; margin-bottom: 10px; }
         .search-input { width: 93%; padding: 10px 15px; border-radius: 30px; border: 1px solid rgba(255,255,255,0.2); background: rgba(255,255,255,0.1); color: #fff; font-family: 'Montserrat', sans-serif; outline: none; transition: 0.3s; }
         .search-input:focus { background: rgba(255,255,255,0.2); border-color: #FFD700; }
-        .song-list { list-style: none; padding: 0; margin: 0 0 15px 0; max-height: 200px; overflow-y: auto; }
+        
+        /* --- UPDATED SONG LIST (SCROLLBAR & HEIGHT) --- */
+        .song-list { 
+            list-style: none; padding: 0; margin: 0 0 15px 0; 
+            
+            /* Height increased slightly to cut off the 5th item (Visual Hint) */
+            max-height: 230px; 
+            
+            overflow-y: auto; 
+            
+            /* Firefox Scrollbar */
+            scrollbar-width: thin;
+            scrollbar-color: #FFD700 rgba(255,255,255,0.1);
+        }
+
+        /* Chrome/Safari Custom Gold Scrollbar */
+        .song-list::-webkit-scrollbar { width: 6px; }
+        .song-list::-webkit-scrollbar-track { background: rgba(255,255,255,0.05); border-radius: 4px; }
+        .song-list::-webkit-scrollbar-thumb { background-color: #FFD700; border-radius: 10px; border: 1px solid #000; }
+
         .song-item { padding: 8px 12px; border-bottom: 1px solid rgba(255,255,255,0.05); cursor: pointer; display: flex; align-items: center; gap: 10px; border-radius: 8px; margin-bottom: 4px; transition: 0.2s; }
         .song-item:hover { background: rgba(255, 215, 0, 0.1); }
         .song-item.active { background: linear-gradient(90deg, rgba(255, 215, 0, 0.2), transparent); border-left: 3px solid #FFD700; }
