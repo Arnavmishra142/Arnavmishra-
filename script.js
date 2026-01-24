@@ -94,15 +94,20 @@ function setupNinja() {
     });
 }
 
-/* --- 3. POPUP HANDLER (UPDATED) --- */
+/* --- 3. POPUP HANDLER (WHATSAPP + OPTIONAL NAME) --- */
 function submitName() {
     const name = visitorInput.value.trim();
-    
-    if(name) {
-        // Update WhatsApp Link Dynamically
-        const waBtn = document.getElementById('wa-link');
+    const waBtn = document.getElementById('wa-link');
+    const myPhone = "916393349498"; // Phone Number
+
+    if (name) {
+        // Agar Naam hai:
         const text = `Hey Arnav, this is ${name}. I visited your portfolio!`;
-        waBtn.href = `https://wa.me/916393349498?text=${encodeURIComponent(text)}`;
+        waBtn.href = `https://wa.me/${myPhone}?text=${encodeURIComponent(text)}`;
+    } else {
+        // Agar Naam nahi hai (Optional):
+        const text = `Hey Arnav, I visited your portfolio!`;
+        waBtn.href = `https://wa.me/${myPhone}?text=${encodeURIComponent(text)}`;
     }
 
     // Close popup animation
