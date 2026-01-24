@@ -16,35 +16,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Playfair+Display:ital,wght@0,400;1,600&family=Poppins:wght@300;400;600&family=Courier+Prime:wght@400;700&family=Great+Vibes&display=swap" rel="stylesheet">
-
-    <style>
-        :root {
-            --bg-color: #050505; --text-color: #fff; --accent-color: #FFD700;
-            --card-bg: rgba(255, 255, 255, 0.05); --quote-color: #a0a0a0;
-        }
-        body.light-mode {
-            --bg-color: #e0e0e0; --text-color: #111; --accent-color: #b8860b;
-            --card-bg: rgba(0, 0, 0, 0.05); --quote-color: #444;
-        }
-        body { background-color: var(--bg-color) !important; color: var(--text-color) !important; transition: background-color 0.5s ease, color 0.5s ease; }
-        
-        .eclipse-toggle { position: fixed; top: 20px; left: 20px; width: 45px; height: 45px; cursor: pointer; z-index: 10001; }
-        .sun { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: #FFD700; border-radius: 50%; box-shadow: 0 0 15px #FFD700; }
-        .moon { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: #222; border-radius: 50%; box-shadow: inset -2px -2px 5px rgba(255,255,255,0.1); transition: transform 0.6s cubic-bezier(0.68, -0.55, 0.27, 1.55); }
-        .eclipse-toggle.active .moon { transform: translate(25px, -25px); }
-
-        .quote-box { color: var(--quote-color) !important; }
-        .name { color: var(--text-color) !important; }
-        .footer-text { color: var(--quote-color) !important; }
-        
-        .concert-btn {
-            color: var(--accent-color) !important; border: 1px solid var(--accent-color) !important;
-            text-decoration: none; padding: 10px 20px; border-radius: 20px; font-size: 0.9rem; font-family: 'Poppins', sans-serif;
-            transition: all 0.3s; display: inline-block;
-        }
-        .concert-btn:hover { background: var(--accent-color); color: var(--bg-color) !important; }
-    </style>
 </head>
 
 <body id="main-body" class="wait-for-intro">
@@ -52,6 +25,28 @@
     <div id="intro-screen">
         <div class="signature-container">
             <span id="signature-text"></span><span class="cursor"></span>
+        </div>
+    </div>
+
+    <div id="music-popup">
+        <div class="glass-box">
+            <img src="https://cdn-icons-png.flaticon.com/512/4359/4359962.png" id="ninja-img" alt="Ninja">
+            
+            <div class="popup-content">
+                <div class="popup-icon">🕵️‍♂️</div>
+                <h2>Identity Check!</h2>
+                <p class="tap-hint">Halt! Who goes there?</p>
+                
+                <div class="input-wrapper">
+                    <input type="text" id="visitor-name" placeholder="Type your name..." autocomplete="off">
+                    <button onclick="submitName()" class="go-btn"><i class="fas fa-arrow-right"></i></button>
+                </div>
+
+                <div class="vibe-note">
+                    <i class="fas fa-info-circle"></i> 
+                    Don't worry, the Ninja is just curious.
+                </div>
+            </div>
         </div>
     </div>
 
@@ -66,23 +61,14 @@
 
     <div class="sound-control">
         <button onclick="toggleMusic()" id="mute-btn">
-            <div class="icon-container"><i class="fas fa-volume-mute" id="mute-icon"></i></div>
+            <div class="icon-container">
+                <i class="fas fa-volume-mute" id="mute-icon"></i>
+            </div>
         </button>
     </div>
 
-    <div id="music-popup" onclick="closePopup()">
-        <div class="popup-box">
-            <div class="popup-icon">✨</div>
-            <h2>Welcome to my world.</h2>
-            <p class="tap-hint">Tap anywhere to enter</p>
-            <div class="vibe-note">
-                <i class="fas fa-arrow-up" style="transform: rotate(45deg);"></i> 
-                Sound button is Top-Right. <br>Turn it ON for the vibe! 🎵
-            </div>
-        </div>
-    </div>
-
     <div class="main-wrapper">
+        
         <div id="home-view">
             <div class="profile-container anim-delay-1">
                 <div class="profile-glow"></div>
@@ -90,8 +76,14 @@
             </div>
             
             <div class="name anim-delay-2">Arnav Mishra</div>
-            <div class="bio-wrap anim-delay-3"><div class="bio" id="bio-text"></div></div>
-            <div class="quote-box anim-delay-4">"The secret of change is to focus all of your energy, not on fighting the old, but on building the new."</div>
+            
+            <div class="bio-wrap anim-delay-3">
+                <div class="bio" id="bio-text"></div>
+            </div>
+
+            <div class="quote-box anim-delay-4">
+                "The secret of change is to focus all of your energy, not on fighting the old, but on building the new."
+            </div>
 
             <div class="btn-grid anim-delay-5">
                 <a href="https://www.linkedin.com/in/arnav-mishra-1a6934371" class="btn"><i class="fab fa-linkedin"></i> LinkedIn</a>
@@ -116,37 +108,74 @@
             </div>
 
             <div class="portal-container anim-delay-8">
-                <a href="stranger.html" class="glitch-btn" data-text="ENTER THE UPSIDE DOWN">ENTER THE UPSIDE DOWN</a>
+                <a href="stranger.html" class="glitch-btn" data-text="ENTER THE UPSIDE DOWN">
+                    ENTER THE UPSIDE DOWN
+                </a>
             </div>
 
             <div style="text-align: center; margin-top: 15px; margin-bottom: 20px;">
-                <a href="concert.html" class="concert-btn">🎸 Enter Live Concert</a>
+                <a href="concert.html" class="concert-btn">
+                    🎸 Enter Live Concert
+                </a>
             </div>
             
             <p class="footer-text anim-delay-8">© 2026 ARNAV MISHRA</p>
         </div>
 
         <div id="about-view" style="display: none;">
-            <div class="nav-header"><button onclick="switchToHome()" class="back-btn"><i class="fas fa-arrow-left"></i> Home Protocol</button></div>
-            
+            <div class="nav-header">
+                <button onclick="switchToHome()" class="back-btn"><i class="fas fa-arrow-left"></i> Home Protocol</button>
+            </div>
+
             <h2 class="section-title">Projects</h2>
             <div class="card project-card">
-                <div class="card-header"><h3 style="color: #ff4b4b;">Zomato Analysis 📊</h3></div>
-                <p class="card-desc">Market positioning and SWOT analysis for hyperlocal delivery based on real-time data.</p>
-                <a href="https://docs.google.com/spreadsheets/d/11k2QyICWavfXFuUGXRBGnRJ7l7zsblQB/edit?usp=drivesdk" target="_blank" class="project-link-btn">View Sheets Project <i class="fas fa-external-link-alt"></i></a>
+                <div class="card-header">
+                    <h3 style="color: #ff4b4b;">Zomato Analysis 📊</h3>
+                </div>
+                <p class="card-desc">
+                    Market positioning and SWOT analysis for hyperlocal delivery based on real-time data.
+                </p>
+                <a href="https://docs.google.com/spreadsheets/d/11k2QyICWavfXFuUGXRBGnRJ7l7zsblQB/edit?usp=drivesdk" target="_blank" class="project-link-btn">
+                    View Sheets Project <i class="fas fa-external-link-alt"></i>
+                </a>
             </div>
 
             <h2 class="section-title">Sonic Fuel (GOAT)</h2>
             <div class="card krsna-card">
-                <div class="krsna-header"><div class="krsna-icon">$</div><div><h3>KR$NA 👑</h3><p class="subtitle">The inspiration.</p></div></div>
-                <div class="lyrics-box">"Chahiye mujhe bas ek buss down Rollie<br>Lambhi si gaadi aur makaan do storey, haan<br>Chahiye mujhe bas ek buss down Rollie<br>Lambi si chain aur kuch lakh ki tijori"</div>
+                <div class="krsna-header">
+                    <div class="krsna-icon">$</div>
+                    <div>
+                        <h3>KR$NA 👑</h3>
+                        <p class="subtitle">The inspiration.</p>
+                    </div>
+                </div>
+                <div class="lyrics-box">
+                    "Chahiye mujhe bas ek buss down Rollie<br>
+                    Lambhi si gaadi aur makaan do storey, haan<br>
+                    Chahiye mujhe bas ek buss down Rollie<br>
+                    Lambi si chain aur kuch lakh ki tijori"
+                </div>
             </div>
 
             <h2 class="section-title">Original Verses</h2>
-            <div class="card verse-card"><div class="verse-header"><h3 class="verse-title fire">🔥 Jang-kaal</h3></div><div id="verse-1-display" class="verse-content"></div></div>
-            <div class="card verse-card"><div class="verse-header"><h3 class="verse-title cosmic">🌌 Anjaan</h3></div><div id="verse-2-display" class="verse-content"></div></div>
+            
+            <div class="card verse-card">
+                <div class="verse-header">
+                    <h3 class="verse-title fire">🔥 Jang-kaal</h3>
+                </div>
+                <div id="verse-1-display" class="verse-content"></div>
+            </div>
+
+            <div class="card verse-card">
+                <div class="verse-header">
+                    <h3 class="verse-title cosmic">🌌 Anjaan</h3>
+                </div>
+                <div id="verse-2-display" class="verse-content"></div>
+            </div>
+
             <div style="height: 80px;"></div>
         </div>
+
     </div>
 
     <script src="script.js"></script>
@@ -168,5 +197,7 @@
             }
         }
     </script>
+
 </body>
-</html>
+                    </html>
+                    
