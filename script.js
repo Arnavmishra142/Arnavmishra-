@@ -2,7 +2,7 @@
 const bioText = "Building ideas from scratch.";
 const introName = "Arnav Mishra";
 
-// --- UPDATED: SHORT LYRICS & LINKS ---
+/* SHORT LYRICS + LINKS */
 const verseData = {
     verse1: {
         text: `Tu jang ka ailan kar 
@@ -13,7 +13,6 @@ Moh dya ka tyag kar
 Ab jism se na pyar kar 
 Mastko ke unke Aaj
 Deh se ajaad kar....`,
-        // YAHAN APNI INSTA POST KA LINK DAAL:
         link: "https://www.instagram.com/arnav_9.11/" 
     },
     verse2: {
@@ -26,7 +25,6 @@ Na saksh hun, na aatma
 Na devta ,pramatama 
 Mai bhoot (past) hun , mai kaal sa
 Divr hun mai bhaal sa`,
-        // YAHAN DUSRI POST KA LINK DAAL:
         link: "https://www.instagram.com/arnav_9.11/" 
     }
 };
@@ -41,6 +39,10 @@ const muteIcon = document.getElementById('mute-icon');
 const bioElement = document.getElementById('bio-text');
 const introScreen = document.getElementById('intro-screen');
 const signatureEl = document.getElementById('signature-text');
+
+/* NINJA & POPUP */
+const nameInput = document.getElementById('visitor-name');
+const ninjaImg = document.getElementById('ninja-img');
 
 let isMusicPlaying = false;
 
@@ -58,6 +60,7 @@ function playIntroSequence() {
             i++;
             setTimeout(typeWriterIntro, speed);
         } else {
+            // Intro Done -> Fade out -> Show Popup
             setTimeout(() => { finishIntro(); }, 1000);
         }
     }
@@ -73,11 +76,40 @@ function finishIntro() {
     }, 1000);
 }
 
-/* --- 2. POPUP HANDLER --- */
+/* --- 2. NINJA PEEKING LOGIC --- */
+let typingTimer;
+if(nameInput) {
+    nameInput.addEventListener('input', () => {
+        ninjaImg.classList.add('peeking');
+        clearTimeout(typingTimer);
+        typingTimer = setTimeout(() => {
+            ninjaImg.classList.remove('peeking');
+        }, 400);
+    });
+
+    nameInput.addEventListener("keypress", function(event) {
+        if (event.key === "Enter") {
+            submitName();
+        }
+    });
+}
+
+function submitName() {
+    const userName = nameInput.value.trim();
+    if (userName === "") {
+        nameInput.style.borderColor = "red";
+        setTimeout(() => nameInput.style.borderColor = "rgba(255,255,255,0.3)", 500);
+        return;
+    }
+    closePopup();
+}
+
+/* --- 3. REVEAL SITE --- */
 function closePopup() {
     musicPopup.style.opacity = '0';
     setTimeout(() => {
         musicPopup.style.display = 'none';
+        
         document.body.classList.remove('wait-for-intro');
         document.body.style.overflow = 'auto';
 
@@ -97,7 +129,6 @@ function closePopup() {
     }, 500);
 }
 
-/* --- TYPEWRITER --- */
 function typeWriter(text, element, speed) {
     element.innerHTML = "";
     let i = 0;
@@ -161,29 +192,25 @@ function switchToHome() {
     }, 400);
 }
 
-/* --- UPDATED VERSE HANDLING (With Redirect) --- */
+/* --- VERSE HANDLING --- */
 function initVerse(verseKey) {
     const elementId = verseKey === 'verse1' ? 'verse-1-display' : 'verse-2-display';
     const data = verseData[verseKey];
     const container = document.getElementById(elementId);
     
-    // Create Text HTML
     const formattedText = data.text.split('\n').map((line, index) => {
         if (line.trim() === '') return '<br>';
         return `<span class="verse-line" style="animation-delay: ${index * 0.1}s">${line}</span>`;
     }).join('');
     
-    // Create Button HTML with "Puch ke" logic (confirm dialog)
     const buttonHtml = `
         <button class="read-more-btn" onclick="goToInsta('${data.link}')">
             Read Full Lyrics <i class="fab fa-instagram"></i>
         </button>
     `;
-
     container.innerHTML = formattedText + buttonHtml;
 }
 
-// Redirect Function with Confirmation
 function goToInsta(url) {
     if(confirm("Do you want to visit Instagram to read the full version?")) {
         window.open(url, '_blank');
