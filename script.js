@@ -1,6 +1,5 @@
 /* --- CONFIGURATION --- */
 const bioText = "Building ideas from scratch.";
-// Note: Intro Name is now directly in HTML for CSS animation
 
 const verseData = {
     verse1: {
@@ -45,24 +44,31 @@ let typingTimer;
 
 let isMusicPlaying = false;
 
-/* --- 1. INTRO SEQUENCE (UPDATED FOR SMOOTH CSS) --- */
+/* --- 1. INTRO SEQUENCE --- */
 window.addEventListener('load', () => {
-    // The CSS animation starts automatically.
-    // We just wait for it to finish (3s animation + 1s pause)
+    // Wait for the smooth CSS animation (3s) + 1s delay
     setTimeout(() => {
         finishIntro();
-    }, 4000); 
+    }, 3800); 
     
     setupNinja();
 });
 
 function finishIntro() {
+    // 1. Hide Intro
     introScreen.style.opacity = '0';
+    
     setTimeout(() => {
         introScreen.style.display = 'none';
+        
+        // 2. IMPORTANT: Reveal Home View NOW so the glass effect has something to blur
+        // (But keep elements hidden via their entry animation classes initially if you want)
+        // For glass effect to work, the elements behind must exist.
+        
+        // 3. Show Popup immediately after intro is gone
         musicPopup.style.display = 'flex';
-        // Slightly longer delay for popup to appear smoothly
-        setTimeout(() => { musicPopup.style.opacity = '1'; }, 100);
+        setTimeout(() => { musicPopup.style.opacity = '1'; }, 50);
+        
     }, 1000);
 }
 
@@ -74,7 +80,7 @@ function setupNinja() {
         // Show Ninja (Peek down)
         ninjaEmoji.classList.add('peek');
         
-        // Clear previous timer to keep him visible while typing
+        // Clear previous timer
         clearTimeout(typingTimer);
         
         // Hide Ninja after 600ms of no typing
@@ -88,14 +94,12 @@ function setupNinja() {
 function submitName() {
     const name = visitorInput.value.trim();
     const waBtn = document.getElementById('wa-link');
-    const myPhone = "916393349498"; // Phone Number
+    const myPhone = "916393349498"; 
 
     if (name) {
-        // Agar Naam hai:
         const text = `Hey Arnav, this is ${name}. I visited your portfolio!`;
         waBtn.href = `https://wa.me/${myPhone}?text=${encodeURIComponent(text)}`;
     } else {
-        // Agar Naam nahi hai (Optional):
         const text = `Hey Arnav, I visited your portfolio!`;
         waBtn.href = `https://wa.me/${myPhone}?text=${encodeURIComponent(text)}`;
     }
@@ -107,6 +111,7 @@ function submitName() {
         document.body.classList.remove('wait-for-intro');
         document.body.style.overflow = 'auto';
 
+        // Trigger Home Entry Animations
         const animatedElements = document.querySelectorAll('#home-view > div, #home-view > button, #home-view > p');
         animatedElements.forEach(el => { el.classList.add('animate-entry'); });
 
@@ -232,4 +237,5 @@ function toggleTheme() {
     } else {
         localStorage.setItem('theme', 'dark');
     }
-}
+            }
+    
