@@ -1,161 +1,170 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-KK3QZ8M8D3"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-KK3QZ8M8D3');
-</script>
-    
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Arnav Mishra | Work & Mind</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Playfair+Display:ital,wght@0,400;1,600&family=Poppins:wght@300;400;600&family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arnav's Unplugged - Home</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;600&family=Rock+Salt&display=swap" rel="stylesheet">
+    <style>
+        /* --- CSS VARIABLES (THEME SYSTEM) --- */
+        :root {
+            /* Default DARK Theme Colors */
+            --bg-color: #050505;
+            --text-color: #fff;
+            --accent-color: #FFD700;
+            --subtitle-color: #aaa;
+            --stage-opacity: 0.3; /* Dark stage */
+            --btn-text: #000;
+        }
+
+        /* LIGHT Theme Override Colors */
+        body.light-mode {
+            --bg-color: #f0f0f0; /* Bright background */
+            --text-color: #222; /* Dark text */
+            --accent-color: #dba500; /* Darker Gold for contrast */
+            --subtitle-color: #555;
+            --stage-opacity: 0.8; /* Bright stage */
+             --btn-text: #fff;
+        }
+
+        body {
+            margin: 0; padding: 0;
+            /* Use Variables here instead of fixed colors */
+            background-color: var(--bg-color); 
+            color: var(--text-color);
+            font-family: 'Montserrat', sans-serif;
+            height: 100vh;
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            overflow: hidden;
+            text-align: center;
+            transition: background-color 0.5s ease, color 0.5s ease;
+        }
+
+        /* Background Effects */
+        .stage-bg { 
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            background: url('stage_bg.jpg') no-repeat center center/cover; 
+            filter: brightness(var(--stage-opacity)); /* Use variable */
+            z-index: -2; transition: filter 0.5s ease;
+        }
+        .spotlight { position: fixed; top: -50%; left: 50%; width: 300px; height: 150vh; background: linear-gradient(to bottom, rgba(255, 215, 0, 0.2), transparent); transform: translateX(-50%); filter: blur(40px); z-index: -1; pointer-events: none; }
+
+        /* --- ECLIPSE TOGGLE WIDGET --- */
+        .eclipse-toggle {
+            position: fixed; top: 20px; right: 20px;
+            width: 50px; height: 50px; cursor: pointer; z-index: 100;
+        }
+        .sun {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: #FFD700; border-radius: 50%;
+            box-shadow: 0 0 15px #FFD700;
+        }
+        .moon {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: #222; /* Dark moon covering sun */
+            border-radius: 50%;
+            box-shadow: inset -2px -2px 5px rgba(255,255,255,0.1);
+            transition: transform 0.6s cubic-bezier(0.68, -0.55, 0.27, 1.55); /* Smooth bouncy effect */
+        }
+        /* When Active (Light Mode), move moon away */
+        .eclipse-toggle.active .moon {
+            transform: translate(-30px, 20px); /* Move moon out of the way */
+        }
+
+        /* Main Content */
+        .hero-title {
+            font-family: 'Rock Salt', cursive;
+            font-size: 3rem; 
+            color: var(--accent-color); /* Use variable */
+            text-shadow: 0 0 20px rgba(255, 215, 0, 0.4);
+            margin-bottom: 10px;
+            opacity: 0; animation: fadeIn 1.5s forwards;
+        }
+
+        .hero-subtitle {
+            font-size: 1rem; 
+            color: var(--subtitle-color); /* Use variable */
+            letter-spacing: 2px;
+            margin-bottom: 30px;
+            opacity: 0; animation: fadeIn 1.5s 0.5s forwards;
+        }
+
+        .mascot-gif {
+            width: 150px; height: auto; margin-bottom: 30px;
+            filter: drop-shadow(0 0 15px rgba(255, 215, 0, 0.3));
+            opacity: 0; animation: popIn 1s 1s forwards;
+        }
+
+        /* Enter Button */
+        .enter-btn {
+            padding: 15px 40px; font-size: 1.2rem; font-weight: 600;
+            color: var(--btn-text); background: var(--accent-color);
+            border: none; border-radius: 50px; cursor: pointer; text-decoration: none;
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.4);
+            transition: transform 0.2s, box-shadow 0.2s, background 0.5s, color 0.5s;
+            opacity: 0; animation: fadeIn 1.5s 1.5s forwards; display: inline-block;
+        }
+        .enter-btn:hover { transform: scale(1.1); box-shadow: 0 0 40px rgba(255, 215, 0, 0.8); }
+
+        .links { margin-top: 20px; opacity: 0; animation: fadeIn 1.5s 2s forwards; }
+        .links a { 
+            color: var(--subtitle-color); /* Use variable */
+            text-decoration: none; margin: 0 10px; font-size: 0.9rem; transition: color 0.3s; 
+        }
+        .links a:hover { color: var(--accent-color); }
+
+        @keyframes fadeIn { to { opacity: 1; } }
+        @keyframes popIn { 0% { opacity: 0; transform: scale(0.5); } 70% { transform: scale(1.1); } 100% { opacity: 1; transform: scale(1); } }
+
+        @media (max-width: 768px) { .hero-title { font-size: 2rem; } .mascot-gif { width: 120px; } }
+    </style>
 </head>
-<body>
+<body id="home-body">
 
-<audio id="global-bg-music" loop preload="auto">
-    <source src="co2.mp3" type="audio/mpeg">
-</audio>
+    <div class="stage-bg"></div>
+    <div class="spotlight"></div>
 
-<div class="sound-control">
-    <button onclick="toggleMusic()" id="mute-btn">
-        <div class="icon-container">
-            <i class="fas fa-volume-mute" id="mute-icon"></i>
-        </div>
-    </button>
-</div>
-
-<div id="music-popup" onclick="closePopup()">
-    <div class="popup-box">
-        <div class="popup-icon">✨</div>
-        <h2>Welcome to my world.</h2>
-        <p class="tap-hint">Tap anywhere to enter</p>
-        <div class="vibe-note">
-            <i class="fas fa-arrow-up" style="transform: rotate(45deg);"></i> 
-            Sound button is Top-Right. 
-            <br>Turn it ON for the vibe! 🎵
-        </div>
-    </div>
-</div>
-
-<div class="main-wrapper">
-
-    <div id="home-view">
-        <div class="profile-container anim-delay-1">
-            <div class="profile-glow"></div>
-            <img src="https://imarnavin.wordpress.com/wp-content/uploads/2026/01/image_editor_output_image-900633096-17689630363507786449788545237875.jpg" class="profile-img" alt="Arnav Mishra">
-        </div>
-        
-        <div class="name anim-delay-2">Arnav Mishra</div>
-        
-        <div class="bio-wrap anim-delay-3">
-            <div class="bio" id="bio-text"></div>
-        </div>
-
-        <div class="quote-box anim-delay-4">
-            "The secret of change is to focus all of your energy, not on fighting the old, but on building the new."
-        </div>
-
-        <div class="btn-grid anim-delay-5">
-            <a href="https://www.linkedin.com/in/arnav-mishra-1a6934371" class="btn"><i class="fab fa-linkedin"></i> LinkedIn</a>
-            <a href="https://x.com/ArnavMishra142" class="btn"><i class="fab fa-twitter"></i> X / Twitter</a>
-            <a href="https://www.instagram.com/arnav_9.11" class="btn"><i class="fab fa-instagram"></i> Instagram</a>
-            <a href="https://www.chess.com/member/Arnavm142" class="btn"><i class="fas fa-chess-knight"></i> Chess.com</a>
-        </div>
-
-        <button onclick="switchToAbout()" class="main-btn anim-delay-6">ENTER MY WORLD <i class="fas fa-arrow-right"></i></button>
-
-        <div class="chess-msg-container anim-delay-7">
-            <a href="https://wa.me/916393349498?text=Hey%20Arnav,%20I%20visited%20your%20portfolio!" target="_blank" class="chess-btn-styled">
-                <div class="chess-btn-content">
-                    <i class="fas fa-chess-knight knight-icon-white"></i>
-                    <div class="btn-text-group">
-                        <span class="small-text-gray">MAKE A MOVE</span>
-                        <span class="big-text-white">Say Hello <i class="fas fa-hand-sparkles wave-icon"></i></span>
-                    </div>
-                </div>
-                <div class="dashed-border-bottom"></div>
-            </a>
-        </div>
-
-        <div class="portal-container anim-delay-8">
-            <a href="stranger.html" class="glitch-btn" data-text="ENTER THE UPSIDE DOWN">
-                ENTER THE UPSIDE DOWN
-            </a>
-        </div>
-                <div style="text-align: center; margin-top: 15px; margin-bottom: 20px;">
-            <a href="concert.html" style="color: #FFD700; text-decoration: none; border: 1px solid #FFD700; padding: 10px 20px; border-radius: 20px; font-size: 0.9rem; font-family: 'Poppins', sans-serif;">
-                🎸 Enter Live Concert
-            </a>
-                </div>
-        
-        <p class="footer-text anim-delay-8">© 2026 ARNAV MISHRA</p>
+    <div class="eclipse-toggle" id="themeToggle" onclick="toggleTheme()">
+        <div class="sun"></div>
+        <div class="moon"></div>
     </div>
 
-    <div id="about-view" style="display: none;">
-        <div class="nav-header">
-            <button onclick="switchToHome()" class="back-btn"><i class="fas fa-arrow-left"></i> Home Protocol</button>
-        </div>
+    <div class="hero-title">ARNAV'S UNPLUGGED</div>
+    <div class="hero-subtitle">THE LIVE SESSION • 2026</div>
 
-        <h2 class="section-title">Projects</h2>
-        <div class="card project-card">
-            <div class="card-header">
-                <h3 style="color: #ff4b4b;">Zomato Analysis 📊</h3>
-            </div>
-            <p class="card-desc">
-                Market positioning and SWOT analysis for hyperlocal delivery based on real-time data.
-            </p>
-            <a href="https://docs.google.com/spreadsheets/d/11k2QyICWavfXFuUGXRBGnRJ7l7zsblQB/edit?usp=drivesdk" target="_blank" class="project-link-btn">
-                View Sheets Project <i class="fas fa-external-link-alt"></i>
-            </a>
-        </div>
+    <img src="dancin-monkey.gif" alt="Mascot" class="mascot-gif">
 
-        <h2 class="section-title">Sonic Fuel (GOAT)</h2>
-        <div class="card krsna-card">
-            <div class="krsna-header">
-                <div class="krsna-icon">$</div>
-                <div>
-                    <h3>KR$NA 👑</h3>
-                    <p class="subtitle">The inspiration.</p>
-                </div>
-            </div>
-            <div class="lyrics-box">
-                "Chahiye mujhe bas ek buss down Rollie<br>
-                Lambhi si gaadi aur makaan do storey, haan<br>
-                Chahiye mujhe bas ek buss down Rollie<br>
-                Lambi si chain aur kuch lakh ki tijori"
-            </div>
-        </div>
+    <a href="concert.html" class="enter-btn">ENTER CONCERT</a>
 
-        <h2 class="section-title">Original Verses</h2>
-        
-        <div class="card verse-card">
-            <div class="verse-header">
-                <h3 class="verse-title fire">🔥 Jang-kaal</h3>
-            </div>
-            <div id="verse-1-display" class="verse-content"></div>
-        </div>
-
-        <div class="card verse-card">
-            <div class="verse-header">
-                <h3 class="verse-title cosmic">🌌 Anjaan</h3>
-            </div>
-            <div id="verse-2-display" class="verse-content"></div>
-        </div>
-
-        <div style="height: 80px;"></div>
+    <div class="links">
+        <a href="about.html">About Artist</a> • <a href="#">Contact</a>
     </div>
 
-</div>
+    <script>
+        const body = document.getElementById('home-body');
+        const toggleBtn = document.getElementById('themeToggle');
 
-<script src="script.js"></script>
+        // Check if user already chose a theme before
+        const currentTheme = localStorage.getItem('theme');
+        if (currentTheme === 'light') {
+            body.classList.add('light-mode');
+            toggleBtn.classList.add('active');
+        }
+
+        function toggleTheme() {
+            // Move moon and change colors
+            toggleBtn.classList.toggle('active');
+            body.classList.toggle('light-mode');
+
+            // Save preference for next visit
+            if (body.classList.contains('light-mode')) {
+                localStorage.setItem('theme', 'light');
+            } else {
+                localStorage.setItem('theme', 'dark');
+            }
+        }
+    </script>
+
 </body>
 </html>
