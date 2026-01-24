@@ -1,6 +1,6 @@
 /* --- CONFIGURATION --- */
 const bioText = "Building ideas from scratch.";
-const introName = "Arnav Mishra";
+// Note: Intro Name is now directly in HTML for CSS animation
 
 const verseData = {
     verse1: {
@@ -37,7 +37,6 @@ const muteBtn = document.getElementById('mute-btn');
 const muteIcon = document.getElementById('mute-icon');
 const bioElement = document.getElementById('bio-text');
 const introScreen = document.getElementById('intro-screen');
-const signatureEl = document.getElementById('signature-text');
 
 // Ninja & Input Elements
 const visitorInput = document.getElementById('visitor-name');
@@ -46,33 +45,24 @@ let typingTimer;
 
 let isMusicPlaying = false;
 
-/* --- 1. INTRO SEQUENCE & EVENT LISTENERS --- */
+/* --- 1. INTRO SEQUENCE (UPDATED FOR SMOOTH CSS) --- */
 window.addEventListener('load', () => {
-    playIntroSequence();
+    // The CSS animation starts automatically.
+    // We just wait for it to finish (3s animation + 1s pause)
+    setTimeout(() => {
+        finishIntro();
+    }, 4000); 
+    
     setupNinja();
 });
-
-function playIntroSequence() {
-    let i = 0;
-    const speed = 150;
-    function typeWriterIntro() {
-        if (i < introName.length) {
-            signatureEl.innerHTML += introName.charAt(i);
-            i++;
-            setTimeout(typeWriterIntro, speed);
-        } else {
-            setTimeout(() => { finishIntro(); }, 1000);
-        }
-    }
-    typeWriterIntro();
-}
 
 function finishIntro() {
     introScreen.style.opacity = '0';
     setTimeout(() => {
         introScreen.style.display = 'none';
         musicPopup.style.display = 'flex';
-        setTimeout(() => { musicPopup.style.opacity = '1'; }, 50);
+        // Slightly longer delay for popup to appear smoothly
+        setTimeout(() => { musicPopup.style.opacity = '1'; }, 100);
     }, 1000);
 }
 
@@ -133,7 +123,7 @@ function submitName() {
     }, 500);
 }
 
-/* --- TYPEWRITER --- */
+/* --- TYPEWRITER (FOR BIO ONLY) --- */
 function typeWriter(text, element, speed) {
     element.innerHTML = "";
     let i = 0;
