@@ -249,5 +249,34 @@ body.wait-for-intro .eclipse-toggle {
 }
 @keyframes glitch-anim-2 {
     0% { clip-path: inset(10% 0 60% 0); } 20% { clip-path: inset(30% 0 20% 0); } 40% { clip-path: inset(10% 0 80% 0); } 60% { clip-path: inset(70% 0 10% 0); } 80% { clip-path: inset(50% 0 30% 0); } 100% { clip-path: inset(0 0 0 0); }
-                                                                                                      }
+/* --- READ FULL LYRICS BUTTON --- */
+.read-more-btn {
+    display: block;
+    width: 100%;
+    margin-top: 15px;
+    padding: 12px;
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: #bbb;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.9rem;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.read-more-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: #fff;
+    color: #fff;
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
+}
+
+.read-more-btn i {
+    margin-left: 8px;
+    color: #E1306C; /* Instagram Color */
+}
+}
     
