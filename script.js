@@ -1,11 +1,34 @@
 /* --- CONFIGURATION --- */
 const bioText = "Building ideas from scratch.";
-const introName = "Arnav Mishra"; // Text for Intro
+const introName = "Arnav Mishra";
 
-// Full Lyrics Objects (Verse 1 & 2 as provided)
-const fullVerses = {
-    verse1: `Tu jang ka ailan kar \nDushmano PE vaar kar\nPapiyo ka naas kar....\n\nMoh dya ka tyag kar \nAb jism se na pyar kar \nMastko ke unke Aaj\nDeh se ajaad kar....\n\nDikha de pure vishwa ko\nParlaya ke raudra drishya ko\nJaha par keval dharm ho\nNa dharm me koi sharm ho\nJo dharm me kare sharam\nUn adharmiyo ka (naas kar)3...`,
-    verse2: `Mai antt hun mai ankurit \nYugo yugo ka hal hai\nMai hinn hun ,mai hun priye\nMera hi maah saal hai\n\nNa saksh hun, na aatma \nNa devta ,pramatama \nMai bhoot (past) hun , mai kaal sa\nDivr hun mai bhaal sa`
+// --- UPDATED: SHORT LYRICS & LINKS ---
+const verseData = {
+    verse1: {
+        text: `Tu jang ka ailan kar 
+Dushmano PE vaar kar
+Papiyo ka naas kar....
+
+Moh dya ka tyag kar 
+Ab jism se na pyar kar 
+Mastko ke unke Aaj
+Deh se ajaad kar....`,
+        // YAHAN APNI INSTA POST KA LINK DAAL:
+        link: "https://www.instagram.com/arnav_9.11/" 
+    },
+    verse2: {
+        text: `Mai antt hun mai ankurit 
+Yugo yugo ka hal hai
+Mai hinn hun ,mai hun priye
+Mera hi maah saal hai
+
+Na saksh hun, na aatma 
+Na devta ,pramatama 
+Mai bhoot (past) hun , mai kaal sa
+Divr hun mai bhaal sa`,
+        // YAHAN DUSRI POST KA LINK DAAL:
+        link: "https://www.instagram.com/arnav_9.11/" 
+    }
 };
 
 /* --- DOM ELEMENTS --- */
@@ -21,86 +44,60 @@ const signatureEl = document.getElementById('signature-text');
 
 let isMusicPlaying = false;
 
-/* --- 1. INTRO SEQUENCE (PAGE LOAD) --- */
+/* --- 1. INTRO SEQUENCE --- */
 window.addEventListener('load', () => {
-    // Stage 1: Write Name Letter by Letter
     playIntroSequence();
 });
 
 function playIntroSequence() {
     let i = 0;
-    const speed = 150; // Speed of writing
-
+    const speed = 150;
     function typeWriterIntro() {
         if (i < introName.length) {
             signatureEl.innerHTML += introName.charAt(i);
             i++;
             setTimeout(typeWriterIntro, speed);
         } else {
-            // Stage 2: Finished writing, wait a bit then show Popup
-            setTimeout(() => {
-                finishIntro();
-            }, 1000); // 1s delay after writing finishes
+            setTimeout(() => { finishIntro(); }, 1000);
         }
     }
-    // Start typing
     typeWriterIntro();
 }
 
 function finishIntro() {
-    // Fade out Intro Screen
     introScreen.style.opacity = '0';
     setTimeout(() => {
         introScreen.style.display = 'none';
-        
-        // Stage 3: Show Music Popup (Site is still hidden/blurred)
         musicPopup.style.display = 'flex';
-        setTimeout(() => {
-            musicPopup.style.opacity = '1';
-        }, 50);
+        setTimeout(() => { musicPopup.style.opacity = '1'; }, 50);
     }, 1000);
 }
 
-/* --- 2. POPUP HANDLER (ENTRY POINT) --- */
+/* --- 2. POPUP HANDLER --- */
 function closePopup() {
-    // Fade out popup
     musicPopup.style.opacity = '0';
     setTimeout(() => {
         musicPopup.style.display = 'none';
-        
-        // Stage 4: REVEAL SITE & START ANIMATIONS
         document.body.classList.remove('wait-for-intro');
-        
-        // Allow scrolling now
         document.body.style.overflow = 'auto';
 
-        // Trigger animations for Home elements manually
         const animatedElements = document.querySelectorAll('#home-view > div, #home-view > button, #home-view > p');
-        animatedElements.forEach(el => {
-            el.classList.add('animate-entry');
-        });
+        animatedElements.forEach(el => { el.classList.add('animate-entry'); });
 
-        // Start Bio Typewriter
-        setTimeout(() => {
-            typeWriter(bioText, bioElement, 100);
-        }, 500);
+        setTimeout(() => { typeWriter(bioText, bioElement, 100); }, 500);
 
-        // Try Autoplay Music
         bgMusic.volume = 0.5;
         bgMusic.play().then(() => {
             muteIcon.className = "fas fa-volume-up";
             muteBtn.style.borderColor = "#00ff88";
             muteBtn.style.color = "#00ff88";
             isMusicPlaying = true;
-        }).catch(e => {
-            console.log("Autoplay blocked, user must click sound btn");
-        });
+        }).catch(e => { console.log("Autoplay blocked"); });
 
     }, 500);
 }
 
-
-/* --- TYPEWRITER (For Bio) --- */
+/* --- TYPEWRITER --- */
 function typeWriter(text, element, speed) {
     element.innerHTML = "";
     let i = 0;
@@ -135,22 +132,18 @@ function toggleMusic() {
 function switchToAbout() {
     homeView.style.opacity = '0';
     homeView.style.transform = 'translateY(-20px)';
-    
     setTimeout(() => {
         homeView.style.display = 'none';
         aboutView.style.display = 'block';
-        
         aboutView.style.opacity = '0';
         aboutView.style.transform = 'translateY(20px)';
         void aboutView.offsetWidth; 
-        
         aboutView.style.transition = 'all 0.6s ease';
         aboutView.style.opacity = '1';
         aboutView.style.transform = 'translateY(0)';
         
         initVerse('verse1');
         initVerse('verse2');
-        
         window.scrollTo(0, 0);
     }, 400);
 }
@@ -158,7 +151,6 @@ function switchToAbout() {
 function switchToHome() {
     aboutView.style.opacity = '0';
     aboutView.style.transform = 'translateY(20px)';
-    
     setTimeout(() => {
         aboutView.style.display = 'none';
         homeView.style.display = 'block';
@@ -169,16 +161,31 @@ function switchToHome() {
     }, 400);
 }
 
-/* --- VERSE HANDLING --- */
+/* --- UPDATED VERSE HANDLING (With Redirect) --- */
 function initVerse(verseKey) {
     const elementId = verseKey === 'verse1' ? 'verse-1-display' : 'verse-2-display';
-    const content = fullVerses[verseKey];
+    const data = verseData[verseKey];
     const container = document.getElementById(elementId);
     
-    const formattedHtml = content.split('\n').map((line, index) => {
+    // Create Text HTML
+    const formattedText = data.text.split('\n').map((line, index) => {
         if (line.trim() === '') return '<br>';
         return `<span class="verse-line" style="animation-delay: ${index * 0.1}s">${line}</span>`;
     }).join('');
     
-    container.innerHTML = formattedHtml;
+    // Create Button HTML with "Puch ke" logic (confirm dialog)
+    const buttonHtml = `
+        <button class="read-more-btn" onclick="goToInsta('${data.link}')">
+            Read Full Lyrics <i class="fab fa-instagram"></i>
+        </button>
+    `;
+
+    container.innerHTML = formattedText + buttonHtml;
+}
+
+// Redirect Function with Confirmation
+function goToInsta(url) {
+    if(confirm("Do you want to visit Instagram to read the full version?")) {
+        window.open(url, '_blank');
+    }
 }
