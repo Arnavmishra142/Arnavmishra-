@@ -24,38 +24,54 @@ body.light-mode {
 body { background-color: var(--bg-color) !important; color: var(--text-color) !important; transition: background-color 0.5s ease, color 0.5s ease; }
 
 /* =========================================
-   ✨ CINEMATIC WRITING INTRO ✨
+   ✨ UPDATED: SMOOTH HANDWRITING INTRO ✨
 ========================================= */
 #intro-screen {
     position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-    background-color: #000;
-    z-index: 20000; /* Topmost layer */
+    background-color: #000; /* Pure black background for contrast */
+    z-index: 20000;
     display: flex; align-items: center; justify-content: center;
     transition: opacity 1s ease;
 }
 
-.signature-container {
-    font-family: 'Great Vibes', cursive;
-    font-size: 4rem;
-    color: #FFD700;
-    position: relative;
-    white-space: nowrap;
+/* Wrapper to define the width for animation */
+.signature-wrapper {
+    display: inline-block;
+    overflow: hidden; /* Ensures text is hidden until revealed */
+    white-space: nowrap; /* Keeps text on one line */
+    border-right: 3px solid #FFD700; /* The "Pen Tip" cursor */
+    width: 0; /* Start with 0 width */
+    /* The smooth writing animation */
+    animation: 
+        writing 3s steps(60, end) forwards, 
+        blink-caret 0.75s step-end infinite;
 }
 
-/* The Cursor (Pen Tip) */
-.cursor {
-    display: inline-block;
-    width: 3px; height: 50px;
-    background-color: #FFD700;
-    animation: blink 0.7s infinite;
-    vertical-align: bottom;
-    margin-left: 5px;
+.signature-text {
+    font-family: 'Great Vibes', cursive;
+    font-size: 4.5rem;
+    color: #FFD700;
+    padding-right: 10px; /* Space for cursor */
+    background: linear-gradient(to right, #FFD700, #FFA500);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.3));
 }
-@keyframes blink { 50% { opacity: 0; } }
+
+/* Animation to reveal width smoothly */
+@keyframes writing {
+    from { width: 0 }
+    to { width: 100% }
+}
+
+/* Cursor blinking */
+@keyframes blink-caret { 
+    from, to { border-color: transparent } 
+    50% { border-color: #FFD700; } 
+}
 
 @media (max-width: 768px) {
-    .signature-container { font-size: 2.5rem; }
-    .cursor { height: 35px; }
+    .signature-text { font-size: 3rem; }
 }
 
 /* =========================================
@@ -68,16 +84,16 @@ body.wait-for-intro .eclipse-toggle {
 }
 
 /* =========================================
-   UPDATED POPUP (PREMIUM GLASS + NINJA)
+   UPDATED POPUP (CLEAN PREMIUM GLASS)
 ========================================= */
 #music-popup { 
     display: none; /* JS handles this */
     position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
     
-    /* 1. Backdrop Blur (Peeche ka sab dhundhla) */
-    background: rgba(0, 0, 0, 0.3); 
-    backdrop-filter: blur(12px); 
-    -webkit-backdrop-filter: blur(12px);
+    /* Stronger Glass Backdrop */
+    background: rgba(0, 0, 0, 0.5); 
+    backdrop-filter: blur(15px); 
+    -webkit-backdrop-filter: blur(15px);
     
     z-index: 15000;
     align-items: center; justify-content: center; 
@@ -87,10 +103,11 @@ body.wait-for-intro .eclipse-toggle {
 .popup-box {
     position: relative;
     
-    /* 2. Frosted Glass Box */
-    background: rgba(30, 30, 30, 0.65); /* Thoda transparent black */
-    border: 1px solid rgba(255, 255, 255, 0.15); /* Patla white border */
-    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5); /* Deep shadow for float effect */
+    /* Premium Glowing Glass Box */
+    background: rgba(255, 255, 255, 0.05); /* Very subtle light tint */
+    border: 1px solid rgba(255, 255, 255, 0.2); /* Crisp border */
+    /* Glowing shadow effect */
+    box-shadow: 0 0 30px rgba(0, 163, 255, 0.15), inset 0 0 20px rgba(255,255,255,0.05);
     
     padding: 40px 30px;
     border-radius: 24px;
@@ -101,10 +118,11 @@ body.wait-for-intro .eclipse-toggle {
 
 /* Heading & Text Styling */
 .popup-box h2 {
-    font-size: 1.5rem; margin-bottom: 5px; font-family: 'Poppins', sans-serif;
+    font-size: 1.6rem; margin-bottom: 5px; font-family: 'Poppins', sans-serif;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.5);
 }
 .tap-hint {
-    font-size: 0.9rem; color: #aaa; margin-bottom: 25px; font-style: italic;
+    font-size: 0.9rem; color: #aaa; margin-bottom: 30px; font-style: italic;
 }
 
 /* Ninja Styles */
@@ -125,35 +143,34 @@ body.wait-for-intro .eclipse-toggle {
 
 .popup-input {
     width: 100%; padding: 14px;
-    background: rgba(0, 0, 0, 0.3); /* Darker input bg */
-    border: 2px solid rgba(255, 255, 255, 0.1);
+    background: rgba(0, 0, 0, 0.4); /* Darker input bg for contrast */
+    border: 1px solid rgba(255, 255, 255, 0.15);
     color: #fff; border-radius: 12px;
-    font-family: 'Poppins', sans-serif; font-size: 1rem;
+    font-family: 'Poppins', sans-serif; font-size: 1.05rem;
     outline: none; text-align: center;
     transition: 0.3s ease;
 }
 
 .popup-input:focus {
     border-color: #00a3ff;
-    background: rgba(0, 0, 0, 0.6);
-    box-shadow: 0 0 20px rgba(0, 163, 255, 0.2);
+    background: rgba(0, 0, 0, 0.7);
+    box-shadow: 0 0 25px rgba(0, 163, 255, 0.3);
 }
 
 .popup-submit-btn {
     background: linear-gradient(135deg, #00a3ff, #0056b3);
     color: white; border: none;
     padding: 14px 40px; border-radius: 50px;
-    font-weight: 600; letter-spacing: 1px;
+    font-size: 1rem; font-weight: 600; letter-spacing: 1px;
     cursor: pointer; transition: 0.3s;
-    margin-top: 10px; width: 100%;
-    box-shadow: 0 4px 15px rgba(0, 163, 255, 0.3);
+    margin-top: 15px; width: 100%;
+    box-shadow: 0 5px 20px rgba(0, 163, 255, 0.4);
 }
 .popup-submit-btn:hover { 
-    transform: translateY(-2px); 
-    box-shadow: 0 6px 20px rgba(0, 163, 255, 0.5); 
+    transform: translateY(-3px); 
+    box-shadow: 0 8px 25px rgba(0, 163, 255, 0.6); 
 }
 
-.popup-icon { font-size: 2.2rem; margin-bottom: 10px; }
 .vibe-note { 
     font-size: 0.75rem; color: #ccc; margin-top: 25px; 
     border: 1px solid rgba(255, 255, 255, 0.1); padding: 8px 15px; border-radius: 20px; 
@@ -329,4 +346,4 @@ body.wait-for-intro .eclipse-toggle {
 .eclipse-toggle.active .moon { transform: translate(25px, -25px); }
 .concert-btn { color: var(--accent-color) !important; border: 1px solid var(--accent-color) !important; text-decoration: none; padding: 10px 20px; border-radius: 20px; font-size: 0.9rem; font-family: 'Poppins', sans-serif; transition: all 0.3s; display: inline-block; }
 .concert-btn:hover { background: var(--accent-color); color: var(--bg-color) !important; }
-                                
+        
