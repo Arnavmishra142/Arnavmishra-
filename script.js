@@ -2,7 +2,6 @@
 const bioText = "Building ideas from scratch.";
 const introName = "Arnav Mishra";
 
-/* SHORT LYRICS + LINKS */
 const verseData = {
     verse1: {
         text: `Tu jang ka ailan kar 
@@ -40,15 +39,17 @@ const bioElement = document.getElementById('bio-text');
 const introScreen = document.getElementById('intro-screen');
 const signatureEl = document.getElementById('signature-text');
 
-/* NINJA & POPUP */
-const nameInput = document.getElementById('visitor-name');
-const ninjaImg = document.getElementById('ninja-img');
+// Ninja & Input Elements
+const visitorInput = document.getElementById('visitor-name');
+const ninjaEmoji = document.getElementById('ninja-emoji');
+let typingTimer;
 
 let isMusicPlaying = false;
 
-/* --- 1. INTRO SEQUENCE --- */
+/* --- 1. INTRO SEQUENCE & EVENT LISTENERS --- */
 window.addEventListener('load', () => {
     playIntroSequence();
+    setupNinja();
 });
 
 function playIntroSequence() {
@@ -60,7 +61,6 @@ function playIntroSequence() {
             i++;
             setTimeout(typeWriterIntro, speed);
         } else {
-            // Intro Done -> Fade out -> Show Popup
             setTimeout(() => { finishIntro(); }, 1000);
         }
     }
@@ -76,40 +76,39 @@ function finishIntro() {
     }, 1000);
 }
 
-/* --- 2. NINJA PEEKING LOGIC --- */
-let typingTimer;
-if(nameInput) {
-    nameInput.addEventListener('input', () => {
-        ninjaImg.classList.add('peeking');
+/* --- 2. NINJA LOGIC --- */
+function setupNinja() {
+    if (!visitorInput) return;
+    
+    visitorInput.addEventListener('input', () => {
+        // Show Ninja (Peek down)
+        ninjaEmoji.classList.add('peek');
+        
+        // Clear previous timer to keep him visible while typing
         clearTimeout(typingTimer);
+        
+        // Hide Ninja after 600ms of no typing
         typingTimer = setTimeout(() => {
-            ninjaImg.classList.remove('peeking');
-        }, 400);
-    });
-
-    nameInput.addEventListener("keypress", function(event) {
-        if (event.key === "Enter") {
-            submitName();
-        }
+            ninjaEmoji.classList.remove('peek');
+        }, 600);
     });
 }
 
+/* --- 3. POPUP HANDLER (UPDATED) --- */
 function submitName() {
-    const userName = nameInput.value.trim();
-    if (userName === "") {
-        nameInput.style.borderColor = "red";
-        setTimeout(() => nameInput.style.borderColor = "rgba(255,255,255,0.3)", 500);
-        return;
+    const name = visitorInput.value.trim();
+    
+    if(name) {
+        // Update WhatsApp Link Dynamically
+        const waBtn = document.getElementById('wa-link');
+        const text = `Hey Arnav, this is ${name}. I visited your portfolio!`;
+        waBtn.href = `https://wa.me/916393349498?text=${encodeURIComponent(text)}`;
     }
-    closePopup();
-}
 
-/* --- 3. REVEAL SITE --- */
-function closePopup() {
+    // Close popup animation
     musicPopup.style.opacity = '0';
     setTimeout(() => {
         musicPopup.style.display = 'none';
-        
         document.body.classList.remove('wait-for-intro');
         document.body.style.overflow = 'auto';
 
@@ -129,6 +128,7 @@ function closePopup() {
     }, 500);
 }
 
+/* --- TYPEWRITER --- */
 function typeWriter(text, element, speed) {
     element.innerHTML = "";
     let i = 0;
@@ -198,21 +198,43 @@ function initVerse(verseKey) {
     const data = verseData[verseKey];
     const container = document.getElementById(elementId);
     
+    // Create Text HTML
     const formattedText = data.text.split('\n').map((line, index) => {
         if (line.trim() === '') return '<br>';
         return `<span class="verse-line" style="animation-delay: ${index * 0.1}s">${line}</span>`;
     }).join('');
     
+    // Create Button HTML
     const buttonHtml = `
         <button class="read-more-btn" onclick="goToInsta('${data.link}')">
             Read Full Lyrics <i class="fab fa-instagram"></i>
         </button>
     `;
+
     container.innerHTML = formattedText + buttonHtml;
 }
 
 function goToInsta(url) {
     if(confirm("Do you want to visit Instagram to read the full version?")) {
         window.open(url, '_blank');
+    }
+}
+
+/* --- THEME TOGGLE LOGIC --- */
+const body = document.getElementById('main-body');
+const toggleBtn = document.getElementById('themeToggle');
+
+if (localStorage.getItem('theme') === 'light') {
+    body.classList.add('light-mode');
+    toggleBtn.classList.add('active');
+}
+
+function toggleTheme() {
+    body.classList.toggle('light-mode');
+    toggleBtn.classList.toggle('active');
+    if (body.classList.contains('light-mode')) {
+        localStorage.setItem('theme', 'light');
+    } else {
+        localStorage.setItem('theme', 'dark');
     }
 }
