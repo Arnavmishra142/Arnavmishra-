@@ -16,7 +16,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Playfair+Display:ital,wght@0,400;1,600&family=Poppins:wght@300;400;600&family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Playfair+Display:ital,wght@0,400;1,600&family=Poppins:wght@300;400;600&family=Courier+Prime:wght@400;700&family=Great+Vibes&display=swap" rel="stylesheet">
 
     <style>
         /* --- THEME VARIABLES --- */
@@ -28,236 +29,260 @@
             --quote-color: #a0a0a0;
         }
 
-        /* LIGHT MODE OVERRIDES */
         body.light-mode {
             --bg-color: #e0e0e0;
             --text-color: #111;
-            --accent-color: #b8860b; /* Darker gold for visibility */
+            --accent-color: #b8860b;
             --card-bg: rgba(0, 0, 0, 0.05);
             --quote-color: #444;
         }
 
-        /* BODY TRANSITION */
         body {
             background-color: var(--bg-color) !important;
             color: var(--text-color) !important;
             transition: background-color 0.5s ease, color 0.5s ease;
+            /* Disable scroll during intro */
+            overflow: hidden; 
         }
 
-        /* --- ECLIPSE WIDGET (Top Left) --- */
+        /* --- CINEMATIC INTRO OVERLAY --- */
+        #intro-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-color: #000; /* Always starts black */
+            z-index: 100000; /* Top of everything */
+            display: flex; align-items: center; justify-content: center;
+            animation: fadeOutOverlay 1s ease-in-out 3.5s forwards;
+        }
+
+        .signature-text {
+            font-family: 'Great Vibes', cursive; /* The Cursive Font */
+            font-size: 4rem;
+            color: #FFD700;
+            opacity: 0;
+            filter: blur(10px);
+            transform: scale(0.9);
+            animation: signEffect 2.5s ease-out 0.5s forwards;
+        }
+
+        @keyframes signEffect {
+            0% { opacity: 0; filter: blur(10px); transform: scale(0.9); }
+            50% { opacity: 1; filter: blur(0px); transform: scale(1.05); }
+            100% { opacity: 1; filter: blur(0px); transform: scale(1); }
+        }
+
+        @keyframes fadeOutOverlay {
+            0% { opacity: 1; pointer-events: auto; }
+            100% { opacity: 0; pointer-events: none; display: none; }
+        }
+
+        /* --- ECLIPSE WIDGET --- */
         .eclipse-toggle {
-            position: fixed; 
-            top: 20px; 
-            left: 20px; /* Left side to avoid Sound Button */
-            width: 45px; height: 45px; 
-            cursor: pointer; 
-            z-index: 9999;
+            position: fixed; top: 20px; left: 20px; width: 45px; height: 45px; cursor: pointer; z-index: 9999;
         }
         .sun {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: #FFD700; border-radius: 50%;
-            box-shadow: 0 0 15px #FFD700;
+            background: #FFD700; border-radius: 50%; box-shadow: 0 0 15px #FFD700;
         }
         .moon {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: #222; /* Dark moon */
-            border-radius: 50%;
+            background: #222; border-radius: 50%;
             box-shadow: inset -2px -2px 5px rgba(255,255,255,0.1);
             transition: transform 0.6s cubic-bezier(0.68, -0.55, 0.27, 1.55);
         }
-        /* Active State (Light Mode) */
-        .eclipse-toggle.active .moon {
-            transform: translate(25px, -25px); /* Move away */
-        }
+        .eclipse-toggle.active .moon { transform: translate(25px, -25px); }
 
-        /* --- UPDATING EXISTING ELEMENTS TO USE VARIABLES --- */
+        /* --- ELEMENT UPDATES --- */
         .quote-box { color: var(--quote-color) !important; }
         .name { color: var(--text-color) !important; }
         .footer-text { color: var(--quote-color) !important; }
         
-        /* Concert Button Adaptation */
         .concert-btn {
             color: var(--accent-color) !important;
             border: 1px solid var(--accent-color) !important;
-            text-decoration: none; padding: 10px 20px; 
-            border-radius: 20px; font-size: 0.9rem; 
-            font-family: 'Poppins', sans-serif;
-            transition: all 0.3s;
-            display: inline-block;
+            text-decoration: none; padding: 10px 20px; border-radius: 20px; 
+            font-size: 0.9rem; font-family: 'Poppins', sans-serif;
+            transition: all 0.3s; display: inline-block;
         }
         .concert-btn:hover {
-            background: var(--accent-color);
-            color: var(--bg-color) !important;
+            background: var(--accent-color); color: var(--bg-color) !important;
         }
     </style>
 </head>
 <body id="main-body">
 
-<div class="eclipse-toggle" id="themeToggle" onclick="toggleTheme()">
-    <div class="sun"></div>
-    <div class="moon"></div>
-</div>
+    <div id="intro-overlay">
+        <div class="signature-text">Arnav Mishra</div>
+    </div>
 
-<audio id="global-bg-music" loop preload="auto">
-    <source src="co2.mp3" type="audio/mpeg">
-</audio>
+    <div class="eclipse-toggle" id="themeToggle" onclick="toggleTheme()">
+        <div class="sun"></div>
+        <div class="moon"></div>
+    </div>
 
-<div class="sound-control">
-    <button onclick="toggleMusic()" id="mute-btn">
-        <div class="icon-container">
-            <i class="fas fa-volume-mute" id="mute-icon"></i>
-        </div>
-    </button>
-</div>
+    <audio id="global-bg-music" loop preload="auto">
+        <source src="co2.mp3" type="audio/mpeg">
+    </audio>
 
-<div id="music-popup" onclick="closePopup()">
-    <div class="popup-box">
-        <div class="popup-icon">✨</div>
-        <h2>Welcome to my world.</h2>
-        <p class="tap-hint">Tap anywhere to enter</p>
-        <div class="vibe-note">
-            <i class="fas fa-arrow-up" style="transform: rotate(45deg);"></i> 
-            Sound button is Top-Right. 
-            <br>Turn it ON for the vibe! 🎵
+    <div class="sound-control">
+        <button onclick="toggleMusic()" id="mute-btn">
+            <div class="icon-container">
+                <i class="fas fa-volume-mute" id="mute-icon"></i>
+            </div>
+        </button>
+    </div>
+
+    <div id="music-popup" onclick="closePopup()">
+        <div class="popup-box">
+            <div class="popup-icon">✨</div>
+            <h2>Welcome to my world.</h2>
+            <p class="tap-hint">Tap anywhere to enter</p>
+            <div class="vibe-note">
+                <i class="fas fa-arrow-up" style="transform: rotate(45deg);"></i> 
+                Sound button is Top-Right. <br>Turn it ON for the vibe! 🎵
+            </div>
         </div>
     </div>
-</div>
 
-<div class="main-wrapper">
+    <div class="main-wrapper">
 
-    <div id="home-view">
-        <div class="profile-container anim-delay-1">
-            <div class="profile-glow"></div>
-            <img src="https://imarnavin.wordpress.com/wp-content/uploads/2026/01/image_editor_output_image-900633096-17689630363507786449788545237875.jpg" class="profile-img" alt="Arnav Mishra">
+        <div id="home-view">
+            <div class="profile-container anim-delay-1">
+                <div class="profile-glow"></div>
+                <img src="https://imarnavin.wordpress.com/wp-content/uploads/2026/01/image_editor_output_image-900633096-17689630363507786449788545237875.jpg" class="profile-img" alt="Arnav Mishra">
+            </div>
+            
+            <div class="name anim-delay-2">Arnav Mishra</div>
+            
+            <div class="bio-wrap anim-delay-3">
+                <div class="bio" id="bio-text"></div>
+            </div>
+
+            <div class="quote-box anim-delay-4">
+                "The secret of change is to focus all of your energy, not on fighting the old, but on building the new."
+            </div>
+
+            <div class="btn-grid anim-delay-5">
+                <a href="https://www.linkedin.com/in/arnav-mishra-1a6934371" class="btn"><i class="fab fa-linkedin"></i> LinkedIn</a>
+                <a href="https://x.com/ArnavMishra142" class="btn"><i class="fab fa-twitter"></i> X / Twitter</a>
+                <a href="https://www.instagram.com/arnav_9.11" class="btn"><i class="fab fa-instagram"></i> Instagram</a>
+                <a href="https://www.chess.com/member/Arnavm142" class="btn"><i class="fas fa-chess-knight"></i> Chess.com</a>
+            </div>
+
+            <button onclick="switchToAbout()" class="main-btn anim-delay-6">ENTER MY WORLD <i class="fas fa-arrow-right"></i></button>
+
+            <div class="chess-msg-container anim-delay-7">
+                <a href="https://wa.me/916393349498?text=Hey%20Arnav,%20I%20visited%20your%20portfolio!" target="_blank" class="chess-btn-styled">
+                    <div class="chess-btn-content">
+                        <i class="fas fa-chess-knight knight-icon-white"></i>
+                        <div class="btn-text-group">
+                            <span class="small-text-gray">MAKE A MOVE</span>
+                            <span class="big-text-white">Say Hello <i class="fas fa-hand-sparkles wave-icon"></i></span>
+                        </div>
+                    </div>
+                    <div class="dashed-border-bottom"></div>
+                </a>
+            </div>
+
+            <div class="portal-container anim-delay-8">
+                <a href="stranger.html" class="glitch-btn" data-text="ENTER THE UPSIDE DOWN">
+                    ENTER THE UPSIDE DOWN
+                </a>
+            </div>
+
+            <div style="text-align: center; margin-top: 15px; margin-bottom: 20px;">
+                <a href="concert.html" class="concert-btn">
+                    🎸 Enter Live Concert
+                </a>
+            </div>
+            
+            <p class="footer-text anim-delay-8">© 2026 ARNAV MISHRA</p>
         </div>
-        
-        <div class="name anim-delay-2">Arnav Mishra</div>
-        
-        <div class="bio-wrap anim-delay-3">
-            <div class="bio" id="bio-text"></div>
-        </div>
 
-        <div class="quote-box anim-delay-4">
-            "The secret of change is to focus all of your energy, not on fighting the old, but on building the new."
-        </div>
+        <div id="about-view" style="display: none;">
+            <div class="nav-header">
+                <button onclick="switchToHome()" class="back-btn"><i class="fas fa-arrow-left"></i> Home Protocol</button>
+            </div>
 
-        <div class="btn-grid anim-delay-5">
-            <a href="https://www.linkedin.com/in/arnav-mishra-1a6934371" class="btn"><i class="fab fa-linkedin"></i> LinkedIn</a>
-            <a href="https://x.com/ArnavMishra142" class="btn"><i class="fab fa-twitter"></i> X / Twitter</a>
-            <a href="https://www.instagram.com/arnav_9.11" class="btn"><i class="fab fa-instagram"></i> Instagram</a>
-            <a href="https://www.chess.com/member/Arnavm142" class="btn"><i class="fas fa-chess-knight"></i> Chess.com</a>
-        </div>
+            <h2 class="section-title">Projects</h2>
+            <div class="card project-card">
+                <div class="card-header">
+                    <h3 style="color: #ff4b4b;">Zomato Analysis 📊</h3>
+                </div>
+                <p class="card-desc">
+                    Market positioning and SWOT analysis for hyperlocal delivery based on real-time data.
+                </p>
+                <a href="https://docs.google.com/spreadsheets/d/11k2QyICWavfXFuUGXRBGnRJ7l7zsblQB/edit?usp=drivesdk" target="_blank" class="project-link-btn">
+                    View Sheets Project <i class="fas fa-external-link-alt"></i>
+                </a>
+            </div>
 
-        <button onclick="switchToAbout()" class="main-btn anim-delay-6">ENTER MY WORLD <i class="fas fa-arrow-right"></i></button>
-
-        <div class="chess-msg-container anim-delay-7">
-            <a href="https://wa.me/916393349498?text=Hey%20Arnav,%20I%20visited%20your%20portfolio!" target="_blank" class="chess-btn-styled">
-                <div class="chess-btn-content">
-                    <i class="fas fa-chess-knight knight-icon-white"></i>
-                    <div class="btn-text-group">
-                        <span class="small-text-gray">MAKE A MOVE</span>
-                        <span class="big-text-white">Say Hello <i class="fas fa-hand-sparkles wave-icon"></i></span>
+            <h2 class="section-title">Sonic Fuel (GOAT)</h2>
+            <div class="card krsna-card">
+                <div class="krsna-header">
+                    <div class="krsna-icon">$</div>
+                    <div>
+                        <h3>KR$NA 👑</h3>
+                        <p class="subtitle">The inspiration.</p>
                     </div>
                 </div>
-                <div class="dashed-border-bottom"></div>
-            </a>
-        </div>
-
-        <div class="portal-container anim-delay-8">
-            <a href="stranger.html" class="glitch-btn" data-text="ENTER THE UPSIDE DOWN">
-                ENTER THE UPSIDE DOWN
-            </a>
-        </div>
-
-        <div style="text-align: center; margin-top: 15px; margin-bottom: 20px;">
-            <a href="concert.html" class="concert-btn">
-                🎸 Enter Live Concert
-            </a>
-        </div>
-        
-        <p class="footer-text anim-delay-8">© 2026 ARNAV MISHRA</p>
-    </div>
-
-    <div id="about-view" style="display: none;">
-        <div class="nav-header">
-            <button onclick="switchToHome()" class="back-btn"><i class="fas fa-arrow-left"></i> Home Protocol</button>
-        </div>
-
-        <h2 class="section-title">Projects</h2>
-        <div class="card project-card">
-            <div class="card-header">
-                <h3 style="color: #ff4b4b;">Zomato Analysis 📊</h3>
-            </div>
-            <p class="card-desc">
-                Market positioning and SWOT analysis for hyperlocal delivery based on real-time data.
-            </p>
-            <a href="https://docs.google.com/spreadsheets/d/11k2QyICWavfXFuUGXRBGnRJ7l7zsblQB/edit?usp=drivesdk" target="_blank" class="project-link-btn">
-                View Sheets Project <i class="fas fa-external-link-alt"></i>
-            </a>
-        </div>
-
-        <h2 class="section-title">Sonic Fuel (GOAT)</h2>
-        <div class="card krsna-card">
-            <div class="krsna-header">
-                <div class="krsna-icon">$</div>
-                <div>
-                    <h3>KR$NA 👑</h3>
-                    <p class="subtitle">The inspiration.</p>
+                <div class="lyrics-box">
+                    "Chahiye mujhe bas ek buss down Rollie<br>
+                    Lambhi si gaadi aur makaan do storey, haan<br>
+                    Chahiye mujhe bas ek buss down Rollie<br>
+                    Lambi si chain aur kuch lakh ki tijori"
                 </div>
             </div>
-            <div class="lyrics-box">
-                "Chahiye mujhe bas ek buss down Rollie<br>
-                Lambhi si gaadi aur makaan do storey, haan<br>
-                Chahiye mujhe bas ek buss down Rollie<br>
-                Lambi si chain aur kuch lakh ki tijori"
+
+            <h2 class="section-title">Original Verses</h2>
+            
+            <div class="card verse-card">
+                <div class="verse-header">
+                    <h3 class="verse-title fire">🔥 Jang-kaal</h3>
+                </div>
+                <div id="verse-1-display" class="verse-content"></div>
             </div>
+
+            <div class="card verse-card">
+                <div class="verse-header">
+                    <h3 class="verse-title cosmic">🌌 Anjaan</h3>
+                </div>
+                <div id="verse-2-display" class="verse-content"></div>
+            </div>
+
+            <div style="height: 80px;"></div>
         </div>
 
-        <h2 class="section-title">Original Verses</h2>
-        
-        <div class="card verse-card">
-            <div class="verse-header">
-                <h3 class="verse-title fire">🔥 Jang-kaal</h3>
-            </div>
-            <div id="verse-1-display" class="verse-content"></div>
-        </div>
-
-        <div class="card verse-card">
-            <div class="verse-header">
-                <h3 class="verse-title cosmic">🌌 Anjaan</h3>
-            </div>
-            <div id="verse-2-display" class="verse-content"></div>
-        </div>
-
-        <div style="height: 80px;"></div>
     </div>
 
-</div>
+    <script src="script.js"></script>
 
-<script src="script.js"></script>
+    <script>
+        // Intro Animation Logic
+        setTimeout(() => {
+            // Re-enable scrolling after intro
+            document.body.style.overflow = 'auto'; 
+        }, 3500);
 
-<script>
-    const body = document.getElementById('main-body');
-    const toggleBtn = document.getElementById('themeToggle');
+        // Theme Toggle Logic
+        const body = document.getElementById('main-body');
+        const toggleBtn = document.getElementById('themeToggle');
 
-    // Check localStorage for saved theme
-    if (localStorage.getItem('theme') === 'light') {
-        body.classList.add('light-mode');
-        toggleBtn.classList.add('active');
-    }
-
-    function toggleTheme() {
-        body.classList.toggle('light-mode');
-        toggleBtn.classList.toggle('active');
-
-        // Save preference
-        if (body.classList.contains('light-mode')) {
-            localStorage.setItem('theme', 'light');
-        } else {
-            localStorage.setItem('theme', 'dark');
+        if (localStorage.getItem('theme') === 'light') {
+            body.classList.add('light-mode');
+            toggleBtn.classList.add('active');
         }
-    }
-</script>
+
+        function toggleTheme() {
+            body.classList.toggle('light-mode');
+            toggleBtn.classList.toggle('active');
+
+            if (body.classList.contains('light-mode')) {
+                localStorage.setItem('theme', 'light');
+            } else {
+                localStorage.setItem('theme', 'dark');
+            }
+        }
+    </script>
 
 </body>
 </html>
