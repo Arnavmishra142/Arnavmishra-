@@ -46,25 +46,16 @@ let isMusicPlaying = false;
 
 /* --- 1. INTRO SEQUENCE --- */
 window.addEventListener('load', () => {
-    // 3.5 sec wait for CSS Animation to complete
-    setTimeout(() => {
-        finishIntro();
-    }, 3500); 
-    
+    setTimeout(() => { finishIntro(); }, 3500); 
     setupNinja();
 });
 
 function finishIntro() {
-    // 1. Fade Out Intro
     introScreen.style.opacity = '0';
-    
     setTimeout(() => {
         introScreen.style.display = 'none';
-        
-        // 2. Show Popup
         musicPopup.style.display = 'flex';
         setTimeout(() => { musicPopup.style.opacity = '1'; }, 50);
-        
     }, 1000);
 }
 
@@ -73,20 +64,15 @@ function setupNinja() {
     if (!visitorInput) return;
     
     visitorInput.addEventListener('input', () => {
-        // Show Ninja (Peek down)
         ninjaEmoji.classList.add('peek');
-        
-        // Clear previous timer
         clearTimeout(typingTimer);
-        
-        // Hide Ninja after 600ms of no typing
         typingTimer = setTimeout(() => {
             ninjaEmoji.classList.remove('peek');
         }, 600);
     });
 }
 
-/* --- 3. POPUP HANDLER (RESTORES ANIMATIONS) --- */
+/* --- 3. POPUP HANDLER --- */
 function submitName() {
     const name = visitorInput.value.trim();
     const waBtn = document.getElementById('wa-link');
@@ -100,23 +86,16 @@ function submitName() {
         waBtn.href = `https://wa.me/${myPhone}?text=${encodeURIComponent(text)}`;
     }
 
-    // Close popup animation
     musicPopup.style.opacity = '0';
     setTimeout(() => {
         musicPopup.style.display = 'none';
         document.body.classList.remove('wait-for-intro');
         document.body.style.overflow = 'auto';
 
-        // --- FIXED: ADDING ANIMATION CLASSES HERE ---
-        // Select profile, name, bio, buttons etc. inside home-view
-        // Specifically looking for elements with 'anim-delay-x' or direct children
         const animatedElements = document.querySelectorAll(
-            '#home-view .profile-container, #home-view .name, #home-view .bio-wrap, #home-view .quote-box, #home-view .btn-grid, #home-view .main-btn, #home-view .chess-msg-container, #home-view .portal-container, #home-view .footer-text'
+            '#home-view .profile-container, #home-view .name, #home-view .bio-wrap, #home-view .quote-box, #home-view .btn-grid, #home-view .main-btn, #home-view .chess-msg-container, #home-view .portal-container, #home-view .footer-text, #home-view .concert-wrapper'
         );
-        
-        animatedElements.forEach(el => { 
-            el.classList.add('animate-entry'); 
-        });
+        animatedElements.forEach(el => { el.classList.add('animate-entry'); });
 
         setTimeout(() => { typeWriter(bioText, bioElement, 100); }, 500);
 
@@ -131,7 +110,7 @@ function submitName() {
     }, 500);
 }
 
-/* --- TYPEWRITER (FOR BIO ONLY) --- */
+/* --- TYPEWRITER --- */
 function typeWriter(text, element, speed) {
     element.innerHTML = "";
     let i = 0;
@@ -175,7 +154,6 @@ function switchToAbout() {
         aboutView.style.transition = 'all 0.6s ease';
         aboutView.style.opacity = '1';
         aboutView.style.transform = 'translateY(0)';
-        
         initVerse('verse1');
         initVerse('verse2');
         window.scrollTo(0, 0);
@@ -195,19 +173,16 @@ function switchToHome() {
     }, 400);
 }
 
-/* --- VERSE HANDLING --- */
 function initVerse(verseKey) {
     const elementId = verseKey === 'verse1' ? 'verse-1-display' : 'verse-2-display';
     const data = verseData[verseKey];
     const container = document.getElementById(elementId);
     
-    // Create Text HTML
     const formattedText = data.text.split('\n').map((line, index) => {
         if (line.trim() === '') return '<br>';
         return `<span class="verse-line" style="animation-delay: ${index * 0.1}s">${line}</span>`;
     }).join('');
     
-    // Create Button HTML
     const buttonHtml = `
         <button class="read-more-btn" onclick="goToInsta('${data.link}')">
             Read Full Lyrics <i class="fab fa-instagram"></i>
@@ -223,7 +198,7 @@ function goToInsta(url) {
     }
 }
 
-/* --- THEME TOGGLE LOGIC --- */
+/* --- THEME TOGGLE --- */
 const body = document.getElementById('main-body');
 const toggleBtn = document.getElementById('themeToggle');
 
@@ -240,4 +215,4 @@ function toggleTheme() {
     } else {
         localStorage.setItem('theme', 'dark');
     }
-        }
+}
