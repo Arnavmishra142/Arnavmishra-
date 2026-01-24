@@ -1,98 +1,11 @@
 /* --- CONFIGURATION --- */
 const bioText = "Building ideas from scratch.";
+const introName = "Arnav Mishra"; // Text for Intro
 
-// Full Lyrics Objects
+// Full Lyrics Objects (Verse 1 & 2 as provided)
 const fullVerses = {
-    verse1: `Tu jang ka ailan kar 
-Dushmano PE vaar kar
-Papiyo ka naas kar....
-
-Moh dya ka tyag kar 
-Ab jism se na pyar kar 
-Mastko ke unke Aaj
-Deh se ajaad kar....
-
-Dikha de pure vishwa ko
-Parlaya ke raudra drishya ko
-Jaha par keval dharm ho
-Na dharm me koi sharm ho
-Jo dharm me kare sharam
-Un adharmiyo ka (naas kar)3...
-
-Na bhal(bhala) ka vo ghao ho 
-Na tir ka prabhav ho
-Bas bhid me tuhi,tuhi
-Aur Tera hi dabao ho
-Jo tu lade to kaun bhage 
-Jo tu bhage to kaun bache 
-Bache Jo bht koi karnaverse
-Kabhi na fir (vo lade)3...
-
-Moh dya ka tyag kr 
-Bas ek hi dharm vaar kr
-
-Saam,dam,dand,bhed
-Adharmiya pe kar ke dekh
-Man le to jane de 
-Na Mane to tu pran le
-Tu kaat de vo har gale 
-Jo marg pe tere na chle 
-Vo sarthi vo Tera bhale...
-
-Moh Daya ka tyag kar 
-Bs ek hi dharm var kr...
-
-Aarmbh hai is kaal ka 
-Papiyo ke naas ka
-Tu kaal se dare Bina 
-Ab Jaan ka bhi daan de
-Dikha de pure vishwa ko
-Nisthur se is dishya ko
-Adharmiyo ka naas kar 
-Apne vir ka praman de....
-
-Moh dya ka tyag kr 
-Bs ek hi dharm vaar kar....
-
-Moh dya ka tyag kr 
-Bs ek hi dharm (vaar kar)3...`,
-
-    verse2: `Mai antt hun mai ankurit 
-Yugo yugo ka hal hai
-Mai hinn hun ,mai hun priye
-Mera hi maah saal hai
-
-Na saksh hun, na aatma 
-Na devta ,pramatama 
-Mai bhoot (past) hun , mai kaal sa
-Divr hun mai bhaal sa
-
-Kurn sa mai dheema bhi
-Brahamand sa na sheema bhi
-Krishna se bhi vanchit mai 
-Bhole se na mai saar hun
-Mai ant hun mai ankurit 
-Chattan sa mai bhaar(bhaari) hun
-
-Na paksh dhar, nipaksh mai 
-Lankesh ka mai haar hun 
-Koi to mujhse hai khda 
-Kisi ka intezar hun
-Adrishya na mai hun kabhi
-Mai to shariyam hun
-Adharm na -mai dharm hun .
-Mai mera koi chaal hai 
-
-Mai antt hun mai ankurit 
-Yugo yugo ka haal hai
-
-Marg mera ek hai sheesha raasta magr
-Chaal mai jo chaldu 
-Aata na mi do-baar hu
-Mai paksh me vipaksh hun
-Vipaksh ka bhi shadhi mai
-Acha Bura ho jo magr
-Har karm ka gathi mai`
+    verse1: `Tu jang ka ailan kar \nDushmano PE vaar kar\nPapiyo ka naas kar....\n\nMoh dya ka tyag kar \nAb jism se na pyar kar \nMastko ke unke Aaj\nDeh se ajaad kar....\n\nDikha de pure vishwa ko\nParlaya ke raudra drishya ko\nJaha par keval dharm ho\nNa dharm me koi sharm ho\nJo dharm me kare sharam\nUn adharmiyo ka (naas kar)3...`,
+    verse2: `Mai antt hun mai ankurit \nYugo yugo ka hal hai\nMai hinn hun ,mai hun priye\nMera hi maah saal hai\n\nNa saksh hun, na aatma \nNa devta ,pramatama \nMai bhoot (past) hun , mai kaal sa\nDivr hun mai bhaal sa`
 };
 
 /* --- DOM ELEMENTS --- */
@@ -103,25 +16,103 @@ const bgMusic = document.getElementById('global-bg-music');
 const muteBtn = document.getElementById('mute-btn');
 const muteIcon = document.getElementById('mute-icon');
 const bioElement = document.getElementById('bio-text');
+const introScreen = document.getElementById('intro-screen');
+const signatureEl = document.getElementById('signature-text');
 
 let isMusicPlaying = false;
 
-/* --- PAGE LOAD EVENTS --- */
+/* --- 1. INTRO SEQUENCE (PAGE LOAD) --- */
 window.addEventListener('load', () => {
-    // 1. Start Typewriter for Bio immediately
-    setTimeout(() => {
-        typeWriter(bioText, bioElement, 100);
-    }, 500);
+    // Stage 1: Write Name Letter by Letter
+    playIntroSequence();
+});
 
-    // 2. Show Popup after 2.5 Seconds Delay
+function playIntroSequence() {
+    let i = 0;
+    const speed = 150; // Speed of writing
+
+    function typeWriterIntro() {
+        if (i < introName.length) {
+            signatureEl.innerHTML += introName.charAt(i);
+            i++;
+            setTimeout(typeWriterIntro, speed);
+        } else {
+            // Stage 2: Finished writing, wait a bit then show Popup
+            setTimeout(() => {
+                finishIntro();
+            }, 1000); // 1s delay after writing finishes
+        }
+    }
+    // Start typing
+    typeWriterIntro();
+}
+
+function finishIntro() {
+    // Fade out Intro Screen
+    introScreen.style.opacity = '0';
     setTimeout(() => {
+        introScreen.style.display = 'none';
+        
+        // Stage 3: Show Music Popup (Site is still hidden/blurred)
         musicPopup.style.display = 'flex';
-        // Small delay to allow 'display:flex' to apply before opacity transition
         setTimeout(() => {
             musicPopup.style.opacity = '1';
         }, 50);
-    }, 2500);
-});
+    }, 1000);
+}
+
+/* --- 2. POPUP HANDLER (ENTRY POINT) --- */
+function closePopup() {
+    // Fade out popup
+    musicPopup.style.opacity = '0';
+    setTimeout(() => {
+        musicPopup.style.display = 'none';
+        
+        // Stage 4: REVEAL SITE & START ANIMATIONS
+        document.body.classList.remove('wait-for-intro');
+        
+        // Allow scrolling now
+        document.body.style.overflow = 'auto';
+
+        // Trigger animations for Home elements manually
+        const animatedElements = document.querySelectorAll('#home-view > div, #home-view > button, #home-view > p');
+        animatedElements.forEach(el => {
+            el.classList.add('animate-entry');
+        });
+
+        // Start Bio Typewriter
+        setTimeout(() => {
+            typeWriter(bioText, bioElement, 100);
+        }, 500);
+
+        // Try Autoplay Music
+        bgMusic.volume = 0.5;
+        bgMusic.play().then(() => {
+            muteIcon.className = "fas fa-volume-up";
+            muteBtn.style.borderColor = "#00ff88";
+            muteBtn.style.color = "#00ff88";
+            isMusicPlaying = true;
+        }).catch(e => {
+            console.log("Autoplay blocked, user must click sound btn");
+        });
+
+    }, 500);
+}
+
+
+/* --- TYPEWRITER (For Bio) --- */
+function typeWriter(text, element, speed) {
+    element.innerHTML = "";
+    let i = 0;
+    function type() {
+        if (i < text.length) {
+            element.innerHTML += text.charAt(i);
+            i++;
+            setTimeout(type, speed);
+        }
+    }
+    type();
+}
 
 /* --- MUSIC CONTROL --- */
 function toggleMusic() {
@@ -138,25 +129,6 @@ function toggleMusic() {
         muteBtn.style.color = "#00a3ff";
         isMusicPlaying = false;
     }
-}
-
-/* --- POPUP HANDLER --- */
-function closePopup() {
-    musicPopup.style.opacity = '0';
-    setTimeout(() => {
-        musicPopup.style.display = 'none';
-        
-        // Try Auto play
-        bgMusic.volume = 0.5;
-        bgMusic.play().then(() => {
-            muteIcon.className = "fas fa-volume-up";
-            muteBtn.style.borderColor = "#00ff88";
-            muteBtn.style.color = "#00ff88";
-            isMusicPlaying = true;
-        }).catch(e => {
-            console.log("Autoplay blocked");
-        });
-    }, 500);
 }
 
 /* --- VIEW SWITCHING --- */
@@ -197,30 +169,14 @@ function switchToHome() {
     }, 400);
 }
 
-/* --- TYPEWRITER --- */
-function typeWriter(text, element, speed) {
-    element.innerHTML = "";
-    let i = 0;
-    function type() {
-        if (i < text.length) {
-            element.innerHTML += text.charAt(i);
-            i++;
-            setTimeout(type, speed);
-        }
-    }
-    type();
-}
-
 /* --- VERSE HANDLING --- */
 function initVerse(verseKey) {
     const elementId = verseKey === 'verse1' ? 'verse-1-display' : 'verse-2-display';
     const content = fullVerses[verseKey];
     const container = document.getElementById(elementId);
     
-    // Format lines with staggered animation
     const formattedHtml = content.split('\n').map((line, index) => {
         if (line.trim() === '') return '<br>';
-        // Slower delay for a more "dramatic" reading feel
         return `<span class="verse-line" style="animation-delay: ${index * 0.1}s">${line}</span>`;
     }).join('');
     
