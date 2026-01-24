@@ -24,75 +24,76 @@ body.light-mode {
 body { background-color: var(--bg-color) !important; color: var(--text-color) !important; transition: background-color 0.5s ease, color 0.5s ease; }
 
 /* =========================================
-   ✨ UPDATED: SMOOTH HANDWRITING INTRO ✨
+   ✨ NEW: FIXED CENTER INTRO (Smooth Ink) ✨
 ========================================= */
 #intro-screen {
-    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-    background-color: #000; /* Pure black background for contrast */
+    position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
+    background-color: #000;
     z-index: 20000;
-    display: flex; align-items: center; justify-content: center;
+    /* FLEXBOX CENTERING - FIXES "CORNER" ISSUE */
+    display: flex;
+    justify-content: center;
+    align-items: center;
     transition: opacity 1s ease;
 }
 
-/* Wrapper to define the width for animation */
+/* Wrapper for the smooth animation */
+.signature-container-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
 .signature-wrapper {
-    display: inline-block;
-    overflow: hidden; /* Ensures text is hidden until revealed */
-    white-space: nowrap; /* Keeps text on one line */
-    border-right: 3px solid #FFD700; /* The "Pen Tip" cursor */
-    width: 0; /* Start with 0 width */
-    /* The smooth writing animation */
-    animation: 
-        writing 3s steps(60, end) forwards, 
-        blink-caret 0.75s step-end infinite;
+    overflow: hidden; /* Hide text initially */
+    white-space: nowrap;
+    width: 0; /* Start width 0 */
+    /* Linear transition for SMOOTH INK effect (No steps) */
+    animation: smoothInk 2.5s cubic-bezier(0.5, 0, 0.5, 1) forwards; 
 }
 
 .signature-text {
     font-family: 'Great Vibes', cursive;
-    font-size: 4.5rem;
+    font-size: 4rem; 
     color: #FFD700;
-    padding-right: 10px; /* Space for cursor */
-    background: linear-gradient(to right, #FFD700, #FFA500);
+    /* Gradient for gold feel */
+    background: linear-gradient(to right, #FFD700, #FDB931);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.3));
+    padding: 0 5px;
+    display: block;
 }
 
-/* Animation to reveal width smoothly */
-@keyframes writing {
-    from { width: 0 }
-    to { width: 100% }
-}
-
-/* Cursor blinking */
-@keyframes blink-caret { 
-    from, to { border-color: transparent } 
-    50% { border-color: #FFD700; } 
+/* The Smooth Reveal Animation */
+@keyframes smoothInk {
+    0% { width: 0; }
+    100% { width: 100%; }
 }
 
 @media (max-width: 768px) {
-    .signature-text { font-size: 3rem; }
+    .signature-text { font-size: 2.8rem; }
 }
 
 /* =========================================
    🔒 HIDDEN STATE
 ========================================= */
-body.wait-for-intro .main-wrapper,
+/* NOTE: We removed .main-wrapper hidden state here so Glass Effect works */
 body.wait-for-intro .sound-control,
 body.wait-for-intro .eclipse-toggle {
     opacity: 0; pointer-events: none;
 }
 
 /* =========================================
-   UPDATED POPUP (CLEAN PREMIUM GLASS)
+   UPDATED POPUP (REAL GLASS EFFECT)
 ========================================= */
 #music-popup { 
     display: none; /* JS handles this */
     position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
     
-    /* Stronger Glass Backdrop */
-    background: rgba(0, 0, 0, 0.5); 
-    backdrop-filter: blur(15px); 
+    /* GLASS BACKDROP - Now visible because background content will be visible */
+    background: rgba(0, 0, 0, 0.3); /* Low opacity black */
+    backdrop-filter: blur(15px); /* Strong blur of the website behind */
     -webkit-backdrop-filter: blur(15px);
     
     z-index: 15000;
@@ -103,20 +104,18 @@ body.wait-for-intro .eclipse-toggle {
 .popup-box {
     position: relative;
     
-    /* Premium Glowing Glass Box */
-    background: rgba(255, 255, 255, 0.05); /* Very subtle light tint */
-    border: 1px solid rgba(255, 255, 255, 0.2); /* Crisp border */
-    /* Glowing shadow effect */
-    box-shadow: 0 0 30px rgba(0, 163, 255, 0.15), inset 0 0 20px rgba(255,255,255,0.05);
+    /* FROSTED GLASS CARD */
+    background: rgba(255, 255, 255, 0.07); /* Light transparent tint */
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 0 40px rgba(0, 0, 0, 0.5); /* Deep shadow */
     
     padding: 40px 30px;
-    border-radius: 24px;
+    border-radius: 20px;
     text-align: center; color: #fff;
     width: 85%;
     max-width: 360px;
 }
 
-/* Heading & Text Styling */
 .popup-box h2 {
     font-size: 1.6rem; margin-bottom: 5px; font-family: 'Poppins', sans-serif;
     text-shadow: 0 2px 10px rgba(0,0,0,0.5);
@@ -132,7 +131,7 @@ body.wait-for-intro .eclipse-toggle {
 }
 #ninja-emoji {
     font-size: 3.5rem;
-    transform: translateY(100%); /* Hidden */
+    transform: translateY(100%);
     transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     filter: drop-shadow(0 0 10px rgba(0,0,0,0.8));
 }
@@ -143,7 +142,7 @@ body.wait-for-intro .eclipse-toggle {
 
 .popup-input {
     width: 100%; padding: 14px;
-    background: rgba(0, 0, 0, 0.4); /* Darker input bg for contrast */
+    background: rgba(0, 0, 0, 0.4);
     border: 1px solid rgba(255, 255, 255, 0.15);
     color: #fff; border-radius: 12px;
     font-family: 'Poppins', sans-serif; font-size: 1.05rem;
@@ -188,6 +187,7 @@ body.wait-for-intro .eclipse-toggle {
     position: relative;
     z-index: 10;
     padding-bottom: 50px;
+    /* IMPORTANT: Opacity is handled by JS now for glass effect */
     transition: opacity 1s ease;
 }
 
@@ -346,4 +346,4 @@ body.wait-for-intro .eclipse-toggle {
 .eclipse-toggle.active .moon { transform: translate(25px, -25px); }
 .concert-btn { color: var(--accent-color) !important; border: 1px solid var(--accent-color) !important; text-decoration: none; padding: 10px 20px; border-radius: 20px; font-size: 0.9rem; font-family: 'Poppins', sans-serif; transition: all 0.3s; display: inline-block; }
 .concert-btn:hover { background: var(--accent-color); color: var(--bg-color) !important; }
-        
+    
