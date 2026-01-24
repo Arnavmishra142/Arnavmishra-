@@ -12,20 +12,46 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Arnav Mishra | Work & Mind</title>
-    
     <link rel="stylesheet" href="style.css">
-    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Playfair+Display:ital,wght@0,400;1,600&family=Poppins:wght@300;400;600&family=Courier+Prime:wght@400;700&family=Great+Vibes&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-color: #050505; --text-color: #fff; --accent-color: #FFD700;
+            --card-bg: rgba(255, 255, 255, 0.05); --quote-color: #a0a0a0;
+        }
+        body.light-mode {
+            --bg-color: #e0e0e0; --text-color: #111; --accent-color: #b8860b;
+            --card-bg: rgba(0, 0, 0, 0.05); --quote-color: #444;
+        }
+        body { background-color: var(--bg-color) !important; color: var(--text-color) !important; transition: background-color 0.5s ease, color 0.5s ease; }
+        
+        .eclipse-toggle { position: fixed; top: 20px; left: 20px; width: 45px; height: 45px; cursor: pointer; z-index: 10001; }
+        .sun { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: #FFD700; border-radius: 50%; box-shadow: 0 0 15px #FFD700; }
+        .moon { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: #222; border-radius: 50%; box-shadow: inset -2px -2px 5px rgba(255,255,255,0.1); transition: transform 0.6s cubic-bezier(0.68, -0.55, 0.27, 1.55); }
+        .eclipse-toggle.active .moon { transform: translate(25px, -25px); }
+
+        .quote-box { color: var(--quote-color) !important; }
+        .name { color: var(--text-color) !important; }
+        .footer-text { color: var(--quote-color) !important; }
+        
+        .concert-btn {
+            color: var(--accent-color) !important; border: 1px solid var(--accent-color) !important;
+            text-decoration: none; padding: 10px 20px; border-radius: 20px; font-size: 0.9rem; font-family: 'Poppins', sans-serif;
+            transition: all 0.3s; display: inline-block;
+        }
+        .concert-btn:hover { background: var(--accent-color); color: var(--bg-color) !important; }
+    </style>
 </head>
 
 <body id="main-body" class="wait-for-intro">
 
     <div id="intro-screen">
         <div class="signature-container">
-            <span class="signature-text">Arnav Mishra</span>
+            <span id="signature-text"></span><span class="cursor"></span>
         </div>
     </div>
 
@@ -44,24 +70,14 @@
         </button>
     </div>
 
-    <div id="music-popup">
+    <div id="music-popup" onclick="closePopup()">
         <div class="popup-box">
-            <div class="ninja-wrapper">
-                <div id="ninja-emoji">🥷</div>
-            </div>
-            
-            <h2>What should I call you, genius?</h2>
-            <p class="tap-hint">Don't worry ninja is just curious</p>
-            
-            <div class="popup-input-group">
-                <input type="text" id="visitor-name" class="popup-input" placeholder="Your Name" autocomplete="off">
-            </div>
-
-            <button class="popup-submit-btn" onclick="submitName()">ENTER WORLD</button>
-
+            <div class="popup-icon">✨</div>
+            <h2>Welcome to my world.</h2>
+            <p class="tap-hint">Tap anywhere to enter</p>
             <div class="vibe-note">
                 <i class="fas fa-arrow-up" style="transform: rotate(45deg);"></i> 
-                Sound ON for best vibe 🎵
+                Sound button is Top-Right. <br>Turn it ON for the vibe! 🎵
             </div>
         </div>
     </div>
@@ -87,7 +103,7 @@
             <button onclick="switchToAbout()" class="main-btn anim-delay-6">ENTER MY WORLD <i class="fas fa-arrow-right"></i></button>
 
             <div class="chess-msg-container anim-delay-7">
-                <a href="https://wa.me/916393349498?text=Hey%20Arnav,%20I%20visited%20your%20portfolio!" id="wa-link" target="_blank" class="chess-btn-styled">
+                <a href="https://wa.me/916393349498?text=Hey%20Arnav,%20I%20visited%20your%20portfolio!" target="_blank" class="chess-btn-styled">
                     <div class="chess-btn-content">
                         <i class="fas fa-chess-knight knight-icon-white"></i>
                         <div class="btn-text-group">
@@ -103,10 +119,8 @@
                 <a href="stranger.html" class="glitch-btn" data-text="ENTER THE UPSIDE DOWN">ENTER THE UPSIDE DOWN</a>
             </div>
 
-            <div class="concert-wrapper anim-delay-8">
-                <a href="concert.html" class="concert-btn">
-                    <i class="fas fa-guitar"></i> Enter Live Concert
-                </a>
+            <div style="text-align: center; margin-top: 15px; margin-bottom: 20px;">
+                <a href="concert.html" class="concert-btn">🎸 Enter Live Concert</a>
             </div>
             
             <p class="footer-text anim-delay-8">© 2026 ARNAV MISHRA</p>
@@ -136,5 +150,23 @@
     </div>
 
     <script src="script.js"></script>
+
+    <script>
+        const body = document.getElementById('main-body');
+        const toggleBtn = document.getElementById('themeToggle');
+        if (localStorage.getItem('theme') === 'light') {
+            body.classList.add('light-mode');
+            toggleBtn.classList.add('active');
+        }
+        function toggleTheme() {
+            body.classList.toggle('light-mode');
+            toggleBtn.classList.toggle('active');
+            if (body.classList.contains('light-mode')) {
+                localStorage.setItem('theme', 'light');
+            } else {
+                localStorage.setItem('theme', 'dark');
+            }
+        }
+    </script>
 </body>
 </html>
