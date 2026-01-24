@@ -24,8 +24,8 @@
 <body id="main-body" class="wait-for-intro">
 
     <div id="intro-screen">
-        <div class="signature-container">
-            <span id="signature-text"></span><span class="cursor"></span>
+        <div class="signature-wrapper">
+            <div class="signature-text">Arnav Mishra</div>
         </div>
     </div>
 
@@ -49,14 +49,12 @@
             <div class="ninja-wrapper">
                 <div id="ninja-emoji">🥷</div>
             </div>
-
-            <div class="popup-icon">🤔</div>
             
-            <h2>What should I call you, genius?</h2>
+            <h2 style="margin-top: 20px;">What should I call you, genius?</h2>
             <p class="tap-hint">Don't worry ninja is just curious</p>
             
             <div class="popup-input-group">
-                <input type="text" id="visitor-name" class="popup-input" placeholder="Your Name (Optional)" autocomplete="off">
+                <input type="text" id="visitor-name" class="popup-input" placeholder="Your Name" autocomplete="off">
             </div>
 
             <button class="popup-submit-btn" onclick="submitName()">ENTER WORLD</button>
