@@ -41,96 +41,89 @@
             background-color: var(--bg-color) !important;
             color: var(--text-color) !important;
             transition: background-color 0.5s ease, color 0.5s ease;
-            overflow: hidden; /* Scroll locked during intro */
+            overflow: hidden; /* Locked during intro */
         }
 
-        /* --- ✨ WRITING ANIMATION INTRO ✨ --- */
+        /* =========================================
+           ✨ THE SMOOTH HANDWRITING INTRO ✨
+        ========================================= */
         #intro-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background-color: #000;
+            background-color: #000; /* Solid black start */
             z-index: 100000;
             display: flex; align-items: center; justify-content: center;
-            animation: fadeOutOverlay 1s ease-in-out 4s forwards; /* Screen fades out after 4s */
+            /* Fades out after the writing is done (at 3.5s mark) */
+            animation: fadeOutOverlay 1s ease-in-out 3.5s forwards; 
         }
 
         .signature-container {
             position: relative;
             display: inline-block;
+            padding-right: 10px; /* Space for the illusion */
         }
 
         .signature-text {
             font-family: 'Great Vibes', cursive;
-            font-size: 4rem;
+            font-size: 4.5rem;
             color: #FFD700;
-            white-space: nowrap;      /* Keep text on one line */
-            overflow: hidden;         /* Hide text until revealed */
-            width: 0;                 /* Start with 0 width */
-            border-right: 3px solid #FFD700; /* The "Pen Tip" Cursor */
-            
-            /* The Magic Animation: Width goes 0 -> 100% */
-            animation: 
-                writeName 2.5s steps(60, end) forwards, 
-                blinkCursor 0.5s step-end infinite;
+            white-space: nowrap;
+            overflow: hidden;
+            width: 0; /* Start hidden */
+            /* Smooth ease-out animation, NO steps, NO cursor border */
+            animation: writeNameSmooth 3s ease-out forwards;
+            filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.5));
         }
 
-        /* Animation to reveal text like writing */
-        @keyframes writeName {
-            from { width: 0; }
-            to { width: 100%; }
+        @keyframes writeNameSmooth {
+            0% { width: 0; }
+            100% { width: 100%; }
         }
 
-        /* Blinking Cursor effect */
-        @keyframes blinkCursor {
-            from, to { border-color: transparent; }
-            50% { border-color: #FFD700; }
-        }
-
-        /* Fade out the black screen */
         @keyframes fadeOutOverlay {
-            0% { opacity: 1; pointer-events: auto; }
+            0% { opacity: 1; }
+            99% { opacity: 0; pointer-events: none; }
             100% { opacity: 0; pointer-events: none; display: none; }
         }
 
-        /* Mobile Adjustments for signature size */
+        /* =========================================
+           THE SEQUENCING LOGIC (CRITICAL PART)
+        ========================================= */
+        /* When the 'is-intro-running' class is on the body, hide EVERYTHING else */
+        body.is-intro-running .main-wrapper,
+        body.is-intro-running #music-popup,
+        body.is-intro-running .sound-control,
+        body.is-intro-running .eclipse-toggle {
+            opacity: 0 !important;
+            pointer-events: none !important;
+            /* IMPORTANT: Pause their entry animations so they don't play while hidden */
+            animation-play-state: paused !important; 
+        }
+        
+        /* Once the class is removed, these will naturally fade in and play animations */
+        .main-wrapper, #music-popup, .sound-control, .eclipse-toggle {
+            transition: opacity 0.8s ease-in;
+        }
+
+
+        /* --- Mobile Adjustments --- */
         @media (max-width: 768px) {
-            .signature-text { font-size: 2.5rem; }
+            .signature-text { font-size: 2.8rem; }
         }
 
-
-        /* --- ECLIPSE WIDGET --- */
-        .eclipse-toggle {
-            position: fixed; top: 20px; left: 20px; width: 45px; height: 45px; cursor: pointer; z-index: 9999;
-        }
-        .sun {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: #FFD700; border-radius: 50%; box-shadow: 0 0 15px #FFD700;
-        }
-        .moon {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: #222; border-radius: 50%;
-            box-shadow: inset -2px -2px 5px rgba(255,255,255,0.1);
-            transition: transform 0.6s cubic-bezier(0.68, -0.55, 0.27, 1.55);
-        }
+        /* --- Standard Styles --- */
+        .eclipse-toggle { position: fixed; top: 20px; left: 20px; width: 45px; height: 45px; cursor: pointer; z-index: 9999; }
+        .sun { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: #FFD700; border-radius: 50%; box-shadow: 0 0 15px #FFD700; }
+        .moon { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: #222; border-radius: 50%; box-shadow: inset -2px -2px 5px rgba(255,255,255,0.1); transition: transform 0.6s cubic-bezier(0.68, -0.55, 0.27, 1.55); }
         .eclipse-toggle.active .moon { transform: translate(25px, -25px); }
 
-        /* --- OTHER ELEMENTS --- */
         .quote-box { color: var(--quote-color) !important; }
         .name { color: var(--text-color) !important; }
         .footer-text { color: var(--quote-color) !important; }
-        
-        .concert-btn {
-            color: var(--accent-color) !important;
-            border: 1px solid var(--accent-color) !important;
-            text-decoration: none; padding: 10px 20px; border-radius: 20px; 
-            font-size: 0.9rem; font-family: 'Poppins', sans-serif;
-            transition: all 0.3s; display: inline-block;
-        }
-        .concert-btn:hover {
-            background: var(--accent-color); color: var(--bg-color) !important;
-        }
+        .concert-btn { color: var(--accent-color) !important; border: 1px solid var(--accent-color) !important; text-decoration: none; padding: 10px 20px; border-radius: 20px; font-size: 0.9rem; font-family: 'Poppins', sans-serif; transition: all 0.3s; display: inline-block; }
+        .concert-btn:hover { background: var(--accent-color); color: var(--bg-color) !important; }
     </style>
 </head>
-<body id="main-body">
+<body id="main-body" class="is-intro-running">
 
     <div id="intro-overlay">
         <div class="signature-container">
@@ -168,7 +161,6 @@
     </div>
 
     <div class="main-wrapper">
-
         <div id="home-view">
             <div class="profile-container anim-delay-1">
                 <div class="profile-glow"></div>
@@ -176,14 +168,8 @@
             </div>
             
             <div class="name anim-delay-2">Arnav Mishra</div>
-            
-            <div class="bio-wrap anim-delay-3">
-                <div class="bio" id="bio-text"></div>
-            </div>
-
-            <div class="quote-box anim-delay-4">
-                "The secret of change is to focus all of your energy, not on fighting the old, but on building the new."
-            </div>
+            <div class="bio-wrap anim-delay-3"><div class="bio" id="bio-text"></div></div>
+            <div class="quote-box anim-delay-4">"The secret of change is to focus all of your energy, not on fighting the old, but on building the new."</div>
 
             <div class="btn-grid anim-delay-5">
                 <a href="https://www.linkedin.com/in/arnav-mishra-1a6934371" class="btn"><i class="fab fa-linkedin"></i> LinkedIn</a>
@@ -208,97 +194,61 @@
             </div>
 
             <div class="portal-container anim-delay-8">
-                <a href="stranger.html" class="glitch-btn" data-text="ENTER THE UPSIDE DOWN">
-                    ENTER THE UPSIDE DOWN
-                </a>
+                <a href="stranger.html" class="glitch-btn" data-text="ENTER THE UPSIDE DOWN">ENTER THE UPSIDE DOWN</a>
             </div>
 
             <div style="text-align: center; margin-top: 15px; margin-bottom: 20px;">
-                <a href="concert.html" class="concert-btn">
-                    🎸 Enter Live Concert
-                </a>
+                <a href="concert.html" class="concert-btn">🎸 Enter Live Concert</a>
             </div>
             
             <p class="footer-text anim-delay-8">© 2026 ARNAV MISHRA</p>
         </div>
 
         <div id="about-view" style="display: none;">
-            <div class="nav-header">
-                <button onclick="switchToHome()" class="back-btn"><i class="fas fa-arrow-left"></i> Home Protocol</button>
-            </div>
-
+            <div class="nav-header"><button onclick="switchToHome()" class="back-btn"><i class="fas fa-arrow-left"></i> Home Protocol</button></div>
             <h2 class="section-title">Projects</h2>
             <div class="card project-card">
-                <div class="card-header">
-                    <h3 style="color: #ff4b4b;">Zomato Analysis 📊</h3>
-                </div>
-                <p class="card-desc">
-                    Market positioning and SWOT analysis for hyperlocal delivery based on real-time data.
-                </p>
-                <a href="https://docs.google.com/spreadsheets/d/11k2QyICWavfXFuUGXRBGnRJ7l7zsblQB/edit?usp=drivesdk" target="_blank" class="project-link-btn">
-                    View Sheets Project <i class="fas fa-external-link-alt"></i>
-                </a>
+                <div class="card-header"><h3 style="color: #ff4b4b;">Zomato Analysis 📊</h3></div>
+                <p class="card-desc">Market positioning and SWOT analysis for hyperlocal delivery based on real-time data.</p>
+                <a href="https://docs.google.com/spreadsheets/d/11k2QyICWavfXFuUGXRBGnRJ7l7zsblQB/edit?usp=drivesdk" target="_blank" class="project-link-btn">View Sheets Project <i class="fas fa-external-link-alt"></i></a>
             </div>
-
             <h2 class="section-title">Sonic Fuel (GOAT)</h2>
             <div class="card krsna-card">
-                <div class="krsna-header">
-                    <div class="krsna-icon">$</div>
-                    <div>
-                        <h3>KR$NA 👑</h3>
-                        <p class="subtitle">The inspiration.</p>
-                    </div>
-                </div>
-                <div class="lyrics-box">
-                    "Chahiye mujhe bas ek buss down Rollie<br>
-                    Lambhi si gaadi aur makaan do storey, haan<br>
-                    Chahiye mujhe bas ek buss down Rollie<br>
-                    Lambi si chain aur kuch lakh ki tijori"
-                </div>
+                <div class="krsna-header"><div class="krsna-icon">$</div><div><h3>KR$NA 👑</h3><p class="subtitle">The inspiration.</p></div></div>
+                <div class="lyrics-box">"Chahiye mujhe bas ek buss down Rollie<br>Lambhi si gaadi aur makaan do storey, haan<br>Chahiye mujhe bas ek buss down Rollie<br>Lambi si chain aur kuch lakh ki tijori"</div>
             </div>
-
             <h2 class="section-title">Original Verses</h2>
-            
-            <div class="card verse-card">
-                <div class="verse-header">
-                    <h3 class="verse-title fire">🔥 Jang-kaal</h3>
-                </div>
-                <div id="verse-1-display" class="verse-content"></div>
-            </div>
-
-            <div class="card verse-card">
-                <div class="verse-header">
-                    <h3 class="verse-title cosmic">🌌 Anjaan</h3>
-                </div>
-                <div id="verse-2-display" class="verse-content"></div>
-            </div>
-
+            <div class="card verse-card"><div class="verse-header"><h3 class="verse-title fire">🔥 Jang-kaal</h3></div><div id="verse-1-display" class="verse-content"></div></div>
+            <div class="card verse-card"><div class="verse-header"><h3 class="verse-title cosmic">🌌 Anjaan</h3></div><div id="verse-2-display" class="verse-content"></div></div>
             <div style="height: 80px;"></div>
         </div>
-
     </div>
 
     <script src="script.js"></script>
 
     <script>
-        // Intro Animation Logic
+        // --- INTRO SEQUENCING LOGIC ---
+        // Total intro time: 3s write + 1s fade out = 4s total wait
         setTimeout(() => {
-            document.body.style.overflow = 'auto'; // Re-enable scrolling
-        }, 4000); // 4 seconds (animation duration)
+            // 1. Re-enable scrolling
+            document.body.style.overflow = 'auto'; 
+            
+            // 2. Remove the class that hides everything.
+            // This triggers the main site elements to fade in and start their animations.
+            document.body.classList.remove('is-intro-running');
+        }, 4200); // Wait 4.2 seconds to be safe
 
-        // Theme Toggle Logic
+
+        // --- THEME TOGGLE LOGIC ---
         const body = document.getElementById('main-body');
         const toggleBtn = document.getElementById('themeToggle');
-
         if (localStorage.getItem('theme') === 'light') {
             body.classList.add('light-mode');
             toggleBtn.classList.add('active');
         }
-
         function toggleTheme() {
             body.classList.toggle('light-mode');
             toggleBtn.classList.toggle('active');
-
             if (body.classList.contains('light-mode')) {
                 localStorage.setItem('theme', 'light');
             } else {
