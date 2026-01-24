@@ -46,26 +46,22 @@ let isMusicPlaying = false;
 
 /* --- 1. INTRO SEQUENCE --- */
 window.addEventListener('load', () => {
-    // Wait for the smooth CSS animation (3s) + 1s delay
+    // 3.5 sec wait for CSS Animation to complete
     setTimeout(() => {
         finishIntro();
-    }, 3800); 
+    }, 3500); 
     
     setupNinja();
 });
 
 function finishIntro() {
-    // 1. Hide Intro
+    // 1. Fade Out Intro
     introScreen.style.opacity = '0';
     
     setTimeout(() => {
         introScreen.style.display = 'none';
         
-        // 2. IMPORTANT: Reveal Home View NOW so the glass effect has something to blur
-        // (But keep elements hidden via their entry animation classes initially if you want)
-        // For glass effect to work, the elements behind must exist.
-        
-        // 3. Show Popup immediately after intro is gone
+        // 2. Show Popup
         musicPopup.style.display = 'flex';
         setTimeout(() => { musicPopup.style.opacity = '1'; }, 50);
         
@@ -90,7 +86,7 @@ function setupNinja() {
     });
 }
 
-/* --- 3. POPUP HANDLER (WHATSAPP + OPTIONAL NAME) --- */
+/* --- 3. POPUP HANDLER (RESTORES ANIMATIONS) --- */
 function submitName() {
     const name = visitorInput.value.trim();
     const waBtn = document.getElementById('wa-link');
@@ -111,9 +107,16 @@ function submitName() {
         document.body.classList.remove('wait-for-intro');
         document.body.style.overflow = 'auto';
 
-        // Trigger Home Entry Animations
-        const animatedElements = document.querySelectorAll('#home-view > div, #home-view > button, #home-view > p');
-        animatedElements.forEach(el => { el.classList.add('animate-entry'); });
+        // --- FIXED: ADDING ANIMATION CLASSES HERE ---
+        // Select profile, name, bio, buttons etc. inside home-view
+        // Specifically looking for elements with 'anim-delay-x' or direct children
+        const animatedElements = document.querySelectorAll(
+            '#home-view .profile-container, #home-view .name, #home-view .bio-wrap, #home-view .quote-box, #home-view .btn-grid, #home-view .main-btn, #home-view .chess-msg-container, #home-view .portal-container, #home-view .footer-text'
+        );
+        
+        animatedElements.forEach(el => { 
+            el.classList.add('animate-entry'); 
+        });
 
         setTimeout(() => { typeWriter(bioText, bioElement, 100); }, 500);
 
@@ -237,5 +240,4 @@ function toggleTheme() {
     } else {
         localStorage.setItem('theme', 'dark');
     }
-            }
-    
+        }
