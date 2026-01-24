@@ -68,15 +68,17 @@ body.wait-for-intro .eclipse-toggle {
 }
 
 /* =========================================
-   UPDATED POPUP STYLES (GLASS + NINJA)
+   UPDATED POPUP (PREMIUM GLASS + NINJA)
 ========================================= */
 #music-popup { 
     display: none; /* JS handles this */
     position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-    /* Glass Effect Background */
-    background: rgba(0, 0, 0, 0.4); 
-    backdrop-filter: blur(8px); 
-    -webkit-backdrop-filter: blur(8px);
+    
+    /* 1. Backdrop Blur (Peeche ka sab dhundhla) */
+    background: rgba(0, 0, 0, 0.3); 
+    backdrop-filter: blur(12px); 
+    -webkit-backdrop-filter: blur(12px);
+    
     z-index: 15000;
     align-items: center; justify-content: center; 
     opacity: 0; transition: opacity 1s ease;
@@ -84,85 +86,78 @@ body.wait-for-intro .eclipse-toggle {
 
 .popup-box {
     position: relative;
-    background: rgba(20, 20, 20, 0.85); /* Semi transparent box */
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    
+    /* 2. Frosted Glass Box */
+    background: rgba(30, 30, 30, 0.65); /* Thoda transparent black */
+    border: 1px solid rgba(255, 255, 255, 0.15); /* Patla white border */
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5); /* Deep shadow for float effect */
+    
     padding: 40px 30px;
-    border-radius: 20px;
+    border-radius: 24px;
     text-align: center; color: #fff;
-    box-shadow: 0 0 40px rgba(0, 163, 255, 0.2);
-    width: 80%;
-    max-width: 350px;
+    width: 85%;
+    max-width: 360px;
+}
+
+/* Heading & Text Styling */
+.popup-box h2 {
+    font-size: 1.5rem; margin-bottom: 5px; font-family: 'Poppins', sans-serif;
+}
+.tap-hint {
+    font-size: 0.9rem; color: #aaa; margin-bottom: 25px; font-style: italic;
 }
 
 /* Ninja Styles */
 .ninja-wrapper {
-    position: absolute;
-    top: -60px; /* Hidden behind/above box */
-    left: 0; 
-    width: 100%;
-    height: 60px;
-    overflow: hidden; /* Hide him when he is 'down' */
-    pointer-events: none;
-    display: flex;
-    justify-content: center;
+    position: absolute; top: -65px; left: 0; width: 100%; height: 65px;
+    overflow: hidden; pointer-events: none; display: flex; justify-content: center;
 }
-
 #ninja-emoji {
     font-size: 3.5rem;
-    transform: translateY(100%); /* Start hidden inside the wrapper */
+    transform: translateY(100%); /* Hidden */
     transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     filter: drop-shadow(0 0 10px rgba(0,0,0,0.8));
 }
+#ninja-emoji.peek { transform: translateY(15px); }
 
-#ninja-emoji.peek {
-    transform: translateY(10px); /* Peek out */
-}
-
-/* Popup Input Styles */
-.popup-input-group {
-    margin: 20px 0;
-    position: relative;
-}
+/* Stylish Input */
+.popup-input-group { margin: 20px 0; position: relative; }
 
 .popup-input {
-    width: 100%;
-    padding: 12px;
-    background: rgba(255, 255, 255, 0.1);
-    border: 1px solid #444;
-    color: #fff;
-    border-radius: 8px;
-    font-family: 'Poppins', sans-serif;
-    font-size: 1rem;
-    outline: none;
-    text-align: center;
-    box-sizing: border-box;
-    transition: 0.3s;
+    width: 100%; padding: 14px;
+    background: rgba(0, 0, 0, 0.3); /* Darker input bg */
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    color: #fff; border-radius: 12px;
+    font-family: 'Poppins', sans-serif; font-size: 1rem;
+    outline: none; text-align: center;
+    transition: 0.3s ease;
 }
 
 .popup-input:focus {
     border-color: #00a3ff;
-    background: rgba(255, 255, 255, 0.15);
-    box-shadow: 0 0 15px rgba(0, 163, 255, 0.3);
+    background: rgba(0, 0, 0, 0.6);
+    box-shadow: 0 0 20px rgba(0, 163, 255, 0.2);
 }
 
 .popup-submit-btn {
-    background: linear-gradient(90deg, #00a3ff, #0056b3);
-    color: white;
-    border: none;
-    padding: 12px 30px;
-    border-radius: 50px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: 0.3s;
-    margin-top: 10px;
+    background: linear-gradient(135deg, #00a3ff, #0056b3);
+    color: white; border: none;
+    padding: 14px 40px; border-radius: 50px;
+    font-weight: 600; letter-spacing: 1px;
+    cursor: pointer; transition: 0.3s;
+    margin-top: 10px; width: 100%;
+    box-shadow: 0 4px 15px rgba(0, 163, 255, 0.3);
 }
-.popup-submit-btn:hover { transform: scale(1.05); box-shadow: 0 0 20px rgba(0, 163, 255, 0.4); }
+.popup-submit-btn:hover { 
+    transform: translateY(-2px); 
+    box-shadow: 0 6px 20px rgba(0, 163, 255, 0.5); 
+}
 
-.popup-icon { font-size: 2.5rem; margin-bottom: 10px; }
+.popup-icon { font-size: 2.2rem; margin-bottom: 10px; }
 .vibe-note { 
-    font-size: 0.8rem; color: #ccc; margin-top: 25px; 
-    border: 1px solid #00a3ff; padding: 10px; border-radius: 10px; 
-    background: rgba(0, 163, 255, 0.1); display: inline-block;
+    font-size: 0.75rem; color: #ccc; margin-top: 25px; 
+    border: 1px solid rgba(255, 255, 255, 0.1); padding: 8px 15px; border-radius: 20px; 
+    background: rgba(255, 255, 255, 0.05); display: inline-block;
 }
 
 /* =========================================
@@ -334,3 +329,4 @@ body.wait-for-intro .eclipse-toggle {
 .eclipse-toggle.active .moon { transform: translate(25px, -25px); }
 .concert-btn { color: var(--accent-color) !important; border: 1px solid var(--accent-color) !important; text-decoration: none; padding: 10px 20px; border-radius: 20px; font-size: 0.9rem; font-family: 'Poppins', sans-serif; transition: all 0.3s; display: inline-block; }
 .concert-btn:hover { background: var(--accent-color); color: var(--bg-color) !important; }
+                                
