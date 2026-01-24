@@ -1,6 +1,8 @@
 /* --- CONFIGURATION --- */
 const bioText = "Building ideas from scratch.";
+const introName = "Arnav Mishra";
 
+// --- UPDATED: SHORT LYRICS & LINKS ---
 const verseData = {
     verse1: {
         text: `Tu jang ka ailan kar 
@@ -11,6 +13,7 @@ Moh dya ka tyag kar
 Ab jism se na pyar kar 
 Mastko ke unke Aaj
 Deh se ajaad kar....`,
+        // YAHAN APNI INSTA POST KA LINK DAAL:
         link: "https://www.instagram.com/arnav_9.11/" 
     },
     verse2: {
@@ -23,6 +26,7 @@ Na saksh hun, na aatma
 Na devta ,pramatama 
 Mai bhoot (past) hun , mai kaal sa
 Divr hun mai bhaal sa`,
+        // YAHAN DUSRI POST KA LINK DAAL:
         link: "https://www.instagram.com/arnav_9.11/" 
     }
 };
@@ -36,19 +40,29 @@ const muteBtn = document.getElementById('mute-btn');
 const muteIcon = document.getElementById('mute-icon');
 const bioElement = document.getElementById('bio-text');
 const introScreen = document.getElementById('intro-screen');
-
-// Ninja & Input Elements
-const visitorInput = document.getElementById('visitor-name');
-const ninjaEmoji = document.getElementById('ninja-emoji');
-let typingTimer;
+const signatureEl = document.getElementById('signature-text');
 
 let isMusicPlaying = false;
 
 /* --- 1. INTRO SEQUENCE --- */
 window.addEventListener('load', () => {
-    setTimeout(() => { finishIntro(); }, 3500); 
-    setupNinja();
+    playIntroSequence();
 });
+
+function playIntroSequence() {
+    let i = 0;
+    const speed = 150;
+    function typeWriterIntro() {
+        if (i < introName.length) {
+            signatureEl.innerHTML += introName.charAt(i);
+            i++;
+            setTimeout(typeWriterIntro, speed);
+        } else {
+            setTimeout(() => { finishIntro(); }, 1000);
+        }
+    }
+    typeWriterIntro();
+}
 
 function finishIntro() {
     introScreen.style.opacity = '0';
@@ -59,42 +73,15 @@ function finishIntro() {
     }, 1000);
 }
 
-/* --- 2. NINJA LOGIC --- */
-function setupNinja() {
-    if (!visitorInput) return;
-    
-    visitorInput.addEventListener('input', () => {
-        ninjaEmoji.classList.add('peek');
-        clearTimeout(typingTimer);
-        typingTimer = setTimeout(() => {
-            ninjaEmoji.classList.remove('peek');
-        }, 600);
-    });
-}
-
-/* --- 3. POPUP HANDLER --- */
-function submitName() {
-    const name = visitorInput.value.trim();
-    const waBtn = document.getElementById('wa-link');
-    const myPhone = "916393349498"; 
-
-    if (name) {
-        const text = `Hey Arnav, this is ${name}. I visited your portfolio!`;
-        waBtn.href = `https://wa.me/${myPhone}?text=${encodeURIComponent(text)}`;
-    } else {
-        const text = `Hey Arnav, I visited your portfolio!`;
-        waBtn.href = `https://wa.me/${myPhone}?text=${encodeURIComponent(text)}`;
-    }
-
+/* --- 2. POPUP HANDLER --- */
+function closePopup() {
     musicPopup.style.opacity = '0';
     setTimeout(() => {
         musicPopup.style.display = 'none';
         document.body.classList.remove('wait-for-intro');
         document.body.style.overflow = 'auto';
 
-        const animatedElements = document.querySelectorAll(
-            '#home-view .profile-container, #home-view .name, #home-view .bio-wrap, #home-view .quote-box, #home-view .btn-grid, #home-view .main-btn, #home-view .chess-msg-container, #home-view .portal-container, #home-view .footer-text, #home-view .concert-wrapper'
-        );
+        const animatedElements = document.querySelectorAll('#home-view > div, #home-view > button, #home-view > p');
         animatedElements.forEach(el => { el.classList.add('animate-entry'); });
 
         setTimeout(() => { typeWriter(bioText, bioElement, 100); }, 500);
@@ -154,6 +141,7 @@ function switchToAbout() {
         aboutView.style.transition = 'all 0.6s ease';
         aboutView.style.opacity = '1';
         aboutView.style.transform = 'translateY(0)';
+        
         initVerse('verse1');
         initVerse('verse2');
         window.scrollTo(0, 0);
@@ -173,16 +161,19 @@ function switchToHome() {
     }, 400);
 }
 
+/* --- UPDATED VERSE HANDLING (With Redirect) --- */
 function initVerse(verseKey) {
     const elementId = verseKey === 'verse1' ? 'verse-1-display' : 'verse-2-display';
     const data = verseData[verseKey];
     const container = document.getElementById(elementId);
     
+    // Create Text HTML
     const formattedText = data.text.split('\n').map((line, index) => {
         if (line.trim() === '') return '<br>';
         return `<span class="verse-line" style="animation-delay: ${index * 0.1}s">${line}</span>`;
     }).join('');
     
+    // Create Button HTML with "Puch ke" logic (confirm dialog)
     const buttonHtml = `
         <button class="read-more-btn" onclick="goToInsta('${data.link}')">
             Read Full Lyrics <i class="fab fa-instagram"></i>
@@ -192,27 +183,9 @@ function initVerse(verseKey) {
     container.innerHTML = formattedText + buttonHtml;
 }
 
+// Redirect Function with Confirmation
 function goToInsta(url) {
     if(confirm("Do you want to visit Instagram to read the full version?")) {
         window.open(url, '_blank');
-    }
-}
-
-/* --- THEME TOGGLE --- */
-const body = document.getElementById('main-body');
-const toggleBtn = document.getElementById('themeToggle');
-
-if (localStorage.getItem('theme') === 'light') {
-    body.classList.add('light-mode');
-    toggleBtn.classList.add('active');
-}
-
-function toggleTheme() {
-    body.classList.toggle('light-mode');
-    toggleBtn.classList.toggle('active');
-    if (body.classList.contains('light-mode')) {
-        localStorage.setItem('theme', 'light');
-    } else {
-        localStorage.setItem('theme', 'dark');
     }
 }
