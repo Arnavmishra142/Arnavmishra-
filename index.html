@@ -12,12 +12,373 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Arnav Mishra | Work & Mind</title>
-    <link rel="stylesheet" href="style.css">
+    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Playfair+Display:ital,wght@0,400;1,600&family=Poppins:wght@300;400;600&family=Courier+Prime:wght@400;700&family=Great+Vibes&display=swap" rel="stylesheet">
+
+    <style>
+        /* --- GLOBAL RESET & FONTS --- */
+        body {
+            background-color: #050505;
+            color: #e0e0e0;
+            font-family: 'Poppins', sans-serif;
+            margin: 0; padding: 0;
+            overflow-x: hidden; /* Lock scroll initially */
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 5px; }
+        ::-webkit-scrollbar-track { background: #000; }
+        ::-webkit-scrollbar-thumb { background: #333; border-radius: 10px; }
+
+        /* =========================================
+           ✨ CINEMATIC WRITING INTRO ✨
+        ========================================= */
+        #intro-screen {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-color: #000;
+            z-index: 20000; /* Topmost layer */
+            display: flex; align-items: center; justify-content: center;
+            transition: opacity 1s ease;
+        }
+
+        .signature-container {
+            font-family: 'Great Vibes', cursive;
+            font-size: 4rem;
+            color: #FFD700;
+            position: relative;
+            white-space: nowrap;
+        }
+
+        /* The Cursor (Pen Tip) */
+        .cursor {
+            display: inline-block;
+            width: 3px; height: 50px;
+            background-color: #FFD700;
+            animation: blink 0.7s infinite;
+            vertical-align: bottom;
+            margin-left: 5px;
+        }
+        @keyframes blink { 50% { opacity: 0; } }
+
+        /* Mobile Font Size */
+        @media (max-width: 768px) {
+            .signature-container { font-size: 2.5rem; }
+            .cursor { height: 35px; }
+        }
+
+        /* =========================================
+           🔒 HIDDEN STATE (Before Intro finishes)
+        ========================================= */
+        body.wait-for-intro .main-wrapper,
+        body.wait-for-intro .sound-control,
+        body.wait-for-intro .eclipse-toggle {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        /* =========================================
+           MAIN SITE STYLES
+        ========================================= */
+
+        .main-wrapper {
+            padding: 20px;
+            max-width: 500px;
+            margin: 0 auto;
+            min-height: 100vh;
+            position: relative;
+            z-index: 10;
+            padding-bottom: 50px;
+            transition: opacity 1s ease;
+        }
+
+        /* --- NEW POPUP (GLASS + NINJA) --- */
+        #music-popup { 
+            display: none; /* JS handles this */
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            /* GLASS EFFECT CHANGE */
+            background: rgba(0, 0, 0, 0.4); 
+            backdrop-filter: blur(8px); 
+            -webkit-backdrop-filter: blur(8px);
+            z-index: 15000;
+            align-items: center; justify-content: center; 
+            opacity: 0; transition: opacity 1s ease;
+        }
+
+        .popup-box {
+            position: relative;
+            background: rgba(20, 20, 20, 0.85); /* Semi transparent */
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 40px 30px;
+            border-radius: 20px;
+            text-align: center; color: #fff;
+            box-shadow: 0 0 40px rgba(0, 163, 255, 0.2);
+            width: 80%;
+            max-width: 350px;
+        }
+
+        /* Ninja Styles */
+        .ninja-wrapper {
+            position: absolute;
+            top: -60px; /* Hidden behind/above box */
+            left: 0; 
+            width: 100%;
+            height: 60px;
+            overflow: hidden; /* Hide him when he is 'down' */
+            pointer-events: none;
+            display: flex;
+            justify-content: center;
+        }
+        
+        #ninja-emoji {
+            font-size: 3.5rem;
+            transform: translateY(100%); /* Start hidden inside the wrapper */
+            transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            filter: drop-shadow(0 0 10px rgba(0,0,0,0.8));
+        }
+
+        /* When Ninja Peeks */
+        #ninja-emoji.peek {
+            transform: translateY(10px); /* Peek out */
+        }
+
+        .popup-input-group {
+            margin: 20px 0;
+            position: relative;
+        }
+
+        .popup-input {
+            width: 100%;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid #444;
+            color: #fff;
+            border-radius: 8px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 1rem;
+            outline: none;
+            text-align: center;
+            box-sizing: border-box;
+            transition: 0.3s;
+        }
+
+        .popup-input:focus {
+            border-color: #00a3ff;
+            background: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 0 15px rgba(0, 163, 255, 0.3);
+        }
+
+        .popup-submit-btn {
+            background: linear-gradient(90deg, #00a3ff, #0056b3);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 50px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+            margin-top: 10px;
+        }
+        .popup-submit-btn:hover { transform: scale(1.05); box-shadow: 0 0 20px rgba(0, 163, 255, 0.4); }
+
+        .vibe-note { 
+            font-size: 0.8rem; color: #ccc; margin-top: 25px; 
+            border: 1px solid #00a3ff; padding: 10px; border-radius: 10px; 
+            background: rgba(0, 163, 255, 0.1); display: inline-block;
+        }
+
+        /* --- HOME ENTRY ANIMATIONS --- */
+        .animate-entry {
+            opacity: 0;
+            animation: slideUpFade 0.8s ease-out forwards;
+        }
+        .anim-delay-1 { animation-delay: 0.1s !important; }
+        .anim-delay-2 { animation-delay: 0.2s !important; }
+        .anim-delay-3 { animation-delay: 0.3s !important; }
+        .anim-delay-4 { animation-delay: 0.4s !important; }
+        .anim-delay-5 { animation-delay: 0.5s !important; }
+        .anim-delay-6 { animation-delay: 0.6s !important; }
+        .anim-delay-7 { animation-delay: 0.7s !important; }
+        .anim-delay-8 { animation-delay: 0.8s !important; }
+
+        @keyframes slideUpFade {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* --- PROFILE & NAME --- */
+        .profile-container { position: relative; width: 110px; height: 110px; margin: 50px auto 20px; }
+        .profile-img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 3px solid #1a1a1a; position: relative; z-index: 2; }
+        .profile-glow { 
+            position: absolute; top: -5px; left: -5px; right: -5px; bottom: -5px; 
+            border-radius: 50%; background: linear-gradient(45deg, #00a3ff, #ff0099); 
+            z-index: 1; animation: spin 4s linear infinite; filter: blur(12px);
+        }
+        .name { 
+            text-align: center; font-size: 2.2rem; font-weight: 700; letter-spacing: 2px; 
+            text-transform: uppercase; margin-bottom: 5px; font-family: 'Cinzel', serif;
+            background: linear-gradient(to right, #00a3ff, #fff); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 20px rgba(0,163,255,0.3);
+        }
+
+        /* --- BIO & QUOTE --- */
+        .bio-wrap { height: 25px; display: flex; justify-content: center; margin-bottom: 30px; }
+        .bio { color: #00a3ff; font-size: 1rem; font-family: 'Courier Prime', monospace; border-right: 2px solid #00a3ff; animation: blink-caret 0.7s step-end infinite; }
+        .quote-box { 
+            background: #0f0f0f; border-left: 3px solid #00a3ff; padding: 20px; margin: 25px 0; 
+            color: #ccc; font-style: italic; font-size: 0.95rem; line-height: 1.6; 
+            box-shadow: 0 5px 15px rgba(0,0,0,0.5); border-radius: 0 8px 8px 0;
+        }
+
+        /* --- BUTTONS --- */
+        .btn-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 30px; }
+        .btn { 
+            background: #111; border: 1px solid #333; color: #ccc; padding: 15px; 
+            text-align: center; text-decoration: none; border-radius: 10px; 
+            font-size: 0.9rem; transition: 0.3s; display: flex; align-items: center; justify-content: center; gap: 8px;
+        }
+        .btn:hover { border-color: #00a3ff; background: #0a0a0a; color: #fff; transform: translateY(-3px); }
+
+        .main-btn { 
+            background: linear-gradient(90deg, #00a3ff, #0056b3); 
+            color: #fff; border: none; padding: 20px; width: 100%; 
+            font-weight: bold; margin-top: 30px; cursor: pointer; border-radius: 12px; 
+            font-size: 1.1rem; letter-spacing: 1px; box-shadow: 0 0 25px rgba(0, 163, 255, 0.3); transition: 0.3s;
+        }
+        .main-btn:hover { transform: scale(1.02); box-shadow: 0 0 35px rgba(0, 163, 255, 0.5); }
+
+        /* --- WHATSAPP BUTTON --- */
+        .chess-msg-container { margin-top: 30px; display: flex; justify-content: center; }
+        .chess-btn-styled {
+            display: block; background: #0f0f0f; border-radius: 16px; text-decoration: none; overflow: hidden; width: 100%; max-width: 350px; box-shadow: 0 5px 20px rgba(0,0,0,0.5); transition: transform 0.2s;
+        }
+        .chess-btn-styled:hover { transform: translateY(-3px); }
+        .chess-btn-content { display: flex; align-items: center; padding: 15px 25px; gap: 20px; }
+        .knight-icon-white { font-size: 2.5rem; color: #fff; }
+        .btn-text-group { display: flex; flex-direction: column; }
+        .small-text-gray { font-size: 0.7rem; color: #999; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 3px; }
+        .big-text-white { font-size: 1.4rem; font-weight: 700; color: #fff; display: flex; align-items: center; gap: 10px; }
+        .wave-icon { color: #FFD700; animation: wave 1.5s infinite; }
+        .dashed-border-bottom { height: 6px; width: 100%; opacity: 0.3; background: repeating-linear-gradient(to right, #fff, #fff 10px, transparent 10px, transparent 20px); }
+
+        /* --- 3D LYRICS & VERSES --- */
+        .section-title {
+            color: #fff; margin-top: 40px; font-size: 1.5rem; font-family: 'Cinzel', serif;
+            border-bottom: 1px solid #333; padding-bottom: 10px; margin-bottom: 20px;
+        }
+
+        .card { 
+            background: #111; border: 1px solid #222; border-radius: 16px; padding: 25px; margin-bottom: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+        .verse-card {
+            background: linear-gradient(145deg, #0a0a0a, #121212);
+            border: 1px solid #222;
+        }
+
+        .verse-title { font-size: 1.3rem; margin-top: 0; display: flex; align-items: center; gap: 10px; text-shadow: 0 0 10px rgba(255, 75, 43, 0.4); }
+        .verse-title.fire { color: #ff4b2b; }
+        .verse-title.cosmic { color: #8e44ad; text-shadow: 0 0 10px rgba(142, 68, 173, 0.4); }
+
+        .verse-content {
+            font-family: 'Playfair Display', serif; 
+            color: #eee; font-size: 1.1rem; line-height: 1.9;
+            padding: 10px 0; font-style: italic;
+        }
+
+        .verse-line {
+            display: block; opacity: 0; transform: translateY(15px);
+            animation: textFloatUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.8); margin-bottom: 6px;
+        }
+        .verse-line:hover { color: #fff; text-shadow: 0 0 8px rgba(255,255,255,0.4); transform: scale(1.02); transition: all 0.2s ease; }
+
+        @keyframes textFloatUp { to { opacity: 1; transform: translateY(0); } }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        @keyframes blink-caret { 50% { border-color: transparent; } }
+        @keyframes wave { 0%, 100% { transform: rotate(0deg); } 25% { transform: rotate(15deg); } 75% { transform: rotate(-15deg); } }
+
+        .sound-control { position: fixed; top: 25px; right: 25px; z-index: 10000; }
+        #mute-btn { width: 50px; height: 50px; border-radius: 50%; background: rgba(0,0,0,0.7); border: 2px solid #00a3ff; color: #00a3ff; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(5px); animation: pulseGlow 2s infinite; }
+        @keyframes pulseGlow { 0% { box-shadow: 0 0 10px rgba(0, 163, 255, 0.2); } 50% { box-shadow: 0 0 20px rgba(0, 163, 255, 0.6); } 100% { box-shadow: 0 0 10px rgba(0, 163, 255, 0.2); } }
+        .project-card { border-top: 4px solid #d32f2f; }
+        .project-link-btn { display: inline-block; margin-top: 5px; color: #ff4b4b; text-decoration: none; font-weight: bold; border: 1px solid #ff4b4b; padding: 10px 20px; border-radius: 50px; }
+        .krsna-card { border-top: 4px solid #00a3ff; }
+        .krsna-header { display: flex; align-items: center; gap: 15px; margin-bottom: 15px; }
+        .krsna-icon { width: 50px; height: 50px; border-radius: 50%; background: #222; color: #00a3ff; display: flex; align-items: center; justify-content: center; border: 1px solid #333; }
+        .lyrics-box { color: #bbb; border-left: 3px solid #333; padding-left: 15px; font-style: italic; font-family: 'Courier Prime', monospace; }
+        .back-btn { background: transparent; border: none; color: #888; cursor: pointer; font-size: 1.1rem; margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
+
+        /* Responsive */
+        @media (max-width: 400px) { .name { font-size: 1.8rem; } .btn-grid { grid-template-columns: 1fr; } }
+
+        /* --- GLITCH & PORTAL --- */
+        .portal-container { display: flex; justify-content: center; margin-top: 40px; margin-bottom: 20px; }
+        .glitch-btn {
+            font-family: 'Courier Prime', monospace; font-size: 1.2rem; font-weight: bold;
+            text-decoration: none; color: #ff0000; border: 2px solid #ff0000; padding: 15px 30px;
+            position: relative; background: #000; text-transform: uppercase; letter-spacing: 2px;
+            box-shadow: 0 0 10px #ff0000; transition: 0.2s; overflow: hidden;
+        }
+        .glitch-btn::before, .glitch-btn::after {
+            content: attr(data-text); position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: #000; display: flex; justify-content: center; align-items: center;
+        }
+        .glitch-btn::before { left: 2px; text-shadow: -1px 0 #00ffff; clip-path: inset(0 0 0 0); animation: glitch-anim-1 2s infinite linear alternate-reverse; }
+        .glitch-btn::after { left: -2px; text-shadow: -1px 0 #ff00ff; clip-path: inset(0 0 0 0); animation: glitch-anim-2 3s infinite linear alternate-reverse; }
+        .glitch-btn:hover { background: #ff0000; color: #000; box-shadow: 0 0 40px #ff0000; text-shadow: none; }
+        .glitch-btn:hover::before, .glitch-btn:hover::after { display: none; }
+
+        @keyframes glitch-anim-1 {
+            0% { clip-path: inset(20% 0 80% 0); } 20% { clip-path: inset(60% 0 10% 0); } 40% { clip-path: inset(40% 0 50% 0); } 60% { clip-path: inset(80% 0 5% 0); } 80% { clip-path: inset(10% 0 60% 0); } 100% { clip-path: inset(30% 0 30% 0); }
+        }
+        @keyframes glitch-anim-2 {
+            0% { clip-path: inset(10% 0 60% 0); } 20% { clip-path: inset(30% 0 20% 0); } 40% { clip-path: inset(10% 0 80% 0); } 60% { clip-path: inset(70% 0 10% 0); } 80% { clip-path: inset(50% 0 30% 0); } 100% { clip-path: inset(0 0 0 0); }
+        }
+
+        /* --- READ FULL LYRICS BUTTON --- */
+        .read-more-btn {
+            display: block; width: 100%; margin-top: 15px; padding: 12px;
+            background: transparent; border: 1px solid rgba(255, 255, 255, 0.3);
+            color: #bbb; font-family: 'Poppins', sans-serif; font-size: 0.9rem;
+            border-radius: 8px; cursor: pointer; transition: all 0.3s ease;
+            text-transform: uppercase; letter-spacing: 1px;
+        }
+
+        .read-more-btn:hover {
+            background: rgba(255, 255, 255, 0.1); border-color: #fff; color: #fff;
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
+        }
+        .read-more-btn i { margin-left: 8px; color: #E1306C; }
+
+        /* THEME VARIABLES */
+        :root {
+            --bg-color: #050505; --text-color: #fff; --accent-color: #FFD700;
+            --card-bg: rgba(255, 255, 255, 0.05); --quote-color: #a0a0a0;
+        }
+        body.light-mode {
+            --bg-color: #e0e0e0; --text-color: #111; --accent-color: #b8860b;
+            --card-bg: rgba(0, 0, 0, 0.05); --quote-color: #444;
+        }
+        body { background-color: var(--bg-color) !important; color: var(--text-color) !important; transition: background-color 0.5s ease, color 0.5s ease; }
+        
+        .eclipse-toggle { position: fixed; top: 20px; left: 20px; width: 45px; height: 45px; cursor: pointer; z-index: 10001; }
+        .sun { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: #FFD700; border-radius: 50%; box-shadow: 0 0 15px #FFD700; }
+        .moon { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: #222; border-radius: 50%; box-shadow: inset -2px -2px 5px rgba(255,255,255,0.1); transition: transform 0.6s cubic-bezier(0.68, -0.55, 0.27, 1.55); }
+        .eclipse-toggle.active .moon { transform: translate(25px, -25px); }
+
+        .quote-box { color: var(--quote-color) !important; }
+        .name { color: var(--text-color) !important; }
+        .footer-text { color: var(--quote-color) !important; }
+        
+        .concert-btn {
+            color: var(--accent-color) !important; border: 1px solid var(--accent-color) !important;
+            text-decoration: none; padding: 10px 20px; border-radius: 20px; font-size: 0.9rem; font-family: 'Poppins', sans-serif;
+            transition: all 0.3s; display: inline-block;
+        }
+        .concert-btn:hover { background: var(--accent-color); color: var(--bg-color) !important; }
+    </style>
 </head>
 
 <body id="main-body" class="wait-for-intro">
@@ -25,28 +386,6 @@
     <div id="intro-screen">
         <div class="signature-container">
             <span id="signature-text"></span><span class="cursor"></span>
-        </div>
-    </div>
-
-    <div id="music-popup">
-        <div class="glass-box">
-            <img src="https://cdn-icons-png.flaticon.com/512/4359/4359962.png" id="ninja-img" alt="Ninja">
-            
-            <div class="popup-content">
-                <div class="popup-icon">🕵️‍♂️</div>
-                <h2>Identity Check!</h2>
-                <p class="tap-hint">Halt! Who goes there?</p>
-                
-                <div class="input-wrapper">
-                    <input type="text" id="visitor-name" placeholder="Type your name..." autocomplete="off">
-                    <button onclick="submitName()" class="go-btn"><i class="fas fa-arrow-right"></i></button>
-                </div>
-
-                <div class="vibe-note">
-                    <i class="fas fa-info-circle"></i> 
-                    Don't worry, the Ninja is just curious.
-                </div>
-            </div>
         </div>
     </div>
 
@@ -61,143 +400,16 @@
 
     <div class="sound-control">
         <button onclick="toggleMusic()" id="mute-btn">
-            <div class="icon-container">
-                <i class="fas fa-volume-mute" id="mute-icon"></i>
-            </div>
+            <div class="icon-container"><i class="fas fa-volume-mute" id="mute-icon"></i></div>
         </button>
     </div>
 
-    <div class="main-wrapper">
-        
-        <div id="home-view">
-            <div class="profile-container anim-delay-1">
-                <div class="profile-glow"></div>
-                <img src="https://imarnavin.wordpress.com/wp-content/uploads/2026/01/image_editor_output_image-900633096-17689630363507786449788545237875.jpg" class="profile-img" alt="Arnav Mishra">
-            </div>
-            
-            <div class="name anim-delay-2">Arnav Mishra</div>
-            
-            <div class="bio-wrap anim-delay-3">
-                <div class="bio" id="bio-text"></div>
+    <div id="music-popup">
+        <div class="popup-box">
+            <div class="ninja-wrapper">
+                <div id="ninja-emoji">🥷</div>
             </div>
 
-            <div class="quote-box anim-delay-4">
-                "The secret of change is to focus all of your energy, not on fighting the old, but on building the new."
-            </div>
-
-            <div class="btn-grid anim-delay-5">
-                <a href="https://www.linkedin.com/in/arnav-mishra-1a6934371" class="btn"><i class="fab fa-linkedin"></i> LinkedIn</a>
-                <a href="https://x.com/ArnavMishra142" class="btn"><i class="fab fa-twitter"></i> X / Twitter</a>
-                <a href="https://www.instagram.com/arnav_9.11" class="btn"><i class="fab fa-instagram"></i> Instagram</a>
-                <a href="https://www.chess.com/member/Arnavm142" class="btn"><i class="fas fa-chess-knight"></i> Chess.com</a>
-            </div>
-
-            <button onclick="switchToAbout()" class="main-btn anim-delay-6">ENTER MY WORLD <i class="fas fa-arrow-right"></i></button>
-
-            <div class="chess-msg-container anim-delay-7">
-                <a href="https://wa.me/916393349498?text=Hey%20Arnav,%20I%20visited%20your%20portfolio!" target="_blank" class="chess-btn-styled">
-                    <div class="chess-btn-content">
-                        <i class="fas fa-chess-knight knight-icon-white"></i>
-                        <div class="btn-text-group">
-                            <span class="small-text-gray">MAKE A MOVE</span>
-                            <span class="big-text-white">Say Hello <i class="fas fa-hand-sparkles wave-icon"></i></span>
-                        </div>
-                    </div>
-                    <div class="dashed-border-bottom"></div>
-                </a>
-            </div>
-
-            <div class="portal-container anim-delay-8">
-                <a href="stranger.html" class="glitch-btn" data-text="ENTER THE UPSIDE DOWN">
-                    ENTER THE UPSIDE DOWN
-                </a>
-            </div>
-
-            <div style="text-align: center; margin-top: 15px; margin-bottom: 20px;">
-                <a href="concert.html" class="concert-btn">
-                    🎸 Enter Live Concert
-                </a>
-            </div>
-            
-            <p class="footer-text anim-delay-8">© 2026 ARNAV MISHRA</p>
-        </div>
-
-        <div id="about-view" style="display: none;">
-            <div class="nav-header">
-                <button onclick="switchToHome()" class="back-btn"><i class="fas fa-arrow-left"></i> Home Protocol</button>
-            </div>
-
-            <h2 class="section-title">Projects</h2>
-            <div class="card project-card">
-                <div class="card-header">
-                    <h3 style="color: #ff4b4b;">Zomato Analysis 📊</h3>
-                </div>
-                <p class="card-desc">
-                    Market positioning and SWOT analysis for hyperlocal delivery based on real-time data.
-                </p>
-                <a href="https://docs.google.com/spreadsheets/d/11k2QyICWavfXFuUGXRBGnRJ7l7zsblQB/edit?usp=drivesdk" target="_blank" class="project-link-btn">
-                    View Sheets Project <i class="fas fa-external-link-alt"></i>
-                </a>
-            </div>
-
-            <h2 class="section-title">Sonic Fuel (GOAT)</h2>
-            <div class="card krsna-card">
-                <div class="krsna-header">
-                    <div class="krsna-icon">$</div>
-                    <div>
-                        <h3>KR$NA 👑</h3>
-                        <p class="subtitle">The inspiration.</p>
-                    </div>
-                </div>
-                <div class="lyrics-box">
-                    "Chahiye mujhe bas ek buss down Rollie<br>
-                    Lambhi si gaadi aur makaan do storey, haan<br>
-                    Chahiye mujhe bas ek buss down Rollie<br>
-                    Lambi si chain aur kuch lakh ki tijori"
-                </div>
-            </div>
-
-            <h2 class="section-title">Original Verses</h2>
-            
-            <div class="card verse-card">
-                <div class="verse-header">
-                    <h3 class="verse-title fire">🔥 Jang-kaal</h3>
-                </div>
-                <div id="verse-1-display" class="verse-content"></div>
-            </div>
-
-            <div class="card verse-card">
-                <div class="verse-header">
-                    <h3 class="verse-title cosmic">🌌 Anjaan</h3>
-                </div>
-                <div id="verse-2-display" class="verse-content"></div>
-            </div>
-
-            <div style="height: 80px;"></div>
-        </div>
-
-    </div>
-
-    <script src="script.js"></script>
-
-    <script>
-        const body = document.getElementById('main-body');
-        const toggleBtn = document.getElementById('themeToggle');
-        if (localStorage.getItem('theme') === 'light') {
-            body.classList.add('light-mode');
-            toggleBtn.classList.add('active');
-        }
-        function toggleTheme() {
-            body.classList.toggle('light-mode');
-            toggleBtn.classList.toggle('active');
-            if (body.classList.contains('light-mode')) {
-                localStorage.setItem('theme', 'light');
-            } else {
-                localStorage.setItem('theme', 'dark');
-            }
-        }
-    </script>
-
-</body>
-                    </html>
-                    
+            <div class="popup-icon">🕵️‍♂️</div>
+            <h2>Kon aaya hai mere ilake mein?</h2>
+            <p class="tap-hint" style="font-size: 0.9rem; color: #ccc;">
