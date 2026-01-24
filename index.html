@@ -41,39 +41,61 @@
             background-color: var(--bg-color) !important;
             color: var(--text-color) !important;
             transition: background-color 0.5s ease, color 0.5s ease;
-            /* Disable scroll during intro */
-            overflow: hidden; 
+            overflow: hidden; /* Scroll locked during intro */
         }
 
-        /* --- CINEMATIC INTRO OVERLAY --- */
+        /* --- ✨ WRITING ANIMATION INTRO ✨ --- */
         #intro-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background-color: #000; /* Always starts black */
-            z-index: 100000; /* Top of everything */
+            background-color: #000;
+            z-index: 100000;
             display: flex; align-items: center; justify-content: center;
-            animation: fadeOutOverlay 1s ease-in-out 3.5s forwards;
+            animation: fadeOutOverlay 1s ease-in-out 4s forwards; /* Screen fades out after 4s */
+        }
+
+        .signature-container {
+            position: relative;
+            display: inline-block;
         }
 
         .signature-text {
-            font-family: 'Great Vibes', cursive; /* The Cursive Font */
+            font-family: 'Great Vibes', cursive;
             font-size: 4rem;
             color: #FFD700;
-            opacity: 0;
-            filter: blur(10px);
-            transform: scale(0.9);
-            animation: signEffect 2.5s ease-out 0.5s forwards;
+            white-space: nowrap;      /* Keep text on one line */
+            overflow: hidden;         /* Hide text until revealed */
+            width: 0;                 /* Start with 0 width */
+            border-right: 3px solid #FFD700; /* The "Pen Tip" Cursor */
+            
+            /* The Magic Animation: Width goes 0 -> 100% */
+            animation: 
+                writeName 2.5s steps(60, end) forwards, 
+                blinkCursor 0.5s step-end infinite;
         }
 
-        @keyframes signEffect {
-            0% { opacity: 0; filter: blur(10px); transform: scale(0.9); }
-            50% { opacity: 1; filter: blur(0px); transform: scale(1.05); }
-            100% { opacity: 1; filter: blur(0px); transform: scale(1); }
+        /* Animation to reveal text like writing */
+        @keyframes writeName {
+            from { width: 0; }
+            to { width: 100%; }
         }
 
+        /* Blinking Cursor effect */
+        @keyframes blinkCursor {
+            from, to { border-color: transparent; }
+            50% { border-color: #FFD700; }
+        }
+
+        /* Fade out the black screen */
         @keyframes fadeOutOverlay {
             0% { opacity: 1; pointer-events: auto; }
             100% { opacity: 0; pointer-events: none; display: none; }
         }
+
+        /* Mobile Adjustments for signature size */
+        @media (max-width: 768px) {
+            .signature-text { font-size: 2.5rem; }
+        }
+
 
         /* --- ECLIPSE WIDGET --- */
         .eclipse-toggle {
@@ -91,7 +113,7 @@
         }
         .eclipse-toggle.active .moon { transform: translate(25px, -25px); }
 
-        /* --- ELEMENT UPDATES --- */
+        /* --- OTHER ELEMENTS --- */
         .quote-box { color: var(--quote-color) !important; }
         .name { color: var(--text-color) !important; }
         .footer-text { color: var(--quote-color) !important; }
@@ -111,7 +133,9 @@
 <body id="main-body">
 
     <div id="intro-overlay">
-        <div class="signature-text">Arnav Mishra</div>
+        <div class="signature-container">
+            <div class="signature-text">Arnav Mishra</div>
+        </div>
     </div>
 
     <div class="eclipse-toggle" id="themeToggle" onclick="toggleTheme()">
@@ -259,9 +283,8 @@
     <script>
         // Intro Animation Logic
         setTimeout(() => {
-            // Re-enable scrolling after intro
-            document.body.style.overflow = 'auto'; 
-        }, 3500);
+            document.body.style.overflow = 'auto'; // Re-enable scrolling
+        }, 4000); // 4 seconds (animation duration)
 
         // Theme Toggle Logic
         const body = document.getElementById('main-body');
