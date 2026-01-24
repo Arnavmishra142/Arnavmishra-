@@ -4,13 +4,63 @@ body {
     color: #e0e0e0;
     font-family: 'Poppins', sans-serif;
     margin: 0; padding: 0;
-    overflow-x: hidden;
+    overflow-x: hidden; /* Lock scroll initially */
 }
 
 /* Scrollbar */
 ::-webkit-scrollbar { width: 5px; }
 ::-webkit-scrollbar-track { background: #000; }
 ::-webkit-scrollbar-thumb { background: #333; border-radius: 10px; }
+
+/* =========================================
+   ✨ CINEMATIC WRITING INTRO ✨
+========================================= */
+#intro-screen {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background-color: #000;
+    z-index: 20000; /* Topmost layer */
+    display: flex; align-items: center; justify-content: center;
+    transition: opacity 1s ease; /* Smooth fade out */
+}
+
+.signature-container {
+    font-family: 'Great Vibes', cursive; /* Make sure to import this in HTML */
+    font-size: 4rem;
+    color: #FFD700;
+    position: relative;
+    white-space: nowrap;
+}
+
+/* The Cursor (Pen Tip) */
+.cursor {
+    display: inline-block;
+    width: 3px; height: 50px;
+    background-color: #FFD700;
+    animation: blink 0.7s infinite;
+    vertical-align: bottom;
+    margin-left: 5px;
+}
+@keyframes blink { 50% { opacity: 0; } }
+
+/* Mobile Font Size */
+@media (max-width: 768px) {
+    .signature-container { font-size: 2.5rem; }
+    .cursor { height: 35px; }
+}
+
+/* =========================================
+   🔒 HIDDEN STATE (Before Intro finishes)
+========================================= */
+body.wait-for-intro .main-wrapper,
+body.wait-for-intro .sound-control,
+body.wait-for-intro .eclipse-toggle {
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* =========================================
+   MAIN SITE STYLES
+========================================= */
 
 .main-wrapper {
     padding: 20px;
@@ -20,20 +70,18 @@ body {
     position: relative;
     z-index: 10;
     padding-bottom: 50px;
+    transition: opacity 1s ease; /* Smooth reveal */
 }
 
 /* --- POPUP (Blur & Delay) --- */
 #music-popup { 
-    display: none; /* Initially hidden, JS will show it */
+    display: none; /* JS handles this */
     position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-    /* Semi-transparent background */
-    background: rgba(0, 0, 0, 0.6); 
-    z-index: 9999; 
+    background: rgba(0, 0, 0, 0.8); /* Darker bg */
+    z-index: 15000; /* Below Intro, Above Site */
     align-items: center; justify-content: center; 
-    /* The Blur Effect */
-    backdrop-filter: blur(8px); 
-    opacity: 0; /* For fade-in effect */
-    transition: opacity 1s ease;
+    backdrop-filter: blur(10px); 
+    opacity: 0; transition: opacity 1s ease;
 }
 .popup-box {
     background: rgba(20, 20, 20, 0.95);
@@ -54,14 +102,12 @@ body {
     background: rgba(0, 163, 255, 0.1); display: inline-block;
 }
 
-/* --- HOME ENTRY ANIMATIONS --- */
-/* Elements start hidden and slide up */
-#home-view > div, #home-view > button, #home-view > p {
+/* --- HOME ENTRY ANIMATIONS (Triggered via JS) --- */
+.animate-entry {
     opacity: 0;
     animation: slideUpFade 0.8s ease-out forwards;
 }
-
-/* Staggered Delays for smooth entry */
+/* Delays are applied via classes in HTML */
 .anim-delay-1 { animation-delay: 0.1s !important; }
 .anim-delay-2 { animation-delay: 0.2s !important; }
 .anim-delay-3 { animation-delay: 0.3s !important; }
@@ -141,7 +187,6 @@ body {
     background: #111; border: 1px solid #222; border-radius: 16px; padding: 25px; margin-bottom: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
 }
 .verse-card {
-    /* Subtle gradient for depth */
     background: linear-gradient(145deg, #0a0a0a, #121212);
     border: 1px solid #222;
 }
@@ -150,42 +195,24 @@ body {
 .verse-title.fire { color: #ff4b2b; }
 .verse-title.cosmic { color: #8e44ad; text-shadow: 0 0 10px rgba(142, 68, 173, 0.4); }
 
-/* The 3D Text Effect */
 .verse-content {
-    font-family: 'Playfair Display', serif; /* Elegant font */
-    color: #eee; 
-    font-size: 1.1rem; 
-    line-height: 1.9;
-    padding: 10px 0;
-    font-style: italic;
+    font-family: 'Playfair Display', serif; 
+    color: #eee; font-size: 1.1rem; line-height: 1.9;
+    padding: 10px 0; font-style: italic;
 }
 
 .verse-line {
-    display: block; 
-    opacity: 0; 
-    transform: translateY(15px); /* Start slightly down */
+    display: block; opacity: 0; transform: translateY(15px);
     animation: textFloatUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
-    
-    /* 3D Shadow Effect */
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
-    margin-bottom: 6px;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.8); margin-bottom: 6px;
 }
+.verse-line:hover { color: #fff; text-shadow: 0 0 8px rgba(255,255,255,0.4); transform: scale(1.02); transition: all 0.2s ease; }
 
-/* Hover effect on lyrics */
-.verse-line:hover {
-    color: #fff;
-    text-shadow: 0 0 8px rgba(255,255,255,0.4);
-    transform: scale(1.02);
-    transition: all 0.2s ease;
-}
-
-/* Animation Keyframes */
 @keyframes textFloatUp { to { opacity: 1; transform: translateY(0); } }
 @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 @keyframes blink-caret { 50% { border-color: transparent; } }
 @keyframes wave { 0%, 100% { transform: rotate(0deg); } 25% { transform: rotate(15deg); } 75% { transform: rotate(-15deg); } }
 
-/* Other components (Sound, KR$NA, etc) remain same */
 .sound-control { position: fixed; top: 25px; right: 25px; z-index: 10000; }
 #mute-btn { width: 50px; height: 50px; border-radius: 50%; background: rgba(0,0,0,0.7); border: 2px solid #00a3ff; color: #00a3ff; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(5px); animation: pulseGlow 2s infinite; }
 @keyframes pulseGlow { 0% { box-shadow: 0 0 10px rgba(0, 163, 255, 0.2); } 50% { box-shadow: 0 0 20px rgba(0, 163, 255, 0.6); } 100% { box-shadow: 0 0 10px rgba(0, 163, 255, 0.2); } }
@@ -199,95 +226,28 @@ body {
 
 /* Responsive */
 @media (max-width: 400px) { .name { font-size: 1.8rem; } .btn-grid { grid-template-columns: 1fr; } }
-/* Add to the end of style.css */
-.stranger-portal-btn {
-    display: inline-block;
-    background: #000;
-    color: #ff0000; /* Red for danger */
-    text-decoration: none;
-    font-family: 'Courier Prime', monospace;
-    font-weight: bold;
-    font-size: 1.1rem;
-    padding: 15px 30px;
-    border: 2px solid #ff0000;
-    border-radius: 5px;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    position: relative;
-    overflow: hidden;
-    transition: 0.3s;
-    animation: redPulse 2s infinite;
-}
-.stranger-portal-btn:hover {
-    background: #ff0000;
-    color: #000;
-    box-shadow: 0 0 30px rgba(255, 0, 0, 0.6);
-}
-@keyframes redPulse {
-    0% { box-shadow: 0 0 10px rgba(255, 0, 0, 0.3); }
-    50% { box-shadow: 0 0 25px rgba(255, 0, 0, 0.7); }
-    100% { box-shadow: 0 0 10px rgba(255, 0, 0, 0.3); }
-}
-/* --- NEW GLITCH BUTTON STYLES --- */
-.portal-container {
-    display: flex; justify-content: center; margin-top: 40px; margin-bottom: 20px;
-}
 
+/* --- GLITCH & PORTAL --- */
+.portal-container { display: flex; justify-content: center; margin-top: 40px; margin-bottom: 20px; }
 .glitch-btn {
-    font-family: 'Courier Prime', monospace;
-    font-size: 1.2rem;
-    font-weight: bold;
-    text-decoration: none;
-    color: #ff0000;
-    border: 2px solid #ff0000;
-    padding: 15px 30px;
-    position: relative;
-    background: #000;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    box-shadow: 0 0 10px #ff0000;
-    transition: 0.2s;
-    overflow: hidden;
+    font-family: 'Courier Prime', monospace; font-size: 1.2rem; font-weight: bold;
+    text-decoration: none; color: #ff0000; border: 2px solid #ff0000; padding: 15px 30px;
+    position: relative; background: #000; text-transform: uppercase; letter-spacing: 2px;
+    box-shadow: 0 0 10px #ff0000; transition: 0.2s; overflow: hidden;
 }
-
-/* Glitch Layers */
 .glitch-btn::before, .glitch-btn::after {
-    content: attr(data-text);
-    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-    background: #000;
-    display: flex; justify-content: center; align-items: center;
+    content: attr(data-text); position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    background: #000; display: flex; justify-content: center; align-items: center;
 }
-
-.glitch-btn::before {
-    left: 2px; text-shadow: -1px 0 #00ffff; clip-path: inset(0 0 0 0);
-    animation: glitch-anim-1 2s infinite linear alternate-reverse;
-}
-.glitch-btn::after {
-    left: -2px; text-shadow: -1px 0 #ff00ff; clip-path: inset(0 0 0 0);
-    animation: glitch-anim-2 3s infinite linear alternate-reverse;
-}
-
-.glitch-btn:hover {
-    background: #ff0000; color: #000;
-    box-shadow: 0 0 40px #ff0000;
-    text-shadow: none;
-}
+.glitch-btn::before { left: 2px; text-shadow: -1px 0 #00ffff; clip-path: inset(0 0 0 0); animation: glitch-anim-1 2s infinite linear alternate-reverse; }
+.glitch-btn::after { left: -2px; text-shadow: -1px 0 #ff00ff; clip-path: inset(0 0 0 0); animation: glitch-anim-2 3s infinite linear alternate-reverse; }
+.glitch-btn:hover { background: #ff0000; color: #000; box-shadow: 0 0 40px #ff0000; text-shadow: none; }
 .glitch-btn:hover::before, .glitch-btn:hover::after { display: none; }
 
 @keyframes glitch-anim-1 {
-    0% { clip-path: inset(20% 0 80% 0); }
-    20% { clip-path: inset(60% 0 10% 0); }
-    40% { clip-path: inset(40% 0 50% 0); }
-    60% { clip-path: inset(80% 0 5% 0); }
-    80% { clip-path: inset(10% 0 60% 0); }
-    100% { clip-path: inset(30% 0 30% 0); }
+    0% { clip-path: inset(20% 0 80% 0); } 20% { clip-path: inset(60% 0 10% 0); } 40% { clip-path: inset(40% 0 50% 0); } 60% { clip-path: inset(80% 0 5% 0); } 80% { clip-path: inset(10% 0 60% 0); } 100% { clip-path: inset(30% 0 30% 0); }
 }
 @keyframes glitch-anim-2 {
-    0% { clip-path: inset(10% 0 60% 0); }
-    20% { clip-path: inset(30% 0 20% 0); }
-    40% { clip-path: inset(10% 0 80% 0); }
-    60% { clip-path: inset(70% 0 10% 0); }
-    80% { clip-path: inset(50% 0 30% 0); }
-    100% { clip-path: inset(0 0 0 0); }
-}
-
+    0% { clip-path: inset(10% 0 60% 0); } 20% { clip-path: inset(30% 0 20% 0); } 40% { clip-path: inset(10% 0 80% 0); } 60% { clip-path: inset(70% 0 10% 0); } 80% { clip-path: inset(50% 0 30% 0); } 100% { clip-path: inset(0 0 0 0); }
+                                                                                                      }
+    
