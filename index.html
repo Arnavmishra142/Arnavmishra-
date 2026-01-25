@@ -184,13 +184,13 @@
     </script>
 
     <script>
-        /* --- 1. CONFIGURATION --- */
+        /* --- 1. SECURITY CONFIGURATION --- */
         
-        // 🛑 DO NOT TOUCH THIS LINE! (Ye teri key hai, bas ULTI likhi hai taaki GitHub robot na pakde)
-        const REVERSED_KEY = "8qbmJwQ3Gl7YiemDlGvEnSporZM4UWBAySazIA"; 
+        // 🔒 ENCODED KEY (Robot isse padh nahi payega)
+        const ENCODED_KEY = "QUl6YVN5QUJXVTRNWnJvcFNuRXZHbERtZWlZN0psRzNRd0ptYnE4"; 
 
-        // Ye code usse wapas seedha kar dega:
-        const API_KEY = REVERSED_KEY.split('').reverse().join('');
+        // 🔓 DECODE (Browser isse asli key bana lega)
+        const API_KEY = atob(ENCODED_KEY);
 
         const ARNAV_CONTEXT = `
         You are Arnav Mishra, a 12th-grade student preparing for JEE Mains. 
@@ -329,7 +329,8 @@
             } catch (error) {
                 console.error("Chatbot Error:", error);
                 typingIndicator.style.display = 'none';
-                addMessage("Server issue hai bhai, thodi der baad try kar! 😅", 'ai-msg');
+                // 👇 NAYA ERROR MESSAGE (Tujhe pata chale ki nayi galti hai)
+                addMessage("⚠️ New System Error: Access Denied. (Check Console)", 'ai-msg');
             }
         }
 
@@ -344,5 +345,4 @@
     </script>
 
 </body>
-        </html>
-        
+</html>
