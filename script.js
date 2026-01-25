@@ -1,7 +1,6 @@
 /* ==========================================================================
+/* ==========================================================================
    🟢 ARNAV'S SAFE ZONE: EDIT HERE ONLY
-   (Bhai, Future me kuch bhi add karna ho, bas yahan likhna)
-   Format: { type: "video/book", title: "...", desc: "...", link: "..." },
 ========================================================================== */
 
 const arnavPicks = [
@@ -9,27 +8,28 @@ const arnavPicks = [
         type: "video",
         title: "Must Watch 🔥",
         desc: "Ye video dimaag khol degi. Coding ka sach.",
-        link: "5MgBikgcWnY" // Sirf YouTube ID (v= ke baad wala hissa)
+        link: "5MgBikgcWnY" 
     },
     {
         type: "book",
         title: "Atomic Habits",
         desc: "Systems > Goals. Life changing book.",
-        link: "https://amzn.eu/d/example" // Book ka poora link
+        link: "https://amzn.eu/d/example" 
     },
     {
         type: "video",
         title: "Future of AI",
         desc: "AI humare sath kya karega?",
-        link: "tgbNymZ7vqY" // Example ID
-    }
-
+        link: "tgbNymZ7vqY" 
+    }, // <--- YE DEKH, YAHAN COMMA LAGANA HAI
     {
         type: "video",
         title: "Yahan Title Likh",
         desc: "Yahan choti si description likh.",
-        link: "Sirf_Video_ID_Yahan"  // Jaise: 5MgBikgcWnY
-}
+        link: "Sirf_Video_ID_Yahan" 
+    }
+];
+
     // Naya add karne ke liye upar wale brackets ke baad comma (,) lagana mat bhoolna!
 ];
 
