@@ -34,7 +34,7 @@ const arnavPicks = [
         desc: "nothing.",
         link: "fuck" 
 },
-{
+
     // Last wale ke baad comma na bhi lagaye to chalega
 ];
 
