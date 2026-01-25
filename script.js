@@ -55,7 +55,6 @@ let isMusicPlaying = false;
 function toggleMenu() {
     var sidebar = document.getElementById("sidebar");
     var overlay = document.getElementById("overlay");
-    
     if (sidebar.style.width === "250px") {
         sidebar.style.width = "0";
         overlay.style.display = "none";
@@ -93,6 +92,12 @@ function finishIntro() {
         introScreen.style.display = 'none';
         musicPopup.style.display = 'flex';
         setTimeout(() => { musicPopup.style.opacity = '1'; }, 50);
+        // Show Hint after intro
+        const hint = document.getElementById('themeHint');
+        if(hint) {
+            hint.style.opacity = '1';
+            setTimeout(() => { hint.style.opacity = '0'; }, 5000); // Auto hide after 5s
+        }
     }, 1000);
 }
 
@@ -105,12 +110,10 @@ function closePopup() {
         musicPopup.style.display = 'none';
         document.body.classList.remove('wait-for-intro');
         document.body.style.overflow = 'auto';
-
         const animatedElements = document.querySelectorAll('#home-view > div, #home-view > button, #home-view > p');
         animatedElements.forEach(el => { el.classList.add('animate-entry'); });
-
         setTimeout(() => { typeWriter(bioText, bioElement, 100); }, 500);
-
+        
         bgMusic.volume = 0.5;
         bgMusic.play().then(() => {
             muteIcon.className = "fas fa-volume-up";
@@ -118,16 +121,13 @@ function closePopup() {
             muteBtn.style.color = "#00ff88";
             isMusicPlaying = true;
         }).catch(e => { console.log("Autoplay blocked"); });
-
     }, 500);
 }
 
 function typeWriter(text, element, speed) {
     if(typingInterval) clearInterval(typingInterval);
-    
     element.innerHTML = "";
     let i = 0;
-    
     typingInterval = setInterval(() => {
         if (i < text.length) {
             element.innerHTML += text.charAt(i);
@@ -160,19 +160,15 @@ function toggleMusic() {
 function transitionView(hideView, showView, callback) {
     hideView.style.opacity = '0';
     hideView.style.transform = 'translateY(20px)';
-    
     setTimeout(() => {
         hideView.style.display = 'none';
         showView.style.display = 'block';
         showView.style.opacity = '0';
         showView.style.transform = 'translateY(20px)';
-        
         void showView.offsetWidth; 
-        
         showView.style.transition = 'all 0.6s ease';
         showView.style.opacity = '1';
         showView.style.transform = 'translateY(0)';
-        
         if (callback) callback();
         window.scrollTo(0, 0);
     }, 400);
@@ -185,12 +181,10 @@ function switchToAbout() {
         initVerse('verse2');
     });
 }
-
 function switchToRecs() {
     aboutView.style.display = 'none'; 
     transitionView(homeView, recsView);
 }
-
 function switchToHome() {
     if (aboutView.style.display === 'block') {
         transitionView(aboutView, homeView);
@@ -234,8 +228,13 @@ function goToInsta(url) {
 }
 
 /* =========================================
-   8. DRAGGABLE THEME TOGGLE
+   8. DRAGGABLE THEME TOGGLE & HINT
 ========================================= */
+// Close Hint Logic
+function closeHint() {
+    document.getElementById('themeHint').style.display = 'none';
+}
+
 if (localStorage.getItem('theme') === 'light') {
     body.classList.add('light-mode');
     themeToggleBtn.classList.add('active');
@@ -244,7 +243,6 @@ if (localStorage.getItem('theme') === 'light') {
 function toggleTheme() {
     body.classList.toggle('light-mode');
     themeToggleBtn.classList.toggle('active');
-    
     if (body.classList.contains('light-mode')) {
         localStorage.setItem('theme', 'light');
     } else {
@@ -252,8 +250,8 @@ function toggleTheme() {
     }
 }
 
-// Drag Logic
-const dragItem = document.querySelector("#themeToggle");
+// DRAG LOGIC
+const dragItem = document.querySelector("#themeWrapper"); // Move wrapper instead of just button
 let active = false;
 let currentX, currentY, initialX, initialY;
 let xOffset = 0, yOffset = 0;
@@ -278,7 +276,7 @@ function dragStart(e) {
         startX = e.clientX;
         startY = e.clientY;
     }
-    if (e.target.closest('#themeToggle')) { active = true; }
+    if (e.target.closest('#themeWrapper')) { active = true; }
 }
 
 function dragEnd(e) {
@@ -286,7 +284,6 @@ function dragEnd(e) {
     initialX = currentX;
     initialY = currentY;
     active = false;
-
     let endX, endY;
     if (e.type === "touchend") {
         endX = e.changedTouches[0].clientX;
@@ -296,7 +293,6 @@ function dragEnd(e) {
         endY = e.clientY;
     }
     let dist = Math.sqrt(Math.pow(endX - startX, 2) + Math.pow(endY - startY, 2));
-    
     if (dist < 5) { toggleTheme(); }
 }
 
