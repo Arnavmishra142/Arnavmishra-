@@ -1,8 +1,9 @@
-/* --- CONFIGURATION --- */
+/* =========================================
+   1. CONFIGURATION & DATA
+========================================= */
 const bioText = "Building ideas from scratch.";
 const introName = "Arnav Mishra";
 
-/* --- VERSE DATA --- */
 const verseData = {
     verse1: {
         text: `Tu jang ka ailan kar 
@@ -29,7 +30,10 @@ Divr hun mai bhaal sa`,
     }
 };
 
-/* --- DOM ELEMENTS --- */
+/* =========================================
+   2. DOM ELEMENTS
+========================================= */
+const body = document.getElementById('main-body');
 const homeView = document.getElementById('home-view');
 const aboutView = document.getElementById('about-view');
 const recsView = document.getElementById('recs-view');
@@ -40,10 +44,33 @@ const muteIcon = document.getElementById('mute-icon');
 const bioElement = document.getElementById('bio-text');
 const introScreen = document.getElementById('intro-screen');
 const signatureEl = document.getElementById('signature-text');
+const themeToggleBtn = document.getElementById('themeToggle');
 
 let isMusicPlaying = false;
 
-/* --- MENU LOGIC --- */
+/* =========================================
+   3. THEME TOGGLE LOGIC
+========================================= */
+// Check saved theme on load
+if (localStorage.getItem('theme') === 'light') {
+    body.classList.add('light-mode');
+    themeToggleBtn.classList.add('active');
+}
+
+function toggleTheme() {
+    body.classList.toggle('light-mode');
+    themeToggleBtn.classList.toggle('active');
+    
+    if (body.classList.contains('light-mode')) {
+        localStorage.setItem('theme', 'light');
+    } else {
+        localStorage.setItem('theme', 'dark');
+    }
+}
+
+/* =========================================
+   4. MENU LOGIC
+========================================= */
 function toggleMenu() {
     var sidebar = document.getElementById("sidebar");
     var overlay = document.getElementById("overlay");
@@ -57,7 +84,9 @@ function toggleMenu() {
     }
 }
 
-/* --- INTRO SEQUENCE --- */
+/* =========================================
+   5. INTRO SEQUENCE
+========================================= */
 window.addEventListener('load', () => {
     playIntroSequence();
 });
@@ -86,7 +115,9 @@ function finishIntro() {
     }, 1000);
 }
 
-/* --- POPUP HANDLER --- */
+/* =========================================
+   6. POPUP & MUSIC HANDLER
+========================================= */
 function closePopup() {
     musicPopup.style.opacity = '0';
     setTimeout(() => {
@@ -123,7 +154,6 @@ function typeWriter(text, element, speed) {
     type();
 }
 
-/* --- MUSIC CONTROL --- */
 function toggleMusic() {
     if (bgMusic.paused) {
         bgMusic.play();
@@ -140,7 +170,9 @@ function toggleMusic() {
     }
 }
 
-/* --- VIEW SWITCHING --- */
+/* =========================================
+   7. VIEW SWITCHING (NAVIGATION)
+========================================= */
 function transitionView(hideView, showView, callback) {
     hideView.style.opacity = '0';
     hideView.style.transform = 'translateY(20px)';
@@ -151,7 +183,7 @@ function transitionView(hideView, showView, callback) {
         showView.style.opacity = '0';
         showView.style.transform = 'translateY(20px)';
         
-        void showView.offsetWidth; 
+        void showView.offsetWidth; // Trigger reflow
         
         showView.style.transition = 'all 0.6s ease';
         showView.style.opacity = '1';
@@ -189,12 +221,16 @@ function switchToHome() {
     }
 }
 
-/* --- VERSE HANDLING --- */
+/* =========================================
+   8. VERSE HANDLING
+========================================= */
 function initVerse(verseKey) {
     const elementId = verseKey === 'verse1' ? 'verse-1-display' : 'verse-2-display';
     const data = verseData[verseKey];
     const container = document.getElementById(elementId);
     
+    if(!container) return;
+
     const formattedText = data.text.split('\n').map((line, index) => {
         if (line.trim() === '') return '<br>';
         return `<span class="verse-line" style="animation-delay: ${index * 0.1}s">${line}</span>`;
@@ -216,7 +252,7 @@ function goToInsta(url) {
 }
 
 /* =========================================
-   DRAGGABLE THEME TOGGLE LOGIC
+   9. DRAGGABLE THEME TOGGLE (THE FIX)
 ========================================= */
 const dragItem = document.querySelector("#themeToggle");
 let active = false;
@@ -226,15 +262,16 @@ let initialX;
 let initialY;
 let xOffset = 0;
 let yOffset = 0;
+let hasMoved = false; // Checks if actually dragged
 
-// Mouse Events
+// Listeners
 dragItem.addEventListener("mousedown", dragStart, false);
-document.addEventListener("mouseup", dragEnd, false);
-document.addEventListener("mousemove", drag, false);
-
-// Touch Events
 dragItem.addEventListener("touchstart", dragStart, {passive: false});
+
+document.addEventListener("mouseup", dragEnd, false);
 document.addEventListener("touchend", dragEnd, {passive: false});
+
+document.addEventListener("mousemove", drag, false);
 document.addEventListener("touchmove", drag, {passive: false});
 
 function dragStart(e) {
@@ -248,6 +285,7 @@ function dragStart(e) {
 
     if (e.target.closest('#themeToggle')) {
         active = true;
+        hasMoved = false; // Assume it's a click initially
     }
 }
 
@@ -258,24 +296,32 @@ function dragEnd(e) {
     initialY = currentY;
     active = false;
 
-    // Detect Click vs Drag (If moved less than 5px, treat as click)
-    // Simple way: check if we moved much. If not, trigger toggleTheme()
-    // However, since we track offset, let's keep it simple:
-    // If user tapped without dragging, toggle theme.
-    // This logic handles drag primarily. 
-    // For click, we check if the mouseup happened on the element without much movement.
+    // IF NOT DRAGGED (Moved less than 2px), TREAT AS CLICK
+    if (!hasMoved) {
+        toggleTheme();
+    }
 }
 
 function drag(e) {
     if (active) {
         e.preventDefault();
     
+        let clientX, clientY;
+
         if (e.type === "touchmove") {
-            currentX = e.touches[0].clientX - initialX;
-            currentY = e.touches[0].clientY - initialY;
+            clientX = e.touches[0].clientX;
+            clientY = e.touches[0].clientY;
         } else {
-            currentX = e.clientX - initialX;
-            currentY = e.clientY - initialY;
+            clientX = e.clientX;
+            clientY = e.clientY;
+        }
+
+        currentX = clientX - initialX;
+        currentY = clientY - initialY;
+
+        // If moved more than 2 pixels, it's a Drag
+        if (Math.abs(currentX - xOffset) > 2 || Math.abs(currentY - yOffset) > 2) {
+            hasMoved = true;
         }
 
         xOffset = currentX;
@@ -287,26 +333,4 @@ function drag(e) {
 
 function setTranslate(xPos, yPos, el) {
     el.style.transform = "translate3d(" + xPos + "px, " + yPos + "px, 0)";
-}
-
-// Handle Click explicitly since we removed onclick from HTML to avoid conflict
-let startX, startY;
-dragItem.addEventListener('touchstart', function(e) {
-    startX = e.changedTouches[0].pageX;
-    startY = e.changedTouches[0].pageY;
-}, {passive: false});
-
-dragItem.addEventListener('touchend', function(e) {
-    const endX = e.changedTouches[0].pageX;
-    const endY = e.changedTouches[0].pageY;
-    if (Math.abs(endX - startX) < 5 && Math.abs(endY - startY) < 5) {
-        toggleTheme();
-    }
-}, {passive: false});
-
-dragItem.addEventListener('click', function(e) {
-    // For mouse clicks, simple click listener works if drag didn't happen
-    // We can just use the toggleTheme logic directly here if dragging wasn't the intent
-    // But since mousemove handles drag, a static click should trigger this.
-    toggleTheme(); 
-});
+            }
