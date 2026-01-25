@@ -2,7 +2,7 @@
 const bioText = "Building ideas from scratch.";
 const introName = "Arnav Mishra";
 
-// --- UPDATED: SHORT LYRICS & LINKS ---
+/* --- VERSE DATA --- */
 const verseData = {
     verse1: {
         text: `Tu jang ka ailan kar 
@@ -13,7 +13,6 @@ Moh dya ka tyag kar
 Ab jism se na pyar kar 
 Mastko ke unke Aaj
 Deh se ajaad kar....`,
-        // YAHAN APNI INSTA POST KA LINK DAAL:
         link: "https://www.instagram.com/arnav_9.11/" 
     },
     verse2: {
@@ -26,7 +25,6 @@ Na saksh hun, na aatma
 Na devta ,pramatama 
 Mai bhoot (past) hun , mai kaal sa
 Divr hun mai bhaal sa`,
-        // YAHAN DUSRI POST KA LINK DAAL:
         link: "https://www.instagram.com/arnav_9.11/" 
     }
 };
@@ -34,6 +32,7 @@ Divr hun mai bhaal sa`,
 /* --- DOM ELEMENTS --- */
 const homeView = document.getElementById('home-view');
 const aboutView = document.getElementById('about-view');
+const recsView = document.getElementById('recs-view'); // NEW
 const musicPopup = document.getElementById('music-popup');
 const bgMusic = document.getElementById('global-bg-music');
 const muteBtn = document.getElementById('mute-btn');
@@ -44,7 +43,21 @@ const signatureEl = document.getElementById('signature-text');
 
 let isMusicPlaying = false;
 
-/* --- 1. INTRO SEQUENCE --- */
+/* --- MENU LOGIC (NEW) --- */
+function toggleMenu() {
+    var sidebar = document.getElementById("sidebar");
+    var overlay = document.getElementById("overlay");
+    
+    if (sidebar.style.width === "250px") {
+        sidebar.style.width = "0";
+        overlay.style.display = "none";
+    } else {
+        sidebar.style.width = "250px";
+        overlay.style.display = "block";
+    }
+}
+
+/* --- INTRO SEQUENCE --- */
 window.addEventListener('load', () => {
     playIntroSequence();
 });
@@ -73,7 +86,7 @@ function finishIntro() {
     }, 1000);
 }
 
-/* --- 2. POPUP HANDLER --- */
+/* --- POPUP HANDLER --- */
 function closePopup() {
     musicPopup.style.opacity = '0';
     setTimeout(() => {
@@ -97,7 +110,6 @@ function closePopup() {
     }, 500);
 }
 
-/* --- TYPEWRITER --- */
 function typeWriter(text, element, speed) {
     element.innerHTML = "";
     let i = 0;
@@ -129,51 +141,67 @@ function toggleMusic() {
 }
 
 /* --- VIEW SWITCHING --- */
-function switchToAbout() {
-    homeView.style.opacity = '0';
-    homeView.style.transform = 'translateY(-20px)';
+function transitionView(hideView, showView, callback) {
+    hideView.style.opacity = '0';
+    hideView.style.transform = 'translateY(20px)';
+    
     setTimeout(() => {
-        homeView.style.display = 'none';
-        aboutView.style.display = 'block';
-        aboutView.style.opacity = '0';
-        aboutView.style.transform = 'translateY(20px)';
-        void aboutView.offsetWidth; 
-        aboutView.style.transition = 'all 0.6s ease';
-        aboutView.style.opacity = '1';
-        aboutView.style.transform = 'translateY(0)';
+        hideView.style.display = 'none';
+        showView.style.display = 'block';
+        showView.style.opacity = '0';
+        showView.style.transform = 'translateY(20px)';
         
-        initVerse('verse1');
-        initVerse('verse2');
+        void showView.offsetWidth; // Trigger reflow
+        
+        showView.style.transition = 'all 0.6s ease';
+        showView.style.opacity = '1';
+        showView.style.transform = 'translateY(0)';
+        
+        if (callback) callback();
         window.scrollTo(0, 0);
     }, 400);
 }
 
-function switchToHome() {
-    aboutView.style.opacity = '0';
-    aboutView.style.transform = 'translateY(20px)';
-    setTimeout(() => {
-        aboutView.style.display = 'none';
-        homeView.style.display = 'block';
-        void homeView.offsetWidth;
-        homeView.style.transition = 'all 0.6s ease';
-        homeView.style.opacity = '1';
-        homeView.style.transform = 'translateY(0)';
-    }, 400);
+function switchToAbout() {
+    recsView.style.display = 'none'; // Ensure recs is hidden
+    transitionView(homeView, aboutView, () => {
+        initVerse('verse1');
+        initVerse('verse2');
+    });
 }
 
-/* --- UPDATED VERSE HANDLING (With Redirect) --- */
+function switchToRecs() {
+    aboutView.style.display = 'none'; // Ensure about is hidden
+    transitionView(homeView, recsView);
+}
+
+function switchToHome() {
+    // Check which view is currently open
+    if (aboutView.style.display === 'block') {
+        transitionView(aboutView, homeView);
+    } else if (recsView.style.display === 'block') {
+        transitionView(recsView, homeView);
+    } else {
+        // Fallback
+        aboutView.style.display = 'none';
+        recsView.style.display = 'none';
+        homeView.style.display = 'block';
+        homeView.style.opacity = '1';
+        homeView.style.transform = 'translateY(0)';
+    }
+}
+
+/* --- VERSE HANDLING --- */
 function initVerse(verseKey) {
     const elementId = verseKey === 'verse1' ? 'verse-1-display' : 'verse-2-display';
     const data = verseData[verseKey];
     const container = document.getElementById(elementId);
     
-    // Create Text HTML
     const formattedText = data.text.split('\n').map((line, index) => {
         if (line.trim() === '') return '<br>';
         return `<span class="verse-line" style="animation-delay: ${index * 0.1}s">${line}</span>`;
     }).join('');
     
-    // Create Button HTML with "Puch ke" logic (confirm dialog)
     const buttonHtml = `
         <button class="read-more-btn" onclick="goToInsta('${data.link}')">
             Read Full Lyrics <i class="fab fa-instagram"></i>
@@ -183,7 +211,6 @@ function initVerse(verseKey) {
     container.innerHTML = formattedText + buttonHtml;
 }
 
-// Redirect Function with Confirmation
 function goToInsta(url) {
     if(confirm("Do you want to visit Instagram to read the full version?")) {
         window.open(url, '_blank');
