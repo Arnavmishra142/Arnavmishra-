@@ -7,7 +7,7 @@ const arnavPicks = [
         type: "video",
         title: "Must Watch Podcast",
         desc: "Nikhil Kamath with Elon Musk.",
-        link: "Rni7Fz7208c" // Maine slash '/' hata diya hai, ab video chalegi
+        link: "Rni7Fz7208c" // Video ID (No slash)
     },
     // Aur add karna ho to yahan comma laga ke add kar sakte ho
 ];
@@ -49,18 +49,16 @@ const bioElement = document.getElementById('bio-text');
 
 let isMusicPlaying = false;
 
-/* --- 4. INTRO & POPUP (WITH SAFETY LOCK 🔒) --- */
-window.addEventListener('load', () => {
-    // 1. Generate Picks
-    try {
-        generatePicks();
-    } catch (e) {
-        console.error("Picks generation failed:", e);
-    }
+/* --- 4. INTRO ANIMATION (INSTANT START 🚀) --- */
+// Pehle 'load' tha, ab 'DOMContentLoaded' kar diya taaki wait na kare
+document.addEventListener("DOMContentLoaded", () => {
     
-    // 2. Play Intro Animation
+    // 1. Generate Picks instantly
+    try { generatePicks(); } catch (e) { console.error(e); }
+
+    // 2. Start Typing Immediately
     let i = 0;
-    const speed = 100; // Thoda fast kiya taaki bore na ho
+    const speed = 75; // SPEED BADHA DI (Fast typing)
     
     function typeWriterIntro() {
         if (signatureEl && i < introName.length) {
@@ -68,51 +66,55 @@ window.addEventListener('load', () => {
             i++;
             setTimeout(typeWriterIntro, speed);
         } else {
+            // Typing khatam hote hi site khol do (No delay)
             finishIntro();
         }
     }
 
-    // Start Typing
-    if (signatureEl) typeWriterIntro();
-    else finishIntro(); // Agar element nahi mila to direct khol do
-
-    // 🔒 SAFETY LOCK: Agar 4 second mein intro khatam nahi hua, to force open kar do
-    setTimeout(() => {
-        if (introScreen.style.display !== 'none') {
-            console.log("Forcing site open...");
-            finishIntro();
-        }
-    }, 4000);
+    // Start immediately
+    if (signatureEl) {
+        signatureEl.innerHTML = ""; // Clear existing cursor bug
+        setTimeout(typeWriterIntro, 100); // Tiny buffer start
+    } else {
+        finishIntro();
+    }
 });
 
 function finishIntro() {
+    // Fade out black screen
     introScreen.style.opacity = '0';
+    
     setTimeout(() => {
         introScreen.style.display = 'none';
-        musicPopup.style.display = 'flex';
-        setTimeout(() => { musicPopup.style.opacity = '1'; }, 100);
         
-        // Show Hint
+        // Show Popup Immediately
+        musicPopup.style.display = 'flex';
+        setTimeout(() => { musicPopup.style.opacity = '1'; }, 50);
+
+        // Hint Logic
         const hint = document.getElementById('themeHint');
         if(hint) {
             hint.style.display = 'flex';
-            setTimeout(() => { hint.style.opacity = '0'; }, 5000);
+            setTimeout(() => { hint.style.opacity = '0'; }, 4000);
         }
-    }, 1000);
+    }, 800); // 0.8 sec fade out time
 }
 
 function closePopup() {
     musicPopup.style.opacity = '0';
     setTimeout(() => {
         musicPopup.style.display = 'none';
-        document.body.classList.remove('wait-for-intro'); // Ye line white screen hatati hai
+        document.body.classList.remove('wait-for-intro');
         document.body.style.overflow = 'auto';
         
+        // Animate Elements Entry
         const animatedElements = document.querySelectorAll('#home-view > div, #home-view > button, #home-view > p');
         animatedElements.forEach(el => { el.classList.add('animate-entry'); });
         
-        if(bioElement) typeWriter(bioText, bioElement, 100);
+        // Type Bio
+        if(bioElement) typeWriter(bioText, bioElement, 80);
         
+        // Play Music
         if (bgMusic) {
             bgMusic.volume = 0.5;
             bgMusic.play().then(() => {
@@ -121,7 +123,7 @@ function closePopup() {
                 isMusicPlaying = true;
             }).catch(e => console.log("Autoplay blocked"));
         }
-    }, 500);
+    }, 400);
 }
 
 /* --- 5. TYPEWRITER HELPER --- */
