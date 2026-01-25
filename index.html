@@ -1,163 +1,348 @@
-<script>
-    /* --- 1. CONFIGURATION --- */
-    // 🔴 APNI API KEY YAHAN PASTE KAR:
-    const API_KEY = "AIzaSyBDc9MvSmofTlq6VuQkN-l9AkGNhANbY_A"; 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-KK3QZ8M8D3"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-KK3QZ8M8D3');
+    </script>
+    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Arnav Mishra | Work & Mind</title>
+    
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Playfair+Display:ital,wght@0,400;1,600&family=Poppins:wght@300;400;600&family=Courier+Prime:wght@400;700&family=Great+Vibes&display=swap" rel="stylesheet">
+</head>
 
-    const ARNAV_CONTEXT = `
-    You are Arnav Mishra, a 12th-grade student preparing for JEE Mains. 
-    Style: Speak in "Hinglish" (Hindi + English). Be cool, friendly, and poetic.
-    Interests: Physics (Newton, Photoelectric), Coding (Python, AI), Indian Rap (KR$NA, Divine).
-    Projects: Zomato Analysis, Glitch Scents (Perfume brand: Battleground, Arena, Combat).
-    Personality: "Building ideas from scratch". Reader (Atomic Habits, Harry Potter).
-    Chess: You play on Chess.com.
-    `;
+<body id="main-body">
 
-    /* --- 2. STYLES (Button & Chat Window) --- */
-    const chatStyle = document.createElement('style');
-    chatStyle.innerHTML = `
-      #chatbot-btn {
-          position: fixed; bottom: 25px; right: 25px;
-          width: 60px; height: 60px; background: #00a3ff;
-          border-radius: 50%; display: flex; align-items: center; justify-content: center;
-          cursor: pointer; box-shadow: 0 0 20px rgba(0, 163, 255, 0.6);
-          z-index: 21000; transition: transform 0.3s;
-          border: 2px solid #fff; font-size: 30px; animation: popIn 1s ease;
-      }
-      #chatbot-btn:hover { transform: scale(1.1); }
-      
-      #chat-window {
-          display: none; position: fixed; bottom: 100px; right: 25px;
-          width: 320px; height: 450px; background: #111;
-          border: 1px solid #333; border-radius: 15px;
-          flex-direction: column; overflow: hidden; z-index: 21000;
-          box-shadow: 0 10px 40px rgba(0,0,0,0.8);
-      }
-      .chat-header {
-          background: linear-gradient(90deg, #00a3ff, #0056b3); padding: 15px; color: #fff; font-weight: bold;
-          display: flex; justify-content: space-between; align-items: center;
-          font-family: 'Poppins', sans-serif;
-      }
-      .chat-body {
-          flex: 1; padding: 15px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px;
-          background: #050505;
-      }
-      .chat-input-area {
-          padding: 10px; border-top: 1px solid #333; display: flex; gap: 5px; background: #111;
-      }
-      #user-input {
-          flex: 1; padding: 10px; border-radius: 50px; border: 1px solid #333;
-          background: #222; color: #fff; outline: none; padding-left: 15px;
-      }
-      #send-btn {
-          background: #00a3ff; border: none; color: #fff; padding: 8px 15px;
-          border-radius: 50%; cursor: pointer; font-weight: bold; width: 40px; height: 40px;
-          display: flex; align-items: center; justify-content: center;
-      }
-      .msg { padding: 10px 14px; border-radius: 12px; max-width: 80%; font-size: 0.9rem; word-wrap: break-word; line-height: 1.4; }
-      .user-msg { align-self: flex-end; background: #00a3ff; color: #fff; border-bottom-right-radius: 2px; }
-      .ai-msg { align-self: flex-start; background: #222; color: #e0e0e0; border: 1px solid #333; border-bottom-left-radius: 2px; }
-      .typing { font-size: 0.7rem; color: #888; margin-left: 15px; display: none; margin-bottom: 5px; font-style: italic; }
-      @keyframes popIn { from { transform: scale(0); } to { transform: scale(1); } }
-    `;
-    document.head.appendChild(chatStyle);
+    <div class="menu-icon" onclick="toggleMenu()">
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+    </div>
 
-    /* --- 3. CREATE UI --- */
-    // Create Button
-    const chatBtn = document.createElement('div');
-    chatBtn.id = 'chatbot-btn';
-    chatBtn.innerHTML = '🤖';
-    chatBtn.onclick = toggleChat;
-    document.body.appendChild(chatBtn);
+    <div id="sidebar" class="sidebar">
+        <a href="#" class="close-btn" onclick="toggleMenu()">&times;</a>
+        <div class="sidebar-content">
+            <h3>NAVIGATE</h3>
+            <a href="#" onclick="switchToHome(); toggleMenu()"><i class="fas fa-home"></i> Home</a>
+            <a href="#" onclick="switchToAbout(); toggleMenu()"><i class="fas fa-user-astronaut"></i> About Me</a>
+            <a href="#" onclick="switchToRecs(); toggleMenu()"><i class="fas fa-star"></i> Arnav's Picks</a>
+        </div>
+    </div>
+    <div id="overlay" onclick="toggleMenu()"></div>
 
-    // Create Window
-    const chatWin = document.createElement('div');
-    chatWin.id = 'chat-window';
-    chatWin.innerHTML = `
-      <div class="chat-header">
-          <span>Arnav AI 🧠</span>
-          <span onclick="toggleChat()" style="cursor:pointer; font-size: 1.2rem;">&times;</span>
-      </div>
-      <div class="chat-body" id="chat-body">
-          <div class="msg ai-msg">Bol bhai! Kya haal hai? Main Arnav ka AI version hoon. Kuch bhi puch le! 😎</div>
-      </div>
-      <div class="typing" id="typing-indicator">Arnav is typing...</div>
-      <div class="chat-input-area">
-          <input type="text" id="user-input" placeholder="Ask me anything..." onkeypress="handleEnter(event)">
-          <button id="send-btn" onclick="sendMessage()"><i class="fas fa-paper-plane"></i></button>
-      </div>
-    `;
-    document.body.appendChild(chatWin);
+    <div id="intro-screen">
+        <div class="signature-container">
+            <span id="signature-text"></span><span class="cursor"></span>
+        </div>
+    </div>
 
-    /* --- 4. LOGIC --- */
-    function toggleChat() {
-        const w = document.getElementById('chat-window');
-        if (w.style.display === 'none' || w.style.display === '') {
-            w.style.display = 'flex';
-        } else {
-            w.style.display = 'none';
-        }
-    }
+    <div class="eclipse-wrapper" id="themeWrapper">
+        <div class="eclipse-toggle" id="themeToggle">
+            <div class="sun"></div>
+            <div class="moon"></div>
+        </div>
+        <div class="eclipse-hint" id="themeHint">
+            <span>Tap: Switch | Hold: Move</span>
+            <div class="close-hint" onclick="closeHint()">×</div>
+        </div>
+    </div>
 
-    function handleEnter(e) {
-        if (e.key === 'Enter') sendMessage();
-    }
+    <audio id="global-bg-music" loop preload="auto">
+        <source src="co2.mp3" type="audio/mpeg">
+    </audio>
 
-    async function sendMessage() {
-        const inputField = document.getElementById('user-input');
-        const chatBody = document.getElementById('chat-body');
-        const typingIndicator = document.getElementById('typing-indicator');
-        const text = inputField.value.trim();
+    <div class="sound-control">
+        <button onclick="toggleMusic()" id="mute-btn">
+            <div class="icon-container"><i class="fas fa-volume-mute" id="mute-icon"></i></div>
+        </button>
+    </div>
 
-        if (!text) return;
+    <div id="music-popup" onclick="closePopup()">
+        <div class="popup-box glass-effect">
+            <div class="popup-icon">✨</div>
+            <h2>Welcome to my world.</h2>
+            <p class="tap-hint">Tap anywhere to enter</p>
+            <div class="vibe-note">
+                <i class="fas fa-arrow-up" style="transform: rotate(45deg);"></i> 
+                Sound button is Top-Right. <br>Turn it ON for the vibe! 🎵
+            </div>
+        </div>
+    </div>
 
-        // Add User Message
-        addMessage(text, 'user-msg');
-        inputField.value = '';
+    <div class="main-wrapper">
         
-        // Show Typing
-        typingIndicator.style.display = 'block';
-        chatBody.scrollTop = chatBody.scrollHeight;
-
-        // API Call
-        try {
-            const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    contents: [{
-                        parts: [{ text: ARNAV_CONTEXT + "\nUser: " + text + "\nArnav AI:" }]
-                    }]
-                })
-            });
-
-            const data = await response.json();
+        <div id="home-view">
+            <div class="profile-container anim-delay-1">
+                <div class="profile-glow"></div>
+                <img src="https://imarnavin.wordpress.com/wp-content/uploads/2026/01/image_editor_output_image-900633096-17689630363507786449788545237875.jpg" class="profile-img" alt="Arnav Mishra">
+            </div>
             
-            if (data.error) {
-                throw new Error(data.error.message);
-            }
+            <div class="name anim-delay-2">Arnav Mishra</div>
+            <div class="bio-wrap anim-delay-3"><div class="bio" id="bio-text"></div></div>
+            <div class="quote-box anim-delay-4">"The secret of change is to focus all of your energy, not on fighting the old, but on building the new."</div>
 
-            const aiReply = data.candidates[0].content.parts[0].text;
+            <div class="btn-grid anim-delay-5">
+                <a href="https://www.linkedin.com/in/arnav-mishra-1a6934371" class="btn"><i class="fab fa-linkedin"></i> LinkedIn</a>
+                <a href="https://x.com/ArnavMishra142" class="btn"><i class="fab fa-twitter"></i> X / Twitter</a>
+                <a href="https://www.instagram.com/arnav_9.11" class="btn"><i class="fab fa-instagram"></i> Instagram</a>
+                <a href="https://www.chess.com/member/Arnavm142" class="btn"><i class="fas fa-chess-knight"></i> Chess.com</a>
+            </div>
 
-            // Add AI Message
-            typingIndicator.style.display = 'none';
-            addMessage(aiReply, 'ai-msg');
+            <button onclick="switchToAbout()" class="main-btn anim-delay-6">ENTER MY WORLD <i class="fas fa-arrow-right"></i></button>
 
-        } catch (error) {
-            console.error("Chatbot Error:", error);
-            typingIndicator.style.display = 'none';
-            addMessage("Bhai API Key check kar, shayad expire ho gayi ya galat hai! 😅", 'ai-msg');
+            <div class="chess-msg-container anim-delay-7">
+                <a href="https://wa.me/916393349498?text=Hey%20Arnav,%20I%20visited%20your%20portfolio!" target="_blank" class="chess-btn-styled">
+                    <div class="chess-btn-content">
+                        <i class="fas fa-chess-knight knight-icon-white"></i>
+                        <div class="btn-text-group">
+                            <span class="small-text-gray">MAKE A MOVE</span>
+                            <span class="big-text-white">Say Hello <i class="fas fa-hand-sparkles wave-icon"></i></span>
+                        </div>
+                    </div>
+                    <div class="dashed-border-bottom"></div>
+                </a>
+            </div>
+
+            <div class="portal-container anim-delay-8">
+                <a href="stranger.html" class="glitch-btn" data-text="ENTER THE UPSIDE DOWN">ENTER THE UPSIDE DOWN</a>
+            </div>
+
+            <div style="text-align: center; margin-top: 15px; margin-bottom: 20px;">
+                <a href="concert.html" class="concert-btn">🎸 Enter Live Concert</a>
+            </div>
+            
+            <p class="footer-text anim-delay-8">© 2026 ARNAV MISHRA</p>
+        </div>
+
+        <div id="about-view" style="display: none;">
+            <div style="height: 30px;"></div>
+            
+            <h2 class="section-title">Projects</h2>
+            <div class="card project-card">
+                <div class="card-header"><h3 style="color: #ff4b4b;">Zomato Analysis 📊</h3></div>
+                <p class="card-desc">Market positioning and SWOT analysis for hyperlocal delivery based on real-time data.</p>
+                <a href="https://docs.google.com/spreadsheets/d/11k2QyICWavfXFuUGXRBGnRJ7l7zsblQB/edit?usp=drivesdk" target="_blank" class="project-link-btn">View Sheets Project <i class="fas fa-external-link-alt"></i></a>
+            </div>
+
+            <h2 class="section-title">Sonic Fuel (GOAT)</h2>
+            <div class="card krsna-card">
+                <div class="krsna-header" style="display: flex; align-items: center; justify-content: space-between;">
+                    <div style="display: flex; align-items: center;">
+                        <div class="krsna-icon dollar-gold">$</div>
+                        <div style="margin-left: 15px;">
+                            <h3>KR$NA 👑</h3>
+                            <p class="subtitle">The inspiration.</p>
+                        </div>
+                    </div>
+                    
+                    <div id="krsna-play-btn" onclick="toggleKrsnaPlay()">
+                        <i class="fas fa-play" id="krsna-play-icon"></i>
+                    </div>
+                </div>
+                
+                <div class="lyrics-box">
+                    "Chahiye mujhe bas ek buss down Rollie<br>
+                    Lambhi si gaadi aur makaan do storey, haan<br>
+                    Chahiye mujhe bas ek buss down Rollie<br>
+                    Lambi si chain aur kuch lakh ki tijori"
+                </div>
+                
+                <audio id="krsna-audio">
+                    <source src="Buss down.mp3" type="audio/mpeg">
+                </audio>
+            </div>
+
+            <h2 class="section-title">Original Verses</h2>
+            <div class="card verse-card"><div class="verse-header"><h3 class="verse-title fire">🔥 Jang-kaal</h3></div><div id="verse-1-display" class="verse-content"></div></div>
+            <div class="card verse-card"><div class="verse-header"><h3 class="verse-title cosmic">🌌 Anjaan</h3></div><div id="verse-2-display" class="verse-content"></div></div>
+            <div style="height: 80px;"></div>
+        </div>
+
+        <div id="recs-view" style="display: none;">
+            <div style="height: 30px;"></div>
+            <h2 class="section-title" style="color: #00ff88; text-align: center;">Arnav's Intel 🧠</h2>
+            <p style="color: #888; text-align: center; margin-bottom: 30px; font-family: 'Courier Prime';">Stuff that upgraded my mind.</p>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+
+    <script>
+        if (localStorage.getItem('theme') === 'light') {
+            document.body.classList.add('light-mode');
+            document.getElementById('themeToggle').classList.add('active');
         }
-    }
+    </script>
 
-    function addMessage(text, className) {
-        const chatBody = document.getElementById('chat-body');
-        const div = document.createElement('div');
-        div.classList.add('msg', className);
-        div.innerText = text;
-        chatBody.appendChild(div);
-        chatBody.scrollTop = chatBody.scrollHeight;
-    }
-</script>
+    <script>
+        /* --- 1. CONFIGURATION --- */
+        // 🔴 APNI API KEY YAHAN PASTE KAR (Quotes ke andar):
+        const API_KEY = "AIzaSyBDc9MvSmofTlq6VuQkN-l9AkGNhANbY_A"; 
+
+        const ARNAV_CONTEXT = `
+        You are Arnav Mishra, a 12th-grade student preparing for JEE Mains. 
+        Style: Speak in "Hinglish" (Hindi + English). Be cool, friendly, and poetic.
+        Interests: Physics (Newton, Photoelectric), Coding (Python, AI), Indian Rap (KR$NA, Divine).
+        Projects: Zomato Analysis, Glitch Scents (Perfume brand: Battleground, Arena, Combat).
+        Personality: "Building ideas from scratch". Reader (Atomic Habits, Harry Potter).
+        Chess: You play on Chess.com.
+        `;
+
+        /* --- 2. STYLES (Button & Chat Window) --- */
+        const chatStyle = document.createElement('style');
+        chatStyle.innerHTML = `
+          #chatbot-btn {
+              position: fixed; bottom: 25px; right: 25px;
+              width: 60px; height: 60px; background: #00a3ff;
+              border-radius: 50%; display: flex; align-items: center; justify-content: center;
+              cursor: pointer; box-shadow: 0 0 20px rgba(0, 163, 255, 0.6);
+              z-index: 21000; transition: transform 0.3s;
+              border: 2px solid #fff; font-size: 30px; animation: popIn 1s ease;
+          }
+          #chatbot-btn:hover { transform: scale(1.1); }
+          
+          #chat-window {
+              display: none; position: fixed; bottom: 100px; right: 25px;
+              width: 320px; height: 450px; background: #111;
+              border: 1px solid #333; border-radius: 15px;
+              flex-direction: column; overflow: hidden; z-index: 21000;
+              box-shadow: 0 10px 40px rgba(0,0,0,0.8);
+          }
+          .chat-header {
+              background: linear-gradient(90deg, #00a3ff, #0056b3); padding: 15px; color: #fff; font-weight: bold;
+              display: flex; justify-content: space-between; align-items: center;
+              font-family: 'Poppins', sans-serif;
+          }
+          .chat-body {
+              flex: 1; padding: 15px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px;
+              background: #050505;
+          }
+          .chat-input-area {
+              padding: 10px; border-top: 1px solid #333; display: flex; gap: 5px; background: #111;
+          }
+          #user-input {
+              flex: 1; padding: 10px; border-radius: 50px; border: 1px solid #333;
+              background: #222; color: #fff; outline: none; padding-left: 15px;
+          }
+          #send-btn {
+              background: #00a3ff; border: none; color: #fff; padding: 8px 15px;
+              border-radius: 50%; cursor: pointer; font-weight: bold; width: 40px; height: 40px;
+              display: flex; align-items: center; justify-content: center;
+          }
+          .msg { padding: 10px 14px; border-radius: 12px; max-width: 80%; font-size: 0.9rem; word-wrap: break-word; line-height: 1.4; }
+          .user-msg { align-self: flex-end; background: #00a3ff; color: #fff; border-bottom-right-radius: 2px; }
+          .ai-msg { align-self: flex-start; background: #222; color: #e0e0e0; border: 1px solid #333; border-bottom-left-radius: 2px; }
+          .typing { font-size: 0.7rem; color: #888; margin-left: 15px; display: none; margin-bottom: 5px; font-style: italic; }
+          @keyframes popIn { from { transform: scale(0); } to { transform: scale(1); } }
+        `;
+        document.head.appendChild(chatStyle);
+
+        /* --- 3. CREATE UI --- */
+        // Create Button
+        const chatBtn = document.createElement('div');
+        chatBtn.id = 'chatbot-btn';
+        chatBtn.innerHTML = '🤖';
+        chatBtn.onclick = toggleChat;
+        document.body.appendChild(chatBtn);
+
+        // Create Window
+        const chatWin = document.createElement('div');
+        chatWin.id = 'chat-window';
+        chatWin.innerHTML = `
+          <div class="chat-header">
+              <span>Arnav AI 🧠</span>
+              <span onclick="toggleChat()" style="cursor:pointer; font-size: 1.2rem;">&times;</span>
+          </div>
+          <div class="chat-body" id="chat-body">
+              <div class="msg ai-msg">Bol bhai! Kya haal hai? Main Arnav ka AI version hoon. Kuch bhi puch le! 😎</div>
+          </div>
+          <div class="typing" id="typing-indicator">Arnav is typing...</div>
+          <div class="chat-input-area">
+              <input type="text" id="user-input" placeholder="Ask me anything..." onkeypress="handleEnter(event)">
+              <button id="send-btn" onclick="sendMessage()"><i class="fas fa-paper-plane"></i></button>
+          </div>
+        `;
+        document.body.appendChild(chatWin);
+
+        /* --- 4. LOGIC --- */
+        function toggleChat() {
+            const w = document.getElementById('chat-window');
+            if (w.style.display === 'none' || w.style.display === '') {
+                w.style.display = 'flex';
+            } else {
+                w.style.display = 'none';
+            }
+        }
+
+        function handleEnter(e) {
+            if (e.key === 'Enter') sendMessage();
+        }
+
+        async function sendMessage() {
+            const inputField = document.getElementById('user-input');
+            const chatBody = document.getElementById('chat-body');
+            const typingIndicator = document.getElementById('typing-indicator');
+            const text = inputField.value.trim();
+
+            if (!text) return;
+
+            // Add User Message
+            addMessage(text, 'user-msg');
+            inputField.value = '';
+            
+            // Show Typing
+            typingIndicator.style.display = 'block';
+            chatBody.scrollTop = chatBody.scrollHeight;
+
+            // API Call
+            try {
+                const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        contents: [{
+                            parts: [{ text: ARNAV_CONTEXT + "\nUser: " + text + "\nArnav AI:" }]
+                        }]
+                    })
+                });
+
+                const data = await response.json();
+                
+                if (data.error) {
+                    throw new Error(data.error.message);
+                }
+
+                const aiReply = data.candidates[0].content.parts[0].text;
+
+                // Add AI Message
+                typingIndicator.style.display = 'none';
+                addMessage(aiReply, 'ai-msg');
+
+            } catch (error) {
+                console.error("Chatbot Error:", error);
+                typingIndicator.style.display = 'none';
+                addMessage("Bhai API Key check kar, shayad expire ho gayi ya galat hai! 😅", 'ai-msg');
+            }
+        }
+
+        function addMessage(text, className) {
+            const chatBody = document.getElementById('chat-body');
+            const div = document.createElement('div');
+            div.classList.add('msg', className);
+            div.innerText = text;
+            chatBody.appendChild(div);
+            chatBody.scrollTop = chatBody.scrollHeight;
+        }
+    </script>
 
 </body>
 </html>
