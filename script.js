@@ -27,7 +27,14 @@ const arnavPicks = [
         title: "Coding Reality",
         desc: "Asliyat kya hai?",
         link: "5MgBikgcWnY"
-    }
+    },
+    {
+        type: "hello",
+        title: "arnav",
+        desc: "nothing.",
+        link: "fuck" 
+},
+{
     // Last wale ke baad comma na bhi lagaye to chalega
 ];
 
