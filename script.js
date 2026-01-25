@@ -5,10 +5,10 @@
 
 const arnavPicks = [
 {
-        type: "Podcast",
+        type: "video",
         title: "must watch podcast",
         desc: "Nikhil Kamath with elon musk.",
-        link: "https://youtu.be/Rni7Fz7208c?si=dL7xOSaTFkq94LOZ" 
+        link: "/Rni7Fz7208c" 
 },
    
 
