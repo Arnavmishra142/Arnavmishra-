@@ -49,27 +49,7 @@ const themeToggleBtn = document.getElementById('themeToggle');
 let isMusicPlaying = false;
 
 /* =========================================
-   3. THEME TOGGLE LOGIC
-========================================= */
-// Check saved theme on load
-if (localStorage.getItem('theme') === 'light') {
-    body.classList.add('light-mode');
-    themeToggleBtn.classList.add('active');
-}
-
-function toggleTheme() {
-    body.classList.toggle('light-mode');
-    themeToggleBtn.classList.toggle('active');
-    
-    if (body.classList.contains('light-mode')) {
-        localStorage.setItem('theme', 'light');
-    } else {
-        localStorage.setItem('theme', 'dark');
-    }
-}
-
-/* =========================================
-   4. MENU LOGIC
+   3. MENU LOGIC
 ========================================= */
 function toggleMenu() {
     var sidebar = document.getElementById("sidebar");
@@ -85,7 +65,7 @@ function toggleMenu() {
 }
 
 /* =========================================
-   5. INTRO SEQUENCE
+   4. INTRO SEQUENCE
 ========================================= */
 window.addEventListener('load', () => {
     playIntroSequence();
@@ -116,7 +96,7 @@ function finishIntro() {
 }
 
 /* =========================================
-   6. POPUP & MUSIC HANDLER
+   5. POPUP & MUSIC HANDLER
 ========================================= */
 function closePopup() {
     musicPopup.style.opacity = '0';
@@ -171,7 +151,7 @@ function toggleMusic() {
 }
 
 /* =========================================
-   7. VIEW SWITCHING (NAVIGATION)
+   6. VIEW SWITCHING (NAVIGATION)
 ========================================= */
 function transitionView(hideView, showView, callback) {
     hideView.style.opacity = '0';
@@ -183,7 +163,7 @@ function transitionView(hideView, showView, callback) {
         showView.style.opacity = '0';
         showView.style.transform = 'translateY(20px)';
         
-        void showView.offsetWidth; // Trigger reflow
+        void showView.offsetWidth; 
         
         showView.style.transition = 'all 0.6s ease';
         showView.style.opacity = '1';
@@ -222,7 +202,7 @@ function switchToHome() {
 }
 
 /* =========================================
-   8. VERSE HANDLING
+   7. VERSE HANDLING
 ========================================= */
 function initVerse(verseKey) {
     const elementId = verseKey === 'verse1' ? 'verse-1-display' : 'verse-2-display';
@@ -252,19 +232,33 @@ function goToInsta(url) {
 }
 
 /* =========================================
-   9. DRAGGABLE THEME TOGGLE (THE FIX)
+   8. FIXED: DRAGGABLE + CLICKABLE THEME (FINAL VERSION)
 ========================================= */
+
+// Init Theme
+if (localStorage.getItem('theme') === 'light') {
+    body.classList.add('light-mode');
+    themeToggleBtn.classList.add('active');
+}
+
+function toggleTheme() {
+    body.classList.toggle('light-mode');
+    themeToggleBtn.classList.toggle('active');
+    
+    if (body.classList.contains('light-mode')) {
+        localStorage.setItem('theme', 'light');
+    } else {
+        localStorage.setItem('theme', 'dark');
+    }
+}
+
+// DRAG LOGIC
 const dragItem = document.querySelector("#themeToggle");
 let active = false;
-let currentX;
-let currentY;
-let initialX;
-let initialY;
-let xOffset = 0;
-let yOffset = 0;
-let hasMoved = false; // Checks if actually dragged
+let currentX, currentY, initialX, initialY;
+let xOffset = 0, yOffset = 0;
+let startX = 0, startY = 0;
 
-// Listeners
 dragItem.addEventListener("mousedown", dragStart, false);
 dragItem.addEventListener("touchstart", dragStart, {passive: false});
 
@@ -278,14 +272,17 @@ function dragStart(e) {
     if (e.type === "touchstart") {
         initialX = e.touches[0].clientX - xOffset;
         initialY = e.touches[0].clientY - yOffset;
+        startX = e.touches[0].clientX; // Click detect karne ke liye
+        startY = e.touches[0].clientY;
     } else {
         initialX = e.clientX - xOffset;
         initialY = e.clientY - yOffset;
+        startX = e.clientX;
+        startY = e.clientY;
     }
 
     if (e.target.closest('#themeToggle')) {
         active = true;
-        hasMoved = false; // Assume it's a click initially
     }
 }
 
@@ -296,8 +293,21 @@ function dragEnd(e) {
     initialY = currentY;
     active = false;
 
-    // IF NOT DRAGGED (Moved less than 2px), TREAT AS CLICK
-    if (!hasMoved) {
+    // --- CLICK DETECTION LOGIC ---
+    let endX, endY;
+    if (e.type === "touchend") {
+        endX = e.changedTouches[0].clientX;
+        endY = e.changedTouches[0].clientY;
+    } else {
+        endX = e.clientX;
+        endY = e.clientY;
+    }
+
+    // Pythagoras theorem se distance nikalo
+    let dist = Math.sqrt(Math.pow(endX - startX, 2) + Math.pow(endY - startY, 2));
+
+    // Agar button 5 pixel se kam hila hai, to iska matlab ye CLICK hai
+    if (dist < 5) {
         toggleTheme();
     }
 }
@@ -305,23 +315,13 @@ function dragEnd(e) {
 function drag(e) {
     if (active) {
         e.preventDefault();
-    
-        let clientX, clientY;
-
+        
         if (e.type === "touchmove") {
-            clientX = e.touches[0].clientX;
-            clientY = e.touches[0].clientY;
+            currentX = e.touches[0].clientX - initialX;
+            currentY = e.touches[0].clientY - initialY;
         } else {
-            clientX = e.clientX;
-            clientY = e.clientY;
-        }
-
-        currentX = clientX - initialX;
-        currentY = clientY - initialY;
-
-        // If moved more than 2 pixels, it's a Drag
-        if (Math.abs(currentX - xOffset) > 2 || Math.abs(currentY - yOffset) > 2) {
-            hasMoved = true;
+            currentX = e.clientX - initialX;
+            currentY = e.clientY - initialY;
         }
 
         xOffset = currentX;
@@ -333,4 +333,4 @@ function drag(e) {
 
 function setTranslate(xPos, yPos, el) {
     el.style.transform = "translate3d(" + xPos + "px, " + yPos + "px, 0)";
-            }
+}
