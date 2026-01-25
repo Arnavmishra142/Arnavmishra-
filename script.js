@@ -4,36 +4,13 @@
 ========================================================================== */
 
 const arnavPicks = [
-    {
-        type: "video",
-        title: "Must Watch 🔥",
-        desc: "Ye video dimaag khol degi. Coding ka sach.",
-        link: "5MgBikgcWnY" 
-    },
-    {
-        type: "book",
-        title: "Atomic Habits",
-        desc: "Systems > Goals. Life changing book.",
-        link: "https://amzn.eu/d/example" 
-    },
-    {
-        type: "video",
-        title: "Future of AI",
-        desc: "AI humare sath kya karega?",
-        link: "tgbNymZ7vqY" 
-    }, // <--- YAHAN COMMA ZAROORI HAI
-    {
-        type: "video",
-        title: "Coding Reality",
-        desc: "Asliyat kya hai?",
-        link: "5MgBikgcWnY"
-    },
-    {
-        type: "hello",
-        title: "arnav",
-        desc: "nothing.",
-        link: "fuck" 
+{
+        type: "Podcast",
+        title: "must watch podcast",
+        desc: "Nikhil Kamath with elon musk.",
+        link: "https://youtu.be/Rni7Fz7208c?si=dL7xOSaTFkq94LOZ" 
 },
+   
 
     // Last wale ke baad comma na bhi lagaye to chalega
 ];
