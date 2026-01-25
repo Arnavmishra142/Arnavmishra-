@@ -207,7 +207,9 @@
               box-shadow: 0 0 20px rgba(0, 163, 255, 0.6), inset 0 0 10px rgba(255,255,255,0.2);
               z-index: 21000; transition: all 0.3s ease;
               border: 2px solid rgba(255,255,255,0.2); 
-              font-size: 32px; animation: floatBtn 3s ease-in-out infinite;
+              font-size: 28px; /* Adjusted size for icon */
+              color: #fff;
+              animation: floatBtn 3s ease-in-out infinite;
           }
           #chatbot-btn:hover { transform: scale(1.1) rotate(10deg); box-shadow: 0 0 40px rgba(0, 163, 255, 0.8); }
           
@@ -266,19 +268,21 @@
         /* --- UI CREATION --- */
         const chatBtn = document.createElement('div');
         chatBtn.id = 'chatbot-btn';
-        chatBtn.innerHTML = '🤖';
+        // UPDATED ICON: Using Font Awesome Robot Icon
+        chatBtn.innerHTML = '<i class="fas fa-robot"></i>';
         chatBtn.onclick = toggleChat;
         document.body.appendChild(chatBtn);
 
         const chatWin = document.createElement('div');
         chatWin.id = 'chat-window';
+        // UPDATED HEADER & FIRST MESSAGE
         chatWin.innerHTML = `
           <div class="chat-header">
-              <span>Arnav AI 🧠</span>
+              <span>Arnav AI <i class="fas fa-microchip"></i></span>
               <span onclick="toggleChat()" style="cursor:pointer; font-size: 1.5rem; color: #ff4b4b;">&times;</span>
           </div>
           <div class="chat-body" id="chat-body">
-              <div class="msg ai-msg">Bol bhai! Kya haal hai? Main Arnav ka digital dimaag hoon. 🧠✨</div>
+              <div class="msg ai-msg">Wassup dude! 🤙 I'm Arnav's AI Assistant. Ask me anything! 🚀</div>
           </div>
           <div class="typing" id="typing-indicator">Arnav is typing...</div>
           <div class="chat-input-area">
