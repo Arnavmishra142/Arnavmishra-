@@ -13,10 +13,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Arnav Mishra | Work & Mind</title>
     
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Playfair+Display:ital,wght@0,400;1,600&family=Poppins:wght@300;400;600&family=Courier+Prime:wght@400;700&family=Great+Vibes&display=swap" rel="stylesheet">
-    
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Playfair+Display:ital,wght@0,400;1,600&family=Poppins:wght@300;400;600&family=Courier+Prime:wght@400;700&family=Great+Vibes&display=swap" rel="stylesheet">
 </head>
 
 <body id="main-body" class="wait-for-intro">
@@ -36,7 +37,6 @@
             <a href="#" onclick="switchToRecs(); toggleMenu()"><i class="fas fa-star"></i> Arnav's Picks</a>
         </div>
     </div>
-
     <div id="overlay" onclick="toggleMenu()"></div>
 
     <div id="intro-screen">
@@ -45,13 +45,15 @@
         </div>
     </div>
 
-    <div class="eclipse-toggle" id="themeToggle">
-        <div class="sun"></div>
-        <div class="moon"></div>
-        <span class="toggle-hint" id="themeHint">
-            Tap to Switch / Hold to Move
-            <span class="close-hint" onclick="closeHint(event)">&times;</span>
-        </span>
+    <div class="eclipse-wrapper" id="themeWrapper">
+        <div class="eclipse-toggle" id="themeToggle">
+            <div class="sun"></div>
+            <div class="moon"></div>
+        </div>
+        <div class="eclipse-hint" id="themeHint">
+            <span>Tap: Switch | Hold: Move</span>
+            <div class="close-hint" onclick="closeHint()">×</div>
+        </div>
     </div>
 
     <audio id="global-bg-music" loop preload="auto">
@@ -60,7 +62,7 @@
 
     <div class="sound-control">
         <button onclick="toggleMusic()" id="mute-btn">
-            <i class="fas fa-volume-mute" id="mute-icon"></i>
+            <div class="icon-container"><i class="fas fa-volume-mute" id="mute-icon"></i></div>
         </button>
     </div>
 
@@ -114,7 +116,7 @@
                 <a href="stranger.html" class="glitch-btn" data-text="ENTER THE UPSIDE DOWN">ENTER THE UPSIDE DOWN</a>
             </div>
 
-            <div style="text-align: center; margin-top: 25px; margin-bottom: 20px;">
+            <div style="text-align: center; margin-top: 15px; margin-bottom: 20px;">
                 <a href="concert.html" class="concert-btn">🎸 Enter Live Concert</a>
             </div>
             
@@ -122,7 +124,7 @@
         </div>
 
         <div id="about-view" style="display: none;">
-            <div style="height: 40px;"></div>
+            <div style="height: 30px;"></div>
             
             <h2 class="section-title">Projects</h2>
             <div class="card project-card">
@@ -144,25 +146,20 @@
         </div>
 
         <div id="recs-view" style="display: none;">
-            <div style="height: 40px;"></div>
-            
+            <div style="height: 30px;"></div>
             <h2 class="section-title" style="color: #00ff88; text-align: center;">Arnav's Intel 🧠</h2>
             <p style="color: #888; text-align: center; margin-bottom: 30px; font-family: 'Courier Prime';">Stuff that upgraded my mind.</p>
 
             <div class="card" style="border-top: 4px solid #ff0000;">
                 <h3 style="margin-top: 0; color: #fff;"><i class="fab fa-youtube" style="color: red;"></i> Watch This</h3>
-                <p style="color: #bbb; font-size: 0.9rem; margin-bottom: 10px;">Ye video perspective badal degi. Must watch.</p>
                 <div class="video-container">
-                    <iframe src="https://www.youtube.com/embed/5MgBikgcWnY" title="YouTube video" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    <iframe src="https://www.youtube.com/embed/5MgBikgcWnY" title="YouTube video" frameborder="0" allowfullscreen></iframe>
                 </div>
             </div>
 
             <div class="card" style="border-top: 4px solid #ff9f43;">
                 <h3 style="margin-top: 0; color: #fff;"><i class="fas fa-book" style="color: #ff9f43;"></i> Read This</h3>
                 <p style="color: #fff; font-weight: bold; font-size: 1.2rem; margin-top: 10px;">"Atomic Habits"</p>
-                <p style="color: #888; font-size: 0.9rem; margin-top: 5px; font-style: italic;">
-                    "Systems > Goals. Choti aadatein, bada badlav."
-                </p>
                 <a href="#" class="btn" style="display:block; margin-top:15px; background:var(--card-bg); border-color: #ff9f43; color: #ff9f43;">View Book <i class="fas fa-arrow-right"></i></a>
             </div>
             <div style="height: 80px;"></div>
