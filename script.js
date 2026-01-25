@@ -23,6 +23,13 @@ const arnavPicks = [
         desc: "AI humare sath kya karega?",
         link: "tgbNymZ7vqY" // Example ID
     }
+
+    {
+        type: "video",
+        title: "Yahan Title Likh",
+        desc: "Yahan choti si description likh.",
+        link: "Sirf_Video_ID_Yahan"  // Jaise: 5MgBikgcWnY
+}
     // Naya add karne ke liye upar wale brackets ke baad comma (,) lagana mat bhoolna!
 ];
 
