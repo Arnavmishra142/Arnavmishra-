@@ -294,3 +294,21 @@ function drag(e) {
         dragItem.style.transform = "translate3d(" + currentX + "px, " + currentY + "px, 0)";
     }
                               }
+/* --- KR$NA PLAY BUTTON LOGIC --- */
+function toggleKrsnaPlay() {
+    const audio = document.getElementById('krsna-audio');
+    const btn = document.getElementById('krsna-play-btn');
+    const icon = document.getElementById('krsna-play-icon');
+
+    if (audio.paused) {
+        audio.play();
+        icon.classList.remove('fa-play');
+        icon.classList.add('fa-pause');
+        btn.classList.add('playing');
+    } else {
+        audio.pause();
+        icon.classList.remove('fa-pause');
+        icon.classList.add('fa-play');
+        btn.classList.remove('playing');
+    }
+}
