@@ -17,37 +17,27 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Playfair+Display:ital,wght@0,400;1,600&family=Poppins:wght@300;400;600&family=Courier+Prime:wght@400;700&family=Great+Vibes&display=swap" rel="stylesheet">
-
-    <style>
-        :root {
-            --bg-color: #050505; --text-color: #fff; --accent-color: #FFD700;
-            --card-bg: rgba(255, 255, 255, 0.05); --quote-color: #a0a0a0;
-        }
-        body.light-mode {
-            --bg-color: #e0e0e0; --text-color: #111; --accent-color: #b8860b;
-            --card-bg: rgba(0, 0, 0, 0.05); --quote-color: #444;
-        }
-        body { background-color: var(--bg-color) !important; color: var(--text-color) !important; transition: background-color 0.5s ease, color 0.5s ease; }
-        
-        .eclipse-toggle { position: fixed; top: 20px; left: 20px; width: 45px; height: 45px; cursor: pointer; z-index: 10001; }
-        .sun { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: #FFD700; border-radius: 50%; box-shadow: 0 0 15px #FFD700; }
-        .moon { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: #222; border-radius: 50%; box-shadow: inset -2px -2px 5px rgba(255,255,255,0.1); transition: transform 0.6s cubic-bezier(0.68, -0.55, 0.27, 1.55); }
-        .eclipse-toggle.active .moon { transform: translate(25px, -25px); }
-
-        .quote-box { color: var(--quote-color) !important; }
-        .name { color: var(--text-color) !important; }
-        .footer-text { color: var(--quote-color) !important; }
-        
-        .concert-btn {
-            color: var(--accent-color) !important; border: 1px solid var(--accent-color) !important;
-            text-decoration: none; padding: 10px 20px; border-radius: 20px; font-size: 0.9rem; font-family: 'Poppins', sans-serif;
-            transition: all 0.3s; display: inline-block;
-        }
-        .concert-btn:hover { background: var(--accent-color); color: var(--bg-color) !important; }
-    </style>
 </head>
 
 <body id="main-body" class="wait-for-intro">
+
+    <div class="menu-icon" onclick="toggleMenu()">
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+    </div>
+
+    <div id="sidebar" class="sidebar">
+        <a href="#" class="close-btn" onclick="toggleMenu()">&times;</a>
+        <div class="sidebar-content">
+            <h3 style="color: #00a3ff; padding-left: 20px; font-family: 'Cinzel', serif;">NAVIGATE</h3>
+            <a href="#" onclick="switchToHome(); toggleMenu()"><i class="fas fa-home"></i> Home</a>
+            <a href="#" onclick="switchToAbout(); toggleMenu()"><i class="fas fa-user-astronaut"></i> About Me</a>
+            <a href="#" onclick="switchToRecs(); toggleMenu()"><i class="fas fa-star"></i> Arnav's Picks</a>
+        </div>
+    </div>
+
+    <div id="overlay" onclick="toggleMenu()"></div>
 
     <div id="intro-screen">
         <div class="signature-container">
@@ -55,9 +45,10 @@
         </div>
     </div>
 
-    <div class="eclipse-toggle" id="themeToggle" onclick="toggleTheme()">
+    <div class="eclipse-toggle" id="themeToggle">
         <div class="sun"></div>
         <div class="moon"></div>
+        <span class="toggle-hint">Tap to Switch / Hold to Move</span>
     </div>
 
     <audio id="global-bg-music" loop preload="auto">
@@ -71,7 +62,7 @@
     </div>
 
     <div id="music-popup" onclick="closePopup()">
-        <div class="popup-box">
+        <div class="popup-box glass-effect">
             <div class="popup-icon">✨</div>
             <h2>Welcome to my world.</h2>
             <p class="tap-hint">Tap anywhere to enter</p>
@@ -83,6 +74,7 @@
     </div>
 
     <div class="main-wrapper">
+        
         <div id="home-view">
             <div class="profile-container anim-delay-1">
                 <div class="profile-glow"></div>
@@ -127,9 +119,7 @@
         </div>
 
         <div id="about-view" style="display: none;">
-            <div class="nav-header"><button onclick="switchToHome()" class="back-btn"><i class="fas fa-arrow-left"></i> Home Protocol</button></div>
-            
-            <h2 class="section-title">Projects</h2>
+            <div style="height: 30px;"></div> <h2 class="section-title">Projects</h2>
             <div class="card project-card">
                 <div class="card-header"><h3 style="color: #ff4b4b;">Zomato Analysis 📊</h3></div>
                 <p class="card-desc">Market positioning and SWOT analysis for hyperlocal delivery based on real-time data.</p>
@@ -147,25 +137,38 @@
             <div class="card verse-card"><div class="verse-header"><h3 class="verse-title cosmic">🌌 Anjaan</h3></div><div id="verse-2-display" class="verse-content"></div></div>
             <div style="height: 80px;"></div>
         </div>
+
+        <div id="recs-view" style="display: none;">
+            <div style="height: 30px;"></div> <h2 class="section-title" style="color: #00ff88; text-align: center;">Arnav's Intel 🧠</h2>
+            <p style="color: #888; text-align: center; margin-bottom: 30px; font-family: 'Courier Prime';">Stuff that upgraded my mind.</p>
+
+            <div class="card" style="border-top: 4px solid #ff0000;">
+                <h3 style="margin-top: 0; color: #fff;"><i class="fab fa-youtube" style="color: red;"></i> Watch This</h3>
+                <p style="color: #bbb; font-size: 0.9rem; margin-bottom: 10px;">Ye video perspective badal degi. Must watch.</p>
+                <div class="video-container">
+                    <iframe src="https://www.youtube.com/embed/5MgBikgcWnY" title="YouTube video" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                </div>
+            </div>
+
+            <div class="card" style="border-top: 4px solid #ff9f43;">
+                <h3 style="margin-top: 0; color: #fff;"><i class="fas fa-book" style="color: #ff9f43;"></i> Read This</h3>
+                <p style="color: #fff; font-weight: bold; font-size: 1.2rem; margin-top: 10px;">"Atomic Habits"</p>
+                <p style="color: #888; font-size: 0.9rem; margin-top: 5px; font-style: italic;">
+                    "Systems > Goals. Choti aadatein, bada badlav."
+                </p>
+                <a href="#" class="btn" style="display:block; margin-top:15px; background:var(--card-bg); border-color: #ff9f43; color: #ff9f43;">View Book <i class="fas fa-arrow-right"></i></a>
+            </div>
+            <div style="height: 80px;"></div>
+        </div>
     </div>
 
     <script src="script.js"></script>
 
     <script>
-        const body = document.getElementById('main-body');
-        const toggleBtn = document.getElementById('themeToggle');
+        // Immediate Theme Check (To avoid white flash)
         if (localStorage.getItem('theme') === 'light') {
-            body.classList.add('light-mode');
-            toggleBtn.classList.add('active');
-        }
-        function toggleTheme() {
-            body.classList.toggle('light-mode');
-            toggleBtn.classList.toggle('active');
-            if (body.classList.contains('light-mode')) {
-                localStorage.setItem('theme', 'light');
-            } else {
-                localStorage.setItem('theme', 'dark');
-            }
+            document.body.classList.add('light-mode');
+            document.getElementById('themeToggle').classList.add('active');
         }
     </script>
 </body>
