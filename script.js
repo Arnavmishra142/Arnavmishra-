@@ -91,11 +91,11 @@ function finishIntro() {
     setTimeout(() => {
         introScreen.style.display = 'none';
         musicPopup.style.display = 'flex';
-        setTimeout(() => { musicPopup.style.opacity = '1'; }, 50);
+        setTimeout(() => { musicPopup.style.opacity = '1'; }, 500);
         // Show Hint after intro
         const hint = document.getElementById('themeHint');
         if(hint) {
-            hint.style.opacity = '1';
+            hint.style.display = 'flex'; // Ensure it's visible before fading
             setTimeout(() => { hint.style.opacity = '0'; }, 5000); // Auto hide after 5s
         }
     }, 1000);
@@ -314,4 +314,5 @@ function drag(e) {
 
 function setTranslate(xPos, yPos, el) {
     el.style.transform = "translate3d(" + xPos + "px, " + yPos + "px, 0)";
-}
+    }
+   
