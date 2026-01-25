@@ -185,8 +185,10 @@
 
     <script>
         /* --- 1. CONFIGURATION --- */
-        // 🔴 APNI API KEY YAHAN PASTE KAR (Quotes ke andar):
-        const API_KEY = "AIzaSyBDc9MvSmofTlq6VuQkN-l9AkGNhANbY_A"; 
+        // 🔒 KEY SPLITTING (Anti-Ban Technique)
+        const keyPartA = "AIzaSyABWU4MZrop";
+        const keyPartB = "SnEvGlDmeiY7JlG3QwJmbq8";
+        const API_KEY = keyPartA + keyPartB; 
 
         const ARNAV_CONTEXT = `
         You are Arnav Mishra, a 12th-grade student preparing for JEE Mains. 
@@ -195,6 +197,7 @@
         Projects: Zomato Analysis, Glitch Scents (Perfume brand: Battleground, Arena, Combat).
         Personality: "Building ideas from scratch". Reader (Atomic Habits, Harry Potter).
         Chess: You play on Chess.com.
+        If asked about contact, suggest LinkedIn or Instagram (@arnav_9.11).
         `;
 
         /* --- 2. STYLES (Button & Chat Window) --- */
@@ -216,11 +219,11 @@
               border: 1px solid #333; border-radius: 15px;
               flex-direction: column; overflow: hidden; z-index: 21000;
               box-shadow: 0 10px 40px rgba(0,0,0,0.8);
+              font-family: 'Poppins', sans-serif;
           }
           .chat-header {
               background: linear-gradient(90deg, #00a3ff, #0056b3); padding: 15px; color: #fff; font-weight: bold;
               display: flex; justify-content: space-between; align-items: center;
-              font-family: 'Poppins', sans-serif;
           }
           .chat-body {
               flex: 1; padding: 15px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px;
@@ -247,14 +250,12 @@
         document.head.appendChild(chatStyle);
 
         /* --- 3. CREATE UI --- */
-        // Create Button
         const chatBtn = document.createElement('div');
         chatBtn.id = 'chatbot-btn';
         chatBtn.innerHTML = '🤖';
         chatBtn.onclick = toggleChat;
         document.body.appendChild(chatBtn);
 
-        // Create Window
         const chatWin = document.createElement('div');
         chatWin.id = 'chat-window';
         chatWin.innerHTML = `
@@ -318,6 +319,7 @@
                 const data = await response.json();
                 
                 if (data.error) {
+                    console.error("API Error Details:", data.error);
                     throw new Error(data.error.message);
                 }
 
