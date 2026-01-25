@@ -315,4 +315,60 @@ function drag(e) {
 function setTranslate(xPos, yPos, el) {
     el.style.transform = "translate3d(" + xPos + "px, " + yPos + "px, 0)";
     }
-   
+/* =========================================
+   AUTOMATIC PICKS GENERATOR (JUGAAD)
+========================================= */
+function loadPicks() {
+    const container = document.getElementById('recs-view');
+    // Pehle purana static content hata dete hain (Title chhod ke)
+    // Hum Title ke baad ek container bana lenge dynamic content ke liye
+    
+    // Check if container already has dynamic-wrapper, if not create one
+    let wrapper = document.getElementById('dynamic-picks');
+    if (!wrapper) {
+        wrapper = document.createElement('div');
+        wrapper.id = 'dynamic-picks';
+        container.appendChild(wrapper);
+    }
+    
+    wrapper.innerHTML = ""; // Clear purana (just in case)
+
+    // Loop through arnavPicks from picks.js
+    if (typeof arnavPicks !== 'undefined') {
+        arnavPicks.forEach(pick => {
+            let cardHTML = "";
+
+            if (pick.type === "video") {
+                cardHTML = `
+                <div class="card" style="border-top: 4px solid #ff0000;">
+                    <h3 style="margin-top: 0; color: #fff;"><i class="fab fa-youtube" style="color: red;"></i> ${pick.title}</h3>
+                    <p style="color: #bbb; font-size: 0.9rem; margin-bottom: 10px;">${pick.desc}</p>
+                    <div class="video-container">
+                        <iframe src="https://www.youtube.com/embed/${pick.link}" title="YouTube video" frameborder="0" allowfullscreen></iframe>
+                    </div>
+                </div>`;
+            } else if (pick.type === "book") {
+                cardHTML = `
+                <div class="card" style="border-top: 4px solid #ff9f43;">
+                    <h3 style="margin-top: 0; color: #fff;"><i class="fas fa-book" style="color: #ff9f43;"></i> ${pick.title}</h3>
+                    <p style="color: #fff; font-weight: bold; font-size: 1.1rem; margin-top: 10px;">Recommended Read</p>
+                    <p style="color: #888; font-size: 0.9rem; margin-top: 5px; font-style: italic;">"${pick.desc}"</p>
+                    <a href="${pick.link}" target="_blank" class="btn" style="display:block; margin-top:15px; background:var(--card-bg); border-color: #ff9f43; color: #ff9f43;">View Book <i class="fas fa-arrow-right"></i></a>
+                </div>`;
+            }
+
+            // HTML me inject kar do
+            wrapper.innerHTML += cardHTML;
+        });
+        
+        // Add bottom spacing
+        wrapper.innerHTML += '<div style="height: 80px;"></div>';
+    }
+}
+
+// Jab page load ho, tab ye chalao
+window.addEventListener('load', () => {
+    // Purana function call hone ke baad ye chalega
+    setTimeout(loadPicks, 100); 
+});
+
