@@ -12,6 +12,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Arnav Mishra | Work & Mind</title>
+    
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -30,7 +31,7 @@
     <div id="sidebar" class="sidebar">
         <a href="#" class="close-btn" onclick="toggleMenu()">&times;</a>
         <div class="sidebar-content">
-            <h3 style="color: #00a3ff; padding-left: 20px; font-family: 'Cinzel', serif;">NAVIGATE</h3>
+            <h3>NAVIGATE</h3>
             <a href="#" onclick="switchToHome(); toggleMenu()"><i class="fas fa-home"></i> Home</a>
             <a href="#" onclick="switchToAbout(); toggleMenu()"><i class="fas fa-user-astronaut"></i> About Me</a>
             <a href="#" onclick="switchToRecs(); toggleMenu()"><i class="fas fa-star"></i> Arnav's Picks</a>
@@ -163,9 +164,8 @@
     </div>
 
     <script src="script.js"></script>
-
     <script>
-        // Immediate Theme Check (To avoid white flash)
+        // Immediate Theme Check
         if (localStorage.getItem('theme') === 'light') {
             document.body.classList.add('light-mode');
             document.getElementById('themeToggle').classList.add('active');
