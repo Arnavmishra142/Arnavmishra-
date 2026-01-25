@@ -1,6 +1,6 @@
 /* ==========================================================================
-/* ==========================================================================
    🟢 ARNAV'S SAFE ZONE: EDIT HERE ONLY
+   (Format: { type: "video/book", title: "...", desc: "...", link: "..." },)
 ========================================================================== */
 
 const arnavPicks = [
@@ -21,21 +21,18 @@ const arnavPicks = [
         title: "Future of AI",
         desc: "AI humare sath kya karega?",
         link: "tgbNymZ7vqY" 
-    }, // <--- YE DEKH, YAHAN COMMA LAGANA HAI
+    }, // <--- YAHAN COMMA ZAROORI HAI
     {
         type: "video",
-        title: "Yahan Title Likh",
-        desc: "Yahan choti si description likh.",
-        link: "Sirf_Video_ID_Yahan" 
+        title: "Coding Reality",
+        desc: "Asliyat kya hai?",
+        link: "5MgBikgcWnY"
     }
-];
-
-    // Naya add karne ke liye upar wale brackets ke baad comma (,) lagana mat bhoolna!
+    // Last wale ke baad comma na bhi lagaye to chalega
 ];
 
 /* ==========================================================================
    🔴 DANGER ZONE: DO NOT TOUCH BELOW THIS LINE
-   (Iske neeche Code Logic hai, galti se bhi edit mat karna)
 ========================================================================== */
 
 /* --- 1. CONFIGURATION --- */
@@ -73,18 +70,24 @@ let isMusicPlaying = false;
 
 /* --- 4. INTRO & POPUP --- */
 window.addEventListener('load', () => {
-    // Generate Picks first
-    generatePicks();
+    // 1. Generate Picks
+    try {
+        generatePicks();
+    } catch (e) {
+        console.error("Picks generation failed:", e);
+    }
     
-    // Play Intro
+    // 2. Play Intro
     let i = 0;
     const speed = 150;
+    
     function typeWriterIntro() {
         if (i < introName.length) {
             signatureEl.innerHTML += introName.charAt(i);
             i++;
             setTimeout(typeWriterIntro, speed);
         } else {
+            // Intro Finish Logic
             setTimeout(() => { 
                 introScreen.style.opacity = '0';
                 setTimeout(() => {
@@ -112,14 +115,11 @@ function closePopup() {
         document.body.classList.remove('wait-for-intro');
         document.body.style.overflow = 'auto';
         
-        // Animate Entry
         const animatedElements = document.querySelectorAll('#home-view > div, #home-view > button, #home-view > p');
         animatedElements.forEach(el => { el.classList.add('animate-entry'); });
         
-        // Start Bio Typewriter
         typeWriter(bioText, bioElement, 100);
         
-        // Play Music
         bgMusic.volume = 0.5;
         bgMusic.play().then(() => {
             muteIcon.className = "fas fa-volume-up";
@@ -145,18 +145,18 @@ function typeWriter(text, element, speed) {
     }, speed);
 }
 
-/* --- 6. DYNAMIC PICKS GENERATOR (The Magic) --- */
+/* --- 6. DYNAMIC PICKS GENERATOR --- */
 function generatePicks() {
     const container = document.getElementById('recs-view');
-    // Find or create wrapper to avoid duplication
+    if (!container) return; // Safety check
+
     let wrapper = document.getElementById('dynamic-picks-wrapper');
     if (!wrapper) {
         wrapper = document.createElement('div');
         wrapper.id = 'dynamic-picks-wrapper';
-        // Append after the title and subtitle
         container.appendChild(wrapper);
     }
-    wrapper.innerHTML = ""; // Clear existing
+    wrapper.innerHTML = "";
 
     arnavPicks.forEach(pick => {
         let html = "";
@@ -179,10 +179,10 @@ function generatePicks() {
         }
         wrapper.innerHTML += html;
     });
-    wrapper.innerHTML += '<div style="height: 80px;"></div>'; // Bottom spacing
+    wrapper.innerHTML += '<div style="height: 80px;"></div>';
 }
 
-/* --- 7. NAVIGATION & MENU --- */
+/* --- 7. NAVIGATION --- */
 function toggleMenu() {
     var sidebar = document.getElementById("sidebar");
     var overlay = document.getElementById("overlay");
@@ -244,7 +244,6 @@ function toggleMusic() {
     }
 }
 
-// Theme Logic
 if (localStorage.getItem('theme') === 'light') {
     body.classList.add('light-mode');
     themeToggleBtn.classList.add('active');
@@ -310,4 +309,4 @@ function drag(e) {
         xOffset = currentX; yOffset = currentY;
         dragItem.style.transform = "translate3d(" + currentX + "px, " + currentY + "px, 0)";
     }
-}
+                              }
