@@ -1,8 +1,9 @@
 /* =========================================
-   1. CONFIGURATION & DATA
+   1. CONFIGURATION
 ========================================= */
 const bioText = "Building ideas from scratch.";
 const introName = "Arnav Mishra";
+let typingInterval; // Variable to hold typewriter interval
 
 const verseData = {
     verse1: {
@@ -121,17 +122,21 @@ function closePopup() {
     }, 500);
 }
 
+// FIXED: Chinese Text Bug Solved (Clear interval before typing)
 function typeWriter(text, element, speed) {
+    if(typingInterval) clearInterval(typingInterval);
+    
     element.innerHTML = "";
     let i = 0;
-    function type() {
+    
+    typingInterval = setInterval(() => {
         if (i < text.length) {
             element.innerHTML += text.charAt(i);
             i++;
-            setTimeout(type, speed);
+        } else {
+            clearInterval(typingInterval);
         }
-    }
-    type();
+    }, speed);
 }
 
 function toggleMusic() {
@@ -151,7 +156,7 @@ function toggleMusic() {
 }
 
 /* =========================================
-   6. VIEW SWITCHING (NAVIGATION)
+   6. VIEW SWITCHING
 ========================================= */
 function transitionView(hideView, showView, callback) {
     hideView.style.opacity = '0';
@@ -208,7 +213,6 @@ function initVerse(verseKey) {
     const elementId = verseKey === 'verse1' ? 'verse-1-display' : 'verse-2-display';
     const data = verseData[verseKey];
     const container = document.getElementById(elementId);
-    
     if(!container) return;
 
     const formattedText = data.text.split('\n').map((line, index) => {
@@ -221,7 +225,6 @@ function initVerse(verseKey) {
             Read Full Lyrics <i class="fab fa-instagram"></i>
         </button>
     `;
-
     container.innerHTML = formattedText + buttonHtml;
 }
 
@@ -232,10 +235,8 @@ function goToInsta(url) {
 }
 
 /* =========================================
-   8. FIXED: DRAGGABLE + CLICKABLE THEME (FINAL VERSION)
+   8. DRAGGABLE THEME TOGGLE
 ========================================= */
-
-// Init Theme
 if (localStorage.getItem('theme') === 'light') {
     body.classList.add('light-mode');
     themeToggleBtn.classList.add('active');
@@ -252,7 +253,7 @@ function toggleTheme() {
     }
 }
 
-// DRAG LOGIC
+// Drag Logic
 const dragItem = document.querySelector("#themeToggle");
 let active = false;
 let currentX, currentY, initialX, initialY;
@@ -261,10 +262,8 @@ let startX = 0, startY = 0;
 
 dragItem.addEventListener("mousedown", dragStart, false);
 dragItem.addEventListener("touchstart", dragStart, {passive: false});
-
 document.addEventListener("mouseup", dragEnd, false);
 document.addEventListener("touchend", dragEnd, {passive: false});
-
 document.addEventListener("mousemove", drag, false);
 document.addEventListener("touchmove", drag, {passive: false});
 
@@ -272,7 +271,7 @@ function dragStart(e) {
     if (e.type === "touchstart") {
         initialX = e.touches[0].clientX - xOffset;
         initialY = e.touches[0].clientY - yOffset;
-        startX = e.touches[0].clientX; // Click detect karne ke liye
+        startX = e.touches[0].clientX;
         startY = e.touches[0].clientY;
     } else {
         initialX = e.clientX - xOffset;
@@ -280,20 +279,15 @@ function dragStart(e) {
         startX = e.clientX;
         startY = e.clientY;
     }
-
-    if (e.target.closest('#themeToggle')) {
-        active = true;
-    }
+    if (e.target.closest('#themeToggle')) { active = true; }
 }
 
 function dragEnd(e) {
     if(!active) return;
-    
     initialX = currentX;
     initialY = currentY;
     active = false;
 
-    // --- CLICK DETECTION LOGIC ---
     let endX, endY;
     if (e.type === "touchend") {
         endX = e.changedTouches[0].clientX;
@@ -302,20 +296,15 @@ function dragEnd(e) {
         endX = e.clientX;
         endY = e.clientY;
     }
-
-    // Pythagoras theorem se distance nikalo
     let dist = Math.sqrt(Math.pow(endX - startX, 2) + Math.pow(endY - startY, 2));
-
-    // Agar button 5 pixel se kam hila hai, to iska matlab ye CLICK hai
-    if (dist < 5) {
-        toggleTheme();
-    }
+    
+    // Only toggle if moved less than 5px
+    if (dist < 5) { toggleTheme(); }
 }
 
 function drag(e) {
     if (active) {
         e.preventDefault();
-        
         if (e.type === "touchmove") {
             currentX = e.touches[0].clientX - initialX;
             currentY = e.touches[0].clientY - initialY;
@@ -323,10 +312,8 @@ function drag(e) {
             currentX = e.clientX - initialX;
             currentY = e.clientY - initialY;
         }
-
         xOffset = currentX;
         yOffset = currentY;
-
         setTranslate(currentX, currentY, dragItem);
     }
 }
