@@ -1,18 +1,15 @@
 /* ==========================================================================
    🟢 ARNAV'S SAFE ZONE: EDIT HERE ONLY
-   (Format: { type: "video/book", title: "...", desc: "...", link: "..." },)
 ========================================================================== */
 
 const arnavPicks = [
-{
+    {
         type: "video",
-        title: "must watch podcast",
-        desc: "Nikhil Kamath with elon musk.",
-        link: "/Rni7Fz7208c" 
-},
-   
-
-    // Last wale ke baad comma na bhi lagaye to chalega
+        title: "Must Watch Podcast",
+        desc: "Nikhil Kamath with Elon Musk.",
+        link: "Rni7Fz7208c" // Maine slash '/' hata diya hai, ab video chalegi
+    },
+    // Aur add karna ho to yahan comma laga ke add kar sakte ho
 ];
 
 /* ==========================================================================
@@ -52,7 +49,7 @@ const bioElement = document.getElementById('bio-text');
 
 let isMusicPlaying = false;
 
-/* --- 4. INTRO & POPUP --- */
+/* --- 4. INTRO & POPUP (WITH SAFETY LOCK 🔒) --- */
 window.addEventListener('load', () => {
     // 1. Generate Picks
     try {
@@ -61,56 +58,69 @@ window.addEventListener('load', () => {
         console.error("Picks generation failed:", e);
     }
     
-    // 2. Play Intro
+    // 2. Play Intro Animation
     let i = 0;
-    const speed = 150;
+    const speed = 100; // Thoda fast kiya taaki bore na ho
     
     function typeWriterIntro() {
-        if (i < introName.length) {
+        if (signatureEl && i < introName.length) {
             signatureEl.innerHTML += introName.charAt(i);
             i++;
             setTimeout(typeWriterIntro, speed);
         } else {
-            // Intro Finish Logic
-            setTimeout(() => { 
-                introScreen.style.opacity = '0';
-                setTimeout(() => {
-                    introScreen.style.display = 'none';
-                    musicPopup.style.display = 'flex';
-                    setTimeout(() => { musicPopup.style.opacity = '1'; }, 100);
-                    
-                    // Show Hint
-                    const hint = document.getElementById('themeHint');
-                    if(hint) {
-                        hint.style.display = 'flex';
-                        setTimeout(() => { hint.style.opacity = '0'; }, 5000);
-                    }
-                }, 1000);
-            }, 1000);
+            finishIntro();
         }
     }
-    typeWriterIntro();
+
+    // Start Typing
+    if (signatureEl) typeWriterIntro();
+    else finishIntro(); // Agar element nahi mila to direct khol do
+
+    // 🔒 SAFETY LOCK: Agar 4 second mein intro khatam nahi hua, to force open kar do
+    setTimeout(() => {
+        if (introScreen.style.display !== 'none') {
+            console.log("Forcing site open...");
+            finishIntro();
+        }
+    }, 4000);
 });
+
+function finishIntro() {
+    introScreen.style.opacity = '0';
+    setTimeout(() => {
+        introScreen.style.display = 'none';
+        musicPopup.style.display = 'flex';
+        setTimeout(() => { musicPopup.style.opacity = '1'; }, 100);
+        
+        // Show Hint
+        const hint = document.getElementById('themeHint');
+        if(hint) {
+            hint.style.display = 'flex';
+            setTimeout(() => { hint.style.opacity = '0'; }, 5000);
+        }
+    }, 1000);
+}
 
 function closePopup() {
     musicPopup.style.opacity = '0';
     setTimeout(() => {
         musicPopup.style.display = 'none';
-        document.body.classList.remove('wait-for-intro');
+        document.body.classList.remove('wait-for-intro'); // Ye line white screen hatati hai
         document.body.style.overflow = 'auto';
         
         const animatedElements = document.querySelectorAll('#home-view > div, #home-view > button, #home-view > p');
         animatedElements.forEach(el => { el.classList.add('animate-entry'); });
         
-        typeWriter(bioText, bioElement, 100);
+        if(bioElement) typeWriter(bioText, bioElement, 100);
         
-        bgMusic.volume = 0.5;
-        bgMusic.play().then(() => {
-            muteIcon.className = "fas fa-volume-up";
-            muteBtn.style.borderColor = "#00ff88";
-            muteBtn.style.color = "#00ff88";
-            isMusicPlaying = true;
-        }).catch(e => console.log("Autoplay blocked"));
+        if (bgMusic) {
+            bgMusic.volume = 0.5;
+            bgMusic.play().then(() => {
+                if(muteIcon) muteIcon.className = "fas fa-volume-up";
+                if(muteBtn) { muteBtn.style.borderColor = "#00ff88"; muteBtn.style.color = "#00ff88"; }
+                isMusicPlaying = true;
+            }).catch(e => console.log("Autoplay blocked"));
+        }
     }, 500);
 }
 
@@ -132,7 +142,7 @@ function typeWriter(text, element, speed) {
 /* --- 6. DYNAMIC PICKS GENERATOR --- */
 function generatePicks() {
     const container = document.getElementById('recs-view');
-    if (!container) return; // Safety check
+    if (!container) return;
 
     let wrapper = document.getElementById('dynamic-picks-wrapper');
     if (!wrapper) {
@@ -260,12 +270,14 @@ function goToInsta(url) {
 const dragItem = document.querySelector("#themeWrapper");
 let active = false, currentX, currentY, initialX, initialY, xOffset = 0, yOffset = 0, startX, startY;
 
-dragItem.addEventListener("mousedown", dragStart, false);
-dragItem.addEventListener("touchstart", dragStart, {passive: false});
-document.addEventListener("mouseup", dragEnd, false);
-document.addEventListener("touchend", dragEnd, {passive: false});
-document.addEventListener("mousemove", drag, false);
-document.addEventListener("touchmove", drag, {passive: false});
+if(dragItem) {
+    dragItem.addEventListener("mousedown", dragStart, false);
+    dragItem.addEventListener("touchstart", dragStart, {passive: false});
+    document.addEventListener("mouseup", dragEnd, false);
+    document.addEventListener("touchend", dragEnd, {passive: false});
+    document.addEventListener("mousemove", drag, false);
+    document.addEventListener("touchmove", drag, {passive: false});
+}
 
 function dragStart(e) {
     if (e.type === "touchstart") {
@@ -293,7 +305,8 @@ function drag(e) {
         xOffset = currentX; yOffset = currentY;
         dragItem.style.transform = "translate3d(" + currentX + "px, " + currentY + "px, 0)";
     }
-                              }
+}
+
 /* --- KR$NA PLAY BUTTON LOGIC --- */
 function toggleKrsnaPlay() {
     const audio = document.getElementById('krsna-audio');
