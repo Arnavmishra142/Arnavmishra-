@@ -19,22 +19,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Playfair+Display:ital,wght@0,400;1,600&family=Poppins:wght@300;400;600&family=Courier+Prime:wght@400;700&family=Great+Vibes&display=swap" rel="stylesheet">
 
     <style>
-        :root {
-            --bg-color: #050505; --text-color: #fff; --accent-color: #FFD700;
-            --card-bg: rgba(255, 255, 255, 0.05); --quote-color: #a0a0a0;
-        }
-        body.light-mode {
-            --bg-color: #e0e0e0; --text-color: #111; --accent-color: #b8860b;
-            --card-bg: rgba(0, 0, 0, 0.05); --quote-color: #444;
-        }
-        body { background-color: var(--bg-color) !important; color: var(--text-color) !important; transition: background-color 0.5s ease, color 0.5s ease; }
-        
-        .concert-btn {
-            color: var(--accent-color) !important; border: 1px solid var(--accent-color) !important;
-            text-decoration: none; padding: 10px 20px; border-radius: 20px; font-size: 0.9rem; font-family: 'Poppins', sans-serif;
-            transition: all 0.3s; display: inline-block;
-        }
-        .concert-btn:hover { background: var(--accent-color); color: var(--bg-color) !important; }
+        /* CSS Variables moved to style.css for better management, 
+           but kept basic override logic here if needed */
     </style>
 </head>
 
@@ -67,6 +53,7 @@
     <div class="eclipse-toggle" id="themeToggle">
         <div class="sun"></div>
         <div class="moon"></div>
+        <span class="toggle-hint">Tap to Switch / Hold to Move</span>
     </div>
 
     <audio id="global-bg-music" loop preload="auto">
@@ -181,27 +168,19 @@
             </div>
             <div style="height: 80px;"></div>
         </div>
-
     </div>
 
     <script src="script.js"></script>
 
     <script>
-        const body = document.getElementById('main-body');
-        const toggleBtn = document.getElementById('themeToggle');
+        // Inline JS for immediate theme application to prevent flash
+        const b = document.getElementById('main-body');
+        const t = document.getElementById('themeToggle');
         if (localStorage.getItem('theme') === 'light') {
-            body.classList.add('light-mode');
-            toggleBtn.classList.add('active');
+            b.classList.add('light-mode');
+            t.classList.add('active');
         }
-        function toggleTheme() {
-            body.classList.toggle('light-mode');
-            toggleBtn.classList.toggle('active');
-            if (body.classList.contains('light-mode')) {
-                localStorage.setItem('theme', 'light');
-            } else {
-                localStorage.setItem('theme', 'dark');
-            }
-        }
+        // Toggle logic is now fully in script.js for consistency
     </script>
 </body>
 </html>
