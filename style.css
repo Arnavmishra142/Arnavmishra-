@@ -46,6 +46,27 @@ body {
     .cursor { height: 35px; }
 }
 
+/* --- DRAGGABLE ECLIPSE TOGGLE --- */
+.eclipse-toggle { 
+    position: fixed; 
+    top: 80px; /* Menu ke neeche rakha hai initially */
+    left: 20px; 
+    width: 45px; height: 45px; 
+    cursor: grab; 
+    z-index: 10001; 
+    user-select: none; /* Text select na ho */
+    touch-action: none; /* Scroll na ho jab drag karo */
+}
+.eclipse-toggle:active { cursor: grabbing; }
+
+.sun { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: #FFD700; border-radius: 50%; box-shadow: 0 0 15px #FFD700; }
+.moon { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: #222; border-radius: 50%; box-shadow: inset -2px -2px 5px rgba(255,255,255,0.1); transition: transform 0.6s cubic-bezier(0.68, -0.55, 0.27, 1.55); }
+.eclipse-toggle.active .moon { transform: translate(25px, -25px); }
+
+.quote-box { color: var(--quote-color) !important; }
+.name { color: var(--text-color) !important; }
+.footer-text { color: var(--quote-color) !important; }
+
 body.wait-for-intro .main-wrapper,
 body.wait-for-intro .sound-control,
 body.wait-for-intro .eclipse-toggle,
@@ -55,7 +76,7 @@ body.wait-for-intro .menu-icon {
 }
 
 /* =========================================
-   SIDEBAR MENU STYLES (NEW)
+   SIDEBAR MENU STYLES
 ========================================= */
 .menu-icon {
     position: fixed; top: 25px; left: 20px; z-index: 10002;
@@ -108,7 +129,7 @@ body.wait-for-intro .menu-icon {
     transition: opacity 1s ease; 
 }
 
-/* --- POPUP (GLASS EFFECT FIXED) --- */
+/* --- POPUP (GLASS EFFECT) --- */
 #music-popup { 
     display: none; 
     position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
@@ -119,14 +140,14 @@ body.wait-for-intro .menu-icon {
     opacity: 0; transition: opacity 1s ease;
 }
 .popup-box {
-    background: rgba(20, 20, 20, 0.6); /* Transparent Dark */
+    background: rgba(20, 20, 20, 0.6);
     border: 1px solid rgba(255, 255, 255, 0.1);
     padding: 30px;
     border-radius: 20px;
     text-align: center; color: #fff;
     box-shadow: 0 0 40px rgba(0, 163, 255, 0.1);
     animation: popupFloat 3s infinite ease-in-out;
-    backdrop-filter: blur(15px); /* Strong Blur */
+    backdrop-filter: blur(15px);
     -webkit-backdrop-filter: blur(15px);
 }
 @keyframes popupFloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
@@ -279,4 +300,3 @@ body.wait-for-intro .menu-icon {
     box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
 }
 .read-more-btn i { margin-left: 8px; color: #E1306C; }
-    
