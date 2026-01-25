@@ -13,11 +13,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Arnav Mishra | Work & Mind</title>
     
-    <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Playfair+Display:ital,wght@0,400;1,600&family=Poppins:wght@300;400;600&family=Courier+Prime:wght@400;700&family=Great+Vibes&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body id="main-body" class="wait-for-intro">
@@ -49,7 +48,10 @@
     <div class="eclipse-toggle" id="themeToggle">
         <div class="sun"></div>
         <div class="moon"></div>
-        <span class="toggle-hint">Tap to Switch / Hold to Move</span>
+        <span class="toggle-hint" id="themeHint">
+            Tap to Switch / Hold to Move
+            <span class="close-hint" onclick="closeHint(event)">&times;</span>
+        </span>
     </div>
 
     <audio id="global-bg-music" loop preload="auto">
@@ -58,7 +60,7 @@
 
     <div class="sound-control">
         <button onclick="toggleMusic()" id="mute-btn">
-            <div class="icon-container"><i class="fas fa-volume-mute" id="mute-icon"></i></div>
+            <i class="fas fa-volume-mute" id="mute-icon"></i>
         </button>
     </div>
 
@@ -112,7 +114,7 @@
                 <a href="stranger.html" class="glitch-btn" data-text="ENTER THE UPSIDE DOWN">ENTER THE UPSIDE DOWN</a>
             </div>
 
-            <div style="text-align: center; margin-top: 15px; margin-bottom: 20px;">
+            <div style="text-align: center; margin-top: 25px; margin-bottom: 20px;">
                 <a href="concert.html" class="concert-btn">🎸 Enter Live Concert</a>
             </div>
             
@@ -120,7 +122,9 @@
         </div>
 
         <div id="about-view" style="display: none;">
-            <div style="height: 30px;"></div> <h2 class="section-title">Projects</h2>
+            <div style="height: 40px;"></div>
+            
+            <h2 class="section-title">Projects</h2>
             <div class="card project-card">
                 <div class="card-header"><h3 style="color: #ff4b4b;">Zomato Analysis 📊</h3></div>
                 <p class="card-desc">Market positioning and SWOT analysis for hyperlocal delivery based on real-time data.</p>
@@ -140,7 +144,9 @@
         </div>
 
         <div id="recs-view" style="display: none;">
-            <div style="height: 30px;"></div> <h2 class="section-title" style="color: #00ff88; text-align: center;">Arnav's Intel 🧠</h2>
+            <div style="height: 40px;"></div>
+            
+            <h2 class="section-title" style="color: #00ff88; text-align: center;">Arnav's Intel 🧠</h2>
             <p style="color: #888; text-align: center; margin-bottom: 30px; font-family: 'Courier Prime';">Stuff that upgraded my mind.</p>
 
             <div class="card" style="border-top: 4px solid #ff0000;">
@@ -165,7 +171,6 @@
 
     <script src="script.js"></script>
     <script>
-        // Immediate Theme Check
         if (localStorage.getItem('theme') === 'light') {
             document.body.classList.add('light-mode');
             document.getElementById('themeToggle').classList.add('active');
