@@ -29,15 +29,6 @@
         }
         body { background-color: var(--bg-color) !important; color: var(--text-color) !important; transition: background-color 0.5s ease, color 0.5s ease; }
         
-        .eclipse-toggle { position: fixed; top: 20px; left: 60px; width: 45px; height: 45px; cursor: pointer; z-index: 10001; }
-        .sun { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: #FFD700; border-radius: 50%; box-shadow: 0 0 15px #FFD700; }
-        .moon { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: #222; border-radius: 50%; box-shadow: inset -2px -2px 5px rgba(255,255,255,0.1); transition: transform 0.6s cubic-bezier(0.68, -0.55, 0.27, 1.55); }
-        .eclipse-toggle.active .moon { transform: translate(25px, -25px); }
-
-        .quote-box { color: var(--quote-color) !important; }
-        .name { color: var(--text-color) !important; }
-        .footer-text { color: var(--quote-color) !important; }
-        
         .concert-btn {
             color: var(--accent-color) !important; border: 1px solid var(--accent-color) !important;
             text-decoration: none; padding: 10px 20px; border-radius: 20px; font-size: 0.9rem; font-family: 'Poppins', sans-serif;
@@ -73,7 +64,7 @@
         </div>
     </div>
 
-    <div class="eclipse-toggle" id="themeToggle" onclick="toggleTheme()">
+    <div class="eclipse-toggle" id="themeToggle">
         <div class="sun"></div>
         <div class="moon"></div>
     </div>
@@ -145,7 +136,7 @@
         </div>
 
         <div id="about-view" style="display: none;">
-            <div class="nav-header"><button onclick="switchToHome()" class="back-btn"><i class="fas fa-arrow-left"></i> Home Protocol</button></div>
+            <div style="height: 30px;"></div>
             
             <h2 class="section-title">Projects</h2>
             <div class="card project-card">
@@ -167,7 +158,7 @@
         </div>
 
         <div id="recs-view" style="display: none;">
-            <div class="nav-header"><button onclick="switchToHome()" class="back-btn"><i class="fas fa-arrow-left"></i> Home Protocol</button></div>
+            <div style="height: 30px;"></div>
             
             <h2 class="section-title" style="color: #00ff88; text-align: center;">Arnav's Intel 🧠</h2>
             <p style="color: #888; text-align: center; margin-bottom: 30px; font-family: 'Courier Prime';">Stuff that upgraded my mind.</p>
