@@ -32,7 +32,7 @@ Divr hun mai bhaal sa`,
 /* --- DOM ELEMENTS --- */
 const homeView = document.getElementById('home-view');
 const aboutView = document.getElementById('about-view');
-const recsView = document.getElementById('recs-view'); // NEW
+const recsView = document.getElementById('recs-view');
 const musicPopup = document.getElementById('music-popup');
 const bgMusic = document.getElementById('global-bg-music');
 const muteBtn = document.getElementById('mute-btn');
@@ -43,7 +43,7 @@ const signatureEl = document.getElementById('signature-text');
 
 let isMusicPlaying = false;
 
-/* --- MENU LOGIC (NEW) --- */
+/* --- MENU LOGIC --- */
 function toggleMenu() {
     var sidebar = document.getElementById("sidebar");
     var overlay = document.getElementById("overlay");
@@ -151,7 +151,7 @@ function transitionView(hideView, showView, callback) {
         showView.style.opacity = '0';
         showView.style.transform = 'translateY(20px)';
         
-        void showView.offsetWidth; // Trigger reflow
+        void showView.offsetWidth; 
         
         showView.style.transition = 'all 0.6s ease';
         showView.style.opacity = '1';
@@ -163,7 +163,7 @@ function transitionView(hideView, showView, callback) {
 }
 
 function switchToAbout() {
-    recsView.style.display = 'none'; // Ensure recs is hidden
+    recsView.style.display = 'none'; 
     transitionView(homeView, aboutView, () => {
         initVerse('verse1');
         initVerse('verse2');
@@ -171,18 +171,16 @@ function switchToAbout() {
 }
 
 function switchToRecs() {
-    aboutView.style.display = 'none'; // Ensure about is hidden
+    aboutView.style.display = 'none'; 
     transitionView(homeView, recsView);
 }
 
 function switchToHome() {
-    // Check which view is currently open
     if (aboutView.style.display === 'block') {
         transitionView(aboutView, homeView);
     } else if (recsView.style.display === 'block') {
         transitionView(recsView, homeView);
     } else {
-        // Fallback
         aboutView.style.display = 'none';
         recsView.style.display = 'none';
         homeView.style.display = 'block';
@@ -216,3 +214,99 @@ function goToInsta(url) {
         window.open(url, '_blank');
     }
 }
+
+/* =========================================
+   DRAGGABLE THEME TOGGLE LOGIC
+========================================= */
+const dragItem = document.querySelector("#themeToggle");
+let active = false;
+let currentX;
+let currentY;
+let initialX;
+let initialY;
+let xOffset = 0;
+let yOffset = 0;
+
+// Mouse Events
+dragItem.addEventListener("mousedown", dragStart, false);
+document.addEventListener("mouseup", dragEnd, false);
+document.addEventListener("mousemove", drag, false);
+
+// Touch Events
+dragItem.addEventListener("touchstart", dragStart, {passive: false});
+document.addEventListener("touchend", dragEnd, {passive: false});
+document.addEventListener("touchmove", drag, {passive: false});
+
+function dragStart(e) {
+    if (e.type === "touchstart") {
+        initialX = e.touches[0].clientX - xOffset;
+        initialY = e.touches[0].clientY - yOffset;
+    } else {
+        initialX = e.clientX - xOffset;
+        initialY = e.clientY - yOffset;
+    }
+
+    if (e.target.closest('#themeToggle')) {
+        active = true;
+    }
+}
+
+function dragEnd(e) {
+    if(!active) return;
+    
+    initialX = currentX;
+    initialY = currentY;
+    active = false;
+
+    // Detect Click vs Drag (If moved less than 5px, treat as click)
+    // Simple way: check if we moved much. If not, trigger toggleTheme()
+    // However, since we track offset, let's keep it simple:
+    // If user tapped without dragging, toggle theme.
+    // This logic handles drag primarily. 
+    // For click, we check if the mouseup happened on the element without much movement.
+}
+
+function drag(e) {
+    if (active) {
+        e.preventDefault();
+    
+        if (e.type === "touchmove") {
+            currentX = e.touches[0].clientX - initialX;
+            currentY = e.touches[0].clientY - initialY;
+        } else {
+            currentX = e.clientX - initialX;
+            currentY = e.clientY - initialY;
+        }
+
+        xOffset = currentX;
+        yOffset = currentY;
+
+        setTranslate(currentX, currentY, dragItem);
+    }
+}
+
+function setTranslate(xPos, yPos, el) {
+    el.style.transform = "translate3d(" + xPos + "px, " + yPos + "px, 0)";
+}
+
+// Handle Click explicitly since we removed onclick from HTML to avoid conflict
+let startX, startY;
+dragItem.addEventListener('touchstart', function(e) {
+    startX = e.changedTouches[0].pageX;
+    startY = e.changedTouches[0].pageY;
+}, {passive: false});
+
+dragItem.addEventListener('touchend', function(e) {
+    const endX = e.changedTouches[0].pageX;
+    const endY = e.changedTouches[0].pageY;
+    if (Math.abs(endX - startX) < 5 && Math.abs(endY - startY) < 5) {
+        toggleTheme();
+    }
+}, {passive: false});
+
+dragItem.addEventListener('click', function(e) {
+    // For mouse clicks, simple click listener works if drag didn't happen
+    // We can just use the toggleTheme logic directly here if dragging wasn't the intent
+    // But since mousemove handles drag, a static click should trigger this.
+    toggleTheme(); 
+});
