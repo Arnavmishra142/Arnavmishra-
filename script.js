@@ -3,7 +3,7 @@
 ========================================= */
 const bioText = "Building ideas from scratch.";
 const introName = "Arnav Mishra";
-let typingInterval; // Variable to hold typewriter interval
+let typingInterval; 
 
 const verseData = {
     verse1: {
@@ -122,7 +122,6 @@ function closePopup() {
     }, 500);
 }
 
-// FIXED: Chinese Text Bug Solved (Clear interval before typing)
 function typeWriter(text, element, speed) {
     if(typingInterval) clearInterval(typingInterval);
     
@@ -235,10 +234,8 @@ function goToInsta(url) {
 }
 
 /* =========================================
-   8. DRAGGABLE THEME TOGGLE (FINAL FIX)
+   8. DRAGGABLE THEME TOGGLE
 ========================================= */
-
-// Theme Check
 if (localStorage.getItem('theme') === 'light') {
     body.classList.add('light-mode');
     themeToggleBtn.classList.add('active');
@@ -255,7 +252,7 @@ function toggleTheme() {
     }
 }
 
-// DRAG LOGIC
+// Drag Logic
 const dragItem = document.querySelector("#themeToggle");
 let active = false;
 let currentX, currentY, initialX, initialY;
@@ -264,10 +261,8 @@ let startX = 0, startY = 0;
 
 dragItem.addEventListener("mousedown", dragStart, false);
 dragItem.addEventListener("touchstart", dragStart, {passive: false});
-
 document.addEventListener("mouseup", dragEnd, false);
 document.addEventListener("touchend", dragEnd, {passive: false});
-
 document.addEventListener("mousemove", drag, false);
 document.addEventListener("touchmove", drag, {passive: false});
 
@@ -292,7 +287,6 @@ function dragEnd(e) {
     initialY = currentY;
     active = false;
 
-    // Detect Click vs Drag using Distance
     let endX, endY;
     if (e.type === "touchend") {
         endX = e.changedTouches[0].clientX;
@@ -301,17 +295,14 @@ function dragEnd(e) {
         endX = e.clientX;
         endY = e.clientY;
     }
-    
     let dist = Math.sqrt(Math.pow(endX - startX, 2) + Math.pow(endY - startY, 2));
     
-    // If moved less than 5px, it's a CLICK
     if (dist < 5) { toggleTheme(); }
 }
 
 function drag(e) {
     if (active) {
         e.preventDefault();
-        
         if (e.type === "touchmove") {
             currentX = e.touches[0].clientX - initialX;
             currentY = e.touches[0].clientY - initialY;
@@ -319,15 +310,12 @@ function drag(e) {
             currentX = e.clientX - initialX;
             currentY = e.clientY - initialY;
         }
-
         xOffset = currentX;
         yOffset = currentY;
-
         setTranslate(currentX, currentY, dragItem);
     }
 }
 
 function setTranslate(xPos, yPos, el) {
     el.style.transform = "translate3d(" + xPos + "px, " + yPos + "px, 0)";
-    }
-    
+}
