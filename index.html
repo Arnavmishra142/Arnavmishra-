@@ -352,5 +352,80 @@
         }
     </script>
 
-</body>
-</html>
+    <style>
+        #gravity-btn {
+            position: fixed; top: 20px; right: 80px; /* Near Sound Button */
+            background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.3);
+            color: #fff; padding: 8px 15px; border-radius: 20px;
+            cursor: pointer; font-family: 'Poppins', sans-serif; font-size: 0.8rem;
+            z-index: 20000; backdrop-filter: blur(5px); transition: 0.3s;
+            display: flex; align-items: center; gap: 5px;
+        }
+        #gravity-btn:hover { background: #00a3ff; border-color: #00a3ff; transform: scale(1.05); }
+    </style>
+
+    <button id="gravity-btn" onclick="toggleGravity()">
+        <i class="fas fa-meteor"></i> Zero Gravity
+    </button>
+
+    <script>
+        let gravityActive = false;
+        let floatingElements = [];
+        let animationFrame;
+
+        function toggleGravity() {
+            if (!gravityActive) {
+                startGravity();
+                const btn = document.getElementById('gravity-btn');
+                btn.innerHTML = '<i class="fas fa-undo"></i> Reset World';
+                btn.style.background = '#ff4b4b';
+                btn.style.borderColor = '#ff4b4b';
+            } else {
+                location.reload(); // Quick Reset
+            }
+        }
+
+        function startGravity() {
+            gravityActive = true;
+            
+            // Targets: Name, Bio, Cards, Buttons, Images
+            const targets = document.querySelectorAll('.profile-container, .name, .bio-wrap, .btn-grid, .card, .main-btn, .chess-msg-container, .concert-btn, .project-card, .krsna-card, .verse-card');
+
+            targets.forEach(el => {
+                const rect = el.getBoundingClientRect();
+                
+                const obj = {
+                    element: el,
+                    x: rect.left,
+                    y: rect.top,
+                    vx: (Math.random() - 0.5) * 5, // Random Speed X
+                    vy: (Math.random() - 0.5) * 5, // Random Speed Y
+                    rot: 0,
+                    vRot: (Math.random() - 0.5) * 2 // Random Spin
+                };
+
+                // Free the element from layout
+                el.style.position = 'fixed';
+                el.style.left = obj.x + 'px';
+                el.style.top = obj.y + 'px';
+                el.style.width = rect.width + 'px';
+                el.style.zIndex = '1000';
+                el.style.margin = '0';
+                el.style.transition = 'none';
+
+                floatingElements.push(obj);
+            });
+
+            animateGravity();
+        }
+
+        function animateGravity() {
+            if (!gravityActive) return;
+
+            floatingElements.forEach(obj => {
+                obj.x += obj.vx;
+                obj.y += obj.vy;
+                obj.rot += obj.vRot;
+
+                const rect = obj.element.getBoundingClientRect();
+    
