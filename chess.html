@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
-        /* --- CYBERPUNK THEME --- */
+        /* --- CYBERPUNK UNIVERSE --- */
         body {
             background-color: #050505;
             color: #fff;
@@ -22,60 +22,94 @@
             background-image: radial-gradient(circle at center, #111 0%, #000 100%);
         }
 
-        /* --- BOT PROFILE (NEW) --- */
+        /* --- 🤖 PRO BOT PROFILE (UPGRADED) --- */
         .opponent-area {
-            display: flex; align-items: center; gap: 15px; margin-bottom: 15px;
-            width: 400px;
-        }
-        .bot-avatar {
-            width: 60px; height: 60px; border-radius: 50%;
-            background: #000; border: 2px solid #00ff88;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 30px; color: #00ff88;
-            box-shadow: 0 0 15px rgba(0, 255, 136, 0.4);
+            display: flex; align-items: center; gap: 20px; margin-bottom: 20px;
+            width: 420px;
+            padding: 15px;
+            background: rgba(20, 20, 20, 0.8);
+            border: 1px solid #333;
+            border-left: 4px solid #00ff88; /* Neon Green Accent */
+            border-radius: 0 10px 10px 0;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
             position: relative;
         }
-        .bot-avatar::after {
-            content: ''; position: absolute; bottom: 0; right: 0;
-            width: 12px; height: 12px; background: #00ff88;
-            border-radius: 50%; border: 2px solid #000;
-            animation: blink 1s infinite;
+
+        /* Glitchy Avatar Container */
+        .avatar-container {
+            position: relative; width: 70px; height: 70px;
         }
-        .bot-info h3 { margin: 0; font-size: 1.2rem; color: #fff; text-transform: uppercase; letter-spacing: 1px; }
-        .bot-info span { font-size: 0.8rem; color: #888; }
+        .bot-avatar {
+            width: 100%; height: 100%; border-radius: 10px;
+            background: #000; border: 2px solid #00ff88;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 35px; color: #00ff88;
+            box-shadow: 0 0 15px rgba(0, 255, 136, 0.3);
+            z-index: 2; position: relative;
+        }
+        /* Scanning Line Effect */
+        .bot-avatar::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 2px;
+            background: #fff; opacity: 0.5;
+            animation: scan 2s linear infinite;
+        }
+
+        .bot-info { flex: 1; }
+        .bot-info h3 { 
+            margin: 0; font-size: 1.4rem; color: #fff; 
+            text-transform: uppercase; letter-spacing: 2px;
+            text-shadow: 0 0 5px rgba(255,255,255,0.5);
+        }
+        .bot-stats {
+            display: flex; gap: 10px; font-size: 0.75rem; color: #888; margin-top: 5px;
+        }
+        .stat-badge {
+            background: #111; padding: 2px 6px; border-radius: 4px; border: 1px solid #333;
+        }
+        .stat-badge.active { border-color: #00ff88; color: #00ff88; }
+
+        /* Thinking Indicator */
+        .thinking-indicator {
+            position: absolute; right: 15px; top: 15px;
+            width: 10px; height: 10px; background: #ff4b4b; border-radius: 50%;
+            box-shadow: 0 0 10px #ff4b4b; opacity: 0.2; transition: 0.3s;
+        }
+        .thinking-indicator.thinking {
+            background: #00a3ff; box-shadow: 0 0 15px #00a3ff; opacity: 1;
+            animation: pulse 0.5s infinite alternate;
+        }
 
         /* The Speech Bubble */
         .speech-bubble {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 8px 12px; border-radius: 10px 10px 10px 0;
-            font-size: 0.8rem; color: #00ff88;
-            max-width: 200px; position: relative;
-            animation: floatText 3s ease-in-out infinite;
+            margin-top: 10px;
+            font-size: 0.85rem; color: #00ff88;
+            font-style: italic; min-height: 20px;
         }
 
-        /* --- CHESS BOARD VISIBILITY FIX --- */
+        /* --- CHESS BOARD --- */
         #myBoard {
-            width: 400px;
-            border: 5px solid #333;
-            box-shadow: 0 0 40px rgba(0, 255, 136, 0.15);
+            width: 420px;
+            border: 5px solid #222;
+            box-shadow: 0 0 50px rgba(0, 255, 136, 0.1);
         }
-        /* Custom Colors for High Contrast */
-        .white-1e1d7 { background-color: #e0e0e0; color: #b58863; } /* Light Grey */
-        .black-3c85d { background-color: #2E8B57; color: #f0d9b5; } /* Sea Green (Visible for Black Pieces) */
+        .white-1e1d7 { background-color: #dadada; color: #b58863; }
+        .black-3c85d { background-color: #363636; color: #f0d9b5; }
 
         /* Controls */
-        .controls { margin-top: 20px; display: flex; gap: 15px; }
+        .controls { margin-top: 25px; display: flex; gap: 20px; }
         .btn {
-            background: transparent; border: 1px solid #ff4b4b; color: #ff4b4b;
-            padding: 10px 20px; cursor: pointer; text-transform: uppercase;
-            font-family: inherit; font-weight: bold; transition: 0.3s;
+            background: transparent; border: 1px solid #00a3ff; color: #00a3ff;
+            padding: 10px 25px; cursor: pointer; text-transform: uppercase;
+            font-family: inherit; font-weight: bold; font-size: 0.9rem; transition: 0.3s;
+            letter-spacing: 1px;
         }
-        .btn:hover { background: #ff4b4b; color: #000; box-shadow: 0 0 15px #ff4b4b; }
-        .btn-home { border-color: #fff; color: #fff; text-decoration: none; display: flex; align-items: center; gap: 5px;}
-        .btn-home:hover { background: #fff; color: #000; }
+        .btn:hover { background: #00a3ff; color: #000; box-shadow: 0 0 20px rgba(0, 163, 255, 0.6); }
+        .btn-exit { border-color: #ff4b4b; color: #ff4b4b; text-decoration: none; display: flex; align-items: center; justify-content: center; }
+        .btn-exit:hover { background: #ff4b4b; color: #fff; box-shadow: 0 0 20px rgba(255, 75, 75, 0.6); }
 
-        @keyframes blink { 50% { opacity: 0.5; } }
-        @keyframes floatText { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
+        @keyframes scan { 0% { top: 0; } 100% { top: 100%; } }
+        @keyframes pulse { from { transform: scale(1); } to { transform: scale(1.3); } }
 
         @media (max-width: 500px) {
             #myBoard, .opponent-area { width: 340px; }
@@ -85,42 +119,91 @@
 <body>
 
     <div class="opponent-area">
-        <div class="bot-avatar">
-            <i class="fas fa-robot"></i> </div>
+        <div class="avatar-container">
+            <div class="bot-avatar">
+                <i class="fas fa-robot"></i>
+            </div>
+        </div>
         <div class="bot-info">
             <h3>Arnav's Bot</h3>
-            <span>ELO: 1500 (Grandmaster AI)</span>
+            <div class="bot-stats">
+                <span class="stat-badge active">ENGINE: STOCKFISH 15</span>
+                <span class="stat-badge">ELO: 2000</span>
+            </div>
+            <div class="speech-bubble" id="bot-msg">"Initializing neural network... 🧠"</div>
         </div>
-        <div class="speech-bubble" id="bot-msg">
-            "Game on. 💀"
-        </div>
+        <div class="thinking-indicator" id="brain-light"></div>
     </div>
 
     <div id="myBoard"></div>
 
     <div class="controls">
-        <a href="index.html" class="btn btn-home"><i class="fas fa-arrow-left"></i> Exit</a>
+        <a href="index.html" class="btn btn-exit"><i class="fas fa-arrow-left"></i> &nbsp;Exit</a>
         <button class="btn" onclick="resetGame()">Restart <i class="fas fa-redo"></i></button>
     </div>
 
     <script>
         var board = null;
         var game = new Chess();
+        var stockfish = null;
+        var isEngineReady = false;
+        
+        // Sounds
         var moveSound = new Audio('https://images.chesscomfiles.com/chess-themes/sounds/_common/move-self.mp3');
         var captureSound = new Audio('https://images.chesscomfiles.com/chess-themes/sounds/_common/capture.mp3');
 
-        // --- 🗣️ DIALOGUE SYSTEM ---
+        // --- 1. STOCKFISH INTEGRATION (The Hacker Way) ---
+        // We fetch the script code and create a local worker to bypass CORS issues
+        async function initStockfish() {
+            try {
+                const response = await fetch('https://cdnjs.cloudflare.com/ajax/libs/stockfish.js/10.0.0/stockfish.js');
+                const scriptContent = await response.text();
+                const blob = new Blob([scriptContent], { type: 'application/javascript' });
+                const workerUrl = URL.createObjectURL(blob);
+                
+                stockfish = new Worker(workerUrl);
+                
+                stockfish.onmessage = function(event) {
+                    const msg = event.data;
+                    
+                    // Engine Ready Check
+                    if (msg === 'uciok') {
+                        isEngineReady = true;
+                        speak("ready");
+                    }
+                    
+                    // Engine Move Result
+                    if (msg.startsWith('bestmove')) {
+                        const move = msg.split(' ')[1];
+                        makeEngineMove(move);
+                    }
+                };
+
+                stockfish.postMessage('uci');
+                stockfish.postMessage('ucinewgame');
+                stockfish.postMessage('isready');
+                
+            } catch (e) {
+                console.error("Stockfish failed to load", e);
+                speak("error");
+            }
+        }
+        initStockfish();
+
+        // --- 2. DIALOGUE SYSTEM (Roast & Praise) ---
         const dialogues = {
-            start: ["Himmat hai to pehli chaal chal... 💀", "I don't lose. Try me.", "Ready to get roasted?"],
-            goodMove: ["Oho! Acha move. 😯", "Not bad... for a human.", "Hmm, interesting."],
-            badMove: ["Ye kya blunder hai? 🤣", "Queen gayi teri, dekh le.", "Isse acha to mera calculator khel le.", "Thank you for the free piece! 😋"],
-            check: ["Checkmate dikh raha hai?", "King bacha le bhai.", "Darr lag raha hai? ⚠️"],
-            winning: ["Resign kar de, time bachega.", "Pack up, ghar ja.", "Too easy. 🥱"],
-            draw: ["Bach gaya tu.", "Draw? Boring."]
+            ready: ["Engine calibrated. Good luck. 💀", "I see everything. Your move.", "Don't bore me."],
+            thinking: ["Calculating your demise...", "Processing stupid move...", "Analyzing..."],
+            goodMove: ["Not bad. You read a book?", "Impressive... for a human.", "Hmm, unexpected."],
+            badMove: ["That was a blunder. 🤣", "Did you slip?", "My algorithm is laughing.", "Free piece? Don't mind if I do."],
+            check: ["Check. Darr lag raha hai?", "King is sweating.", "Careful now."],
+            winning: ["It's mate in 10. Resign?", "Game over soon.", "Resistance is futile."],
+            error: ["Brain glitch... Refresh page.", "System overload."]
         };
 
         function speak(category) {
             const msgs = dialogues[category];
+            if(!msgs) return;
             const msg = msgs[Math.floor(Math.random() * msgs.length)];
             const bubble = document.getElementById('bot-msg');
             
@@ -128,19 +211,21 @@
             setTimeout(() => {
                 bubble.innerText = msg;
                 bubble.style.opacity = '1';
-                bubble.style.borderColor = category === 'badMove' ? '#ff4b4b' : '#00ff88';
-                bubble.style.color = category === 'badMove' ? '#ff4b4b' : '#00ff88';
+                // Color logic
+                if(category === 'badMove' || category === 'winning') bubble.style.color = '#ff4b4b'; // Red
+                else if(category === 'goodMove') bubble.style.color = '#00a3ff'; // Blue
+                else bubble.style.color = '#00ff88'; // Green
             }, 200);
         }
 
-        // --- ♟️ CHESS LOGIC ---
+        // --- 3. GAME LOGIC ---
         function onDragStart (source, piece) {
-            if (game.game_over()) return false;
-            if (piece.search(/^b/) !== -1) return false; // Only allow white pieces
+            if (game.game_over() || !isEngineReady) return false;
+            if (piece.search(/^b/) !== -1) return false; // Only play White
         }
 
         function onDrop (source, target) {
-            // Check Move
+            // Validate Move
             var move = game.move({
                 from: source,
                 to: target,
@@ -149,10 +234,10 @@
 
             if (move === null) return 'snapback';
 
-            // --- REACT TO USER MOVE ---
+            // React to User Move
             if (move.captured) {
                 captureSound.play();
-                speak("goodMove"); // Appreciate capture
+                speak("goodMove");
             } else if (game.in_check()) {
                 moveSound.play();
                 speak("check");
@@ -160,46 +245,63 @@
                 moveSound.play();
             }
 
-            window.setTimeout(makeBotMove, 500); // AI Thinking time
+            // Trigger Stockfish
+            if (!game.game_over()) {
+                document.getElementById('brain-light').classList.add('thinking'); // Light ON
+                // speak("thinking"); // Too chatty? Maybe mute this
+                
+                // Send position to Stockfish
+                // Skill Level: We give it 1 second to think (Strong but beatable by pros)
+                // Or set depth to 10-15
+                stockfish.postMessage('position fen ' + game.fen());
+                stockfish.postMessage('go depth 10'); 
+            }
         }
 
         function onSnapEnd () {
             board.position(game.fen());
         }
 
-        // --- 🤖 BOT BRAIN (Evaluate & Move) ---
-        function makeBotMove() {
-            if (game.game_over()) return;
-
-            var possibleMoves = game.moves();
+        // --- 4. ENGINE MOVE EXECUTION ---
+        function makeEngineMove(bestMove) {
+            document.getElementById('brain-light').classList.remove('thinking'); // Light OFF
             
-            // 1. Look for Capture (Aggressive Mode)
-            const captureMove = possibleMoves.find(m => m.includes('x'));
-            
-            // 2. Random logic if no capture (Simulating 1500 Elo human-like errors)
-            let chosenMove = captureMove || possibleMoves[Math.floor(Math.random() * possibleMoves.length)];
+            if(!bestMove) return;
 
-            game.move(chosenMove);
+            const from = bestMove.substring(0, 2);
+            const to = bestMove.substring(2, 4);
+            
+            // Execute move
+            const move = game.move({
+                from: from,
+                to: to,
+                promotion: 'q'
+            });
+
             board.position(game.fen());
-            
-            // --- REACT TO BOT MOVE ---
-            if (game.in_checkmate()) {
-                speak("winning");
-                alert("Game Over! Arnav Bot Wins. 💀");
-            } else if (game.in_check()) {
-                speak("check");
-            } else if (captureMove) { // Bot captured something
+
+            // React to Bot Move
+            if (move.captured) {
                 captureSound.play();
-                speak("badMove"); // Roast the user for losing a piece
+                speak("badMove"); // Bot captured your piece -> Roast
+            } else if (game.in_check()) {
+                moveSound.play();
+                speak("check");
             } else {
                 moveSound.play();
+            }
+
+            if (game.game_over()) {
+                if(game.in_checkmate()) speak("winning");
+                alert("Game Over! Arnav Bot Wins. 💀");
             }
         }
 
         function resetGame() {
             game.reset();
             board.start();
-            speak("start");
+            speak("ready");
+            if(stockfish) stockfish.postMessage('ucinewgame');
         }
 
         var config = {
@@ -211,9 +313,7 @@
             pieceTheme: 'https://chessboardjs.com/img/chesspieces/wikipedia/{piece}.png'
         }
         board = Chessboard('myBoard', config);
-        
         window.addEventListener('resize', board.resize);
-        speak("start");
 
     </script>
 </body>
