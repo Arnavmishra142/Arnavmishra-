@@ -35,6 +35,10 @@
             <a href="#" onclick="switchToHome(); toggleMenu()"><i class="fas fa-home"></i> Home</a>
             <a href="#" onclick="switchToAbout(); toggleMenu()"><i class="fas fa-user-astronaut"></i> About Me</a>
             <a href="#" onclick="switchToRecs(); toggleMenu()"><i class="fas fa-star"></i> Arnav's Picks</a>
+            
+            <a href="chess.html" style="color: #00ff88; border: 1px solid #00ff88; border-radius: 5px; margin-top: 15px; text-shadow: 0 0 5px #00ff88;">
+                <i class="fas fa-gamepad"></i> ARNAV VERSE
+            </a>
         </div>
     </div>
     <div id="overlay" onclick="toggleMenu()"></div>
@@ -334,18 +338,6 @@
     /* ==========================================================================
        OVERRIDE FOR MUSIC AUTOPLAY
     ========================================================================== */
-    // Hum existing closePopup ko override kar rahe hain taaki music auto-play na ho
-    
-    // NOTE: This must match the variable names in script.js if they are global
-    // Since variables in script.js might not be accessible if inside a closure, 
-    // we assume this script runs after script.js and if vars are global.
-    // However, safest way is to redefine logic if script.js is loaded.
-    
-    // Let's rely on the user having pasted the script.js content into this file previously
-    // OR if script.js is external.
-    // Based on previous chats, logic was IN the html. 
-    // Below is the FIX for the internal script logic found in previous versions:
-    
     function closePopup() {
         const musicPopup = document.getElementById('music-popup');
         const bgMusic = document.getElementById('global-bg-music');
