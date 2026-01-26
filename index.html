@@ -20,17 +20,20 @@
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Playfair+Display:ital,wght@0,400;1,600&family=Poppins:wght@300;400;600&family=Courier+Prime:wght@400;700&family=Great+Vibes&family=Orbitron:wght@500&display=swap" rel="stylesheet">
 
     <style>
-        /* --- 🔄 3D FLIP PROFILE STYLES --- */
+        /* --- 🔄 3D FLIP PROFILE STYLES (FIXED SIZE & CENTER) --- */
         .profile-container {
+            width: 180px;  /* FIXED SIZE */
+            height: 180px; /* FIXED SIZE */
+            margin: 0 auto 25px auto; /* CENTERED & SPACING BELOW */
             perspective: 1000px;
             cursor: grab;
-            margin-bottom: 20px; /* Added spacing */
+            position: relative;
+            z-index: 10; /* Ensure it's above other elements */
         }
 
         .profile-inner {
-            position: relative; width: 180px; height: 180px; /* Fixed size for stability */
+            width: 100%; height: 100%;
             text-align: center; transition: transform 0.8s; transform-style: preserve-3d;
-            margin: 0 auto; /* Center alignment */
         }
 
         .profile-container.flipped .profile-inner { transform: rotateY(180deg); }
@@ -42,24 +45,25 @@
             display: flex; align-items: center; justify-content: center;
         }
 
-        /* --- 🔥 FUTURISTIC FRONT STYLE (NEW) --- */
+        /* FRONT STYLE */
         .profile-front {
             background: #000;
-            /* Animated Neon Border */
-            border: 4px solid transparent;
+            border: 3px solid transparent; /* Slightly thinner border */
             box-shadow: 0 0 20px rgba(0, 255, 136, 0.3), inset 0 0 20px rgba(0,0,0,0.8);
             animation: futuristicGlow 4s linear infinite alternate;
         }
 
         @keyframes futuristicGlow {
-            0% { border-color: #00ff88; box-shadow: 0 0 25px rgba(0, 255, 136, 0.6); }
-            50% { border-color: #00a3ff; box-shadow: 0 0 35px rgba(0, 163, 255, 0.7); }
-            100% { border-color: #ff00ff; box-shadow: 0 0 25px rgba(255, 0, 255, 0.6); }
+            0% { border-color: #00ff88; box-shadow: 0 0 20px rgba(0, 255, 136, 0.6); }
+            50% { border-color: #00a3ff; box-shadow: 0 0 30px rgba(0, 163, 255, 0.7); }
+            100% { border-color: #ff00ff; box-shadow: 0 0 20px rgba(255, 0, 255, 0.6); }
         }
         
-        .profile-img { width: 100%; height: 100%; object-fit: cover; }
+        .profile-img { 
+            width: 100%; height: 100%; object-fit: cover; border-radius: 50%; 
+        }
 
-        /* --- BACK: ELON VIDEO --- */
+        /* BACK STYLE */
         .profile-back {
             background: #000; transform: rotateY(180deg);
             border: 3px solid #00ff88;
@@ -67,35 +71,35 @@
         }
         .profile-video { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
 
-        /* --- ✨ SWIPE HINT ANIMATION (FIXED VISIBILITY) --- */
+        /* --- ✨ SWIPE HINT ANIMATION --- */
         .swipe-hint-overlay {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.5); /* Darker overlay for contrast */
+            background: rgba(0,0,0,0.4);
             border-radius: 50%; display: flex; flex-direction: column;
             align-items: center; justify-content: center;
-            pointer-events: none; /* Clicks pass through */
-            animation: pulseHint 2s infinite; /* Always pulsing */
+            pointer-events: none;
+            animation: pulseHint 2s infinite;
         }
         
         .swipe-arrow {
-            font-size: 32px; color: #00ff88;
+            font-size: 28px; color: #00ff88; /* Adjusted size */
             animation: swipeAnim 1.5s infinite ease-in-out;
             filter: drop-shadow(0 0 8px #00ff88);
         }
         
         .swipe-text {
-            color: #fff; font-size: 0.8rem; font-weight: bold;
-            margin-top: 5px; text-transform: uppercase; letter-spacing: 1px;
+            color: #fff; font-size: 0.7rem; font-weight: bold; /* Adjusted size */
+            margin-top: 2px; text-transform: uppercase; letter-spacing: 1px;
             font-family: 'Orbitron', sans-serif; text-shadow: 0 0 5px #00ff88;
         }
 
         @keyframes swipeAnim {
-            0%, 100% { transform: translateX(-8px); opacity: 0.6; }
-            50% { transform: translateX(8px); opacity: 1; }
+            0%, 100% { transform: translateX(-6px); opacity: 0.6; }
+            50% { transform: translateX(6px); opacity: 1; }
         }
         @keyframes pulseHint {
-            0%, 100% { background: rgba(0,0,0,0.4); }
-            50% { background: rgba(0,0,0,0.6); }
+            0%, 100% { background: rgba(0,0,0,0.3); }
+            50% { background: rgba(0,0,0,0.5); }
         }
     </style>
 </head>
@@ -139,13 +143,11 @@
                 <div class="profile-inner">
                     <div class="profile-front">
                         <img src="https://imarnavin.wordpress.com/wp-content/uploads/2026/01/image_editor_output_image-900633096-17689630363507786449788545237875.jpg" class="profile-img" alt="Arnav Mishra">
-                        
                         <div class="swipe-hint-overlay">
                             <i class="fas fa-arrow-right swipe-arrow"></i>
-                            <span class="swipe-text">Tap to Activate</span>
+                            <span class="swipe-text">Tap / Swipe</span>
                         </div>
                     </div>
-
                     <div class="profile-back">
                         <video id="elon-video" class="profile-video" playsinline>
                             </video>
@@ -191,10 +193,13 @@
     <script> if (localStorage.getItem('theme') === 'light') { document.body.classList.add('light-mode'); document.getElementById('themeToggle').classList.add('active'); } </script>
 
     <script>
-        const SYSTEM_PROMPT = `You are 'Arnav AI', a raw, intelligent, and loyal assistant...`; /* (Keep full prompt here) */
+        const SYSTEM_PROMPT = `You are 'Arnav AI', a raw, intelligent, and loyal assistant...`; 
         const chatStyle = document.createElement('style'); chatStyle.innerHTML = `#chatbot-btn { position: fixed; bottom: 30px; right: 30px; width: 65px; height: 65px; background: #000; border: 2px solid #00ff88; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 0 20px rgba(0, 255, 136, 0.4); z-index: 21000; transition: all 0.3s ease; color: #fff; font-size: 28px; animation: floatBtn 3s ease-in-out infinite; opacity: 0; pointer-events: none; } #chatbot-btn:hover { transform: scale(1.1); box-shadow: 0 0 35px rgba(0, 255, 136, 0.8); } #chat-window { display: none; position: fixed; bottom: 110px; right: 30px; width: 340px; height: 480px; background: rgba(5, 5, 5, 0.95); border: 1px solid #333; border-radius: 15px; flex-direction: column; overflow: hidden; z-index: 21000; box-shadow: 0 20px 50px rgba(0,0,0,0.95); font-family: 'Poppins', sans-serif; animation: slideUp 0.3s ease-out; } .chat-header { background: linear-gradient(90deg, #111, #000); padding: 15px 20px; color: #00ff88; font-weight: 700; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #222; } .chat-body { flex: 1; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 15px; background: transparent; } .chat-input-area { padding: 15px; border-top: 1px solid #222; display: flex; gap: 10px; background: #000; align-items: center; } #user-input { flex: 1; padding: 12px 15px; border-radius: 5px; border: 1px solid #333; background: #111; color: #fff; outline: none; font-size: 0.9rem; transition: 0.3s; } #user-input:focus { border-color: #00ff88; box-shadow: 0 0 5px rgba(0, 255, 136, 0.2); } #send-btn { background: #00ff88; border: none; color: #000; padding: 10px; border-radius: 5px; cursor: pointer; width: 42px; height: 42px; display: flex; align-items: center; justify-content: center; font-weight: bold; transition: 0.2s; } .msg { padding: 10px 15px; border-radius: 8px; max-width: 85%; font-size: 0.9rem; line-height: 1.5; } .user-msg { align-self: flex-end; background: #222; color: #fff; } .ai-msg { align-self: flex-start; background: #000; color: #00ff88; border: 1px solid #00ff88; } @keyframes floatBtn { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } } @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }`; document.head.appendChild(chatStyle);
         const chatBtn = document.createElement('div'); chatBtn.id = 'chatbot-btn'; chatBtn.innerHTML = '<i class="fas fa-brain"></i>'; chatBtn.onclick = toggleChat; document.body.appendChild(chatBtn);
-        setTimeout(() => { chatBtn.style.opacity = '1'; chatBtn.style.pointerEvents = 'auto'; }, 4000);
+        
+        // 🔥 INSTANT APPEARANCE (Changed from 4000ms to 100ms) 🔥
+        setTimeout(() => { chatBtn.style.opacity = '1'; chatBtn.style.pointerEvents = 'auto'; }, 100);
+
         const chatWin = document.createElement('div'); chatWin.id = 'chat-window'; chatWin.innerHTML = `<div class="chat-header"><span>ARNAV AI <i class="fas fa-bolt"></i></span><span onclick="toggleChat()" style="cursor:pointer;">&times;</span></div><div class="chat-body" id="chat-body"><div class="msg ai-msg">Online. ⚡ Bol bhai?</div></div><div class="chat-input-area"><input type="text" id="user-input" placeholder="Type here..." onkeypress="handleEnter(event)"><button id="send-btn" onclick="sendMessage()"><i class="fas fa-arrow-up"></i></button></div>`; document.body.appendChild(chatWin);
         function toggleChat() { const w = document.getElementById('chat-window'); w.style.display = (w.style.display === 'flex') ? 'none' : 'flex'; }
         function handleEnter(e) { if (e.key === 'Enter') sendMessage(); }
@@ -206,10 +211,9 @@
         let touchStartX = 0;
         const profileCard = document.getElementById('profile-card');
 
-        // Touch Events for Mobile Swipe
         profileCard.addEventListener('touchstart', e => { touchStartX = e.changedTouches[0].screenX; });
         profileCard.addEventListener('touchend', e => {
-            if (Math.abs(e.changedTouches[0].screenX - touchStartX) > 40) triggerProfileFlip();
+            if (Math.abs(e.changedTouches[0].screenX - touchStartX) > 30) triggerProfileFlip();
         });
 
         function triggerProfileFlip() {
@@ -218,7 +222,6 @@
             const video = document.getElementById('elon-video');
             const hour = new Date().getHours();
             
-            // Select Video based on Time
             video.src = (hour >= 5 && hour < 12) ? "elon_morning.mp4" : 
                         (hour >= 12 && hour < 18) ? "elon_afternoon.mp4" : "elon_evening.mp4";
             
@@ -236,11 +239,10 @@
             };
         }
         
-        // Auto-type Bio on load (since popup is gone)
         window.addEventListener('load', () => {
              const bioElement = document.getElementById('bio-text');
              if(typeof typeWriter === "function" && bioElement) {
-                 setTimeout(() => typeWriter("Building ideas from scratch.", bioElement, 80), 1000);
+                 setTimeout(() => typeWriter("Building ideas from scratch.", bioElement, 80), 500);
              }
         });
     </script>
