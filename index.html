@@ -61,8 +61,8 @@
         
         .profile-img { 
             width: 100%; height: 100%; object-fit: cover; 
-            z-index: 1; /* Image stays behind indicator */
-            opacity: 0.8; /* Slight dim to make arrow pop */
+            z-index: 1; 
+            opacity: 0.8; 
         }
 
         /* BACK STYLE (VIDEO) */
@@ -72,26 +72,26 @@
         }
         .profile-video { width: 100%; height: 100%; object-fit: cover; }
 
-        /* --- 👆 SWIPE ARROW INDICATOR (FIXED) --- */
+        /* --- 👆 SWIPE ARROW INDICATOR --- */
         .swipe-overlay {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            z-index: 5; /* ON TOP OF IMAGE */
+            z-index: 5; 
             pointer-events: none;
             display: flex; align-items: center; justify-content: center;
         }
         
         .swipe-arrow-icon {
-            font-size: 35px; /* Big Arrow */
+            font-size: 35px; 
             color: #fff;
-            filter: drop-shadow(0 0 5px #00ff88); /* Neon Glow */
+            filter: drop-shadow(0 0 5px #00ff88); 
             animation: arrowMove 1.5s infinite ease-in-out;
             position: absolute;
         }
 
         @keyframes arrowMove {
-            0% { transform: translateX(-40px); opacity: 0; } /* Start Left (Outside) */
-            50% { transform: translateX(0px); opacity: 1; }  /* Center (Visible) */
-            100% { transform: translateX(40px); opacity: 0; } /* End Right (Fade) */
+            0% { transform: translateX(-40px); opacity: 0; } 
+            50% { transform: translateX(0px); opacity: 1; }  
+            100% { transform: translateX(40px); opacity: 0; } 
         }
 
         /* --- 🤖 CHATBOT STYLES --- */
@@ -273,7 +273,7 @@
             chatBody.scrollTop = chatBody.scrollHeight;
         }
 
-        // 2. PROFILE FLIP LOGIC (TOUCH & CLICK)
+        // 2. PROFILE FLIP LOGIC (TOUCH & CLICK + CACHE FIX)
         let isFlipped = false;
         let touchStartX = 0;
         const profileCard = document.getElementById('profile-card');
@@ -290,8 +290,13 @@
             const hour = new Date().getHours();
             
             // Auto Select Video
-            video.src = (hour >= 5 && hour < 12) ? "elon_morning.mp4" : 
-                        (hour >= 12 && hour < 18) ? "elon_afternoon.mp4" : "elon_evening.mp4";
+            let videoFile = "";
+            if (hour >= 5 && hour < 12) videoFile = "elon_morning.mp4";
+            else if (hour >= 12 && hour < 18) videoFile = "elon_afternoon.mp4";
+            else videoFile = "elon_evening.mp4";
+            
+            // 🔥 CACHE BUSTER: Browser ko force karega nayi file lene ke liye
+            video.src = videoFile + "?t=" + new Date().getTime();
             
             card.classList.add('flipped');
             isFlipped = true;
@@ -307,7 +312,7 @@
             };
         }
 
-        // 3. TYPEWRITER EFFECT (FORCE TRIGGER)
+        // 3. TYPEWRITER EFFECT (INSTANT TRIGGER)
         function forceTypeWriter(text, element, speed) {
             let i = 0;
             element.innerHTML = "";
@@ -321,7 +326,8 @@
             typing();
         }
 
-        window.addEventListener('load', () => {
+        // 🔥 IMPORTANT CHANGE: 'DOMContentLoaded' use kiya taaki text turant aaye
+        document.addEventListener('DOMContentLoaded', () => {
              document.querySelectorAll('#home-view > div, #home-view > button').forEach(el => el.classList.add('animate-entry'));
              
              // Trigger Typing
