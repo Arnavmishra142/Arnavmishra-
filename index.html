@@ -20,11 +20,11 @@
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Playfair+Display:ital,wght@0,400;1,600&family=Poppins:wght@300;400;600&family=Courier+Prime:wght@400;700&family=Great+Vibes&family=Orbitron:wght@500&display=swap" rel="stylesheet">
 
     <style>
-        /* --- 🔄 3D FLIP PROFILE (FIXED SMALL SIZE) --- */
+        /* --- 🔄 3D FLIP PROFILE (SIZE FIXED: 130px) --- */
         .profile-container {
-            width: 150px;  /* NORMAL SIZE */
-            height: 150px; /* NORMAL SIZE */
-            margin: 10px auto 20px auto; /* Center & Space */
+            width: 130px;  /* EXACTLY 130px */
+            height: 130px; /* EXACTLY 130px */
+            margin: 15px auto 20px auto; /* Centered */
             perspective: 1000px;
             cursor: pointer;
             position: relative;
@@ -48,7 +48,7 @@
         /* FRONT STYLE */
         .profile-front {
             background: #000;
-            border: 3px solid transparent;
+            border: 2px solid transparent;
             box-shadow: 0 0 15px rgba(0, 255, 136, 0.4);
             animation: futuristicGlow 4s linear infinite alternate;
         }
@@ -64,43 +64,37 @@
         /* BACK STYLE (VIDEO) */
         .profile-back {
             background: #000; transform: rotateY(180deg);
-            border: 3px solid #00ff88;
+            border: 2px solid #00ff88;
         }
         .profile-video { width: 100%; height: 100%; object-fit: cover; }
 
-        /* --- ✨ SWIPE HINT (VISIBLE NOW) --- */
-        .swipe-hint-overlay {
+        /* --- 👆 SWIPE GESTURE ANIMATION (NEW) --- */
+        .swipe-overlay {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.5); /* Semi-transparent dark */
-            border-radius: 50%; 
-            display: flex; flex-direction: column;
-            align-items: center; justify-content: center;
-            z-index: 20; /* ON TOP OF IMAGE */
-            animation: pulseBg 2s infinite;
+            border-radius: 50%; pointer-events: none;
+            overflow: hidden; /* Keeps animation inside circle */
         }
         
-        .swipe-arrow {
-            font-size: 24px; color: #00ff88;
+        .swipe-hand {
+            position: absolute;
+            top: 50%; left: 10%; /* Starts from left */
+            transform: translateY(-50%);
+            font-size: 24px;
+            color: #fff;
+            opacity: 0;
             filter: drop-shadow(0 0 5px #00ff88);
-            animation: swipeAnim 1.5s infinite ease-in-out;
-        }
-        
-        .swipe-text {
-            color: #fff; font-size: 0.65rem; font-weight: bold;
-            margin-top: 5px; text-transform: uppercase; letter-spacing: 1px;
-            font-family: 'Orbitron', sans-serif; text-shadow: 0 0 5px black;
+            animation: swipeAction 2.5s infinite ease-in-out;
         }
 
-        @keyframes swipeAnim {
-            0%, 100% { transform: translateX(-5px); opacity: 0.7; }
-            50% { transform: translateX(5px); opacity: 1; }
-        }
-        @keyframes pulseBg {
-            0%, 100% { background: rgba(0,0,0,0.3); }
-            50% { background: rgba(0,0,0,0.5); }
+        @keyframes swipeAction {
+            0% { left: 10%; opacity: 0; transform: translateY(-50%) scale(1); }
+            20% { left: 15%; opacity: 1; }
+            50% { left: 50%; opacity: 1; transform: translate(-50%, -50%) scale(0.8); } /* TAP EFFECT */
+            60% { left: 50%; opacity: 0; transform: translate(-50%, -50%) scale(1.2); } /* FADE OUT */
+            100% { left: 50%; opacity: 0; }
         }
 
-        /* --- 🤖 CHATBOT STYLES (HARDCODED) --- */
+        /* --- 🤖 CHATBOT STYLES --- */
         #chatbot-btn {
             position: fixed; bottom: 30px; right: 30px;
             width: 65px; height: 65px; 
@@ -191,9 +185,8 @@
                 <div class="profile-inner">
                     <div class="profile-front">
                         <img src="https://imarnavin.wordpress.com/wp-content/uploads/2026/01/image_editor_output_image-900633096-17689630363507786449788545237875.jpg" class="profile-img" alt="Arnav Mishra">
-                        <div class="swipe-hint-overlay">
-                            <i class="fas fa-arrow-right swipe-arrow"></i>
-                            <span class="swipe-text">Tap Me</span>
+                        <div class="swipe-overlay">
+                            <i class="fas fa-hand-pointer swipe-hand"></i>
                         </div>
                     </div>
                     <div class="profile-back">
@@ -203,7 +196,11 @@
             </div>
             
             <div class="name anim-delay-2">Arnav Mishra</div>
-            <div class="bio-wrap anim-delay-3"><div class="bio" id="bio-text"></div></div>
+            
+            <div class="bio-wrap anim-delay-3" style="min-height: 30px;">
+                <div class="bio" id="bio-text" style="color: #00a3ff; font-family: 'Courier Prime', monospace;"></div>
+            </div>
+
             <div class="quote-box anim-delay-4">"The secret of change is to focus all of your energy, not on fighting the old, but on building the new."</div>
 
             <div class="btn-grid anim-delay-5">
@@ -276,37 +273,11 @@
             chatBody.scrollTop = chatBody.scrollHeight;
         }
 
-        // 2. POPUP & MUSIC OVERRIDE
-        function closePopup() {
-            const musicPopup = document.getElementById('music-popup');
-            const bgMusic = document.getElementById('global-bg-music');
-            const muteIcon = document.getElementById('mute-icon');
-            const bioElement = document.getElementById('bio-text');
-            
-            musicPopup.style.opacity = '0';
-            setTimeout(() => {
-                musicPopup.style.display = 'none';
-                document.body.style.overflow = 'auto';
-                document.querySelectorAll('#home-view > div, #home-view > button').forEach(el => el.classList.add('animate-entry'));
-                
-                // Bio Typewriter
-                if(typeof typeWriter === "function" && bioElement) typeWriter("Building ideas from scratch.", bioElement, 80);
-                
-                // Music Muted by Default
-                if (bgMusic) {
-                    bgMusic.volume = 0.5; 
-                    if(muteIcon) muteIcon.className = "fas fa-volume-mute";
-                    if(typeof isMusicPlaying !== 'undefined') isMusicPlaying = false;
-                }
-            }, 400);
-        }
-
-        // 3. PROFILE FLIP LOGIC (TOUCH ENABLED)
+        // 2. PROFILE FLIP LOGIC (TOUCH & CLICK)
         let isFlipped = false;
         let touchStartX = 0;
         const profileCard = document.getElementById('profile-card');
 
-        // Touch Listeners
         profileCard.addEventListener('touchstart', e => { touchStartX = e.changedTouches[0].screenX; });
         profileCard.addEventListener('touchend', e => {
             if (Math.abs(e.changedTouches[0].screenX - touchStartX) > 20) triggerProfileFlip();
@@ -325,23 +296,50 @@
             card.classList.add('flipped');
             isFlipped = true;
             
-            // Play
             setTimeout(() => {
                 video.muted = false; 
                 video.play().catch(() => console.log("Tap required for sound"));
             }, 300);
 
-            // Revert on End
             video.onended = () => {
                 card.classList.remove('flipped');
                 isFlipped = false;
             };
         }
+
+        // 3. TYPEWRITER EFFECT (FORCE TRIGGER)
+        // I am adding the typeWriter logic here directly to ensure it runs even if script.js is missing/broken
+        function forceTypeWriter(text, element, speed) {
+            let i = 0;
+            element.innerHTML = "";
+            function typing() {
+                if (i < text.length) {
+                    element.innerHTML += text.charAt(i);
+                    i++;
+                    setTimeout(typing, speed);
+                }
+            }
+            typing();
+        }
+
+        window.addEventListener('load', () => {
+             // Trigger Animations
+             document.querySelectorAll('#home-view > div, #home-view > button').forEach(el => el.classList.add('animate-entry'));
+             
+             // Trigger Typing
+             const bioElement = document.getElementById('bio-text');
+             if(bioElement) forceTypeWriter("Building ideas from scratch.", bioElement, 80);
+             
+             // Mute Music Initial State
+             const bgMusic = document.getElementById('global-bg-music');
+             const muteIcon = document.getElementById('mute-icon');
+             if(bgMusic) { bgMusic.volume = 0.5; }
+             if(muteIcon) { muteIcon.className = "fas fa-volume-mute"; }
+        });
     </script>
 
     <script src="gravity.js"></script>
     <script src="jarvis.js"></script>
 
 </body>
-                            </html>
-            
+</html>
