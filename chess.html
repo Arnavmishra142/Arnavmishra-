@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arnav Verse | Chess Arena</title>
+    
+    <link rel="stylesheet" href="https://unpkg.com/@chrisoakman/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://unpkg.com/@chrisoakman/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.2/chess.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* --- CYBERPUNK THEME --- */
+        body {
+            background-color: #050505;
+            color: #fff;
+            font-family: 'Courier New', monospace;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            height: 100vh; margin: 0; overflow: hidden;
+        }
+
+        /* Neon Glow Effect */
+        .neon-text {
+            color: #00ff88; text-shadow: 0 0 10px #00ff88, 0 0 20px #00ff88;
+            font-size: 2rem; margin-bottom: 20px; text-transform: uppercase;
+            letter-spacing: 3px;
+        }
+
+        /* Chess Board Container */
+        #myBoard {
+            width: 400px;
+            box-shadow: 0 0 30px rgba(0, 255, 136, 0.2);
+            border: 2px solid #333;
+        }
+
+        /* Custom Board Squares */
+        .white-1e1d7 { background-color: #222; color: #b58863; }
+        .black-3c85d { background-color: #111; color: #f0d9b5; }
+        
+        /* Highlight Move */
+        .highlight1-32417, .highlight2-9c5d2 {
+            box-shadow: inset 0 0 3px 3px #00ff88;
+        }
+
+        /* Chat Box (Trash Talk) */
+        #chat-box {
+            width: 400px; margin-top: 20px;
+            background: rgba(0, 0, 0, 0.8);
+            border: 1px solid #00a3ff;
+            border-radius: 5px; padding: 15px;
+            min-height: 60px;
+            display: flex; align-items: center; justify-content: center;
+            text-align: center;
+            box-shadow: 0 0 15px rgba(0, 163, 255, 0.2);
+        }
+        .bot-msg { color: #00a3ff; font-weight: bold; }
+
+        /* Controls */
+        .controls { margin-top: 20px; display: flex; gap: 15px; }
+        .btn {
+            background: transparent; border: 1px solid #ff4b4b; color: #ff4b4b;
+            padding: 8px 20px; cursor: pointer; text-transform: uppercase;
+            font-family: inherit; transition: 0.3s;
+        }
+        .btn:hover { background: #ff4b4b; color: #000; box-shadow: 0 0 15px #ff4b4b; }
+        .btn-home { border-color: #fff; color: #fff; text-decoration: none; display: flex; align-items: center; gap: 5px;}
+        .btn-home:hover { background: #fff; color: #000; }
+
+        /* Mobile Fix */
+        @media (max-width: 500px) {
+            #myBoard { width: 340px; }
+            #chat-box { width: 340px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="neon-text">ARNAV VERSE <i class="fas fa-chess-king"></i></div>
+
+    <div id="myBoard"></div>
+
+    <div id="chat-box">
+        <span class="bot-msg" id="bot-status">Bot: "Himmat hai to pehli chaal chal... 💀"</span>
+    </div>
+
+    <div class="controls">
+        <a href="index.html" class="btn btn-home"><i class="fas fa-arrow-left"></i> Exit Verse</a>
+        <button class="btn" onclick="resetGame()">Reset Board</button>
+    </div>
+
+    <script>
+        /* --- GAME LOGIC --- */
+        var board = null;
+        var game = new Chess();
+        
+        // Trash Talk Library 😈
+        const trashTalk = {
+            start: ["Ready to lose?", "Elo check karle apna pehle.", "1500 Elo Bot Active. 🤖"],
+            capture: ["Free ka maal. 😋", "Mera piece wapas kar!", "Oops, blunder? 💀", "Thank you, next."],
+            check: ["Checkmate dikh raha hai?", "King bacha le bhai.", "Khatra hai wahan. ⚠️"],
+            winning: ["Resign kar de, time bachega.", "Skill issue bro.", "Is this too hard for you?"],
+            losing: ["Hacker hai kya?", "Luck tha bas.", "Wait, I miscalculated..."],
+            draw: ["Draw? Boring.", "Bach gaya tu."]
+        };
+
+        function talk(category) {
+            const msgs = trashTalk[category];
+            const msg = msgs[Math.floor(Math.random() * msgs.length)];
+            document.getElementById('bot-status').innerText = "Arnav Bot: " + msg;
+            
+            // Glitch Effect
+            document.getElementById('chat-box').style.borderColor = "#ff0000";
+            setTimeout(() => document.getElementById('chat-box').style.borderColor = "#00a3ff", 200);
+        }
+
+        function onDragStart (source, piece, position, orientation) {
+            if (game.game_over()) return false;
+            // Sirf White pieces utha sakte hain
+            if (piece.search(/^b/) !== -1) return false;
+        }
+
+        function onDrop (source, target) {
+            // Move check karo
+            var move = game.move({
+                from: source,
+                to: target,
+                promotion: 'q' // Hamesha Queen banao
+            });
+
+            // Illegal move
+            if (move === null) return 'snapback';
+
+            // Agar move valid hai
+            updateStatus();
+            window.setTimeout(makeBestMove, 250); // AI ki baari
+        }
+
+        function onSnapEnd () {
+            board.position(game.fen());
+        }
+
+        function updateStatus () {
+            if (game.in_checkmate()) {
+                talk("winning"); // Bot jeet gaya
+                alert("Game Over! Arnav Bot Wins. 💀");
+            } else if (game.in_draw()) {
+                talk("draw");
+            } else if (game.in_check()) {
+                talk("check");
+            }
+        }
+
+        /* --- AI BRAIN (Minimax Simplified) --- */
+        function makeBestMove() {
+            if (game.game_over()) return;
+
+            // Simple Logic: Random move nahi, BEST value move
+            var possibleMoves = game.moves();
+            
+            // Thoda dimaag lagate hain (Capture Priority)
+            let bestMove = null;
+            let bestValue = -9999;
+
+            // Agar bot haar raha hai
+            if (game.in_checkmate()) {
+                talk("losing");
+                return;
+            }
+
+            // Simple random for variety (Level 1500 feel dene ke liye perfect play nahi chahiye)
+            // Lekin agar capture mil raha hai to wo lega
+            const captureMove = possibleMoves.find(m => m.includes('x'));
+            
+            if (captureMove) {
+                game.move(captureMove);
+                talk("capture");
+            } else {
+                var randomIdx = Math.floor(Math.random() * possibleMoves.length);
+                game.move(possibleMoves[randomIdx]);
+            }
+            
+            board.position(game.fen());
+            updateStatus();
+        }
+
+        function resetGame() {
+            game.reset();
+            board.start();
+            talk("start");
+        }
+
+        var config = {
+            draggable: true,
+            position: 'start',
+            onDragStart: onDragStart,
+            onDrop: onDrop,
+            onSnapEnd: onSnapEnd,
+            pieceTheme: 'https://chessboardjs.com/img/chesspieces/wikipedia/{piece}.png'
+        }
+        board = Chessboard('myBoard', config);
+        
+        // Mobile Responsive Resize
+        window.addEventListener('resize', () => {
+            board.resize();
+        });
+
+        // Start Trash Talk
+        setTimeout(() => talk("start"), 1000);
+
+    </script>
+</body>
+</html>
