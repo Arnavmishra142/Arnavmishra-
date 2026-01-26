@@ -17,92 +17,85 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Playfair+Display:ital,wght@0,400;1,600&family=Poppins:wght@300;400;600&family=Courier+Prime:wght@400;700&family=Great+Vibes&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Playfair+Display:ital,wght@0,400;1,600&family=Poppins:wght@300;400;600&family=Courier+Prime:wght@400;700&family=Great+Vibes&family=Orbitron:wght@500&display=swap" rel="stylesheet">
 
     <style>
         /* --- 🔄 3D FLIP PROFILE STYLES --- */
         .profile-container {
-            perspective: 1000px; /* 3D Space */
+            perspective: 1000px;
             cursor: grab;
+            margin-bottom: 20px; /* Added spacing */
         }
 
         .profile-inner {
-            position: relative;
-            width: 100%;
-            height: 100%;
-            text-align: center;
-            transition: transform 0.8s;
-            transform-style: preserve-3d;
+            position: relative; width: 180px; height: 180px; /* Fixed size for stability */
+            text-align: center; transition: transform 0.8s; transform-style: preserve-3d;
+            margin: 0 auto; /* Center alignment */
         }
 
-        /* Flip Class (JS will add this) */
-        .profile-container.flipped .profile-inner {
-            transform: rotateY(180deg);
-        }
+        .profile-container.flipped .profile-inner { transform: rotateY(180deg); }
 
         .profile-front, .profile-back {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            -webkit-backface-visibility: hidden;
-            backface-visibility: hidden;
-            border-radius: 50%;
-            overflow: hidden;
+            position: absolute; width: 100%; height: 100%;
+            -webkit-backface-visibility: hidden; backface-visibility: hidden;
+            border-radius: 50%; overflow: hidden;
             display: flex; align-items: center; justify-content: center;
         }
 
-        /* FRONT: Image & Hint */
+        /* --- 🔥 FUTURISTIC FRONT STYLE (NEW) --- */
         .profile-front {
             background: #000;
+            /* Animated Neon Border */
+            border: 4px solid transparent;
+            box-shadow: 0 0 20px rgba(0, 255, 136, 0.3), inset 0 0 20px rgba(0,0,0,0.8);
+            animation: futuristicGlow 4s linear infinite alternate;
+        }
+
+        @keyframes futuristicGlow {
+            0% { border-color: #00ff88; box-shadow: 0 0 25px rgba(0, 255, 136, 0.6); }
+            50% { border-color: #00a3ff; box-shadow: 0 0 35px rgba(0, 163, 255, 0.7); }
+            100% { border-color: #ff00ff; box-shadow: 0 0 25px rgba(255, 0, 255, 0.6); }
         }
         
-        /* BACK: Video */
+        .profile-img { width: 100%; height: 100%; object-fit: cover; }
+
+        /* --- BACK: ELON VIDEO --- */
         .profile-back {
-            background: #000;
-            transform: rotateY(180deg);
-            border: 2px solid #00ff88;
-            box-shadow: 0 0 20px rgba(0, 255, 136, 0.5);
+            background: #000; transform: rotateY(180deg);
+            border: 3px solid #00ff88;
+            box-shadow: 0 0 30px rgba(0, 255, 136, 0.5);
         }
+        .profile-video { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
 
-        .profile-video {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            border-radius: 50%;
-        }
-
-        /* ✨ SWIPE HINT ANIMATION */
+        /* --- ✨ SWIPE HINT ANIMATION (FIXED VISIBILITY) --- */
         .swipe-hint-overlay {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.4);
-            border-radius: 50%;
-            display: flex; flex-direction: column;
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5); /* Darker overlay for contrast */
+            border-radius: 50%; display: flex; flex-direction: column;
             align-items: center; justify-content: center;
-            opacity: 0; transition: opacity 0.3s;
-            pointer-events: none; /* Let clicks pass through */
+            pointer-events: none; /* Clicks pass through */
+            animation: pulseHint 2s infinite; /* Always pulsing */
         }
         
-        .profile-container:hover .swipe-hint-overlay {
-            opacity: 1;
-        }
-
         .swipe-arrow {
-            font-size: 24px; color: #00ff88;
-            animation: swipeAnim 1.5s infinite;
-            text-shadow: 0 0 10px #00ff88;
+            font-size: 32px; color: #00ff88;
+            animation: swipeAnim 1.5s infinite ease-in-out;
+            filter: drop-shadow(0 0 8px #00ff88);
         }
         
         .swipe-text {
             color: #fff; font-size: 0.8rem; font-weight: bold;
-            margin-top: 5px; text-transform: uppercase;
-            letter-spacing: 1px;
+            margin-top: 5px; text-transform: uppercase; letter-spacing: 1px;
+            font-family: 'Orbitron', sans-serif; text-shadow: 0 0 5px #00ff88;
         }
 
         @keyframes swipeAnim {
-            0% { transform: translateX(-10px); opacity: 0; }
-            50% { transform: translateX(0); opacity: 1; }
-            100% { transform: translateX(10px); opacity: 0; }
+            0%, 100% { transform: translateX(-8px); opacity: 0.6; }
+            50% { transform: translateX(8px); opacity: 1; }
+        }
+        @keyframes pulseHint {
+            0%, 100% { background: rgba(0,0,0,0.4); }
+            50% { background: rgba(0,0,0,0.6); }
         }
     </style>
 </head>
@@ -110,11 +103,8 @@
 <body id="main-body">
 
     <div class="menu-icon" onclick="toggleMenu()">
-        <div class="bar"></div>
-        <div class="bar"></div>
-        <div class="bar"></div>
+        <div class="bar"></div><div class="bar"></div><div class="bar"></div>
     </div>
-
     <div id="sidebar" class="sidebar">
         <a href="#" class="close-btn" onclick="toggleMenu()">&times;</a>
         <div class="sidebar-content">
@@ -122,51 +112,24 @@
             <a href="#" onclick="switchToHome(); toggleMenu()"><i class="fas fa-home"></i> Home</a>
             <a href="#" onclick="switchToAbout(); toggleMenu()"><i class="fas fa-user-astronaut"></i> About Me</a>
             <a href="#" onclick="switchToRecs(); toggleMenu()"><i class="fas fa-star"></i> Arnav's Picks</a>
-            
             <a href="verse.html" style="color: #00ff88; border: 1px solid #00ff88; border-radius: 5px; margin-top: 15px; text-shadow: 0 0 5px #00ff88;">
                 <i class="fas fa-gamepad"></i> ARNAV VERSE
             </a>
         </div>
     </div>
     <div id="overlay" onclick="toggleMenu()"></div>
-
-    <div id="intro-screen">
-        <div class="signature-container">
-            <span id="signature-text"></span><span class="cursor"></span>
-        </div>
-    </div>
-
+    <div id="intro-screen"><div class="signature-container"><span id="signature-text"></span><span class="cursor"></span></div></div>
     <div class="eclipse-wrapper" id="themeWrapper">
-        <div class="eclipse-toggle" id="themeToggle">
-            <div class="sun"></div>
-            <div class="moon"></div>
-        </div>
-        <div class="eclipse-hint" id="themeHint">
-            <span>Tap: Switch | Hold: Move</span>
-            <div class="close-hint" onclick="closeHint()">×</div>
-        </div>
+        <div class="eclipse-toggle" id="themeToggle"><div class="sun"></div><div class="moon"></div></div>
+        <div class="eclipse-hint" id="themeHint"><span>Tap: Switch | Hold: Move</span><div class="close-hint" onclick="closeHint()">×</div></div>
     </div>
 
-    <audio id="global-bg-music" loop preload="auto">
-        <source src="co2.mp3" type="audio/mpeg">
-    </audio>
+    <audio id="global-bg-music" loop preload="auto"><source src="co2.mp3" type="audio/mpeg"></audio>
 
     <div class="sound-control">
         <button onclick="toggleMusic()" id="mute-btn">
             <div class="icon-container"><i class="fas fa-volume-mute" id="mute-icon"></i></div>
         </button>
-    </div>
-
-    <div id="music-popup" onclick="closePopup()">
-        <div class="popup-box glass-effect">
-            <div class="popup-icon">✨</div>
-            <h2>Welcome to my world.</h2>
-            <p class="tap-hint">Tap anywhere to enter</p>
-            <div class="vibe-note">
-                <i class="fas fa-arrow-up" style="transform: rotate(45deg);"></i> 
-                Sound button is Top-Right. <br>Turn it ON for the vibe! 🎵
-            </div>
-        </div>
     </div>
 
     <div class="main-wrapper">
@@ -175,12 +138,11 @@
             <div class="profile-container anim-delay-1" id="profile-card" onclick="triggerProfileFlip()">
                 <div class="profile-inner">
                     <div class="profile-front">
-                        <div class="profile-glow"></div>
                         <img src="https://imarnavin.wordpress.com/wp-content/uploads/2026/01/image_editor_output_image-900633096-17689630363507786449788545237875.jpg" class="profile-img" alt="Arnav Mishra">
                         
                         <div class="swipe-hint-overlay">
                             <i class="fas fa-arrow-right swipe-arrow"></i>
-                            <span class="swipe-text">Swipe / Tap</span>
+                            <span class="swipe-text">Tap to Activate</span>
                         </div>
                     </div>
 
@@ -203,7 +165,7 @@
             </div>
 
             <button onclick="switchToAbout()" class="main-btn anim-delay-6">ENTER MY WORLD <i class="fas fa-arrow-right"></i></button>
-
+            
             <div class="chess-msg-container anim-delay-7">
                 <a href="https://wa.me/916393349498?text=Hey%20Arnav,%20I%20visited%20your%20portfolio!" target="_blank" class="chess-btn-styled">
                     <div class="chess-btn-content">
@@ -216,158 +178,71 @@
                     <div class="dashed-border-bottom"></div>
                 </a>
             </div>
-
-            <div class="portal-container anim-delay-8">
-                <a href="stranger.html" class="glitch-btn" data-text="ENTER THE UPSIDE DOWN">ENTER THE UPSIDE DOWN</a>
-            </div>
-
-            <div style="text-align: center; margin-top: 15px; margin-bottom: 20px;">
-                <a href="concert.html" class="concert-btn">🎸 Enter Live Concert</a>
-            </div>
-            
+            <div class="portal-container anim-delay-8"><a href="stranger.html" class="glitch-btn" data-text="ENTER THE UPSIDE DOWN">ENTER THE UPSIDE DOWN</a></div>
+            <div style="text-align: center; margin-top: 15px; margin-bottom: 20px;"><a href="concert.html" class="concert-btn">🎸 Enter Live Concert</a></div>
             <p class="footer-text anim-delay-8">© 2026 ARNAV MISHRA</p>
         </div>
 
-        <div id="about-view" style="display: none;">
-            <div style="height: 30px;"></div>
-            <h2 class="section-title">Projects</h2>
-            <div class="card project-card">
-                <div class="card-header"><h3 style="color: #ff4b4b;">Zomato Analysis 📊</h3></div>
-                <p class="card-desc">Market positioning and SWOT analysis for hyperlocal delivery based on real-time data.</p>
-                <a href="https://docs.google.com/spreadsheets/d/11k2QyICWavfXFuUGXRBGnRJ7l7zsblQB/edit?usp=drivesdk" target="_blank" class="project-link-btn">View Sheets Project <i class="fas fa-external-link-alt"></i></a>
-            </div>
-            <h2 class="section-title">Sonic Fuel (GOAT)</h2>
-            <div class="card krsna-card">
-                <div class="krsna-header" style="display: flex; align-items: center; justify-content: space-between;">
-                    <div style="display: flex; align-items: center;">
-                        <div class="krsna-icon dollar-gold">$</div>
-                        <div style="margin-left: 15px;"><h3>KR$NA 👑</h3><p class="subtitle">The inspiration.</p></div>
-                    </div>
-                    <div id="krsna-play-btn" onclick="toggleKrsnaPlay()"><i class="fas fa-play" id="krsna-play-icon"></i></div>
-                </div>
-                <div class="lyrics-box">"Chahiye mujhe bas ek buss down Rollie<br>Lambhi si gaadi aur makaan do storey..."</div>
-                <audio id="krsna-audio"><source src="Buss down.mp3" type="audio/mpeg"></audio>
-            </div>
-            <h2 class="section-title">Original Verses</h2>
-            <div class="card verse-card"><div class="verse-header"><h3 class="verse-title fire">🔥 Jang-kaal</h3></div><div id="verse-1-display" class="verse-content"></div></div>
-            <div class="card verse-card"><div class="verse-header"><h3 class="verse-title cosmic">🌌 Anjaan</h3></div><div id="verse-2-display" class="verse-content"></div></div>
-            <div style="height: 80px;"></div>
-        </div>
-
-        <div id="recs-view" style="display: none;">
-            <div style="height: 30px;"></div>
-            <h2 class="section-title" style="color: #00ff88; text-align: center;">Arnav's Intel 🧠</h2>
-            <p style="color: #888; text-align: center; margin-bottom: 30px; font-family: 'Courier Prime';">Stuff that upgraded my mind.</p>
-        </div>
+        <div id="about-view" style="display: none;"><div style="height: 30px;"></div><h2 class="section-title">Projects</h2><div class="card project-card"><div class="card-header"><h3 style="color: #ff4b4b;">Zomato Analysis 📊</h3></div><p class="card-desc">Market positioning and SWOT analysis for hyperlocal delivery based on real-time data.</p><a href="https://docs.google.com/spreadsheets/d/11k2QyICWavfXFuUGXRBGnRJ7l7zsblQB/edit?usp=drivesdk" target="_blank" class="project-link-btn">View Sheets Project <i class="fas fa-external-link-alt"></i></a></div><h2 class="section-title">Sonic Fuel (GOAT)</h2><div class="card krsna-card"><div class="krsna-header" style="display: flex; align-items: center; justify-content: space-between;"><div style="display: flex; align-items: center;"><div class="krsna-icon dollar-gold">$</div><div style="margin-left: 15px;"><h3>KR$NA 👑</h3><p class="subtitle">The inspiration.</p></div></div><div id="krsna-play-btn" onclick="toggleKrsnaPlay()"><i class="fas fa-play" id="krsna-play-icon"></i></div></div><div class="lyrics-box">"Chahiye mujhe bas ek buss down Rollie<br>Lambhi si gaadi aur makaan do storey..."</div><audio id="krsna-audio"><source src="Buss down.mp3" type="audio/mpeg"></audio></div><h2 class="section-title">Original Verses</h2><div class="card verse-card"><div class="verse-header"><h3 class="verse-title fire">🔥 Jang-kaal</h3></div><div id="verse-1-display" class="verse-content"></div></div><div class="card verse-card"><div class="verse-header"><h3 class="verse-title cosmic">🌌 Anjaan</h3></div><div id="verse-2-display" class="verse-content"></div></div><div style="height: 80px;"></div></div>
+        <div id="recs-view" style="display: none;"><div style="height: 30px;"></div><h2 class="section-title" style="color: #00ff88; text-align: center;">Arnav's Intel 🧠</h2><p style="color: #888; text-align: center; margin-bottom: 30px; font-family: 'Courier Prime';">Stuff that upgraded my mind.</p></div>
     </div>
 
     <script src="script.js"></script>
+    <script> if (localStorage.getItem('theme') === 'light') { document.body.classList.add('light-mode'); document.getElementById('themeToggle').classList.add('active'); } </script>
 
     <script>
-        if (localStorage.getItem('theme') === 'light') {
-            document.body.classList.add('light-mode');
-            document.getElementById('themeToggle').classList.add('active');
-        }
-    </script>
-
-    <script>
-        const SYSTEM_PROMPT = `You are 'Arnav AI', a raw, intelligent, and loyal assistant...`; 
-        /* ... (Same Chatbot Code as before) ... */
-        const chatStyle = document.createElement('style');
-        chatStyle.innerHTML = `#chatbot-btn { position: fixed; bottom: 30px; right: 30px; width: 65px; height: 65px; background: #000; border: 2px solid #00ff88; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 0 20px rgba(0, 255, 136, 0.4); z-index: 21000; transition: all 0.3s ease; color: #fff; font-size: 28px; animation: floatBtn 3s ease-in-out infinite; opacity: 0; pointer-events: none; } #chatbot-btn:hover { transform: scale(1.1); box-shadow: 0 0 35px rgba(0, 255, 136, 0.8); } #chat-window { display: none; position: fixed; bottom: 110px; right: 30px; width: 340px; height: 480px; background: rgba(5, 5, 5, 0.95); border: 1px solid #333; border-radius: 15px; flex-direction: column; overflow: hidden; z-index: 21000; box-shadow: 0 20px 50px rgba(0,0,0,0.95); font-family: 'Poppins', sans-serif; animation: slideUp 0.3s ease-out; } .chat-header { background: linear-gradient(90deg, #111, #000); padding: 15px 20px; color: #00ff88; font-weight: 700; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #222; } .chat-body { flex: 1; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 15px; background: transparent; } .chat-input-area { padding: 15px; border-top: 1px solid #222; display: flex; gap: 10px; background: #000; align-items: center; } #user-input { flex: 1; padding: 12px 15px; border-radius: 5px; border: 1px solid #333; background: #111; color: #fff; outline: none; font-size: 0.9rem; transition: 0.3s; } #user-input:focus { border-color: #00ff88; box-shadow: 0 0 5px rgba(0, 255, 136, 0.2); } #send-btn { background: #00ff88; border: none; color: #000; padding: 10px; border-radius: 5px; cursor: pointer; width: 42px; height: 42px; display: flex; align-items: center; justify-content: center; font-weight: bold; transition: 0.2s; } .msg { padding: 10px 15px; border-radius: 8px; max-width: 85%; font-size: 0.9rem; line-height: 1.5; } .user-msg { align-self: flex-end; background: #222; color: #fff; } .ai-msg { align-self: flex-start; background: #000; color: #00ff88; border: 1px solid #00ff88; } @keyframes floatBtn { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } } @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }`;
-        document.head.appendChild(chatStyle);
+        const SYSTEM_PROMPT = `You are 'Arnav AI', a raw, intelligent, and loyal assistant...`; /* (Keep full prompt here) */
+        const chatStyle = document.createElement('style'); chatStyle.innerHTML = `#chatbot-btn { position: fixed; bottom: 30px; right: 30px; width: 65px; height: 65px; background: #000; border: 2px solid #00ff88; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 0 20px rgba(0, 255, 136, 0.4); z-index: 21000; transition: all 0.3s ease; color: #fff; font-size: 28px; animation: floatBtn 3s ease-in-out infinite; opacity: 0; pointer-events: none; } #chatbot-btn:hover { transform: scale(1.1); box-shadow: 0 0 35px rgba(0, 255, 136, 0.8); } #chat-window { display: none; position: fixed; bottom: 110px; right: 30px; width: 340px; height: 480px; background: rgba(5, 5, 5, 0.95); border: 1px solid #333; border-radius: 15px; flex-direction: column; overflow: hidden; z-index: 21000; box-shadow: 0 20px 50px rgba(0,0,0,0.95); font-family: 'Poppins', sans-serif; animation: slideUp 0.3s ease-out; } .chat-header { background: linear-gradient(90deg, #111, #000); padding: 15px 20px; color: #00ff88; font-weight: 700; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #222; } .chat-body { flex: 1; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 15px; background: transparent; } .chat-input-area { padding: 15px; border-top: 1px solid #222; display: flex; gap: 10px; background: #000; align-items: center; } #user-input { flex: 1; padding: 12px 15px; border-radius: 5px; border: 1px solid #333; background: #111; color: #fff; outline: none; font-size: 0.9rem; transition: 0.3s; } #user-input:focus { border-color: #00ff88; box-shadow: 0 0 5px rgba(0, 255, 136, 0.2); } #send-btn { background: #00ff88; border: none; color: #000; padding: 10px; border-radius: 5px; cursor: pointer; width: 42px; height: 42px; display: flex; align-items: center; justify-content: center; font-weight: bold; transition: 0.2s; } .msg { padding: 10px 15px; border-radius: 8px; max-width: 85%; font-size: 0.9rem; line-height: 1.5; } .user-msg { align-self: flex-end; background: #222; color: #fff; } .ai-msg { align-self: flex-start; background: #000; color: #00ff88; border: 1px solid #00ff88; } @keyframes floatBtn { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } } @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }`; document.head.appendChild(chatStyle);
         const chatBtn = document.createElement('div'); chatBtn.id = 'chatbot-btn'; chatBtn.innerHTML = '<i class="fas fa-brain"></i>'; chatBtn.onclick = toggleChat; document.body.appendChild(chatBtn);
         setTimeout(() => { chatBtn.style.opacity = '1'; chatBtn.style.pointerEvents = 'auto'; }, 4000);
         const chatWin = document.createElement('div'); chatWin.id = 'chat-window'; chatWin.innerHTML = `<div class="chat-header"><span>ARNAV AI <i class="fas fa-bolt"></i></span><span onclick="toggleChat()" style="cursor:pointer;">&times;</span></div><div class="chat-body" id="chat-body"><div class="msg ai-msg">Online. ⚡ Bol bhai?</div></div><div class="chat-input-area"><input type="text" id="user-input" placeholder="Type here..." onkeypress="handleEnter(event)"><button id="send-btn" onclick="sendMessage()"><i class="fas fa-arrow-up"></i></button></div>`; document.body.appendChild(chatWin);
         function toggleChat() { const w = document.getElementById('chat-window'); w.style.display = (w.style.display === 'flex') ? 'none' : 'flex'; }
         function handleEnter(e) { if (e.key === 'Enter') sendMessage(); }
-        async function sendMessage() { /* Same logic as before */ }
-    </script>
-    
-    <script>
-    /* ==========================================================================
-       MUSIC & POPUP OVERRIDE
-    ========================================================================== */
-    function closePopup() {
-        const musicPopup = document.getElementById('music-popup');
-        const bgMusic = document.getElementById('global-bg-music');
-        const muteIcon = document.getElementById('mute-icon');
-        const bioElement = document.getElementById('bio-text');
-        
-        musicPopup.style.opacity = '0';
-        setTimeout(() => {
-            musicPopup.style.display = 'none';
-            document.body.style.overflow = 'auto';
-            document.querySelectorAll('#home-view > div, #home-view > button').forEach(el => el.classList.add('animate-entry'));
-            if(typeof typeWriter === "function" && bioElement) typeWriter("Building ideas from scratch.", bioElement, 80);
-            
-            if (bgMusic) {
-                bgMusic.volume = 0.5; 
-                if(muteIcon) muteIcon.className = "fas fa-volume-mute"; // Default Muted
-                if(typeof isMusicPlaying !== 'undefined') isMusicPlaying = false;
-            }
-        }, 400);
-    }
+        async function sendMessage() { /* (Keep sendMessage logic) */ }
     </script>
 
     <script>
         let isFlipped = false;
-        
-        // Touch Swipe Detection Variables
         let touchStartX = 0;
-        let touchEndX = 0;
         const profileCard = document.getElementById('profile-card');
 
-        // Add Touch Listeners for Mobile Swipe
-        profileCard.addEventListener('touchstart', e => {
-            touchStartX = e.changedTouches[0].screenX;
-        });
-
+        // Touch Events for Mobile Swipe
+        profileCard.addEventListener('touchstart', e => { touchStartX = e.changedTouches[0].screenX; });
         profileCard.addEventListener('touchend', e => {
-            touchEndX = e.changedTouches[0].screenX;
-            handleSwipe();
+            if (Math.abs(e.changedTouches[0].screenX - touchStartX) > 40) triggerProfileFlip();
         });
 
-        function handleSwipe() {
-            // Check if swipe length is significant (> 50px)
-            if (Math.abs(touchEndX - touchStartX) > 50) {
-                triggerProfileFlip();
-            }
-        }
-
-        // Main Trigger Function (Works on Click & Swipe)
         function triggerProfileFlip() {
-            if (isFlipped) return; // Already playing
-            
+            if (isFlipped) return;
             const card = document.getElementById('profile-card');
             const video = document.getElementById('elon-video');
-            const date = new Date();
-            const hour = date.getHours();
+            const hour = new Date().getHours();
             
-            // 1. Time Logic for Video Source
-            let src = "";
-            if (hour >= 5 && hour < 12) src = "elon_morning.mp4";
-            else if (hour >= 12 && hour < 18) src = "elon_afternoon.mp4";
-            else src = "elon_evening.mp4";
+            // Select Video based on Time
+            video.src = (hour >= 5 && hour < 12) ? "elon_morning.mp4" : 
+                        (hour >= 12 && hour < 18) ? "elon_afternoon.mp4" : "elon_evening.mp4";
             
-            video.src = src;
-            
-            // 2. Flip Animation
             card.classList.add('flipped');
             isFlipped = true;
             
-            // 3. Play Video (Unmuted)
             setTimeout(() => {
-                video.muted = false; // Unmute
-                video.play().catch(e => console.log("Interaction needed for sound"));
-            }, 300); // Wait for flip to halfway complete
+                video.muted = false; 
+                video.play().catch(() => console.log("Tap required for sound"));
+            }, 300);
 
-            // 4. Auto Revert When Video Ends
-            video.onended = function() {
+            video.onended = () => {
                 card.classList.remove('flipped');
                 isFlipped = false;
             };
         }
+        
+        // Auto-type Bio on load (since popup is gone)
+        window.addEventListener('load', () => {
+             const bioElement = document.getElementById('bio-text');
+             if(typeof typeWriter === "function" && bioElement) {
+                 setTimeout(() => typeWriter("Building ideas from scratch.", bioElement, 80), 1000);
+             }
+        });
     </script>
 
     <script src="gravity.js"></script>
