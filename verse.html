@@ -4,86 +4,153 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Arnav Verse | Gaming Hub</title>
+    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;900&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
+
     <style>
         body {
             background-color: #050505; color: #fff;
-            font-family: 'Courier New', monospace;
+            font-family: 'Rajdhani', sans-serif; /* Modern Tech Font */
             display: flex; flex-direction: column; align-items: center; justify-content: center;
             min-height: 100vh; margin: 0;
-            background-image: radial-gradient(circle at center, #111 0%, #000 100%);
+            background-image: 
+                radial-gradient(circle at 50% 50%, rgba(0, 255, 136, 0.05) 0%, transparent 50%),
+                linear-gradient(0deg, #000 0%, #090909 100%);
+        }
+
+        /* --- 🔥 NEW HEADER STYLE 🔥 --- */
+        .verse-header {
+            text-align: center;
+            margin-bottom: 60px;
+            position: relative;
         }
 
         h1 {
-            font-size: 2.5rem; color: #00ff88; text-transform: uppercase;
-            text-shadow: 0 0 20px rgba(0, 255, 136, 0.5); letter-spacing: 5px;
-            margin-bottom: 50px;
+            font-family: 'Orbitron', sans-serif; /* Sci-Fi Font */
+            font-size: 4rem;
+            font-weight: 900;
+            margin: 0;
+            text-transform: uppercase;
+            letter-spacing: 2px; /* Fixed Spacing */
+            
+            /* Gradient Text */
+            background: linear-gradient(135deg, #fff 20%, #00ff88 50%, #00a3ff 80%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            
+            /* Glow */
+            text-shadow: 0 0 30px rgba(0, 255, 136, 0.3);
+            position: relative;
+            display: inline-block;
         }
 
+        /* Subtitle / Tagline */
+        .subtitle {
+            font-size: 1.1rem;
+            color: #888;
+            letter-spacing: 5px;
+            margin-top: 5px;
+            text-transform: uppercase;
+            border-top: 1px solid #333;
+            display: inline-block;
+            padding-top: 10px;
+            width: 100%;
+        }
+
+        /* --- GAME CARDS --- */
         .game-grid {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 30px; width: 90%; max-width: 800px;
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 30px; width: 90%; max-width: 900px;
         }
 
         .game-card {
-            background: rgba(20, 20, 20, 0.8); border: 1px solid #333;
-            border-radius: 15px; padding: 30px; text-align: center;
-            transition: 0.3s; cursor: pointer; text-decoration: none;
-            display: flex; flex-direction: column; align-items: center;
+            background: rgba(255, 255, 255, 0.03); 
+            border: 1px solid #333;
+            border-radius: 20px; padding: 40px 20px; text-align: center;
+            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Bouncy effect */
+            cursor: pointer; text-decoration: none;
             position: relative; overflow: hidden;
+            display: flex; flex-direction: column; align-items: center;
+        }
+
+        .game-card::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(135deg, rgba(0, 255, 136, 0.1), transparent);
+            opacity: 0; transition: 0.3s;
         }
 
         .game-card:hover {
-            transform: translateY(-10px); border-color: #00ff88;
-            box-shadow: 0 0 30px rgba(0, 255, 136, 0.2);
+            transform: translateY(-10px) scale(1.02); 
+            border-color: #00ff88;
+            box-shadow: 0 10px 40px rgba(0, 255, 136, 0.15);
         }
+        .game-card:hover::before { opacity: 1; }
 
         .icon-box {
-            font-size: 4rem; margin-bottom: 20px;
-            background: linear-gradient(45deg, #00ff88, #00a3ff);
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            font-size: 3.5rem; margin-bottom: 25px;
+            color: #fff;
+            transition: 0.3s;
+            text-shadow: 0 0 20px rgba(255,255,255,0.2);
         }
+        .game-card:hover .icon-box { transform: scale(1.1); color: #00ff88; text-shadow: 0 0 20px #00ff88; }
 
-        .game-title { font-size: 1.5rem; font-weight: bold; color: #fff; margin-bottom: 10px; }
-        .game-desc { font-size: 0.8rem; color: #888; }
+        .game-title { 
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.4rem; font-weight: bold; color: #fff; margin-bottom: 10px; 
+        }
+        .game-desc { font-size: 0.9rem; color: #aaa; font-family: 'Rajdhani', sans-serif; }
 
         /* Locked Card */
-        .locked { opacity: 0.5; pointer-events: none; border-style: dashed; }
-        .locked .icon-box { -webkit-text-fill-color: #555; }
+        .locked { opacity: 0.6; pointer-events: none; border-style: dashed; }
+        .locked .icon-box { color: #444; text-shadow: none; }
 
+        /* Back Button */
         .back-btn {
-            margin-top: 50px; text-decoration: none; color: #fff;
-            border: 1px solid #fff; padding: 10px 20px; border-radius: 5px;
+            margin-top: 60px; text-decoration: none; 
+            color: #888; font-size: 0.9rem;
+            display: flex; align-items: center; gap: 10px;
             transition: 0.3s;
+            border: 1px solid #333; padding: 10px 25px; border-radius: 50px;
         }
-        .back-btn:hover { background: #fff; color: #000; }
+        .back-btn:hover { background: #fff; color: #000; border-color: #fff; box-shadow: 0 0 20px rgba(255,255,255,0.3); }
+
+        /* Mobile Adjustments */
+        @media (max-width: 600px) {
+            h1 { font-size: 2.8rem; letter-spacing: 1px; }
+            .subtitle { font-size: 0.9rem; letter-spacing: 3px; }
+        }
     </style>
 </head>
 <body>
 
-    <h1>Arnav Verse <i class="fas fa-gamepad"></i></h1>
+    <div class="verse-header">
+        <h1>Arnav Verse</h1>
+        <br>
+        <span class="subtitle">Select Your Reality</span>
+    </div>
 
     <div class="game-grid">
         <a href="chess.html" class="game-card">
             <div class="icon-box"><i class="fas fa-chess-knight"></i></div>
-            <div class="game-title">Master Chess</div>
-            <div class="game-desc">Vs Stockfish AI (2000 Elo)</div>
+            <div class="game-title">MASTER CHESS</div>
+            <div class="game-desc">Vs Stockfish AI • 2000 Elo</div>
         </a>
 
         <a href="tictactoe.html" class="game-card">
             <div class="icon-box"><i class="fas fa-times"></i></div>
-            <div class="game-title">Tic Tac Toe</div>
-            <div class="game-desc">Unbeatable Bot Challenge</div>
+            <div class="game-title">TIC TAC TOE</div>
+            <div class="game-desc">The Unbeatable Bot</div>
         </a>
 
         <div class="game-card locked">
             <div class="icon-box"><i class="fas fa-lock"></i></div>
-            <div class="game-title">Mystery Game</div>
-            <div class="game-desc">Locked Level</div>
+            <div class="game-title">MYSTERY GAME</div>
+            <div class="game-desc">Coming Soon</div>
         </div>
     </div>
 
-    <a href="index.html" class="back-btn"><i class="fas fa-arrow-left"></i> Back to Portfolio</a>
+    <a href="index.html" class="back-btn"><i class="fas fa-arrow-left"></i> Exit to Portfolio</a>
 
 </body>
 </html>
