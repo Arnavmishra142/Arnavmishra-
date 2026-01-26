@@ -11,7 +11,7 @@
     <style>
         body {
             background-color: #050505; color: #fff;
-            font-family: 'Rajdhani', sans-serif; /* Modern Tech Font */
+            font-family: 'Rajdhani', sans-serif;
             display: flex; flex-direction: column; align-items: center; justify-content: center;
             min-height: 100vh; margin: 0;
             background-image: 
@@ -19,7 +19,7 @@
                 linear-gradient(0deg, #000 0%, #090909 100%);
         }
 
-        /* --- 🔥 NEW HEADER STYLE 🔥 --- */
+        /* --- HEADER --- */
         .verse-header {
             text-align: center;
             margin-bottom: 60px;
@@ -27,25 +27,20 @@
         }
 
         h1 {
-            font-family: 'Orbitron', sans-serif; /* Sci-Fi Font */
+            font-family: 'Orbitron', sans-serif;
             font-size: 4rem;
             font-weight: 900;
             margin: 0;
             text-transform: uppercase;
-            letter-spacing: 2px; /* Fixed Spacing */
-            
-            /* Gradient Text */
+            letter-spacing: 2px;
             background: linear-gradient(135deg, #fff 20%, #00ff88 50%, #00a3ff 80%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            
-            /* Glow */
             text-shadow: 0 0 30px rgba(0, 255, 136, 0.3);
             position: relative;
             display: inline-block;
         }
 
-        /* Subtitle / Tagline */
         .subtitle {
             font-size: 1.1rem;
             color: #888;
@@ -68,7 +63,7 @@
             background: rgba(255, 255, 255, 0.03); 
             border: 1px solid #333;
             border-radius: 20px; padding: 40px 20px; text-align: center;
-            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Bouncy effect */
+            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             cursor: pointer; text-decoration: none;
             position: relative; overflow: hidden;
             display: flex; flex-direction: column; align-items: center;
@@ -101,7 +96,7 @@
         }
         .game-desc { font-size: 0.9rem; color: #aaa; font-family: 'Rajdhani', sans-serif; }
 
-        /* Locked Card */
+        /* Locked Card Style */
         .locked { opacity: 0.6; pointer-events: none; border-style: dashed; }
         .locked .icon-box { color: #444; text-shadow: none; }
 
@@ -115,7 +110,6 @@
         }
         .back-btn:hover { background: #fff; color: #000; border-color: #fff; box-shadow: 0 0 20px rgba(255,255,255,0.3); }
 
-        /* Mobile Adjustments */
         @media (max-width: 600px) {
             h1 { font-size: 2.8rem; letter-spacing: 1px; }
             .subtitle { font-size: 0.9rem; letter-spacing: 3px; }
@@ -143,11 +137,13 @@
             <div class="game-desc">The Unbeatable Bot</div>
         </a>
 
-        <div class="game-card locked">
-            <div class="icon-box"><i class="fas fa-lock"></i></div>
-            <div class="game-title">MYSTERY GAME</div>
-            <div class="game-desc">Coming Soon</div>
-        </div>
+        <a href="snake.html" class="game-card">
+            <div class="icon-box" style="color: #00ff88; text-shadow: 0 0 20px #00ff88;">
+                <i class="fas fa-biohazard"></i>
+            </div>
+            <div class="game-title">NEON SNAKE</div>
+            <div class="game-desc">Cyberpunk Classic • High Score</div>
+        </a>
     </div>
 
     <a href="index.html" class="back-btn"><i class="fas fa-arrow-left"></i> Exit to Portfolio</a>
