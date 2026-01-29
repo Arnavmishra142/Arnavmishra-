@@ -1,314 +1,206 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-KK3QZ8M8D3"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-KK3QZ8M8D3');
-    </script>
-    
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Arnav Mishra | Work & Mind</title>
     
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Playfair+Display:ital,wght@0,400;1,600&family=Poppins:wght@300;400;600&family=Courier+Prime:wght@400;700&family=Great+Vibes&family=Orbitron:wght@500;900&family=Space+Grotesk:wght@400;700&display=swap" rel="stylesheet">
-    
-    <!-- Three.js for 3D Background -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <!-- GSAP for Smooth Animations -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Orbitron:wght@500;700;900&family=Courier+Prime&display=swap" rel="stylesheet">
 </head>
 
-<body id="main-body">
-    <!-- 3D Particle Canvas -->
-    <canvas id="particle-canvas"></canvas>
-    
-    <!-- Floating Orbs Background -->
-    <div class="floating-orbs">
-        <div class="orb orb-1"></div>
-        <div class="orb orb-2"></div>
-        <div class="orb orb-3"></div>
-        <div class="orb orb-4"></div>
-    </div>
-
-    <!-- Custom Cursor -->
-    <div class="custom-cursor" id="cursor"></div>
-    <div class="cursor-trail" id="cursor-trail"></div>
-
-    <div class="menu-icon" onclick="toggleMenu()">
-        <div class="bar"></div>
-        <div class="bar"></div>
-        <div class="bar"></div>
-    </div>
-    
-    <div id="sidebar" class="sidebar">
-        <a href="#" class="close-btn" onclick="toggleMenu()">&times;</a>
-        <div class="sidebar-content">
-            <h3>NAVIGATE</h3>
-            <a href="#" onclick="switchToHome(); toggleMenu()"><i class="fas fa-home"></i> Home</a>
-            <a href="#" onclick="switchToAbout(); toggleMenu()"><i class="fas fa-user-astronaut"></i> About Me</a>
-            <a href="#" onclick="switchToRecs(); toggleMenu()"><i class="fas fa-star"></i> Arnav's Picks</a>
-            <a href="verse.html" class="verse-link">
-                <i class="fas fa-gamepad"></i> ARNAV VERSE
-            </a>
-        </div>
-    </div>
-    <div id="overlay" onclick="toggleMenu()"></div>
-    
-    <div id="intro-screen">
-        <div class="signature-container">
-            <span id="signature-text"></span>
-            <span class="cursor"></span>
-        </div>
-        <div class="loading-bar">
-            <div class="loading-progress"></div>
-        </div>
-    </div>
-    
-    <div class="eclipse-wrapper" id="themeWrapper">
-        <div class="eclipse-toggle" id="themeToggle">
-            <div class="sun"></div>
-            <div class="moon"></div>
-        </div>
-        <div class="eclipse-hint" id="themeHint">
-            <span>Tap: Switch | Hold: Move</span>
-            <div class="close-hint" onclick="closeHint()">×</div>
+<body>
+    <!-- Simple Loading Screen -->
+    <div id="loader">
+        <div class="loader-content">
+            <h1 class="loader-name">Arnav Mishra</h1>
+            <div class="loader-bar">
+                <div class="loader-progress"></div>
+            </div>
         </div>
     </div>
 
-    <audio id="global-bg-music" loop preload="auto">
+    <!-- Background Effects -->
+    <div class="bg-gradient"></div>
+    <div class="floating-orb orb-1"></div>
+    <div class="floating-orb orb-2"></div>
+    <div class="floating-orb orb-3"></div>
+
+    <!-- Menu -->
+    <div class="menu-btn" onclick="toggleMenu()">
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+
+    <nav class="sidebar" id="sidebar">
+        <a href="#" class="close-nav" onclick="toggleMenu()">&times;</a>
+        <a href="#" onclick="showHome(); toggleMenu()"><i class="fas fa-home"></i> Home</a>
+        <a href="#" onclick="showAbout(); toggleMenu()"><i class="fas fa-user"></i> About Me</a>
+        <a href="#" onclick="showPicks(); toggleMenu()"><i class="fas fa-star"></i> My Picks</a>
+        <a href="verse.html" class="verse-nav"><i class="fas fa-gamepad"></i> ARNAV VERSE</a>
+    </nav>
+    <div class="overlay" id="overlay" onclick="toggleMenu()"></div>
+
+    <!-- Theme Toggle -->
+    <div class="theme-toggle" onclick="toggleTheme()" title="Toggle Theme">
+        <i class="fas fa-sun" id="theme-icon"></i>
+    </div>
+
+    <!-- Sound Toggle -->
+    <button class="sound-btn" onclick="toggleSound()" id="sound-btn">
+        <i class="fas fa-volume-mute" id="sound-icon"></i>
+    </button>
+
+    <!-- Chat Button -->
+    <div class="chat-btn" onclick="toggleChat()">
+        <i class="fas fa-comment"></i>
+    </div>
+
+    <!-- Chat Window -->
+    <div class="chat-window" id="chat-window">
+        <div class="chat-header">
+            <span>ARNAV AI</span>
+            <span onclick="toggleChat()" style="cursor:pointer">&times;</span>
+        </div>
+        <div class="chat-body" id="chat-body">
+            <div class="chat-msg bot">Hey! I'm Arnav's AI. Ask me anything! 🤖</div>
+        </div>
+        <div class="chat-input">
+            <input type="text" id="chat-input-field" placeholder="Type a message..." onkeypress="if(event.key==='Enter')sendChat()">
+            <button onclick="sendChat()"><i class="fas fa-paper-plane"></i></button>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="container">
+        
+        <!-- HOME VIEW -->
+        <section id="home-view" class="view active">
+            <div class="hero">
+                <div class="profile-wrap">
+                    <div class="profile-ring"></div>
+                    <img src="https://imarnavin.wordpress.com/wp-content/uploads/2026/01/image_editor_output_image-900633096-17689630363507786449788545237875.jpg" alt="Arnav" class="profile-img">
+                </div>
+                
+                <h1 class="main-title">Arnav Mishra</h1>
+                <p class="tagline" id="tagline"></p>
+                
+                <div class="quote-card">
+                    <i class="fas fa-quote-left"></i>
+                    <p>"The secret of change is to focus all of your energy, not on fighting the old, but on building the new."</p>
+                </div>
+
+                <div class="social-grid">
+                    <a href="https://linkedin.com/in/arnav-mishra-1a6934371" class="social-btn linkedin">
+                        <i class="fab fa-linkedin"></i>
+                        <span>LinkedIn</span>
+                    </a>
+                    <a href="https://x.com/ArnavMishra142" class="social-btn twitter">
+                        <i class="fab fa-twitter"></i>
+                        <span>X / Twitter</span>
+                    </a>
+                    <a href="https://instagram.com/arnav_9.11" class="social-btn instagram">
+                        <i class="fab fa-instagram"></i>
+                        <span>Instagram</span>
+                    </a>
+                    <a href="https://chess.com/member/Arnavm142" class="social-btn chess">
+                        <i class="fas fa-chess-knight"></i>
+                        <span>Chess.com</span>
+                    </a>
+                </div>
+
+                <button class="cta-btn" onclick="showAbout()">
+                    ENTER MY WORLD <i class="fas fa-arrow-right"></i>
+                </button>
+
+                <a href="https://wa.me/916393349498?text=Hey%20Arnav!" class="whatsapp-btn" target="_blank">
+                    <i class="fas fa-hand-sparkles"></i> Say Hello
+                </a>
+
+                <div class="portal-links">
+                    <a href="stranger.html" class="portal-btn upside">ENTER THE UPSIDE DOWN</a>
+                    <a href="concert.html" class="portal-btn concert"><i class="fas fa-guitar"></i> Live Concert</a>
+                </div>
+            </div>
+            
+            <footer>&copy; 2026 ARNAV MISHRA</footer>
+        </section>
+
+        <!-- ABOUT VIEW -->
+        <section id="about-view" class="view">
+            <h2 class="section-title">Projects</h2>
+            
+            <div class="project-card">
+                <div class="project-header">
+                    <i class="fas fa-chart-line"></i>
+                    <h3>Zomato Analysis</h3>
+                    <span class="badge">Data</span>
+                </div>
+                <p>Market positioning and SWOT analysis for hyperlocal delivery based on real-time data.</p>
+                <a href="https://docs.google.com/spreadsheets/d/11k2QyICWavfXFuUGXRBGnRJ7l7zsblQB/edit" target="_blank" class="project-link">
+                    View Project <i class="fas fa-external-link-alt"></i>
+                </a>
+            </div>
+
+            <h2 class="section-title">Sonic Fuel</h2>
+            
+            <div class="krsna-card">
+                <div class="krsna-header">
+                    <div class="krsna-icon">$</div>
+                    <div>
+                        <h3>KR$NA 👑</h3>
+                        <small>The inspiration</small>
+                    </div>
+                    <button class="play-btn" onclick="toggleKrsna()" id="krsna-play">
+                        <i class="fas fa-play"></i>
+                    </button>
+                </div>
+                <div class="lyrics">
+                    "Chahiye mujhe bas ek buss down Rollie<br>
+                    Lambhi si gaadi aur makaan do storey..."
+                </div>
+                <audio id="krsna-audio" src="Buss down.mp3"></audio>
+            </div>
+
+            <h2 class="section-title">Original Verses</h2>
+            
+            <div class="verse-card">
+                <h4 class="verse-title fire">🔥 Jang-kaal</h4>
+                <div class="verse-text" id="verse1"></div>
+                <button class="verse-btn" onclick="window.open('https://instagram.com/arnav_9.11', '_blank')">
+                    Read Full <i class="fab fa-instagram"></i>
+                </button>
+            </div>
+
+            <div class="verse-card">
+                <h4 class="verse-title cosmic">🌌 Anjaan</h4>
+                <div class="verse-text" id="verse2"></div>
+                <button class="verse-btn" onclick="window.open('https://instagram.com/arnav_9.11', '_blank')">
+                    Read Full <i class="fab fa-instagram"></i>
+                </button>
+            </div>
+            
+            <div style="height:60px"></div>
+        </section>
+
+        <!-- PICKS VIEW -->
+        <section id="picks-view" class="view">
+            <div class="picks-header">
+                <h2>Arnav's Intel 🧠</h2>
+                <p>Stuff that upgraded my mind</p>
+            </div>
+            <div id="picks-container"></div>
+            <div style="height:60px"></div>
+        </section>
+
+    </main>
+
+    <audio id="bg-music" loop>
         <source src="co2.mp3" type="audio/mpeg">
     </audio>
 
-    <div class="sound-control">
-        <button onclick="toggleMusic()" id="mute-btn">
-            <div class="icon-container">
-                <i class="fas fa-volume-mute" id="mute-icon"></i>
-            </div>
-        </button>
-    </div>
-
-    <!-- AI Chatbot -->
-    <div id="chatbot-btn" onclick="toggleChat()">
-        <i class="fas fa-brain"></i>
-        <div class="pulse-ring"></div>
-    </div>
-    <div id="chat-window">
-        <div class="chat-header">
-            <span>ARNAV AI <i class="fas fa-bolt"></i></span>
-            <span onclick="toggleChat()" style="cursor:pointer;">&times;</span>
-        </div>
-        <div class="chat-body" id="chat-body">
-            <div class="msg ai-msg">Online. ⚡ Bol bhai?</div>
-        </div>
-        <div class="typing" id="typing-indicator">Typing...</div>
-        <div class="chat-input-area">
-            <input type="text" id="user-input" placeholder="Type here..." onkeypress="handleEnter(event)">
-            <button id="send-btn" onclick="sendMessage()"><i class="fas fa-arrow-up"></i></button>
-        </div>
-    </div>
-
-    <div class="main-wrapper">
-        <!-- HOME VIEW -->
-        <div id="home-view">
-            <div class="hero-3d-container">
-                <div class="profile-container anim-delay-1" id="profile-card">
-                    <div class="profile-glow-ring"></div>
-                    <div class="profile-inner">
-                        <div class="profile-front">
-                            <img src="https://imarnavin.wordpress.com/wp-content/uploads/2026/01/image_editor_output_image-900633096-17689630363507786449788545237875.jpg" class="profile-img" alt="Arnav Mishra">
-                            <div class="swipe-overlay">
-                                <i class="fas fa-arrow-right swipe-arrow-icon"></i>
-                            </div>
-                        </div>
-                        <div class="profile-back">
-                            <video id="elon-video" class="profile-video" playsinline></video>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="text-reveal-container">
-                <div class="name anim-delay-2" id="main-name">Arnav Mishra</div>
-                <div class="name-shadow">Arnav Mishra</div>
-            </div>
-            
-            <div class="bio-wrap anim-delay-3">
-                <div class="bio" id="bio-text"></div>
-                <span class="typing-cursor">|</span>
-            </div>
-
-            <div class="quote-box anim-delay-4" id="quote-box">
-                <i class="fas fa-quote-left quote-icon"></i>
-                <p>"The secret of change is to focus all of your energy, not on fighting the old, but on building the new."</p>
-                <i class="fas fa-quote-right quote-icon right"></i>
-            </div>
-
-            <div class="btn-grid anim-delay-5">
-                <a href="https://www.linkedin.com/in/arnav-mishra-1a6934371" class="btn magnetic-btn" data-magnetic>
-                    <i class="fab fa-linkedin"></i> 
-                    <span>LinkedIn</span>
-                    <div class="btn-glow"></div>
-                </a>
-                <a href="https://x.com/ArnavMishra142" class="btn magnetic-btn" data-magnetic>
-                    <i class="fab fa-twitter"></i> 
-                    <span>X / Twitter</span>
-                    <div class="btn-glow"></div>
-                </a>
-                <a href="https://www.instagram.com/arnav_9.11" class="btn magnetic-btn" data-magnetic>
-                    <i class="fab fa-instagram"></i> 
-                    <span>Instagram</span>
-                    <div class="btn-glow"></div>
-                </a>
-                <a href="https://www.chess.com/member/Arnavm142" class="btn magnetic-btn" data-magnetic>
-                    <i class="fas fa-chess-knight"></i> 
-                    <span>Chess.com</span>
-                    <div class="btn-glow"></div>
-                </a>
-            </div>
-
-            <button onclick="switchToAbout()" class="main-btn anim-delay-6" id="enter-btn">
-                <span class="btn-text">ENTER MY WORLD</span>
-                <i class="fas fa-arrow-right"></i>
-                <div class="btn-particles"></div>
-            </button>
-            
-            <div class="chess-msg-container anim-delay-7">
-                <a href="https://wa.me/916393349498?text=Hey%20Arnav,%20I%20visited%20your%20portfolio!" target="_blank" class="chess-btn-styled">
-                    <div class="chess-btn-content">
-                        <i class="fas fa-chess-knight knight-icon-white"></i>
-                        <div class="btn-text-group">
-                            <span class="small-text-gray">MAKE A MOVE</span>
-                            <span class="big-text-white">Say Hello <i class="fas fa-hand-sparkles wave-icon"></i></span>
-                        </div>
-                    </div>
-                    <div class="dashed-border-bottom"></div>
-                </a>
-            </div>
-            
-            <div class="portal-container anim-delay-8">
-                <a href="stranger.html" class="glitch-btn" data-text="ENTER THE UPSIDE DOWN">
-                    ENTER THE UPSIDE DOWN
-                </a>
-            </div>
-            
-            <div class="concert-link-container anim-delay-9">
-                <a href="concert.html" class="concert-btn">
-                    <i class="fas fa-guitar"></i> Enter Live Concert
-                </a>
-            </div>
-            
-            <p class="footer-text anim-delay-10">© 2026 ARNAV MISHRA</p>
-        </div>
-
-        <!-- ABOUT VIEW -->
-        <div id="about-view" style="display: none;">
-            <div class="section-header">
-                <h2 class="section-title glitch" data-text="PROJECTS">PROJECTS</h2>
-                <div class="section-line"></div>
-            </div>
-            
-            <div class="card project-card tilt-card" data-tilt>
-                <div class="card-shine"></div>
-                <div class="card-header">
-                    <div class="project-icon">
-                        <i class="fas fa-chart-line"></i>
-                    </div>
-                    <h3>Zomato Analysis</h3>
-                    <span class="project-badge">Data</span>
-                </div>
-                <p class="card-desc">Market positioning and SWOT analysis for hyperlocal delivery based on real-time data.</p>
-                <a href="https://docs.google.com/spreadsheets/d/11k2QyICWavfXFuUGXRBGnRJ7l7zsblQB/edit?usp=drivesdk" target="_blank" class="project-link-btn">
-                    View Sheets Project <i class="fas fa-external-link-alt"></i>
-                </a>
-            </div>
-
-            <div class="section-header">
-                <h2 class="section-title">SONIC FUEL</h2>
-                <div class="section-line"></div>
-            </div>
-            
-            <div class="card krsna-card tilt-card" data-tilt>
-                <div class="card-shine"></div>
-                <div class="krsna-header">
-                    <div class="krsna-icon-container">
-                        <div class="krsna-icon dollar-gold">$</div>
-                        <div class="icon-glow"></div>
-                    </div>
-                    <div class="krsna-info">
-                        <h3>KR$NA 👑</h3>
-                        <p class="subtitle">The inspiration.</p>
-                    </div>
-                    <div id="krsna-play-btn" onclick="toggleKrsnaPlay()">
-                        <i class="fas fa-play" id="krsna-play-icon"></i>
-                        <div class="play-ring"></div>
-                    </div>
-                </div>
-                <div class="lyrics-box">
-                    <div class="lyric-line">"Chahiye mujhe bas ek buss down Rollie</div>
-                    <div class="lyric-line">Lambhi si gaadi aur makaan do storey..."</div>
-                </div>
-                <audio id="krsna-audio">
-                    <source src="Buss down.mp3" type="audio/mpeg">
-                </audio>
-            </div>
-
-            <div class="section-header">
-                <h2 class="section-title">ORIGINAL VERSES</h2>
-                <div class="section-line"></div>
-            </div>
-            
-            <div class="card verse-card tilt-card" data-tilt>
-                <div class="card-shine"></div>
-                <div class="verse-header">
-                    <h3 class="verse-title fire">🔥 Jang-kaal</h3>
-                    <div class="fire-particles"></div>
-                </div>
-                <div id="verse-1-display" class="verse-content"></div>
-            </div>
-            
-            <div class="card verse-card tilt-card" data-tilt>
-                <div class="card-shine"></div>
-                <div class="verse-header">
-                    <h3 class="verse-title cosmic">🌌 Anjaan</h3>
-                    <div class="stars-bg"></div>
-                </div>
-                <div id="verse-2-display" class="verse-content"></div>
-            </div>
-            
-            <div class="spacer"></div>
-        </div>
-
-        <!-- RECS VIEW -->
-        <div id="recs-view" style="display: none;">
-            <div class="section-header">
-                <h2 class="section-title intel-title">Arnav's Intel <i class="fas fa-brain"></i></h2>
-                <p class="section-subtitle">Stuff that upgraded my mind.</p>
-                <div class="section-line"></div>
-            </div>
-            
-            <div id="dynamic-picks-wrapper" class="picks-grid"></div>
-            
-            <div class="spacer"></div>
-        </div>
-    </div>
-
     <script src="script.js"></script>
-    <script>
-        // Theme initialization
-        if (localStorage.getItem('theme') === 'light') {
-            document.body.classList.add('light-mode');
-            document.getElementById('themeToggle').classList.add('active');
-        }
-    </script>
-    <script src="gravity.js"></script>
-    <script src="jarvis.js"></script>
 </body>
 </html>
