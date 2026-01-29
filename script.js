@@ -1,652 +1,277 @@
-/* ========================================
-   ARNAV MISHRA - 3D PORTFOLIO
-   Three.js & GSAP Powered Experience
-   ======================================== */
-
-// Initialize when DOM is loaded
-document.addEventListener('DOMContentLoaded', () => {
-    initLoadingScreen();
-    initThreeJS();
-    initGSAPAnimations();
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('🚀 Arnav Mishra 3D Portfolio Loaded!');
+    initLoader();
     initNavigation();
-    initScrollEffects();
-    initInteractiveElements();
+    initParticles();
+    initThreeJS();
+    initScrollAnimations();
     initZeroGravity();
+    initClickEffects();
 });
 
-// Loading Screen
-function initLoadingScreen() {
-    const loadingScreen = document.getElementById('loading');
-    
-    setTimeout(() => {
-        loadingScreen.classList.add('hidden');
-        
-        // Trigger entrance animations
-        setTimeout(() => {
-            animateEntrance();
-        }, 500);
-    }, 2500);
+function initLoader() {
+    const loader = document.getElementById('loading');
+    setTimeout(function() {
+        loader.classList.add('hidden');
+        setTimeout(animateEntrance, 300);
+    }, 1500);
 }
 
-// Three.js 3D Scene
+function animateEntrance() {
+    const titleLines = document.querySelectorAll('.title-line');
+    const subtitle = document.querySelector('.hero-subtitle');
+    const quote = document.querySelector('.quote-3d');
+    const buttons = document.querySelectorAll('.hero-buttons .btn-3d');
+    
+    titleLines.forEach(function(line, index) {
+        line.style.opacity = '0';
+        line.style.transform = 'translateY(50px)';
+        setTimeout(function() {
+            line.style.transition = 'all 0.8s ease';
+            line.style.opacity = '1';
+            line.style.transform = 'translateY(0)';
+        }, index * 200);
+    });
+    
+    if (subtitle) {
+        subtitle.style.opacity = '0';
+        setTimeout(function() {
+            subtitle.style.transition = 'opacity 0.6s ease';
+            subtitle.style.opacity = '1';
+        }, 500);
+    }
+    
+    if (quote) {
+        quote.style.opacity = '0';
+        quote.style.transform = 'scale(0.9)';
+        setTimeout(function() {
+            quote.style.transition = 'all 0.8s ease';
+            quote.style.opacity = '1';
+            quote.style.transform = 'scale(1)';
+        }, 700);
+    }
+    
+    buttons.forEach(function(btn, index) {
+        btn.style.opacity = '0';
+        btn.style.transform = 'translateY(30px)';
+        setTimeout(function() {
+            btn.style.transition = 'all 0.6s ease';
+            btn.style.opacity = '1';
+            btn.style.transform = 'translateY(0)';
+        }, 900 + index * 150);
+    });
+}
+
+function initNavigation() {
+    const navToggle = document.getElementById('nav-toggle');
+    const navLinks = document.getElementById('nav-links');
+    
+    if (navToggle && navLinks) {
+        navToggle.addEventListener('click', function() {
+            navLinks.classList.toggle('active');
+        });
+        navLinks.querySelectorAll('a').forEach(function(link) {
+            link.addEventListener('click', function() {
+                navLinks.classList.remove('active');
+            });
+        });
+    }
+    
+    const nav = document.querySelector('.nav-3d');
+    window.addEventListener('scroll', function() {
+        nav.style.background = window.scrollY > 50 ? 'rgba(5, 5, 5, 0.98)' : 'rgba(5, 5, 5, 0.9)';
+    });
+}
+
+function initParticles() {
+    const container = document.getElementById('particles-fallback');
+    if (!container) return;
+    
+    for (let i = 0; i < 50; i++) {
+        const particle = document.createElement('div');
+        particle.className = 'particle';
+        particle.style.left = Math.random() * 100 + '%';
+        particle.style.animationDelay = Math.random() * 15 + 's';
+        particle.style.animationDuration = (10 + Math.random() * 10) + 's';
+        const colors = ['#00d4ff', '#ff00ff', '#ffff00'];
+        particle.style.background = colors[Math.floor(Math.random() * colors.length)];
+        container.appendChild(particle);
+    }
+}
+
 function initThreeJS() {
     const canvas = document.getElementById('bg-canvas');
-    const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-    const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
-    
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-    
-    // Camera position
-    camera.position.z = 30;
-    
-    // Create particle system
-    const particlesGeometry = new THREE.BufferGeometry();
-    const particlesCount = 2000;
-    const posArray = new Float32Array(particlesCount * 3);
-    const colorArray = new Float32Array(particlesCount * 3);
-    
-    for (let i = 0; i < particlesCount * 3; i += 3) {
-        // Position
-        posArray[i] = (Math.random() - 0.5) * 100;
-        posArray[i + 1] = (Math.random() - 0.5) * 100;
-        posArray[i + 2] = (Math.random() - 0.5) * 50;
-        
-        // Color (cyan to magenta gradient)
-        const ratio = i / (particlesCount * 3);
-        colorArray[i] = ratio * 0.5;     // R
-        colorArray[i + 1] = 0.8 + ratio * 0.2; // G
-        colorArray[i + 2] = 1 - ratio * 0.5;   // B
+    if (!canvas || typeof THREE === 'undefined') {
+        if (canvas) canvas.style.display = 'none';
+        return;
     }
     
-    particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
-    particlesGeometry.setAttribute('color', new THREE.BufferAttribute(colorArray, 3));
-    
-    const particlesMaterial = new THREE.PointsMaterial({
-        size: 0.15,
-        vertexColors: true,
-        transparent: true,
-        opacity: 0.8,
-        blending: THREE.AdditiveBlending
-    });
-    
-    const particlesMesh = new THREE.Points(particlesGeometry, particlesMaterial);
-    scene.add(particlesMesh);
-    
-    // Create floating geometric shapes
-    const shapes = [];
-    
-    // Create cubes
-    for (let i = 0; i < 8; i++) {
-        const geometry = new THREE.BoxGeometry(
-            Math.random() * 2 + 0.5,
-            Math.random() * 2 + 0.5,
-            Math.random() * 2 + 0.5
-        );
-        const material = new THREE.MeshBasicMaterial({
-            color: i % 2 === 0 ? 0x00d4ff : 0xff00ff,
-            wireframe: true,
-            transparent: true,
-            opacity: 0.3
-        });
-        const cube = new THREE.Mesh(geometry, material);
+    try {
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true });
         
-        cube.position.set(
-            (Math.random() - 0.5) * 80,
-            (Math.random() - 0.5) * 80,
-            (Math.random() - 0.5) * 30
-        );
-        
-        cube.userData = {
-            rotationSpeed: {
-                x: (Math.random() - 0.5) * 0.02,
-                y: (Math.random() - 0.5) * 0.02,
-                z: (Math.random() - 0.5) * 0.02
-            },
-            floatSpeed: Math.random() * 0.5 + 0.5,
-            floatOffset: Math.random() * Math.PI * 2
-        };
-        
-        scene.add(cube);
-        shapes.push(cube);
-    }
-    
-    // Create spheres
-    for (let i = 0; i < 5; i++) {
-        const geometry = new THREE.SphereGeometry(Math.random() * 1.5 + 0.5, 16, 16);
-        const material = new THREE.MeshBasicMaterial({
-            color: 0xffff00,
-            wireframe: true,
-            transparent: true,
-            opacity: 0.2
-        });
-        const sphere = new THREE.Mesh(geometry, material);
-        
-        sphere.position.set(
-            (Math.random() - 0.5) * 60,
-            (Math.random() - 0.5) * 60,
-            (Math.random() - 0.5) * 20
-        );
-        
-        sphere.userData = {
-            rotationSpeed: {
-                x: (Math.random() - 0.5) * 0.01,
-                y: (Math.random() - 0.5) * 0.01,
-                z: 0
-            },
-            floatSpeed: Math.random() * 0.3 + 0.3,
-            floatOffset: Math.random() * Math.PI * 2
-        };
-        
-        scene.add(sphere);
-        shapes.push(sphere);
-    }
-    
-    // Create torus rings
-    for (let i = 0; i < 4; i++) {
-        const geometry = new THREE.TorusGeometry(Math.random() * 3 + 2, 0.2, 8, 20);
-        const material = new THREE.MeshBasicMaterial({
-            color: i % 2 === 0 ? 0x00d4ff : 0xff00ff,
-            wireframe: true,
-            transparent: true,
-            opacity: 0.25
-        });
-        const torus = new THREE.Mesh(geometry, material);
-        
-        torus.position.set(
-            (Math.random() - 0.5) * 70,
-            (Math.random() - 0.5) * 70,
-            (Math.random() - 0.5) * 25
-        );
-        
-        torus.userData = {
-            rotationSpeed: {
-                x: (Math.random() - 0.5) * 0.015,
-                y: (Math.random() - 0.5) * 0.015,
-                z: (Math.random() - 0.5) * 0.015
-            },
-            floatSpeed: Math.random() * 0.4 + 0.4,
-            floatOffset: Math.random() * Math.PI * 2
-        };
-        
-        scene.add(torus);
-        shapes.push(torus);
-    }
-    
-    // Create connecting lines between particles
-    const lineMaterial = new THREE.LineBasicMaterial({
-        color: 0x00d4ff,
-        transparent: true,
-        opacity: 0.1
-    });
-    
-    const lineGeometry = new THREE.BufferGeometry();
-    const linePositions = new Float32Array(particlesCount * 6);
-    lineGeometry.setAttribute('position', new THREE.BufferAttribute(linePositions, 3));
-    const lines = new THREE.LineSegments(lineGeometry, lineMaterial);
-    scene.add(lines);
-    
-    // Mouse interaction
-    let mouseX = 0;
-    let mouseY = 0;
-    let targetX = 0;
-    let targetY = 0;
-    
-    const windowHalfX = window.innerWidth / 2;
-    const windowHalfY = window.innerHeight / 2;
-    
-    document.addEventListener('mousemove', (event) => {
-        mouseX = (event.clientX - windowHalfX) / 100;
-        mouseY = (event.clientY - windowHalfY) / 100;
-    });
-    
-    // Animation loop
-    let time = 0;
-    let animationId;
-    
-    function animate() {
-        animationId = requestAnimationFrame(animate);
-        time += 0.01;
-        
-        // Smooth camera movement based on mouse
-        targetX = mouseX * 0.5;
-        targetY = mouseY * 0.5;
-        
-        camera.position.x += (targetX - camera.position.x) * 0.05;
-        camera.position.y += (-targetY - camera.position.y) * 0.05;
-        camera.lookAt(scene.position);
-        
-        // Animate particles
-        particlesMesh.rotation.y = time * 0.05;
-        particlesMesh.rotation.x = Math.sin(time * 0.03) * 0.1;
-        
-        // Animate shapes
-        shapes.forEach((shape, index) => {
-            shape.rotation.x += shape.userData.rotationSpeed.x;
-            shape.rotation.y += shape.userData.rotationSpeed.y;
-            shape.rotation.z += shape.userData.rotationSpeed.z;
-            
-            // Floating animation
-            shape.position.y += Math.sin(time * shape.userData.floatSpeed + shape.userData.floatOffset) * 0.02;
-        });
-        
-        // Update connecting lines (connect nearby particles)
-        const positions = particlesGeometry.attributes.position.array;
-        const linePos = lineGeometry.attributes.position.array;
-        let lineIndex = 0;
-        const maxDistance = 8;
-        const maxConnections = 3;
-        
-        for (let i = 0; i < particlesCount; i++) {
-            let connections = 0;
-            const x1 = positions[i * 3];
-            const y1 = positions[i * 3 + 1];
-            const z1 = positions[i * 3 + 2];
-            
-            for (let j = i + 1; j < particlesCount && connections < maxConnections; j++) {
-                const x2 = positions[j * 3];
-                const y2 = positions[j * 3 + 1];
-                const z2 = positions[j * 3 + 2];
-                
-                const distance = Math.sqrt(
-                    Math.pow(x2 - x1, 2) +
-                    Math.pow(y2 - y1, 2) +
-                    Math.pow(z2 - z1, 2)
-                );
-                
-                if (distance < maxDistance && lineIndex < particlesCount * 6 - 6) {
-                    linePos[lineIndex++] = x1;
-                    linePos[lineIndex++] = y1;
-                    linePos[lineIndex++] = z1;
-                    linePos[lineIndex++] = x2;
-                    linePos[lineIndex++] = y2;
-                    linePos[lineIndex++] = z2;
-                    connections++;
-                }
-            }
-        }
-        
-        // Clear remaining line positions
-        for (let i = lineIndex; i < particlesCount * 6; i++) {
-            linePos[i] = 0;
-        }
-        
-        lineGeometry.attributes.position.needsUpdate = true;
-        lines.rotation.y = time * 0.02;
-        
-        renderer.render(scene, camera);
-    }
-    
-    animate();
-    
-    // Handle resize
-    window.addEventListener('resize', () => {
-        camera.aspect = window.innerWidth / window.innerHeight;
-        camera.updateProjectionMatrix();
         renderer.setSize(window.innerWidth, window.innerHeight);
-    });
-    
-    // Store scene reference for zero gravity effect
-    window.threeScene = { shapes, particlesMesh, camera, scene };
-}
-
-// GSAP Animations
-function initGSAPAnimations() {
-    gsap.registerPlugin(ScrollTrigger);
-    
-    // Hero title animation
-    gsap.from('.hero-title .title-line', {
-        duration: 1.5,
-        y: 100,
-        opacity: 0,
-        rotationX: -90,
-        stagger: 0.2,
-        ease: 'power4.out',
-        delay: 0.5
-    });
-    
-    // Hero subtitle
-    gsap.from('.hero-subtitle', {
-        duration: 1,
-        y: 50,
-        opacity: 0,
-        ease: 'power3.out',
-        delay: 1
-    });
-    
-    // Quote 3D
-    gsap.from('.quote-3d', {
-        duration: 1.2,
-        scale: 0.8,
-        opacity: 0,
-        rotationY: -30,
-        ease: 'back.out(1.7)',
-        delay: 1.2
-    });
-    
-    // Hero buttons
-    gsap.from('.hero-buttons .btn-3d', {
-        duration: 1,
-        y: 50,
-        opacity: 0,
-        stagger: 0.15,
-        ease: 'power3.out',
-        delay: 1.5
-    });
-    
-    // Section titles on scroll
-    gsap.utils.toArray('.section-title-3d').forEach(title => {
-        gsap.from(title, {
-            scrollTrigger: {
-                trigger: title,
-                start: 'top 80%',
-                toggleActions: 'play none none reverse'
-            },
-            duration: 1,
-            y: 50,
-            opacity: 0,
-            ease: 'power3.out'
-        });
-    });
-    
-    // Social cards
-    gsap.from('.social-card-3d', {
-        scrollTrigger: {
-            trigger: '.social-grid',
-            start: 'top 80%'
-        },
-        duration: 0.8,
-        y: 80,
-        opacity: 0,
-        rotationY: -30,
-        stagger: 0.1,
-        ease: 'back.out(1.7)'
-    });
-    
-    // About cards
-    gsap.from('.about-card-3d', {
-        scrollTrigger: {
-            trigger: '.about-content-3d',
-            start: 'top 80%'
-        },
-        duration: 1,
-        y: 100,
-        opacity: 0,
-        stagger: 0.2,
-        ease: 'power3.out'
-    });
-    
-    // Picks items
-    gsap.from('.pick-item-3d', {
-        scrollTrigger: {
-            trigger: '.picks-grid-3d',
-            start: 'top 80%'
-        },
-        duration: 0.8,
-        scale: 0.5,
-        opacity: 0,
-        stagger: 0.1,
-        ease: 'back.out(1.7)'
-    });
-    
-    // Special links
-    gsap.from('.special-link-3d', {
-        scrollTrigger: {
-            trigger: '.links-container',
-            start: 'top 80%'
-        },
-        duration: 1,
-        x: -100,
-        opacity: 0,
-        stagger: 0.2,
-        ease: 'power3.out'
-    });
-    
-    // Verse ring
-    gsap.from('.verse-ring', {
-        scrollTrigger: {
-            trigger: '.verse-content-3d',
-            start: 'top 80%'
-        },
-        duration: 1.5,
-        scale: 0,
-        opacity: 0,
-        rotation: 720,
-        ease: 'back.out(1.7)'
-    });
-    
-    // Parallax effect for floating elements
-    gsap.to('.floating-cube', {
-        scrollTrigger: {
-            trigger: '.hero-3d',
-            start: 'top top',
-            end: 'bottom top',
-            scrub: 1
-        },
-        y: -200,
-        rotation: 360
-    });
-    
-    gsap.to('.floating-sphere', {
-        scrollTrigger: {
-            trigger: '.hero-3d',
-            start: 'top top',
-            end: 'bottom top',
-            scrub: 1
-        },
-        y: -150,
-        scale: 1.5
-    });
-    
-    gsap.to('.floating-ring', {
-        scrollTrigger: {
-            trigger: '.hero-3d',
-            start: 'top top',
-            end: 'bottom top',
-            scrub: 1
-        },
-        y: -250,
-        rotation: -360
-    });
-}
-
-// Navigation
-function initNavigation() {
-    const navToggle = document.querySelector('.nav-toggle');
-    const navLinks = document.querySelector('.nav-links');
-    const navLinkItems = document.querySelectorAll('.nav-link');
-    
-    // Mobile toggle
-    navToggle?.addEventListener('click', () => {
-        navLinks.classList.toggle('active');
-        navToggle.classList.toggle('active');
-    });
-    
-    // Smooth scroll for nav links
-    navLinkItems.forEach(link => {
-        link.addEventListener('click', (e) => {
-            e.preventDefault();
-            const targetId = link.getAttribute('href');
-            const targetSection = document.querySelector(targetId);
-            
-            if (targetSection) {
-                gsap.to(window, {
-                    duration: 1.5,
-                    scrollTo: { y: targetSection, offsetY: 80 },
-                    ease: 'power3.inOut'
-                });
-            }
-            
-            navLinks.classList.remove('active');
-            navToggle.classList.remove('active');
-        });
-    });
-    
-    // Navbar background on scroll
-    const nav = document.querySelector('.nav-3d');
-    let lastScroll = 0;
-    
-    window.addEventListener('scroll', () => {
-        const currentScroll = window.pageYOffset;
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        camera.position.z = 30;
         
-        if (currentScroll > 100) {
-            nav.style.background = 'rgba(10, 10, 10, 0.95)';
-            nav.style.boxShadow = '0 5px 30px rgba(0, 0, 0, 0.5)';
-        } else {
-            nav.style.background = 'rgba(10, 10, 10, 0.8)';
-            nav.style.boxShadow = 'none';
+        const particlesGeometry = new THREE.BufferGeometry();
+        const particlesCount = 1000;
+        const posArray = new Float32Array(particlesCount * 3);
+        
+        for (let i = 0; i < particlesCount * 3; i++) {
+            posArray[i] = (Math.random() - 0.5) * 80;
         }
         
-        lastScroll = currentScroll;
-    });
+        particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+        
+        const particlesMaterial = new THREE.PointsMaterial({
+            size: 0.2, color: 0x00d4ff, transparent: true, opacity: 0.6, blending: THREE.AdditiveBlending
+        });
+        
+        const particlesMesh = new THREE.Points(particlesGeometry, particlesMaterial);
+        scene.add(particlesMesh);
+        
+        const shapes = [];
+        for (let i = 0; i < 6; i++) {
+            let geometry;
+            if (i % 3 === 0) geometry = new THREE.BoxGeometry(1.5, 1.5, 1.5);
+            else if (i % 3 === 1) geometry = new THREE.SphereGeometry(1, 16, 16);
+            else geometry = new THREE.TorusGeometry(1.5, 0.3, 8, 20);
+            
+            const material = new THREE.MeshBasicMaterial({
+                color: i % 2 === 0 ? 0x00d4ff : 0xff00ff, wireframe: true, transparent: true, opacity: 0.3
+            });
+            
+            const mesh = new THREE.Mesh(geometry, material);
+            mesh.position.set((Math.random() - 0.5) * 60, (Math.random() - 0.5) * 60, (Math.random() - 0.5) * 20);
+            mesh.userData = { rotX: (Math.random() - 0.5) * 0.02, rotY: (Math.random() - 0.5) * 0.02, floatSpeed: 0.5 + Math.random() * 0.5, floatOffset: Math.random() * Math.PI * 2 };
+            scene.add(mesh);
+            shapes.push(mesh);
+        }
+        
+        let mouseX = 0, mouseY = 0;
+        document.addEventListener('mousemove', function(e) {
+            mouseX = (e.clientX / window.innerWidth - 0.5) * 2;
+            mouseY = (e.clientY / window.innerHeight - 0.5) * 2;
+        });
+        
+        let time = 0, isActive = true;
+        function animate() {
+            if (!isActive) return;
+            requestAnimationFrame(animate);
+            time += 0.01;
+            
+            camera.position.x += (mouseX * 5 - camera.position.x) * 0.05;
+            camera.position.y += (-mouseY * 5 - camera.position.y) * 0.05;
+            camera.lookAt(scene.position);
+            
+            particlesMesh.rotation.y = time * 0.05;
+            particlesMesh.rotation.x = Math.sin(time * 0.03) * 0.1;
+            
+            shapes.forEach(function(shape) {
+                shape.rotation.x += shape.userData.rotX;
+                shape.rotation.y += shape.userData.rotY;
+                shape.position.y += Math.sin(time * shape.userData.floatSpeed + shape.userData.floatOffset) * 0.02;
+            });
+            
+            renderer.render(scene, camera);
+        }
+        animate();
+        
+        window.addEventListener('resize', function() {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+        
+        document.addEventListener('visibilitychange', function() {
+            isActive = !document.hidden;
+            if (isActive) animate();
+        });
+        
+        window.threeScene = { shapes, particlesMesh };
+    } catch (error) {
+        console.log('Three.js error:', error);
+        canvas.style.display = 'none';
+    }
 }
 
-// Scroll Effects
-function initScrollEffects() {
-    // Reveal animations on scroll
-    const revealElements = document.querySelectorAll('.social-card-3d, .about-card-3d, .pick-item-3d, .special-link-3d');
-    
-    const revealObserver = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
+function initScrollAnimations() {
+    const observer = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
             if (entry.isIntersecting) {
-                entry.target.classList.add('revealed');
-                revealObserver.unobserve(entry.target);
+                entry.target.classList.add('visible');
+                observer.unobserve(entry.target);
             }
         });
-    }, {
-        threshold: 0.2,
-        rootMargin: '0px 0px -50px 0px'
-    });
+    }, { threshold: 0.2, rootMargin: '0px 0px -50px 0px' });
     
-    revealElements.forEach(el => revealObserver.observe(el));
-}
-
-// Interactive Elements
-function initInteractiveElements() {
-    // 3D Tilt effect for cards
-    const cards = document.querySelectorAll('.social-card-3d, .pick-item-3d');
-    
-    cards.forEach(card => {
-        card.addEventListener('mousemove', (e) => {
-            const rect = card.getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            const y = e.clientY - rect.top;
-            
-            const centerX = rect.width / 2;
-            const centerY = rect.height / 2;
-            
-            const rotateX = (y - centerY) / 10;
-            const rotateY = (centerX - x) / 10;
-            
-            card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateZ(20px)`;
-        });
-        
-        card.addEventListener('mouseleave', () => {
-            card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) translateZ(0)';
-        });
-    });
-    
-    // Button ripple effect
-    const buttons = document.querySelectorAll('.btn-3d');
-    
-    buttons.forEach(button => {
-        button.addEventListener('click', function(e) {
-            const ripple = document.createElement('span');
-            ripple.style.cssText = `
-                position: absolute;
-                background: rgba(255, 255, 255, 0.5);
-                border-radius: 50%;
-                transform: scale(0);
-                animation: ripple 0.6s linear;
-                pointer-events: none;
-            `;
-            
-            const rect = this.getBoundingClientRect();
-            const size = Math.max(rect.width, rect.height);
-            ripple.style.width = ripple.style.height = size + 'px';
-            ripple.style.left = e.clientX - rect.left - size / 2 + 'px';
-            ripple.style.top = e.clientY - rect.top - size / 2 + 'px';
-            
-            this.appendChild(ripple);
-            
-            setTimeout(() => ripple.remove(), 600);
-        });
-    });
-    
-    // Add ripple animation
-    const style = document.createElement('style');
-    style.textContent = `
-        @keyframes ripple {
-            to {
-                transform: scale(4);
-                opacity: 0;
-            }
-        }
-    `;
-    document.head.appendChild(style);
-    
-    // Magnetic effect for social cards
-    const socialCards = document.querySelectorAll('.social-card-3d');
-    
-    socialCards.forEach(card => {
-        card.addEventListener('mousemove', (e) => {
-            const rect = card.getBoundingClientRect();
-            const x = e.clientX - rect.left - rect.width / 2;
-            const y = e.clientY - rect.top - rect.height / 2;
-            
-            gsap.to(card, {
-                duration: 0.3,
-                x: x * 0.1,
-                y: y * 0.1,
-                ease: 'power2.out'
-            });
-        });
-        
-        card.addEventListener('mouseleave', () => {
-            gsap.to(card, {
-                duration: 0.5,
-                x: 0,
-                y: 0,
-                ease: 'elastic.out(1, 0.3)'
-            });
-        });
+    document.querySelectorAll('.social-card-3d, .about-card-3d, .pick-item-3d, .special-link-3d, .section-title-3d').forEach(function(el, index) {
+        el.classList.add('fade-in');
+        el.style.transitionDelay = (index * 0.1) + 's';
+        observer.observe(el);
     });
 }
 
-// Zero Gravity Effect
 function initZeroGravity() {
-    const zeroGravityBtn = document.getElementById('zero-gravity');
-    let isZeroGravity = false;
+    const btn = document.getElementById('zero-gravity');
+    if (!btn) return;
     
-    zeroGravityBtn?.addEventListener('click', () => {
+    let isZeroGravity = false;
+    btn.addEventListener('click', function() {
         isZeroGravity = !isZeroGravity;
         
         if (isZeroGravity) {
-            // Activate zero gravity
-            zeroGravityBtn.innerHTML = '<span class="btn-text">Normal Gravity</span><i class="fas fa-compress"></i>';
-            zeroGravityBtn.style.background = 'var(--secondary-color)';
-            
-            // Animate shapes to float freely
-            if (window.threeScene) {
-                window.threeScene.shapes.forEach((shape, index) => {
-                    gsap.to(shape.position, {
-                        duration: 2,
-                        x: (Math.random() - 0.5) * 100,
-                        y: (Math.random() - 0.5) * 100,
-                        z: (Math.random() - 0.5) * 50,
-                        ease: 'power2.inOut'
-                    });
-                    
-                    gsap.to(shape.rotation, {
-                        duration: 3,
-                        x: Math.random() * Math.PI * 4,
-                        y: Math.random() * Math.PI * 4,
-                        z: Math.random() * Math.PI * 4,
-                        ease: 'power2.inOut'
-                    });
+            btn.innerHTML = 'Normal Gravity <i class="fas fa-compress"></i>';
+            btn.style.background = '#ff00ff';
+            btn.style.borderColor = '#ff00ff';
+            document.body.classList.add('zero-gravity');
+            if (window.threeScene && window.threeScene.shapes) {
+                window.threeScene.shapes.forEach(function(shape) {
+                    shape.userData.rotX *= 5;
+                    shape.userData.rotY *= 5;
                 });
-                
-                // Speed up particles
-                gsap.to(window.threeScene.particlesMesh.rotation, {
+            }
+        } else {
+            btn.innerHTML = 'Zero Gravity <i class="fas fa-rocket"></i>';
+            btn.style.background = 'transparent';
+            btn.style.borderColor = '#00d4ff';
+            document.body.classList.remove('zero-gravity');
+            if (window.threeScene && window.threeScene.shapes) {
+                window.threeScene.shapes.forEach(function(shape) {
+                    shape.userData.rotX /= 5;
+                    shape.userData.rotY /= 5;
+                });
+            }
+        }
+    });
+}
+
+function initClickEffects() {
+    document.addEventListener('click', function(e) {
+        const colors = ['#00d4ff', '#ff00ff', '#ffff00'];
+        for (let i = 0; i < 8; i++) {
+            const particle = document.createElement('div');
+            particle.style.cssText = 'position: fixed; width: 6px; height: 6px; background: ' + colors[Math.floor(Math.random() * colors.length)] + '; border-radius: 50%; pointer-events: none; z-index: 9999; left: ' + e.clientX + 'px; top: ' + e.clientY + 'px;';
+            document.body.appendChild(particle);
+            const angle = (i / 8) * Math.PI * 2;
+            const distance = 40 + Math.random() * 40;
+            particle.animate([{ transform: 'translate(0, 0) scale(1)', opacity: 1 }, { transform: 'translate(' + Math.cos(angle) * distance + 'px, ' + Math.sin(angle) * distance + 'px) scale(0)', opacity: 0 }], { duration: 600, easing: 'ease-out' }).onfinish = function() { particle.remove(); };
+        }
+    });
+}
+
+document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
+    anchor.addEventListener('click', function(e) {
+        const href = this.getAttribute('href');
+        if (href === '#') return;
+        const target = document.querySelector(href);
+        if (target) { e.preventDefault(); target.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+    });
+});
+
+console.log('%c🚀 Arnav Mishra 3D Portfolio', 'font-size: 24px; font-weight: bold; color: #00d4ff;');
+console.log('%cBuilt with pure awesomeness 💀', 'font-size: 14px; color: #ff00ff;');
+console.log('%cClick "Zero Gravity" for a wild ride!', 'font-size: 12px; color: #ffff00;');
                
