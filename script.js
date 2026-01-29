@@ -1,44 +1,58 @@
-/* ==========================================================================
-   🟢 ARNAV'S SAFE ZONE: EDIT HERE ONLY
-========================================================================== */
+/* ============================================
+   🚀 ARNAV MISHRA - PREMIUM PORTFOLIO JS
+   3D Effects | Smooth Animations | Interactions
+============================================ */
 
+// --- DATA ---
 const arnavPicks = [
     {
         type: "video",
         title: "Must Watch Podcast",
-        desc: "Nikhil Kamath with Elon Musk.",
-        link: "Rni7Fz7208c" // Video ID (No slash)
+        desc: "Nikhil Kamath with Elon Musk - A conversation about the future.",
+        link: "Rni7Fz7208c"
     },
-    // Aur add karna ho to yahan comma laga ke add kar sakte ho
+    {
+        type: "book",
+        title: "Atomic Habits",
+        desc: "Tiny changes, remarkable results. Changed how I approach goals.",
+        link: "https://www.amazon.com/Atomic-Habits-Proven-Build-Break/dp/0735211299"
+    },
+    {
+        type: "video",
+        title: "Steve Jobs' Stanford Speech",
+        desc: "Stay hungry, stay foolish. The speech that inspired millions.",
+        link: "UF8uR6Z6KLc"
+    },
+    {
+        type: "book",
+        title: "Deep Work",
+        desc: "Rules for focused success in a distracted world.",
+        link: "https://www.amazon.com/Deep-Work-Focused-Success-Distracted/dp/1455586692"
+    },
+    {
+        type: "video",
+        title: "How to Get Rich",
+        desc: "Naval Ravikant's wisdom on wealth and happiness.",
+        link: "1-TZqOsVCNM"
+    }
 ];
 
-/* ==========================================================================
-   🔴 DANGER ZONE: DO NOT TOUCH BELOW THIS LINE
-========================================================================== */
-
-/* --- 1. CONFIGURATION --- */
-const bioText = "Building ideas from scratch.";
-const introName = "Arnav Mishra";
-let typingInterval;
-
-/* --- 2. VERSE DATA --- */
 const verseData = {
     verse1: {
         text: `Tu jang ka ailan kar \nDushmano PE vaar kar\nPapiyo ka naas kar....\n\nMoh dya ka tyag kar \nAb jism se na pyar kar \nMastko ke unke Aaj\nDeh se ajaad kar....`,
-        link: "https://www.instagram.com/arnav_9.11/" 
+        link: "https://www.instagram.com/arnav_9.11/"
     },
     verse2: {
         text: `Mai antt hun mai ankurit \nYugo yugo ka hal hai\nMai hinn hun ,mai hun priye\nMera hi maah saal hai\n\nNa saksh hun, na aatma \nNa devta ,pramatama \nMai bhoot (past) hun , mai kaal sa\nDivr hun mai bhaal sa`,
-        link: "https://www.instagram.com/arnav_9.11/" 
+        link: "https://www.instagram.com/arnav_9.11/"
     }
 };
 
-/* --- 3. DOM ELEMENTS --- */
+// --- DOM ELEMENTS ---
 const body = document.getElementById('main-body');
 const homeView = document.getElementById('home-view');
 const aboutView = document.getElementById('about-view');
 const recsView = document.getElementById('recs-view');
-const musicPopup = document.getElementById('music-popup');
 const bgMusic = document.getElementById('global-bg-music');
 const muteBtn = document.getElementById('mute-btn');
 const muteIcon = document.getElementById('mute-icon');
@@ -48,89 +62,315 @@ const themeToggleBtn = document.getElementById('themeToggle');
 const bioElement = document.getElementById('bio-text');
 
 let isMusicPlaying = false;
+let typingInterval;
 
-/* --- 4. INTRO ANIMATION (INSTANT START 🚀) --- */
-// Pehle 'load' tha, ab 'DOMContentLoaded' kar diya taaki wait na kare
+// ============================================
+// 🎬 INTRO ANIMATION
+// ============================================
 document.addEventListener("DOMContentLoaded", () => {
+    // Initialize 3D Background
+    initParticleCanvas();
     
-    // 1. Generate Picks instantly
-    try { generatePicks(); } catch (e) { console.error(e); }
+    // Initialize Custom Cursor
+    initCustomCursor();
+    
+    // Initialize Magnetic Buttons
+    initMagneticButtons();
+    
+    // Initialize Tilt Cards
+    initTiltCards();
+    
+    // Initialize Scroll Reveal
+    initScrollReveal();
+    
+    // Start Intro
+    startIntro();
+});
 
-    // 2. Start Typing Immediately
+function startIntro() {
+    const introName = "Arnav Mishra";
     let i = 0;
-    const speed = 75; // SPEED BADHA DI (Fast typing)
+    const speed = 80;
     
-    function typeWriterIntro() {
+    function typeWriter() {
         if (signatureEl && i < introName.length) {
             signatureEl.innerHTML += introName.charAt(i);
             i++;
-            setTimeout(typeWriterIntro, speed);
+            setTimeout(typeWriter, speed);
         } else {
-            // Typing khatam hote hi site khol do (No delay)
-            finishIntro();
+            setTimeout(finishIntro, 800);
         }
     }
-
-    // Start immediately
+    
     if (signatureEl) {
-        signatureEl.innerHTML = ""; // Clear existing cursor bug
-        setTimeout(typeWriterIntro, 100); // Tiny buffer start
-    } else {
-        finishIntro();
+        signatureEl.innerHTML = "";
+        setTimeout(typeWriter, 300);
     }
-});
+}
 
 function finishIntro() {
-    // Fade out black screen
     introScreen.style.opacity = '0';
+    introScreen.style.visibility = 'hidden';
     
     setTimeout(() => {
         introScreen.style.display = 'none';
         
-        // Show Popup Immediately
-        musicPopup.style.display = 'flex';
-        setTimeout(() => { musicPopup.style.opacity = '1'; }, 50);
-
-        // Hint Logic
-        const hint = document.getElementById('themeHint');
-        if(hint) {
-            hint.style.display = 'flex';
-            setTimeout(() => { hint.style.opacity = '0'; }, 4000);
-        }
-    }, 800); // 0.8 sec fade out time
-}
-
-function closePopup() {
-    musicPopup.style.opacity = '0';
-    setTimeout(() => {
-        musicPopup.style.display = 'none';
-        document.body.classList.remove('wait-for-intro');
-        document.body.style.overflow = 'auto';
+        // Animate entry of all elements
+        animateEntryElements();
         
-        // Animate Elements Entry
-        const animatedElements = document.querySelectorAll('#home-view > div, #home-view > button, #home-view > p');
-        animatedElements.forEach(el => { el.classList.add('animate-entry'); });
+        // Start bio typing
+        if (bioElement) typeWriter("Building ideas from scratch.", bioElement, 60);
         
-        // Type Bio
-        if(bioElement) typeWriter(bioText, bioElement, 80);
-        
-        // Play Music
+        // Play music
         if (bgMusic) {
-            bgMusic.volume = 0.5;
+            bgMusic.volume = 0.4;
             bgMusic.play().then(() => {
-                if(muteIcon) muteIcon.className = "fas fa-volume-up";
-                if(muteBtn) { muteBtn.style.borderColor = "#00ff88"; muteBtn.style.color = "#00ff88"; }
+                if (muteIcon) muteIcon.className = "fas fa-volume-up";
+                if (muteBtn) {
+                    muteBtn.style.borderColor = "#00ff88";
+                    muteBtn.style.color = "#00ff88";
+                }
                 isMusicPlaying = true;
             }).catch(e => console.log("Autoplay blocked"));
         }
-    }, 400);
+    }, 1000);
 }
 
-/* --- 5. TYPEWRITER HELPER --- */
+function animateEntryElements() {
+    const elements = document.querySelectorAll('.anim-delay-1, .anim-delay-2, .anim-delay-3, .anim-delay-4, .anim-delay-5, .anim-delay-6, .anim-delay-7, .anim-delay-8, .anim-delay-9, .anim-delay-10');
+    
+    elements.forEach((el, index) => {
+        gsap.fromTo(el, 
+            { opacity: 0, y: 50 },
+            { 
+                opacity: 1, 
+                y: 0, 
+                duration: 0.8, 
+                delay: index * 0.1,
+                ease: "power3.out"
+            }
+        );
+    });
+}
+
+// ============================================
+// ✨ 3D PARTICLE BACKGROUND
+// ============================================
+function initParticleCanvas() {
+    const canvas = document.getElementById('particle-canvas');
+    if (!canvas) return;
+    
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    
+    const particles = [];
+    const particleCount = 80;
+    const connectionDistance = 150;
+    const mouseDistance = 200;
+    
+    let mouse = { x: null, y: null };
+    
+    window.addEventListener('mousemove', (e) => {
+        mouse.x = e.x;
+        mouse.y = e.y;
+    });
+    
+    window.addEventListener('resize', () => {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    });
+    
+    class Particle {
+        constructor() {
+            this.x = Math.random() * canvas.width;
+            this.y = Math.random() * canvas.height;
+            this.vx = (Math.random() - 0.5) * 0.5;
+            this.vy = (Math.random() - 0.5) * 0.5;
+            this.size = Math.random() * 2 + 1;
+            this.color = `rgba(0, 163, 255, ${Math.random() * 0.5 + 0.2})`;
+        }
+        
+        update() {
+            this.x += this.vx;
+            this.y += this.vy;
+            
+            if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
+            if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
+            
+            // Mouse interaction
+            if (mouse.x != null) {
+                const dx = mouse.x - this.x;
+                const dy = mouse.y - this.y;
+                const distance = Math.sqrt(dx * dx + dy * dy);
+                
+                if (distance < mouseDistance) {
+                    const forceDirectionX = dx / distance;
+                    const forceDirectionY = dy / distance;
+                    const force = (mouseDistance - distance) / mouseDistance;
+                    const directionX = forceDirectionX * force * 0.5;
+                    const directionY = forceDirectionY * force * 0.5;
+                    
+                    this.vx += directionX;
+                    this.vy += directionY;
+                }
+            }
+        }
+        
+        draw() {
+            ctx.fillStyle = this.color;
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+            ctx.fill();
+        }
+    }
+    
+    function init() {
+        for (let i = 0; i < particleCount; i++) {
+            particles.push(new Particle());
+        }
+    }
+    
+    function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        
+        for (let i = 0; i < particles.length; i++) {
+            particles[i].update();
+            particles[i].draw();
+            
+            // Draw connections
+            for (let j = i; j < particles.length; j++) {
+                const dx = particles[i].x - particles[j].x;
+                const dy = particles[i].y - particles[j].y;
+                const distance = Math.sqrt(dx * dx + dy * dy);
+                
+                if (distance < connectionDistance) {
+                    ctx.beginPath();
+                    ctx.strokeStyle = `rgba(0, 163, 255, ${0.2 * (1 - distance / connectionDistance)})`;
+                    ctx.lineWidth = 1;
+                    ctx.moveTo(particles[i].x, particles[i].y);
+                    ctx.lineTo(particles[j].x, particles[j].y);
+                    ctx.stroke();
+                }
+            }
+        }
+        
+        requestAnimationFrame(animate);
+    }
+    
+    init();
+    animate();
+}
+
+// ============================================
+// 🖱️ CUSTOM CURSOR
+// ============================================
+function initCustomCursor() {
+    const cursor = document.getElementById('cursor');
+    const trail = document.getElementById('cursor-trail');
+    
+    if (!cursor || window.innerWidth <= 768) return;
+    
+    document.addEventListener('mousemove', (e) => {
+        cursor.style.left = e.clientX - 10 + 'px';
+        cursor.style.top = e.clientY - 10 + 'px';
+        
+        setTimeout(() => {
+            trail.style.left = e.clientX - 4 + 'px';
+            trail.style.top = e.clientY - 4 + 'px';
+        }, 50);
+    });
+    
+    document.addEventListener('mousedown', () => {
+        cursor.style.transform = 'scale(0.8)';
+    });
+    
+    document.addEventListener('mouseup', () => {
+        cursor.style.transform = 'scale(1)';
+    });
+}
+
+// ============================================
+// 🧲 MAGNETIC BUTTONS
+// ============================================
+function initMagneticButtons() {
+    const buttons = document.querySelectorAll('.magnetic-btn');
+    
+    buttons.forEach(btn => {
+        btn.addEventListener('mousemove', (e) => {
+            const rect = btn.getBoundingClientRect();
+            const x = e.clientX - rect.left - rect.width / 2;
+            const y = e.clientY - rect.top - rect.height / 2;
+            
+            btn.style.transform = `translate(${x * 0.3}px, ${y * 0.3}px)`;
+        });
+        
+        btn.addEventListener('mouseleave', () => {
+            btn.style.transform = 'translate(0, 0)';
+        });
+    });
+}
+
+// ============================================
+// 🎯 3D TILT CARDS
+// ============================================
+function initTiltCards() {
+    const cards = document.querySelectorAll('.tilt-card');
+    
+    cards.forEach(card => {
+        card.addEventListener('mousemove', (e) => {
+            const rect = card.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+            
+            const rotateX = (y - centerY) / 10;
+            const rotateY = (centerX - x) / 10;
+            
+            card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.02)`;
+            
+            // Move shine
+            const shine = card.querySelector('.card-shine');
+            if (shine) {
+                shine.style.background = `radial-gradient(circle at ${x}px ${y}px, rgba(255,255,255,0.2), transparent)`;
+            }
+        });
+        
+        card.addEventListener('mouseleave', () => {
+            card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale(1)';
+        });
+    });
+}
+
+// ============================================
+// 👁️ SCROLL REVEAL
+// ============================================
+function initScrollReveal() {
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('revealed');
+                observer.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+    
+    document.querySelectorAll('.card, .verse-card, .project-card').forEach(el => {
+        el.classList.add('reveal-on-scroll');
+        observer.observe(el);
+    });
+}
+
+// ============================================
+// ⌨️ TYPEWRITER EFFECT
+// ============================================
 function typeWriter(text, element, speed) {
-    if(typingInterval) clearInterval(typingInterval);
+    if (typingInterval) clearInterval(typingInterval);
     element.innerHTML = "";
     let i = 0;
+    
     typingInterval = setInterval(() => {
         if (i < text.length) {
             element.innerHTML += text.charAt(i);
@@ -141,189 +381,224 @@ function typeWriter(text, element, speed) {
     }, speed);
 }
 
-/* --- 6. DYNAMIC PICKS GENERATOR --- */
-function generatePicks() {
-    const container = document.getElementById('recs-view');
-    if (!container) return;
-
-    let wrapper = document.getElementById('dynamic-picks-wrapper');
-    if (!wrapper) {
-        wrapper = document.createElement('div');
-        wrapper.id = 'dynamic-picks-wrapper';
-        container.appendChild(wrapper);
-    }
-    wrapper.innerHTML = "";
-
-    arnavPicks.forEach(pick => {
-        let html = "";
-        if (pick.type === "video") {
-            html = `
-            <div class="card" style="border-top: 4px solid #ff0000;">
-                <h3 style="margin-top: 0; color: #fff;"><i class="fab fa-youtube" style="color: red;"></i> ${pick.title}</h3>
-                <p style="color: #888; font-size: 0.9rem; margin-bottom: 10px;">${pick.desc}</p>
-                <div class="video-container">
-                    <iframe src="https://www.youtube.com/embed/${pick.link}" title="YouTube video" frameborder="0" allowfullscreen></iframe>
-                </div>
-            </div>`;
-        } else {
-            html = `
-            <div class="card" style="border-top: 4px solid #ff9f43;">
-                <h3 style="margin-top: 0; color: #fff;"><i class="fas fa-book" style="color: #ff9f43;"></i> ${pick.title}</h3>
-                <p style="color: #888; font-size: 0.9rem; margin-top: 5px; font-style: italic;">"${pick.desc}"</p>
-                <a href="${pick.link}" target="_blank" class="btn" style="display:block; margin-top:15px; background:var(--card-bg); border-color: #ff9f43; color: #ff9f43;">View Book <i class="fas fa-arrow-right"></i></a>
-            </div>`;
-        }
-        wrapper.innerHTML += html;
-    });
-    wrapper.innerHTML += '<div style="height: 80px;"></div>';
-}
-
-/* --- 7. NAVIGATION --- */
+// ============================================
+// 📱 NAVIGATION
+// ============================================
 function toggleMenu() {
-    var sidebar = document.getElementById("sidebar");
-    var overlay = document.getElementById("overlay");
-    if (sidebar.style.width === "250px") {
-        sidebar.style.width = "0"; overlay.style.display = "none";
+    const sidebar = document.getElementById("sidebar");
+    const overlay = document.getElementById("overlay");
+    
+    if (sidebar.style.width === "280px") {
+        sidebar.style.width = "0";
+        overlay.classList.remove('active');
+        setTimeout(() => overlay.style.display = "none", 300);
     } else {
-        sidebar.style.width = "250px"; overlay.style.display = "block";
+        sidebar.style.width = "280px";
+        overlay.style.display = "block";
+        setTimeout(() => overlay.classList.add('active'), 10);
     }
 }
 
 function transitionView(hideView, showView, callback) {
-    hideView.style.opacity = '0';
-    hideView.style.transform = 'translateY(20px)';
-    setTimeout(() => {
-        hideView.style.display = 'none';
-        showView.style.display = 'block';
-        showView.style.opacity = '0';
-        showView.style.transform = 'translateY(20px)';
-        void showView.offsetWidth; 
-        showView.style.transition = 'all 0.6s ease';
-        showView.style.opacity = '1';
-        showView.style.transform = 'translateY(0)';
-        if (callback) callback();
-        window.scrollTo(0, 0);
-    }, 400);
+    gsap.to(hideView, {
+        opacity: 0,
+        y: -30,
+        duration: 0.4,
+        onComplete: () => {
+            hideView.style.display = 'none';
+            showView.style.display = 'block';
+            
+            gsap.fromTo(showView, 
+                { opacity: 0, y: 30 },
+                { 
+                    opacity: 1, 
+                    y: 0, 
+                    duration: 0.5,
+                    onComplete: callback
+                }
+            );
+        }
+    });
+    
+    window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 function switchToAbout() {
-    recsView.style.display = 'none'; 
+    recsView.style.display = 'none';
     transitionView(homeView, aboutView, () => {
-        initVerse('verse1'); initVerse('verse2');
+        initVerse('verse1');
+        initVerse('verse2');
     });
 }
+
 function switchToRecs() {
-    aboutView.style.display = 'none'; 
+    aboutView.style.display = 'none';
     transitionView(homeView, recsView);
+    generatePicks();
 }
+
 function switchToHome() {
     if (aboutView.style.display === 'block') {
         transitionView(aboutView, homeView);
     } else if (recsView.style.display === 'block') {
         transitionView(recsView, homeView);
     } else {
-        aboutView.style.display = 'none'; recsView.style.display = 'none';
-        homeView.style.display = 'block'; homeView.style.opacity = '1'; homeView.style.transform = 'translateY(0)';
+        aboutView.style.display = 'none';
+        recsView.style.display = 'none';
+        homeView.style.display = 'block';
+        gsap.to(homeView, { opacity: 1, y: 0, duration: 0.5 });
     }
 }
 
-/* --- 8. MUSIC & THEME --- */
+// ============================================
+// 🎵 MUSIC CONTROLS
+// ============================================
 function toggleMusic() {
     if (bgMusic.paused) {
         bgMusic.play();
         muteIcon.className = "fas fa-volume-up";
-        muteBtn.style.borderColor = "#00ff88"; muteBtn.style.color = "#00ff88";
+        muteBtn.style.borderColor = "#00ff88";
+        muteBtn.style.color = "#00ff88";
+        
+        // Add pulse animation
+        muteBtn.style.animation = 'none';
+        setTimeout(() => {
+            muteBtn.style.animation = '';
+        }, 10);
     } else {
         bgMusic.pause();
         muteIcon.className = "fas fa-volume-mute";
-        muteBtn.style.borderColor = "#00a3ff"; muteBtn.style.color = "#00a3ff";
+        muteBtn.style.borderColor = "#00a3ff";
+        muteBtn.style.color = "#00a3ff";
     }
 }
 
-if (localStorage.getItem('theme') === 'light') {
-    body.classList.add('light-mode');
-    themeToggleBtn.classList.add('active');
-}
+// ============================================
+// 🌓 THEME TOGGLE
+// ============================================
 function toggleTheme() {
     body.classList.toggle('light-mode');
     themeToggleBtn.classList.toggle('active');
-    if (body.classList.contains('light-mode')) localStorage.setItem('theme', 'light');
-    else localStorage.setItem('theme', 'dark');
+    
+    const isLight = body.classList.contains('light-mode');
+    localStorage.setItem('theme', isLight ? 'light' : 'dark');
+    
+    // Animate transition
+    gsap.to(body, {
+        backgroundColor: isLight ? '#f4f4f4' : '#050505',
+        duration: 0.5
+    });
 }
-function closeHint() { document.getElementById('themeHint').style.display = 'none'; }
 
-/* --- 9. VERSES --- */
+function closeHint() {
+    const hint = document.getElementById('themeHint');
+    gsap.to(hint, { opacity: 0, duration: 0.3, onComplete: () => hint.style.display = 'none' });
+}
+
+// ============================================
+// 📝 VERSES
+// ============================================
 function initVerse(verseKey) {
     const elementId = verseKey === 'verse1' ? 'verse-1-display' : 'verse-2-display';
     const data = verseData[verseKey];
     const container = document.getElementById(elementId);
-    if(!container) return;
-    const formattedText = data.text.split('\n').map((line, index) => {
+    
+    if (!container) return;
+    
+    const lines = data.text.split('\n');
+    container.innerHTML = lines.map((line, index) => {
         if (line.trim() === '') return '<br>';
-        return `<span class="verse-line" style="animation-delay: ${index * 0.1}s">${line}</span>`;
-    }).join('');
-    container.innerHTML = formattedText + `<button class="read-more-btn" onclick="goToInsta('${data.link}')">Read Full Lyrics <i class="fab fa-instagram"></i></button>`;
+        return `<div class="verse-line" style="animation-delay: ${index * 0.1}s">${line}</div>`;
+    }).join('') + `<button class="read-more-btn" onclick="goToInsta('${data.link}')">Read Full Lyrics <i class="fab fa-instagram"></i></button>`;
+    
+    // Animate lines
+    gsap.fromTo(container.querySelectorAll('.verse-line'),
+        { opacity: 0, x: -20 },
+        { opacity: 1, x: 0, stagger: 0.1, duration: 0.5 }
+    );
 }
+
 function goToInsta(url) {
-    if(confirm("Do you want to visit Instagram to read the full version?")) window.open(url, '_blank');
+    if (confirm("Do you want to visit Instagram to read the full version?")) {
+        window.open(url, '_blank');
+    }
 }
 
-/* --- 10. DRAG LOGIC --- */
-const dragItem = document.querySelector("#themeWrapper");
-let active = false, currentX, currentY, initialX, initialY, xOffset = 0, yOffset = 0, startX, startY;
-
-if(dragItem) {
-    dragItem.addEventListener("mousedown", dragStart, false);
-    dragItem.addEventListener("touchstart", dragStart, {passive: false});
-    document.addEventListener("mouseup", dragEnd, false);
-    document.addEventListener("touchend", dragEnd, {passive: false});
-    document.addEventListener("mousemove", drag, false);
-    document.addEventListener("touchmove", drag, {passive: false});
+// ============================================
+// 📚 GENERATE PICKS
+// ============================================
+function generatePicks() {
+    const container = document.getElementById('dynamic-picks-wrapper');
+    if (!container) return;
+    
+    container.innerHTML = arnavPicks.map((pick, index) => {
+        if (pick.type === "video") {
+            return `
+            <div class="card tilt-card reveal-on-scroll" data-tilt style="animation-delay: ${index * 0.1}s">
+                <div class="card-shine"></div>
+                <div class="card-header">
+                    <div class="project-icon" style="background: linear-gradient(135deg, #ff0000, #ff6b6b);">
+                        <i class="fab fa-youtube"></i>
+                    </div>
+                    <h3>${pick.title}</h3>
+                </div>
+                <p class="card-desc">${pick.desc}</p>
+                <div class="video-container">
+                    <iframe src="https://www.youtube.com/embed/${pick.link}" title="YouTube video" frameborder="0" allowfullscreen></iframe>
+                </div>
+            </div>`;
+        } else {
+            return `
+            <div class="card tilt-card reveal-on-scroll" data-tilt style="animation-delay: ${index * 0.1}s; border-top: 4px solid #ff9f43;">
+                <div class="card-shine"></div>
+                <div class="card-header">
+                    <div class="project-icon" style="background: linear-gradient(135deg, #ff9f43, #ffd89b);">
+                        <i class="fas fa-book"></i>
+                    </div>
+                    <h3>${pick.title}</h3>
+                </div>
+                <p class="card-desc">${pick.desc}</p>
+                <a href="${pick.link}" target="_blank" class="project-link-btn" style="border-color: #ff9f43; color: #ff9f43;">
+                    View Book <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>`;
+        }
+    }).join('');
+    
+    // Re-initialize tilt for new cards
+    setTimeout(initTiltCards, 100);
 }
 
-function dragStart(e) {
-    if (e.type === "touchstart") {
-        initialX = e.touches[0].clientX - xOffset; initialY = e.touches[0].clientY - yOffset;
-        startX = e.touches[0].clientX; startY = e.touches[0].clientY;
+// ============================================
+// 🤖 CHATBOT
+// ============================================
+const SYSTEM_PROMPT = `You are 'Arnav AI', a raw, intelligent, and loyal assistant created by Arnav Mishra. You speak in Hinglish (mix of Hindi and English), are confident, witty, and helpful. Keep responses short and punchy.`;
+
+function toggleChat() {
+    const chatWindow = document.getElementById('chat-window');
+    
+    if (chatWindow.style.display === 'flex') {
+        gsap.to(chatWindow, {
+            opacity: 0,
+            scale: 0.8,
+            y: 20,
+            duration: 0.3,
+            onComplete: () => chatWindow.style.display = 'none'
+        });
     } else {
-        initialX = e.clientX - xOffset; initialY = e.clientY - yOffset;
-        startX = e.clientX; startY = e.clientY;
-    }
-    if (e.target.closest('#themeWrapper')) active = true;
-}
-function dragEnd(e) {
-    if(!active) return;
-    initialX = currentX; initialY = currentY; active = false;
-    let endX = (e.type === "touchend") ? e.changedTouches[0].clientX : e.clientX;
-    let endY = (e.type === "touchend") ? e.changedTouches[0].clientY : e.clientY;
-    if (Math.sqrt(Math.pow(endX - startX, 2) + Math.pow(endY - startY, 2)) < 5) toggleTheme();
-}
-function drag(e) {
-    if (active) {
-        e.preventDefault();
-        let clientX = (e.type === "touchmove") ? e.touches[0].clientX : e.clientX;
-        let clientY = (e.type === "touchmove") ? e.touches[0].clientY : e.clientY;
-        currentX = clientX - initialX; currentY = clientY - initialY;
-        xOffset = currentX; yOffset = currentY;
-        dragItem.style.transform = "translate3d(" + currentX + "px, " + currentY + "px, 0)";
+        chatWindow.style.display = 'flex';
+        gsap.fromTo(chatWindow,
+            { opacity: 0, scale: 0.8, y: 20 },
+            { opacity: 1, scale: 1, y: 0, duration: 0.4, ease: "back.out(1.7)" }
+        );
+        document.getElementById('user-input').focus();
     }
 }
 
-/* --- KR$NA PLAY BUTTON LOGIC --- */
-function toggleKrsnaPlay() {
-    const audio = document.getElementById('krsna-audio');
-    const btn = document.getElementById('krsna-play-btn');
-    const icon = document.getElementById('krsna-play-icon');
-
-    if (audio.paused) {
-        audio.play();
-        icon.classList.remove('fa-play');
-        icon.classList.add('fa-pause');
-        btn.classList.add('playing');
-    } else {
-        audio.pause();
-        icon.classList.remove('fa-pause');
-        icon.classList.add('fa-play');
-        btn.classList.remove('playing');
-    }
+function handleEnter(e) {
+    if (e.key === 'Enter') sendMessage();
 }
+
+async function sendMessage() {
+    const inputField = document.getElementById('user-input');
+    const 
