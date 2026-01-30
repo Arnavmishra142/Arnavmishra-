@@ -151,3 +151,16 @@ p {
         font-size: 2rem;
     }
 }
+/* --- IMAGES FIX --- */
+.card-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Photo ko kaat ke fit karega, pichkayega nahi */
+    opacity: 0.8;
+    transition: 0.3s;
+}
+
+.pick-card:hover .card-image img {
+    opacity: 1;
+    transform: scale(1.1); /* Hover pe thoda zoom hoga */
+}
