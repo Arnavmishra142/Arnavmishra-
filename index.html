@@ -235,33 +235,55 @@
         </div>
     </div>
 
-    <!-- ✅ AI HOLOGRAM ASSISTANT -->
+    <!-- 3D AI ASSISTANT -->
     <div class="ai-assistant" id="ai-assistant">
-        <div class="ai-orb" id="ai-orb"></div>
+        <div class="ai-orb-container" id="ai-orb">
+            <div class="ai-orb-core"></div>
+            <div class="ai-orb-ring ring-1"></div>
+            <div class="ai-orb-ring ring-2"></div>
+            <div class="ai-orb-ring ring-3"></div>
+            <div class="ai-orb-particles"></div>
+        </div>
 
         <div class="ai-panel" id="ai-panel">
-            <h3>AI Node</h3>
-            <p id="ai-text">Hello Arnav. Ready to enter the universe?</p>
-            <button id="ai-close">Close</button>
+            <div class="ai-header">
+                <div class="ai-avatar">
+                    <i class="fas fa-robot"></i>
+                </div>
+                <div class="ai-info">
+                    <h3>NEXUS</h3>
+                    <span class="ai-status">Online</span>
+                </div>
+                <button class="ai-close" id="ai-close">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div class="ai-messages" id="ai-messages">
+                <div class="ai-message ai-message-bot">
+                    <div class="message-bubble">
+                        Greetings! I'm Nexus, Arnav's digital assistant. I know he's a developer who loves building cool stuff. What would you like to know?
+                    </div>
+                </div>
+            </div>
+
+            <div class="ai-input-area">
+                <input type="text" class="ai-input" id="ai-input" placeholder="Ask me anything..." maxlength="100">
+                <button class="ai-send" id="ai-send">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+            </div>
+            
+            <div class="ai-suggestions">
+                <button class="suggestion-chip" data-question="Who is Arnav?">Who is Arnav?</button>
+                <button class="suggestion-chip" data-question="What does he do?">What does he do?</button>
+                <button class="suggestion-chip" data-question="How to contact?">How to contact?</button>
+            </div>
         </div>
     </div>
 
     <!-- SCRIPTS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <!-- AI HOLOGRAM ASSISTANT -->
-<div class="ai-assistant" id="ai-assistant">
-    
-    <!-- Floating Orb -->
-    <div class="ai-orb" id="ai-orb"></div>
-
-    <!-- Popup Panel -->
-    <div class="ai-panel" id="ai-panel">
-        <h3>AI Node</h3>
-        <p id="ai-text">Hello Arnav. Ready to enter the universe?</p>
-        <button id="ai-close">Close</button>
-    </div>
-
-</div>
     <script src="script.js"></script>
 
 </body>
