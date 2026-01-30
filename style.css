@@ -683,4 +683,21 @@ body {
     .ring-3 { width: 240px; height: 240px; }
 }
 
-::-webkit-scrollbar { w
+/* --- SCROLLBAR FIX (Copy this at the end of CSS) --- */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--bg);
+}
+
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(var(--primary), var(--secondary));
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--accent);
+}
+
