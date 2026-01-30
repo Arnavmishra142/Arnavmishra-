@@ -1,52 +1,55 @@
 // api/chat.js
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 
-export default async function handler(req, res) {
-  // 1. Check method
-  if (req.method !== 'POST') {
-    return res.status(405).json({ message: 'Method Not Allowed' });
+module.exports = async (req, res) => {
+  // 1. CORS Setup (Taaki browser block na kare)
+  res.setHeader('Access-Control-Allow-Credentials', true);
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT');
+  res.setHeader(
+    'Access-Control-Allow-Headers',
+    'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version'
+  );
+
+  // Handle OPTIONS request (Browser checking)
+  if (req.method === 'OPTIONS') {
+    res.status(200).end();
+    return;
   }
 
-  // 2. Get Message & API Key
-  const { message } = req.body;
+  // 2. API Key Check
   const apiKey = process.env.GEMINI_API_KEY;
-
   if (!apiKey) {
-    return res.status(500).json({ error: "Server Error: API Key missing" });
+    console.error("API Key Missing!");
+    return res.status(500).json({ error: "Server Error: API Key not found in Vercel." });
   }
 
   try {
-    // 3. Configure Google AI
+    // 3. Extract Message
+    const { message } = req.body || {};
+    if (!message) {
+      return res.status(400).json({ error: "Message is empty" });
+    }
+
+    // 4. Call Google AI
     const genAI = new GoogleGenerativeAI(apiKey);
     const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
-    // 4. THE PERSONA (AI ko batana ki wo kaun hai)
     const prompt = `
-      You are CORE_V1, a futuristic AI Assistant for Arnav Mishra's Portfolio website.
-      
-      About Arnav:
-      - He is a Class 12th student interested in Coding, Web Dev, and Physics.
-      - He created this 3D website from scratch.
-      - He is working on a startup idea called 'Glitch Scents'.
-      - He loves Iron Man and futuristic tech.
-      
-      Your Style:
-      - Keep answers short, cool, and sci-fi (max 2-3 sentences).
-      - Use emojis like ☢️, 🚀, 🟢.
-      - If asked about contact, suggest clicking the WhatsApp button.
-      
-      User Question: ${message}
+      You are CORE_V1, an AI Assistant for Arnav Mishra's Portfolio.
+      Keep answers short (under 50 words). Be cool and futuristic.
+      User: ${message}
     `;
 
-    // 5. Generate Answer
     const result = await model.generateContent(prompt);
     const response = await result.response;
     const text = response.text();
 
+    // 5. Send Success Response
     return res.status(200).json({ reply: text });
 
   } catch (error) {
-    console.error(error);
-    return res.status(500).json({ error: "AI Overload. Try again." });
+    console.error("Gemini Error:", error);
+    return res.status(500).json({ error: "AI Brain malfunction." });
   }
-}
+};
