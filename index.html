@@ -6,7 +6,6 @@
     <title>Arnav Mishra | 3D Universe</title>
     
     <link rel="stylesheet" href="style.css">
-    
     <link rel="stylesheet" href="ai-style.css">
     
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -25,8 +24,8 @@
         <div class="nav-links" id="nav-links">
             <a href="#home" class="nav-link">Home</a>
             <a href="#about" class="nav-link">About Me</a>
-            <a href="#picks" class="nav-link">Arnav's Picks</a>
-            <a href="#verse" class="nav-link">ARNAV VERSE</a>
+            <a href="picks.html" class="nav-link">Arnav's Picks</a>
+            <a href="verse.html" class="nav-link">ARNAV VERSE</a>
         </div>
         <div class="nav-toggle" id="nav-toggle">
             <span></span><span></span><span></span>
@@ -46,7 +45,7 @@
                 <i class="fas fa-quote-right quote-icon"></i>
             </div>
             <div class="hero-buttons">
-                <a href="#world" class="btn-3d btn-primary">ENTER MY WORLD</a>
+                <a href="verse.html" class="btn-3d btn-primary">ENTER MY WORLD</a>
                 <button class="btn-3d btn-secondary" id="zero-gravity">
                     Zero Gravity <i class="fas fa-rocket"></i>
                 </button>
@@ -94,12 +93,12 @@
 
     <section class="special-links-3d">
         <div class="links-container">
-            <a href="#" class="special-link-3d upside-down" onclick="alert('Portal is under construction! 🚧')">
+            <a href="stranger.html" class="special-link-3d upside-down">
                 <div class="link-icon"><i class="fas fa-sync-alt"></i></div>
                 <span class="link-text">ENTER THE UPSIDE DOWN</span>
             </a>
 
-            <a href="#" class="special-link-3d concert" onclick="alert('Concert Stage is being set up! 🎸')">
+            <a href="concert.html" class="special-link-3d concert">
                 <div class="link-icon"><i class="fas fa-guitar"></i></div>
                 <span class="link-text">Enter Live Concert</span>
             </a>
@@ -164,21 +163,6 @@
         </div>
     </section>
 
-    <section id="verse" class="verse-3d">
-        <div class="verse-container">
-            <h2 class="section-title-3d verse-title">ARNAV VERSE</h2>
-            <div class="verse-content-3d">
-                <div class="orbit-container">
-                    <div class="center-icon"><i class="fas fa-globe"></i></div>
-                    <div class="orbit-ring ring-1"><div class="orbit-item"><i class="fas fa-brain"></i></div></div>
-                    <div class="orbit-ring ring-2"><div class="orbit-item"><i class="fas fa-infinity"></i></div></div>
-                    <div class="orbit-ring ring-3"><div class="orbit-item"><i class="fas fa-atom"></i></div></div>
-                </div>
-                <p class="verse-text">Welcome to my digital universe where creativity meets technology.</p>
-            </div>
-        </div>
-    </section>
-
     <footer class="footer-3d">
         <div class="footer-content">
             <div class="footer-logo"><span>ARNAV MISHRA</span></div>
@@ -221,9 +205,10 @@
             </div>
         </div>
     </div>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="script.js"></script>
-    
+    <script src="picks.js"></script>
     <script src="ai-brain.js"></script>
 </body>
 </html>
