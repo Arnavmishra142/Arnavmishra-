@@ -153,3 +153,93 @@
 @keyframes spin { 100% { transform: rotate(360deg); } }
 @keyframes spin-reverse { 100% { transform: rotate(-360deg); } }
 @keyframes pulse { 0% { transform: scale(0.9); opacity: 0.8; } 100% { transform: scale(1.1); opacity: 1; } }
+/* --- CHAT INTERFACE STYLES --- */
+
+/* Header adjustment */
+.ai-header {
+    border-bottom: 1px solid rgba(0, 212, 255, 0.2);
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+}
+.ai-status-text {
+    font-size: 10px; color: #00d4ff; letter-spacing: 1px; animation: pulse 1.5s infinite;
+}
+
+/* Chat Box (Scrollable Area) */
+.ai-chat-box {
+    height: 250px; /* Fixed height for scroll */
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 10px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 8px;
+    margin-bottom: 15px;
+    scrollbar-width: thin; /* Firefox */
+}
+
+/* Scrollbar styling */
+.ai-chat-box::-webkit-scrollbar { width: 5px; }
+.ai-chat-box::-webkit-scrollbar-thumb { background: #00d4ff; border-radius: 10px; }
+
+/* Chat Bubbles */
+.ai-msg {
+    padding: 10px 14px;
+    border-radius: 12px;
+    font-size: 14px;
+    line-height: 1.4;
+    max-width: 85%;
+    word-wrap: break-word;
+    text-align: left;
+    animation: slideUp 0.3s ease;
+}
+
+.ai-msg.bot {
+    align-self: flex-start;
+    background: rgba(0, 212, 255, 0.1);
+    border: 1px solid rgba(0, 212, 255, 0.3);
+    color: #e0f7fa;
+    border-top-left-radius: 2px;
+}
+
+.ai-msg.user {
+    align-self: flex-end;
+    background: linear-gradient(135deg, #00d4ff, #0066ff);
+    color: #fff;
+    border-top-right-radius: 2px;
+    box-shadow: 0 0 10px rgba(0, 212, 255, 0.3);
+}
+
+/* Input Area */
+.ai-input-container {
+    display: flex;
+    gap: 10px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding-top: 15px;
+}
+
+#ai-user-input {
+    flex: 1;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(0, 212, 255, 0.3);
+    padding: 10px;
+    border-radius: 50px;
+    color: white;
+    font-family: 'Rajdhani', sans-serif;
+    outline: none;
+}
+#ai-user-input:focus { border-color: #00d4ff; box-shadow: 0 0 10px rgba(0, 212, 255, 0.1); }
+
+#ai-send-btn {
+    background: transparent;
+    border: 1px solid #00d4ff;
+    color: #00d4ff;
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: 0.3s;
+}
+#ai-send-btn:hover { background: #00d4ff; color: #000; transform: scale(1.1); }
+
+@keyframes slideUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
