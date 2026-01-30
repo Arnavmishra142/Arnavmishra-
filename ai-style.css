@@ -1,23 +1,24 @@
-/* --- 1. THE AI LAUNCHER (Floating Reactor Button) --- */
+/* --- 1. AI LAUNCHER BUTTON (Bottom Right - Non Intrusive) --- */
 #ai-launcher {
     position: fixed;
     bottom: 30px;
     right: 30px;
-    width: 70px;
-    height: 70px;
+    width: 60px;
+    height: 60px;
     z-index: 9999; /* Sabse upar */
     cursor: pointer;
     display: flex;
     justify-content: center;
     align-items: center;
     transition: transform 0.3s ease;
+    -webkit-tap-highlight-color: transparent;
 }
 
 #ai-launcher:hover {
     transform: scale(1.1);
 }
 
-/* The Reactor Core Animation */
+/* Reactor Rings Animation */
 .reactor-ring {
     position: absolute;
     border-radius: 50%;
@@ -29,7 +30,7 @@
     border-top-color: #00d4ff; /* Cyan */
     border-bottom-color: #00d4ff;
     animation: spin 3s infinite linear;
-    box-shadow: 0 0 15px rgba(0, 212, 255, 0.5);
+    box-shadow: 0 0 10px rgba(0, 212, 255, 0.6);
 }
 
 .ring-inner {
@@ -37,38 +38,24 @@
     border-left-color: #ff00ff; /* Pink */
     border-right-color: #ff00ff;
     animation: spin-reverse 2s infinite linear;
-    box-shadow: 0 0 10px rgba(255, 0, 255, 0.5);
+    box-shadow: 0 0 8px rgba(255, 0, 255, 0.6);
 }
 
 .reactor-core {
     width: 30%; height: 30%;
     background: #fff;
     border-radius: 50%;
-    box-shadow: 0 0 20px #fff, 0 0 40px #00d4ff;
+    box-shadow: 0 0 15px #fff, 0 0 30px #00d4ff;
     animation: pulse 1.5s infinite alternate;
 }
 
-/* Label below the button */
-.ai-status {
-    position: absolute;
-    bottom: -25px;
-    width: 120px;
-    text-align: center;
-    color: #00d4ff;
-    font-family: 'Orbitron', sans-serif;
-    font-size: 10px;
-    letter-spacing: 2px;
-    opacity: 0.7;
-    text-shadow: 0 0 5px #00d4ff;
-}
-
-/* --- 2. THE POPUP MODAL (Hidden by default) --- */
+/* --- 2. THE POPUP MODAL (Hidden by Default) --- */
 .ai-modal-overlay {
     position: fixed;
     top: 0; left: 0;
-    width: 100vw; height: 100vh;
-    background: rgba(0, 0, 0, 0.8);
-    backdrop-filter: blur(10px); /* Blur background */
+    width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.85); /* Dark dim background */
+    backdrop-filter: blur(8px); /* Blur effect */
     z-index: 10000;
     display: flex;
     justify-content: center;
@@ -85,35 +72,38 @@
 
 .ai-modal-box {
     width: 90%;
-    max-width: 400px;
-    background: rgba(10, 20, 40, 0.95);
+    max-width: 380px;
+    background: rgba(10, 15, 30, 0.95);
     border: 1px solid #00d4ff;
     border-radius: 15px;
-    padding: 25px;
-    box-shadow: 0 0 50px rgba(0, 212, 255, 0.2);
+    padding: 30px;
+    box-shadow: 0 0 40px rgba(0, 212, 255, 0.2);
     transform: scale(0.8);
-    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     text-align: center;
-    font-family: 'Rajdhani', sans-serif;
     position: relative;
+    font-family: 'Rajdhani', sans-serif;
 }
 
 .ai-modal-overlay.active .ai-modal-box {
     transform: scale(1);
 }
 
-/* Modal Content */
+/* Modal Content Styling */
 .ai-title {
     color: #fff;
     font-family: 'Orbitron', sans-serif;
+    font-size: 22px;
     margin-bottom: 10px;
-    text-shadow: 0 0 10px #00d4ff;
+    letter-spacing: 1px;
+    text-shadow: 0 0 10px rgba(0, 212, 255, 0.5);
 }
 
 .ai-subtitle {
     color: #aaa;
     font-size: 14px;
     margin-bottom: 25px;
+    line-height: 1.4;
 }
 
 .ai-options {
@@ -122,37 +112,42 @@
     gap: 15px;
 }
 
-.ai-option-btn {
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    padding: 15px;
-    color: #fff;
-    text-decoration: none;
-    border-radius: 8px;
-    transition: 0.3s;
+.ai-btn {
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 10px;
+    padding: 12px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    color: white;
+    text-decoration: none;
     font-weight: 600;
+    transition: 0.3s;
 }
 
-.ai-option-btn:hover {
-    background: rgba(0, 212, 255, 0.2);
+.ai-btn:hover {
+    background: rgba(0, 212, 255, 0.15);
     border-color: #00d4ff;
-    box-shadow: 0 0 15px rgba(0, 212, 255, 0.3);
+    box-shadow: 0 0 15px rgba(0, 212, 255, 0.2);
+    transform: translateY(-2px);
 }
 
-.ai-close-btn {
+.ai-btn i { color: #00d4ff; }
+
+/* Close Button (X) */
+.ai-close {
     position: absolute;
     top: 15px; right: 15px;
     background: none;
     border: none;
-    color: #555;
-    font-size: 20px;
+    color: #666;
+    font-size: 18px;
     cursor: pointer;
+    transition: 0.3s;
 }
-.ai-close-btn:hover { color: #ff0055; }
+.ai-close:hover { color: #ff0055; transform: rotate(90deg); }
 
 /* Animations */
 @keyframes spin { 100% { transform: rotate(360deg); } }
