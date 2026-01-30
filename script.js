@@ -1,6 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
     console.log('🚀 Arnav Mishra 3D Portfolio Loaded!');
-    
     initLoader();
     initNavigation();
     initParticles();
@@ -8,10 +7,8 @@ document.addEventListener('DOMContentLoaded', function() {
     initScrollAnimations();
     initZeroGravity();
     initClickEffects();
-
-    // AI Assistant init (added properly)
     initAIAssistant();
-    initAIParticles();
+    init3DSocialCards();
 });
 
 function initLoader() {
@@ -131,11 +128,7 @@ function initThreeJS() {
         particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
         
         const particlesMaterial = new THREE.PointsMaterial({
-            size: 0.2,
-            color: 0x00d4ff,
-            transparent: true,
-            opacity: 0.6,
-            blending: THREE.AdditiveBlending
+            size: 0.2, color: 0x00d4ff, transparent: true, opacity: 0.6, blending: THREE.AdditiveBlending
         });
         
         const particlesMesh = new THREE.Points(particlesGeometry, particlesMaterial);
@@ -149,26 +142,12 @@ function initThreeJS() {
             else geometry = new THREE.TorusGeometry(1.5, 0.3, 8, 20);
             
             const material = new THREE.MeshBasicMaterial({
-                color: i % 2 === 0 ? 0x00d4ff : 0xff00ff,
-                wireframe: true,
-                transparent: true,
-                opacity: 0.3
+                color: i % 2 === 0 ? 0x00d4ff : 0xff00ff, wireframe: true, transparent: true, opacity: 0.3
             });
             
             const mesh = new THREE.Mesh(geometry, material);
-            mesh.position.set(
-                (Math.random() - 0.5) * 60,
-                (Math.random() - 0.5) * 60,
-                (Math.random() - 0.5) * 20
-            );
-            
-            mesh.userData = {
-                rotX: (Math.random() - 0.5) * 0.02,
-                rotY: (Math.random() - 0.5) * 0.02,
-                floatSpeed: 0.5 + Math.random() * 0.5,
-                floatOffset: Math.random() * Math.PI * 2
-            };
-            
+            mesh.position.set((Math.random() - 0.5) * 60, (Math.random() - 0.5) * 60, (Math.random() - 0.5) * 20);
+            mesh.userData = { rotX: (Math.random() - 0.5) * 0.02, rotY: (Math.random() - 0.5) * 0.02, floatSpeed: 0.5 + Math.random() * 0.5, floatOffset: Math.random() * Math.PI * 2 };
             scene.add(mesh);
             shapes.push(mesh);
         }
@@ -230,12 +209,11 @@ function initScrollAnimations() {
         });
     }, { threshold: 0.2, rootMargin: '0px 0px -50px 0px' });
     
-    document.querySelectorAll('.social-card-3d, .about-card-3d, .pick-item-3d, .special-link-3d, .section-title-3d')
-        .forEach(function(el, index) {
-            el.classList.add('fade-in');
-            el.style.transitionDelay = (index * 0.1) + 's';
-            observer.observe(el);
-        });
+    document.querySelectorAll('.social-card-3d, .about-card-3d, .pick-item-3d, .special-link-3d, .section-title-3d').forEach(function(el, index) {
+        el.classList.add('fade-in');
+        el.style.transitionDelay = (index * 0.1) + 's';
+        observer.observe(el);
+    });
 }
 
 function initZeroGravity() {
@@ -243,29 +221,54 @@ function initZeroGravity() {
     if (!btn) return;
     
     let isZeroGravity = false;
+    const btnText = btn.querySelector('.btn-text');
+    const btnIcon = btn.querySelector('i');
+    
     btn.addEventListener('click', function() {
         isZeroGravity = !isZeroGravity;
         
         if (isZeroGravity) {
-            btn.innerHTML = 'Normal Gravity <i class="fas fa-compress"></i>';
-            btn.style.background = '#ff00ff';
-            btn.style.borderColor = '#ff00ff';
+            btn.classList.add('active');
+            if (btnText) btnText.textContent = 'Normal Gravity';
+            if (btnIcon) btnIcon.className = 'fas fa-compress';
             document.body.classList.add('zero-gravity');
+            
+            // Enhance Three.js shapes
             if (window.threeScene && window.threeScene.shapes) {
                 window.threeScene.shapes.forEach(function(shape) {
-                    shape.userData.rotX *= 5;
-                    shape.userData.rotY *= 5;
+                    shape.userData.originalRotX = shape.userData.rotX;
+                    shape.userData.originalRotY = shape.userData.rotY;
+                    shape.userData.rotX *= 8;
+                    shape.userData.rotY *= 8;
+                    
+                    // Add random velocity for floating effect
+                    shape.userData.velocityX = (Math.random() - 0.5) * 0.5;
+                    shape.userData.velocityY = (Math.random() - 0.5) * 0.5;
+                    shape.userData.velocityZ = (Math.random() - 0.5) * 0.3;
                 });
             }
+            
+            // Enhance particles
+            if (window.threeScene && window.threeScene.particlesMesh) {
+                window.threeScene.particlesMesh.userData.originalSpeed = 0.05;
+            }
+            
         } else {
-            btn.innerHTML = 'Zero Gravity <i class="fas fa-rocket"></i>';
-            btn.style.background = 'transparent';
-            btn.style.borderColor = '#00d4ff';
+            btn.classList.remove('active');
+            if (btnText) btnText.textContent = 'Zero Gravity';
+            if (btnIcon) btnIcon.className = 'fas fa-rocket';
             document.body.classList.remove('zero-gravity');
+            
+            // Restore Three.js shapes
             if (window.threeScene && window.threeScene.shapes) {
                 window.threeScene.shapes.forEach(function(shape) {
-                    shape.userData.rotX /= 5;
-                    shape.userData.rotY /= 5;
+                    if (shape.userData.originalRotX) {
+                        shape.userData.rotX = shape.userData.originalRotX;
+                        shape.userData.rotY = shape.userData.originalRotY;
+                    }
+                    delete shape.userData.velocityX;
+                    delete shape.userData.velocityY;
+                    delete shape.userData.velocityZ;
                 });
             }
         }
@@ -277,61 +280,41 @@ function initClickEffects() {
         const colors = ['#00d4ff', '#ff00ff', '#ffff00'];
         for (let i = 0; i < 8; i++) {
             const particle = document.createElement('div');
-            particle.style.cssText =
-                'position: fixed; width: 6px; height: 6px; background: ' +
-                colors[Math.floor(Math.random() * colors.length)] +
-                '; border-radius: 50%; pointer-events: none; z-index: 9999; left: ' +
-                e.clientX +
-                'px; top: ' +
-                e.clientY +
-                'px;';
+            particle.style.cssText = 'position: fixed; width: 6px; height: 6px; background: ' + colors[Math.floor(Math.random() * colors.length)] + '; border-radius: 50%; pointer-events: none; z-index: 9999; left: ' + e.clientX + 'px; top: ' + e.clientY + 'px;';
             document.body.appendChild(particle);
-
             const angle = (i / 8) * Math.PI * 2;
             const distance = 40 + Math.random() * 40;
-
-            particle.animate(
-                [
-                    { transform: 'translate(0, 0) scale(1)', opacity: 1 },
-                    {
-                        transform:
-                            'translate(' +
-                            Math.cos(angle) * distance +
-                            'px, ' +
-                            Math.sin(angle) * distance +
-                            'px) scale(0)',
-                        opacity: 0
-                    }
-                ],
-                { duration: 600, easing: 'ease-out' }
-            ).onfinish = function() {
-                particle.remove();
-            };
+            particle.animate([{ transform: 'translate(0, 0) scale(1)', opacity: 1 }, { transform: 'translate(' + Math.cos(angle) * distance + 'px, ' + Math.sin(angle) * distance + 'px) scale(0)', opacity: 0 }], { duration: 600, easing: 'ease-out' }).onfinish = function() { particle.remove(); };
         }
     });
 }
 
-document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
-    anchor.addEventListener('click', function(e) {
-        const href = this.getAttribute('href');
-        if (href === '#') return;
-        const target = document.querySelector(href);
-        if (target) {
-            e.preventDefault();
-            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }
+// 3D Social Cards Tilt Effect
+function init3DSocialCards() {
+    const cards = document.querySelectorAll('.social-card-3d');
+    
+    cards.forEach(card => {
+        card.addEventListener('mousemove', function(e) {
+            const rect = card.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+            
+            const rotateX = (y - centerY) / 10;
+            const rotateY = (centerX - x) / 10;
+            
+            card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateZ(30px) translateY(-10px)`;
+        });
+        
+        card.addEventListener('mouseleave', function() {
+            card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) translateZ(0) translateY(0)';
+        });
     });
-});
+}
 
-console.log('%c🚀 Arnav Mishra 3D Portfolio', 'font-size: 24px; font-weight: bold; color: #00d4ff;');
-console.log('%cBuilt with pure awesomeness 💀', 'font-size: 14px; color: #ff00ff;');
-console.log('%cClick "Zero Gravity" for a wild ride!', 'font-size: 12px; color: #ffff00;');
-
-
-// ==========================
-// AI Assistant functionality
-// ==========================
-
+// AI Assistant
 function initAIAssistant() {
     const aiOrb = document.getElementById('ai-orb');
     const aiModal = document.getElementById('ai-modal');
@@ -341,13 +324,10 @@ function initAIAssistant() {
     const aiChat = document.getElementById('ai-chat');
     const aiTyping = document.getElementById('ai-typing');
     const suggestionChips = document.querySelectorAll('.suggestion-chip');
-    const aiCanvas = document.getElementById('ai-canvas');
 
-    if (!aiOrb || !aiModal) return;
-
+    // Toggle modal
     aiOrb.addEventListener('click', function() {
         aiModal.classList.toggle('active');
-        aiCanvas.classList.toggle('active');
         if (aiModal.classList.contains('active')) {
             setTimeout(() => aiInput.focus(), 300);
         }
@@ -355,24 +335,27 @@ function initAIAssistant() {
 
     aiClose.addEventListener('click', function() {
         aiModal.classList.remove('active');
-        aiCanvas.classList.remove('active');
     });
 
+    // Close on outside click
     document.addEventListener('click', function(e) {
         if (!aiModal.contains(e.target) && !aiOrb.contains(e.target) && aiModal.classList.contains('active')) {
             aiModal.classList.remove('active');
-            aiCanvas.classList.remove('active');
         }
     });
 
+    // Send message
     function sendMessage(text) {
         if (!text.trim()) return;
-
+        
+        // Add user message
         addMessage(text, 'user');
         aiInput.value = '';
-
+        
+        // Show typing
         showTyping();
-
+        
+        // Generate response
         setTimeout(() => {
             hideTyping();
             const response = generateAIResponse(text);
@@ -380,26 +363,30 @@ function initAIAssistant() {
         }, 1000 + Math.random() * 1000);
     }
 
+    // Add message to chat
     function addMessage(text, sender) {
         const messageDiv = document.createElement('div');
         messageDiv.className = `ai-message ${sender === 'user' ? 'user' : ''}`;
-
-        const time = new Date().toLocaleTimeString([], {
-            hour: '2-digit',
-            minute: '2-digit'
-        });
-
+        
+        const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        
+        const avatar = sender === 'user' ? '<i class="fas fa-user"></i>' : '<i class="fas fa-robot"></i>';
+        
         messageDiv.innerHTML = `
-            <div class="message-bubble">
-                <p>${text}</p>
+            <div class="message-avatar">${avatar}</div>
+            <div class="message-content">
+                <div class="message-bubble">
+                    <p>${text}</p>
+                </div>
+                <span class="message-time">${time}</span>
             </div>
-            <span class="message-time">${time}</span>
         `;
-
+        
         aiChat.appendChild(messageDiv);
         aiChat.scrollTop = aiChat.scrollHeight;
     }
 
+    // Show/hide typing
     function showTyping() {
         aiTyping.classList.add('active');
         aiChat.scrollTop = aiChat.scrollHeight;
@@ -409,34 +396,45 @@ function initAIAssistant() {
         aiTyping.classList.remove('active');
     }
 
+    // AI Response Logic
     function generateAIResponse(input) {
         const lower = input.toLowerCase();
-
+        
         const responses = {
-            'who': "🚀 I'm Arnav Mishra, a passionate developer and creator building the future through code.",
-            'skill': "💻 My expertise includes web development, 3D design, creative coding, and immersive experiences.",
-            'contact': "📱 Reach me via WhatsApp, LinkedIn, X/Twitter, or Instagram.",
-            'verse': "🌌 ARNAV VERSE is my digital universe where creativity meets technology.",
-            'project': "🔥 I'm always working on new projects. Check out my special experiences!",
-            'chess': "♟️ Yes, challenge me on Chess.com: Arnavm142",
-            'hello': "👋 Hey there! Ask me anything about my work.",
-            'hi': "🚀 Greetings! How can I assist?",
-            'default': "🤔 Interesting question. Ask about skills, projects, or contact!"
+            'who': "🚀 I'm Arnav Mishra, a passionate developer and creator building the future through code. I transform ideas into reality and push the boundaries of what's possible!",
+            
+            'skill': "💻 My expertise includes web development, 3D design, creative coding, and building immersive digital experiences. I work with Three.js, React, Node.js, and love experimenting with new tech!",
+            
+            'contact': "📱 You can reach me through WhatsApp by clicking the 'Say Hello' button, or connect with me on LinkedIn, X/Twitter, or Instagram. I'd love to hear from you!",
+            
+            'verse': "🌌 ARNAV VERSE is my digital universe where creativity meets technology. It's a space where I showcase my projects, ideas, and the boundaries I push!",
+            
+            'project': "🔥 I'm constantly working on new projects! Check out my 'ENTER THE UPSIDE DOWN' and 'Enter Live Concert' links for special experiences I've built!",
+            
+            'chess': "♟️ Yes, I play chess! You can challenge me on Chess.com - my username is Arnavm142. Let's have a match!",
+            
+            'hello': "👋 Hey there! Ready to explore my digital universe? Ask me anything about my work, skills, or just say hi!",
+            
+            'hi': "🚀 Greetings, traveler of the digital realm! How can I assist you today?",
+            
+            'default': "🤔 That's an interesting question! While I process that, why not check out my social links or try the 'Zero Gravity' button for a wild ride? You can also ask me about my skills, projects, or how to connect!"
         };
-
+        
         for (let key in responses) {
             if (lower.includes(key)) return responses[key];
         }
-
+        
         return responses['default'];
     }
 
+    // Event listeners
     aiSend.addEventListener('click', () => sendMessage(aiInput.value));
-
+    
     aiInput.addEventListener('keypress', function(e) {
         if (e.key === 'Enter') sendMessage(aiInput.value);
     });
 
+    // Suggestion chips
     suggestionChips.forEach(chip => {
         chip.addEventListener('click', function() {
             sendMessage(this.dataset.question);
@@ -444,121 +442,17 @@ function initAIAssistant() {
     });
 }
 
-
-// AI Background Particles
-function initAIParticles() {
-    const canvas = document.getElementById('ai-canvas');
-    if (!canvas) return;
-
-    const ctx = canvas.getContext('2d');
-    let particles = [];
-    let animationId;
-    let isActive = false;
-
-    function resize() {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-    }
-
-    resize();
-    window.addEventListener('resize', resize);
-
-    class Particle {
-        constructor() {
-            this.reset();
-        }
-
-        reset() {
-            this.x = Math.random() * canvas.width;
-            this.y = Math.random() * canvas.height;
-            this.size = Math.random() * 2 + 1;
-            this.speedX = (Math.random() - 0.5) * 0.5;
-            this.speedY = (Math.random() - 0.5) * 0.5;
-            this.life = 0;
-            this.maxLife = Math.random() * 100 + 50;
-            this.colors = ['#00d4ff', '#ff00ff', '#ffff00'];
-            this.color = this.colors[Math.floor(Math.random() * this.colors.length)];
-        }
-
-        update() {
-            this.x += this.speedX;
-            this.y += this.speedY;
-            this.life++;
-
-            if (
-                this.life > this.maxLife ||
-                this.x < 0 || this.x > canvas.width ||
-                this.y < 0 || this.y > canvas.height
-            ) {
-                this.reset();
-            }
-        }
-
-        draw() {
-            const opacity = 1 - (this.life / this.maxLife);
-            ctx.beginPath();
-            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-            ctx.fillStyle = this.color;
-            ctx.globalAlpha = opacity * 0.6;
-            ctx.fill();
-            ctx.globalAlpha = 1;
-        }
-    }
-
-    for (let i = 0; i < 30; i++) {
-        particles.push(new Particle());
-    }
-
-    function animate() {
-        if (!isActive) return;
-
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-        particles.forEach((p, index) => {
-            p.update();
-            p.draw();
-
-            particles.slice(index + 1).forEach(p2 => {
-                const dx = p.x - p2.x;
-                const dy = p.y - p2.y;
-                const distance = Math.sqrt(dx * dx + dy * dy);
-
-                if (distance < 100) {
-                    ctx.beginPath();
-                    ctx.moveTo(p.x, p.y);
-                    ctx.lineTo(p2.x, p2.y);
-                    ctx.strokeStyle = '#00d4ff';
-                    ctx.globalAlpha = (1 - distance / 100) * 0.2;
-                    ctx.lineWidth = 0.5;
-                    ctx.stroke();
-                    ctx.globalAlpha = 1;
-                }
-            });
-        });
-
-        animationId = requestAnimationFrame(animate);
-    }
-
-    const observer = new MutationObserver(function(mutations) {
-        mutations.forEach(function(mutation) {
-            if (mutation.target.classList.contains('active')) {
-                isActive = true;
-                animate();
-            } else {
-                isActive = false;
-                cancelAnimationFrame(animationId);
-            }
-        });
+document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
+    anchor.addEventListener('click', function(e) {
+        const href = this.getAttribute('href');
+        if (href === '#') return;
+        const target = document.querySelector(href);
+        if (target) { e.preventDefault(); target.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
     });
+});
 
-    const aiModal = document.getElementById('ai-modal');
-    if (aiModal) {
-        observer.observe(aiModal, {
-            attributes: true,
-            attributeFilter: ['class']
-        });
-    }
-}
-
-console.log('%c🤖 AI Assistant Loaded', 'font-size: 16px; color: #00d4ff; font-weight: bold;');
-console.log('%cTry asking: "Who are you?", "Skills", "Contact", or "ARNAV VERSE"', 'font-size: 12px; color: #888;');
+console.log('%c🚀 Arnav Mishra 3D Portfolio', 'font-size: 24px; font-weight: bold; color: #00d4ff;');
+console.log('%cBuilt with pure awesomeness 💀', 'font-size: 14px; color: #ff00ff;');
+console.log('%c🤖 AI Assistant Ready!', 'font-size: 14px; color: #00ff88;');
+console.log('%cClick "Zero Gravity" for a wild ride!', 'font-size: 12px; color: #ffff00;');
+        
