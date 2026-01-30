@@ -1,155 +1,206 @@
-/* AI WRAPPER POSITION */
+/* --- 1. THE AI CONTAINER (Bottom Right) --- */
 #ai-wrapper {
     position: fixed;
-    bottom: 30px;
-    right: 30px;
+    bottom: 40px;
+    right: 40px;
     z-index: 9999;
     display: flex;
     flex-direction: column;
-    align-items: flex-end;
-    pointer-events: auto;
-    font-family: 'Rajdhani', sans-serif;
-}
-
-/* 3D REACTOR CANVAS */
-#ai-canvas-container {
-    width: 90px;
-    height: 90px;
-    cursor: pointer;
-    transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    filter: drop-shadow(0 0 10px #00d4ff);
-}
-
-#ai-canvas-container:hover {
-    transform: scale(1.1);
-    filter: drop-shadow(0 0 20px #ff00ff);
-}
-
-/* CHAT INTERFACE WINDOW */
-#chat-interface {
-    width: 320px;
-    height: 0;
-    background: rgba(5, 10, 20, 0.9);
-    backdrop-filter: blur(15px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 15px;
-    margin-bottom: 15px;
-    overflow: hidden;
-    transition: all 0.4s ease;
-    display: flex;
-    flex-direction: column;
-    opacity: 0;
-    transform-origin: bottom right;
-    transform: scale(0.8);
-    box-shadow: 0 10px 40px rgba(0,0,0,0.6);
-}
-
-#chat-interface.active {
-    height: 420px;
-    opacity: 1;
-    border-color: #00d4ff;
-    transform: scale(1);
-}
-
-/* HEADER */
-.chat-header {
-    padding: 15px;
-    background: linear-gradient(90deg, rgba(0, 212, 255, 0.1), transparent);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    display: flex;
-    justify-content: space-between;
     align-items: center;
-}
-
-.ai-name {
-    color: #00d4ff;
-    font-family: 'Orbitron', sans-serif;
-    font-weight: 700;
-    font-size: 14px;
-    letter-spacing: 1px;
-}
-
-.status-dot {
-    width: 8px; height: 8px;
-    background: #00ff00;
-    border-radius: 50%;
-    box-shadow: 0 0 8px #00ff00;
-    animation: blink 2s infinite;
-}
-
-/* MESSAGES AREA */
-#ai-messages {
-    flex: 1;
-    padding: 15px;
-    overflow-y: auto;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-}
-
-#ai-messages::-webkit-scrollbar { width: 4px; }
-#ai-messages::-webkit-scrollbar-thumb { background: #00d4ff; border-radius: 4px; }
-
-.msg {
-    max-width: 85%;
-    padding: 10px 14px;
-    border-radius: 12px;
-    font-size: 14px;
-    line-height: 1.4;
-    animation: slideUp 0.3s ease;
-}
-
-.msg.user {
-    align-self: flex-end;
-    background: linear-gradient(135deg, #0066ff, #00d4ff);
-    color: white;
-    border-bottom-right-radius: 2px;
-}
-
-.msg.ai {
-    align-self: flex-start;
-    background: rgba(255, 255, 255, 0.05);
-    color: #eee;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-bottom-left-radius: 2px;
-}
-
-/* INPUT AREA */
-.ai-input-area {
-    padding: 15px;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-    display: flex;
-    gap: 10px;
-}
-
-.ai-input {
-    flex: 1;
-    background: rgba(0,0,0,0.3);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    padding: 10px;
-    border-radius: 8px;
-    color: white;
+    perspective: 1000px; /* Essential for 3D effect */
     font-family: 'Rajdhani', sans-serif;
-    outline: none;
-    transition: 0.3s;
 }
 
-.ai-input:focus { border-color: #00d4ff; box-shadow: 0 0 10px rgba(0, 212, 255, 0.2); }
-
-.ai-send-btn {
-    background: transparent;
-    border: 1px solid #00d4ff;
-    color: #00d4ff;
-    width: 40px; height: 40px;
-    border-radius: 8px;
+/* --- 2. THE FLOATING CUBE (Infinity Stone) --- */
+.ai-cube-scene {
+    width: 60px;
+    height: 60px;
+    transform-style: preserve-3d;
     cursor: pointer;
+    animation: float 6s ease-in-out infinite;
+    transition: transform 0.3s ease;
+}
+
+.ai-cube-scene:hover {
+    transform: scale(1.2); /* Scale up on hover */
+}
+
+.cube {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    transform-style: preserve-3d;
+    animation: rotateCore 10s infinite linear;
+}
+
+/* Cube Faces */
+.cube-face {
+    position: absolute;
+    width: 60px;
+    height: 60px;
+    background: rgba(0, 212, 255, 0.1); /* Glassy Blue */
+    border: 2px solid #00d4ff;
+    box-shadow: 0 0 15px rgba(0, 212, 255, 0.5) inset;
+    backface-visibility: visible;
+}
+
+/* Positioning Faces */
+.front  { transform: rotateY(0deg) translateZ(30px); }
+.back   { transform: rotateY(180deg) translateZ(30px); }
+.right  { transform: rotateY(90deg) translateZ(30px); }
+.left   { transform: rotateY(-90deg) translateZ(30px); }
+.top    { transform: rotateX(90deg) translateZ(30px); }
+.bottom { transform: rotateX(-90deg) translateZ(30px); }
+
+/* Internal Glowing Core */
+.cube::after {
+    content: '';
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 30px; height: 30px;
+    background: #fff;
+    border-radius: 50%;
+    box-shadow: 0 0 40px #00d4ff, 0 0 80px #ff00ff;
+    animation: pulseCore 2s infinite alternate;
+}
+
+/* Label below cube */
+.ai-label {
+    margin-top: 20px;
+    background: rgba(0, 0, 0, 0.6);
+    padding: 5px 12px;
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #00d4ff;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    backdrop-filter: blur(5px);
+    transition: 0.3s;
+    opacity: 0.8;
+}
+
+#ai-wrapper:hover .ai-label {
+    background: #00d4ff;
+    color: #000;
+    opacity: 1;
+    box-shadow: 0 0 15px #00d4ff;
+}
+
+/* --- 3. THE POPUP MODAL (Glassmorphism) --- */
+.ai-modal-overlay {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(8px);
+    z-index: 10000;
     display: flex;
     justify-content: center;
     align-items: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.4s ease;
+}
+
+.ai-modal-overlay.active {
+    opacity: 1;
+    pointer-events: all;
+}
+
+.ai-modal-card {
+    width: 90%;
+    max-width: 400px;
+    background: linear-gradient(135deg, rgba(10, 20, 40, 0.9), rgba(0, 0, 0, 0.95));
+    border: 1px solid rgba(0, 212, 255, 0.3);
+    border-radius: 20px;
+    padding: 30px;
+    text-align: center;
+    box-shadow: 0 0 50px rgba(0, 212, 255, 0.2);
+    transform: scale(0.8) translateY(20px);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    position: relative;
+    overflow: hidden;
+}
+
+.ai-modal-overlay.active .ai-modal-card {
+    transform: scale(1) translateY(0);
+}
+
+/* Decorative Glow Line */
+.ai-modal-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 4px;
+    background: linear-gradient(90deg, #00d4ff, #ff00ff);
+}
+
+.ai-title {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 24px;
+    color: #fff;
+    margin-bottom: 10px;
+    text-shadow: 0 0 10px rgba(0, 212, 255, 0.5);
+}
+
+.ai-desc {
+    color: #aaa;
+    font-size: 14px;
+    margin-bottom: 30px;
+    line-height: 1.5;
+}
+
+/* Quick Buttons */
+.ai-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.ai-btn {
+    padding: 15px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    color: #fff;
+    font-family: 'Rajdhani', sans-serif;
+    font-weight: 600;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    text-decoration: none;
+}
+
+.ai-btn:hover {
+    background: rgba(0, 212, 255, 0.1);
+    border-color: #00d4ff;
+    box-shadow: 0 0 20px rgba(0, 212, 255, 0.2);
+    transform: translateX(5px);
+}
+
+.ai-btn i { color: #00d4ff; }
+
+/* Close Button */
+.ai-close {
+    position: absolute;
+    top: 15px; right: 15px;
+    background: none;
+    border: none;
+    color: #666;
+    font-size: 20px;
+    cursor: pointer;
     transition: 0.3s;
 }
 
-.ai-send-btn:hover { background: #00d4ff; color: black; }
+.ai-close:hover { color: #ff0055; transform: rotate(90deg); }
 
-@keyframes blink { 50% { opacity: 0.5; } }
-@keyframes slideUp { from { transform: translateY(10px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+/* Animations */
+@keyframes rotateCore { 0% { transform: rotateX(0) rotateY(0); } 100% { transform: rotateX(360deg) rotateY(360deg); } }
+@keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
+@keyframes pulseCore { 0% { opacity: 0.8; transform: translate(-50%, -50%) scale(1); } 100% { opacity: 1; transform: translate(-50%, -50%) scale(1.2); } }
