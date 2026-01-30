@@ -4,15 +4,62 @@ document.addEventListener('DOMContentLoaded', function() {
     initNavigation();
     initParticles();
     initThreeJS();
+    initScrollAnimations();
     initZeroGravity();
-    initAIAssistant();
+    initClickEffects();
 });
 
 function initLoader() {
     const loader = document.getElementById('loading');
     setTimeout(function() {
         loader.classList.add('hidden');
+        setTimeout(animateEntrance, 300);
     }, 1500);
+}
+
+function animateEntrance() {
+    const titleLines = document.querySelectorAll('.title-line');
+    const subtitle = document.querySelector('.hero-subtitle');
+    const quote = document.querySelector('.quote-3d');
+    const buttons = document.querySelectorAll('.hero-buttons .btn-3d');
+    
+    titleLines.forEach(function(line, index) {
+        line.style.opacity = '0';
+        line.style.transform = 'translateY(50px)';
+        setTimeout(function() {
+            line.style.transition = 'all 0.8s ease';
+            line.style.opacity = '1';
+            line.style.transform = 'translateY(0)';
+        }, index * 200);
+    });
+    
+    if (subtitle) {
+        subtitle.style.opacity = '0';
+        setTimeout(function() {
+            subtitle.style.transition = 'opacity 0.6s ease';
+            subtitle.style.opacity = '1';
+        }, 500);
+    }
+    
+    if (quote) {
+        quote.style.opacity = '0';
+        quote.style.transform = 'scale(0.9)';
+        setTimeout(function() {
+            quote.style.transition = 'all 0.8s ease';
+            quote.style.opacity = '1';
+            quote.style.transform = 'scale(1)';
+        }, 700);
+    }
+    
+    buttons.forEach(function(btn, index) {
+        btn.style.opacity = '0';
+        btn.style.transform = 'translateY(30px)';
+        setTimeout(function() {
+            btn.style.transition = 'all 0.6s ease';
+            btn.style.opacity = '1';
+            btn.style.transform = 'translateY(0)';
+        }, 900 + index * 150);
+    });
 }
 
 function initNavigation() {
@@ -23,7 +70,6 @@ function initNavigation() {
         navToggle.addEventListener('click', function() {
             navLinks.classList.toggle('active');
         });
-        
         navLinks.querySelectorAll('a').forEach(function(link) {
             link.addEventListener('click', function() {
                 navLinks.classList.remove('active');
@@ -33,9 +79,7 @@ function initNavigation() {
     
     const nav = document.querySelector('.nav-3d');
     window.addEventListener('scroll', function() {
-        if (nav) {
-            nav.style.background = window.scrollY > 50 ? 'rgba(5, 5, 5, 0.98)' : 'rgba(5, 5, 5, 0.9)';
-        }
+        nav.style.background = window.scrollY > 50 ? 'rgba(5, 5, 5, 0.98)' : 'rgba(5, 5, 5, 0.9)';
     });
 }
 
@@ -71,7 +115,6 @@ function initThreeJS() {
         renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
         camera.position.z = 30;
         
-        // Particles
         const particlesGeometry = new THREE.BufferGeometry();
         const particlesCount = 1000;
         const posArray = new Float32Array(particlesCount * 3);
@@ -83,17 +126,12 @@ function initThreeJS() {
         particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
         
         const particlesMaterial = new THREE.PointsMaterial({
-            size: 0.2, 
-            color: 0x00d4ff, 
-            transparent: true, 
-            opacity: 0.6, 
-            blending: THREE.AdditiveBlending
+            size: 0.2, color: 0x00d4ff, transparent: true, opacity: 0.6, blending: THREE.AdditiveBlending
         });
         
         const particlesMesh = new THREE.Points(particlesGeometry, particlesMaterial);
         scene.add(particlesMesh);
         
-        // Shapes
         const shapes = [];
         for (let i = 0; i < 6; i++) {
             let geometry;
@@ -102,37 +140,23 @@ function initThreeJS() {
             else geometry = new THREE.TorusGeometry(1.5, 0.3, 8, 20);
             
             const material = new THREE.MeshBasicMaterial({
-                color: i % 2 === 0 ? 0x00d4ff : 0xff00ff, 
-                wireframe: true, 
-                transparent: true, 
-                opacity: 0.3
+                color: i % 2 === 0 ? 0x00d4ff : 0xff00ff, wireframe: true, transparent: true, opacity: 0.3
             });
             
             const mesh = new THREE.Mesh(geometry, material);
-            mesh.position.set(
-                (Math.random() - 0.5) * 60, 
-                (Math.random() - 0.5) * 60, 
-                (Math.random() - 0.5) * 20
-            );
-            mesh.userData = { 
-                rotX: (Math.random() - 0.5) * 0.02, 
-                rotY: (Math.random() - 0.5) * 0.02
-            };
+            mesh.position.set((Math.random() - 0.5) * 60, (Math.random() - 0.5) * 60, (Math.random() - 0.5) * 20);
+            mesh.userData = { rotX: (Math.random() - 0.5) * 0.02, rotY: (Math.random() - 0.5) * 0.02, floatSpeed: 0.5 + Math.random() * 0.5, floatOffset: Math.random() * Math.PI * 2 };
             scene.add(mesh);
             shapes.push(mesh);
         }
         
-        // Mouse interaction
         let mouseX = 0, mouseY = 0;
         document.addEventListener('mousemove', function(e) {
             mouseX = (e.clientX / window.innerWidth - 0.5) * 2;
             mouseY = (e.clientY / window.innerHeight - 0.5) * 2;
         });
         
-        // Animation
-        let time = 0;
-        let isActive = true;
-        
+        let time = 0, isActive = true;
         function animate() {
             if (!isActive) return;
             requestAnimationFrame(animate);
@@ -148,33 +172,46 @@ function initThreeJS() {
             shapes.forEach(function(shape) {
                 shape.rotation.x += shape.userData.rotX;
                 shape.rotation.y += shape.userData.rotY;
+                shape.position.y += Math.sin(time * shape.userData.floatSpeed + shape.userData.floatOffset) * 0.02;
             });
             
             renderer.render(scene, camera);
         }
-        
         animate();
         
-        // Resize handler
         window.addEventListener('resize', function() {
             camera.aspect = window.innerWidth / window.innerHeight;
             camera.updateProjectionMatrix();
             renderer.setSize(window.innerWidth, window.innerHeight);
         });
         
-        // Visibility handler
         document.addEventListener('visibilitychange', function() {
             isActive = !document.hidden;
             if (isActive) animate();
         });
         
-        // Store for zero gravity
         window.threeScene = { shapes, particlesMesh };
-        
     } catch (error) {
         console.log('Three.js error:', error);
         canvas.style.display = 'none';
     }
+}
+
+function initScrollAnimations() {
+    const observer = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+                observer.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.2, rootMargin: '0px 0px -50px 0px' });
+    
+    document.querySelectorAll('.social-card-3d, .about-card-3d, .pick-item-3d, .special-link-3d, .section-title-3d').forEach(function(el, index) {
+        el.classList.add('fade-in');
+        el.style.transitionDelay = (index * 0.1) + 's';
+        observer.observe(el);
+    });
 }
 
 function initZeroGravity() {
@@ -182,165 +219,59 @@ function initZeroGravity() {
     if (!btn) return;
     
     let isZeroGravity = false;
-    
     btn.addEventListener('click', function() {
         isZeroGravity = !isZeroGravity;
         
         if (isZeroGravity) {
-            btn.classList.add('active');
-            btn.innerHTML = '<span>Normal Gravity</span><i class="fas fa-compress"></i>';
+            btn.innerHTML = 'Normal Gravity <i class="fas fa-compress"></i>';
+            btn.style.background = '#ff00ff';
+            btn.style.borderColor = '#ff00ff';
             document.body.classList.add('zero-gravity');
-            
-            // Speed up Three.js shapes
             if (window.threeScene && window.threeScene.shapes) {
                 window.threeScene.shapes.forEach(function(shape) {
-                    shape.userData.rotX *= 10;
-                    shape.userData.rotY *= 10;
+                    shape.userData.rotX *= 5;
+                    shape.userData.rotY *= 5;
                 });
             }
         } else {
-            btn.classList.remove('active');
-            btn.innerHTML = '<span>Zero Gravity</span><i class="fas fa-rocket"></i>';
+            btn.innerHTML = 'Zero Gravity <i class="fas fa-rocket"></i>';
+            btn.style.background = 'transparent';
+            btn.style.borderColor = '#00d4ff';
             document.body.classList.remove('zero-gravity');
-            
-            // Slow down Three.js shapes
             if (window.threeScene && window.threeScene.shapes) {
                 window.threeScene.shapes.forEach(function(shape) {
-                    shape.userData.rotX /= 10;
-                    shape.userData.rotY /= 10;
+                    shape.userData.rotX /= 5;
+                    shape.userData.rotY /= 5;
                 });
             }
         }
     });
 }
 
-function initAIAssistant() {
-    const aiOrb = document.getElementById('ai-orb');
-    const aiModal = document.getElementById('ai-modal');
-    const aiClose = document.getElementById('ai-close');
-    const aiInput = document.getElementById('ai-input');
-    const aiSend = document.getElementById('ai-send');
-    const aiChat = document.getElementById('ai-chat');
-    const aiTyping = document.getElementById('ai-typing');
-    const suggestionChips = document.querySelectorAll('.suggestion-chip');
-
-    if (!aiOrb || !aiModal) return;
-
-    // Toggle modal
-    aiOrb.addEventListener('click', function(e) {
-        e.stopPropagation();
-        aiModal.classList.toggle('active');
-        if (aiModal.classList.contains('active')) {
-            setTimeout(() => aiInput.focus(), 300);
-        }
-    });
-
-    aiClose.addEventListener('click', function() {
-        aiModal.classList.remove('active');
-    });
-
-    // Close on outside click
+function initClickEffects() {
     document.addEventListener('click', function(e) {
-        if (!aiModal.contains(e.target) && !aiOrb.contains(e.target) && aiModal.classList.contains('active')) {
-            aiModal.classList.remove('active');
+        const colors = ['#00d4ff', '#ff00ff', '#ffff00'];
+        for (let i = 0; i < 8; i++) {
+            const particle = document.createElement('div');
+            particle.style.cssText = 'position: fixed; width: 6px; height: 6px; background: ' + colors[Math.floor(Math.random() * colors.length)] + '; border-radius: 50%; pointer-events: none; z-index: 9999; left: ' + e.clientX + 'px; top: ' + e.clientY + 'px;';
+            document.body.appendChild(particle);
+            const angle = (i / 8) * Math.PI * 2;
+            const distance = 40 + Math.random() * 40;
+            particle.animate([{ transform: 'translate(0, 0) scale(1)', opacity: 1 }, { transform: 'translate(' + Math.cos(angle) * distance + 'px, ' + Math.sin(angle) * distance + 'px) scale(0)', opacity: 0 }], { duration: 600, easing: 'ease-out' }).onfinish = function() { particle.remove(); };
         }
-    });
-
-    // Send message
-    function sendMessage(text) {
-        if (!text.trim()) return;
-        
-        // Add user message
-        addMessage(text, 'user');
-        aiInput.value = '';
-        
-        // Show typing
-        aiTyping.classList.add('active');
-        aiChat.scrollTop = aiChat.scrollHeight;
-        
-        // Generate response
-        setTimeout(() => {
-            aiTyping.classList.remove('active');
-            const response = generateAIResponse(text);
-            addMessage(response, 'ai');
-        }, 1000 + Math.random() * 500);
-    }
-
-    function addMessage(text, sender) {
-        const messageDiv = document.createElement('div');
-        messageDiv.className = 'ai-message ' + (sender === 'user' ? 'user' : '');
-        
-        const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-        
-        messageDiv.innerHTML = `
-            <div class="message-bubble">
-                <p>${text}</p>
-            </div>
-            <span class="message-time">${time}</span>
-        `;
-        
-        aiChat.appendChild(messageDiv);
-        aiChat.scrollTop = aiChat.scrollHeight;
-    }
-
-    function generateAIResponse(input) {
-        const lower = input.toLowerCase();
-        
-        if (lower.includes('who') || lower.includes('you')) {
-            return "🚀 I'm Arnav Mishra, a passionate developer and creator building the future through code!";
-        }
-        else if (lower.includes('skill') || lower.includes('code')) {
-            return "💻 My skills: Three.js, React, Node.js, 3D Design, Creative Coding & Web Development!";
-        }
-        else if (lower.includes('contact') || lower.includes('reach')) {
-            return "📱 Connect via WhatsApp 'Say Hello' button, or find me on LinkedIn, X/Twitter & Instagram!";
-        }
-        else if (lower.includes('verse') || lower.includes('universe')) {
-            return "🌌 ARNAV VERSE is my digital universe where creativity meets technology!";
-        }
-        else if (lower.includes('chess')) {
-            return "♟️ Yes! Challenge me on Chess.com - username: Arnavm142";
-        }
-        else if (lower.includes('hello') || lower.includes('hi')) {
-            return "👋 Hey! Welcome to my portfolio! Ask me about my skills, projects, or anything!";
-        }
-        else if (lower.includes('project')) {
-            return "🔥 Check out 'ENTER THE UPSIDE DOWN' and 'Enter Live Concert' links for my special projects!";
-        }
-        else {
-            return "🤔 Interesting! Try asking about my skills, projects, or click 'Zero Gravity' for a wild ride!";
-        }
-    }
-
-    // Event listeners
-    aiSend.addEventListener('click', function() {
-        sendMessage(aiInput.value);
-    });
-    
-    aiInput.addEventListener('keypress', function(e) {
-        if (e.key === 'Enter') sendMessage(aiInput.value);
-    });
-
-    // Suggestion chips
-    suggestionChips.forEach(function(chip) {
-        chip.addEventListener('click', function() {
-            sendMessage(this.dataset.question);
-        });
     });
 }
 
-// Smooth scroll for anchor links
 document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
     anchor.addEventListener('click', function(e) {
         const href = this.getAttribute('href');
         if (href === '#') return;
         const target = document.querySelector(href);
-        if (target) { 
-            e.preventDefault(); 
-            target.scrollIntoView({ behavior: 'smooth', block: 'start' }); 
-        }
+        if (target) { e.preventDefault(); target.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
     });
 });
 
 console.log('%c🚀 Arnav Mishra 3D Portfolio', 'font-size: 24px; font-weight: bold; color: #00d4ff;');
-console.log('%c🤖 AI Assistant Ready!', 'font-size: 14px; color: #00ff88;');
+console.log('%cBuilt with pure awesomeness 💀', 'font-size: 14px; color: #ff00ff;');
+console.log('%cClick "Zero Gravity" for a wild ride!', 'font-size: 12px; color: #ffff00;');
+               
