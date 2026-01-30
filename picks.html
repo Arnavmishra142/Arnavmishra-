@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arnav's Top Picks | Archive</title>
+    
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="picks.css">
+    <link rel="stylesheet" href="ai-style.css">
+
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <canvas id="bg-canvas"></canvas>
+
+    <nav class="nav-3d">
+        <div class="nav-logo">
+            <span class="logo-text">ARNAV</span>
+            <span class="logo-glow">PICKS</span>
+        </div>
+        <div class="nav-links">
+            <a href="index.html" class="nav-link">Home</a>
+            <a href="index.html#about" class="nav-link">About</a>
+            <a href="#" class="nav-link active">Picks</a>
+            <a href="verse.html" class="nav-link">Verse</a>
+        </div>
+    </nav>
+
+    <header class="picks-header">
+        <h1 class="glitch-text" data-text="CURATED ARCHIVE">CURATED ARCHIVE</h1>
+        <p class="subtitle">Books, Videos & Tools that leveled me up.</p>
+        
+        <div class="filter-container">
+            <button class="filter-btn active" data-filter="all">ALL</button>
+            <button class="filter-btn" data-filter="books">BOOKS 📚</button>
+            <button class="filter-btn" data-filter="youtube">YOUTUBE 📺</button>
+            <button class="filter-btn" data-filter="tech">TECH TOOLS ⚙️</button>
+        </div>
+    </header>
+
+    <section class="picks-grid-container">
+        
+        <div class="pick-card" data-category="books">
+            <div class="card-glow"></div>
+            <div class="card-image">
+                <i class="fas fa-book-open placeholder-icon"></i>
+                </div>
+            <div class="card-content">
+                <span class="tag">Atomic Habits</span>
+                <h3>Mastering Discipline</h3>
+                <p>The book that changed how I approach coding and consistency. A must-read for students.</p>
+                <a href="#" class="visit-btn">Read More <i class="fas fa-arrow-right"></i></a>
+            </div>
+        </div>
+
+        <div class="pick-card" data-category="youtube">
+            <div class="card-glow"></div>
+            <div class="card-image">
+                <i class="fab fa-youtube placeholder-icon"></i>
+            </div>
+            <div class="card-content">
+                <span class="tag">Veritasium</span>
+                <h3>Physics Visualized</h3>
+                <p>Best channel to visualize complex Physics concepts. Helped me in 12th Mechanics.</p>
+                <a href="#" class="visit-btn">Watch <i class="fas fa-play"></i></a>
+            </div>
+        </div>
+
+        <div class="pick-card" data-category="tech">
+            <div class="card-glow"></div>
+            <div class="card-image">
+                <i class="fas fa-code placeholder-icon"></i>
+            </div>
+            <div class="card-content">
+                <span class="tag">VS Code</span>
+                <h3>My Weapon</h3>
+                <p>My setup, extensions, and themes that make coding feel like hacking the mainframe.</p>
+                <a href="#" class="visit-btn">View Setup <i class="fas fa-download"></i></a>
+            </div>
+        </div>
+
+        <div class="pick-card" data-category="books">
+            <div class="card-glow"></div>
+            <div class="card-image">
+                <i class="fas fa-brain placeholder-icon"></i>
+            </div>
+            <div class="card-content">
+                <span class="tag">Deep Work</span>
+                <h3>Focus Mastery</h3>
+                <p>How to focus without distraction in a distratcted world. Essential for devs.</p>
+                <a href="#" class="visit-btn">Read More <i class="fas fa-arrow-right"></i></a>
+            </div>
+        </div>
+
+    </section>
+
+    <div id="ai-launcher">
+        <div class="reactor-ring ring-outer"></div>
+        <div class="reactor-ring ring-inner"></div>
+        <div class="reactor-core"></div>
+    </div>
+
+    <div class="ai-modal-overlay" id="ai-modal">
+        <div class="ai-modal-box">
+            <button class="ai-close" id="ai-close"><i class="fas fa-times"></i></button>
+            <div class="ai-header">
+                <h2 class="ai-title">NEURAL CORE V1</h2>
+                <span class="ai-status-text">Online & Listening...</span>
+            </div>
+            <div id="ai-chat-box" class="ai-chat-box"></div>
+            <div class="ai-input-container">
+                <input type="text" id="ai-user-input" placeholder="Ask something..." autocomplete="off">
+                <button id="ai-send-btn"><i class="fas fa-paper-plane"></i></button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="script.js"></script> <script src="picks.js"></script>  <script src="ai-brain.js"></script> </body>
+</html>
