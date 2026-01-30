@@ -43,7 +43,8 @@
             <div class="hero-buttons">
                 <a href="#world" class="btn-3d btn-primary">ENTER MY WORLD</a>
                 <button class="btn-3d btn-secondary" id="zero-gravity">
-                    Zero Gravity <i class="fas fa-rocket"></i>
+                    <span class="btn-text">Zero Gravity</span>
+                    <i class="fas fa-rocket"></i>
                 </button>
             </div>
         </div>
@@ -61,17 +62,33 @@
         <div class="social-container">
             <h2 class="section-title-3d">Connect With Me</h2>
             <div class="social-grid">
-                <a href="https://www.linkedin.com/in/arnav-mishra-1a6934371" target="_blank" class="social-card-3d linkedin">
-                    <div class="card-content"><i class="fab fa-linkedin"></i><span>LinkedIn</span></div>
+                <a href="https://www.linkedin.com/in/arnav-mishra-1a6934371" target="_blank" class="social-card-3d linkedin" data-tilt>
+                    <div class="card-content">
+                        <div class="icon-3d"><i class="fab fa-linkedin"></i></div>
+                        <span>LinkedIn</span>
+                        <div class="card-shine"></div>
+                    </div>
                 </a>
-                <a href="https://x.com/ArnavMishra142" target="_blank" class="social-card-3d twitter">
-                    <div class="card-content"><i class="fab fa-x-twitter"></i><span>X / Twitter</span></div>
+                <a href="https://x.com/ArnavMishra142" target="_blank" class="social-card-3d twitter" data-tilt>
+                    <div class="card-content">
+                        <div class="icon-3d"><i class="fab fa-x-twitter"></i></div>
+                        <span>X / Twitter</span>
+                        <div class="card-shine"></div>
+                    </div>
                 </a>
-                <a href="https://www.instagram.com/arnav_9.11" target="_blank" class="social-card-3d instagram">
-                    <div class="card-content"><i class="fab fa-instagram"></i><span>Instagram</span></div>
+                <a href="https://www.instagram.com/arnav_9.11" target="_blank" class="social-card-3d instagram" data-tilt>
+                    <div class="card-content">
+                        <div class="icon-3d"><i class="fab fa-instagram"></i></div>
+                        <span>Instagram</span>
+                        <div class="card-shine"></div>
+                    </div>
                 </a>
-                <a href="https://www.chess.com/member/Arnavm142" target="_blank" class="social-card-3d chess">
-                    <div class="card-content"><i class="fas fa-chess-knight"></i><span>Chess.com</span></div>
+                <a href="https://www.chess.com/member/Arnavm142" target="_blank" class="social-card-3d chess" data-tilt>
+                    <div class="card-content">
+                        <div class="icon-3d"><i class="fas fa-chess-knight"></i></div>
+                        <span>Chess.com</span>
+                        <div class="card-shine"></div>
+                    </div>
                 </a>
             </div>
         </div>
@@ -87,22 +104,16 @@
         </div>
     </section>
 
-    <!-- ✅ LINKS FIXED HERE -->
     <section class="special-links-3d">
         <div class="links-container">
-
-            <!-- UPSIDE DOWN PAGE -->
             <a href="stranger.html" class="special-link-3d upside-down">
                 <div class="link-icon"><i class="fas fa-sync-alt"></i></div>
                 <span class="link-text">ENTER THE UPSIDE DOWN</span>
             </a>
-
-            <!-- CONCERT PAGE -->
             <a href="concert.html" class="special-link-3d concert">
                 <div class="link-icon"><i class="fas fa-guitar"></i></div>
                 <span class="link-text">Enter Live Concert</span>
             </a>
-
         </div>
     </section>
 
@@ -148,7 +159,6 @@
                         </div>
                     </div>
                 </div>
-
             </div>
         </div>
     </section>
@@ -186,6 +196,79 @@
             <div class="footer-year"><span class="year-3d">2026</span></div>
         </div>
     </footer>
+
+    <!-- AI Assistant -->
+    <div class="ai-orb" id="ai-orb">
+        <div class="ai-core">
+            <i class="fas fa-robot"></i>
+            <div class="ai-rings">
+                <div class="ring ring-1"></div>
+                <div class="ring ring-2"></div>
+                <div class="ring ring-3"></div>
+            </div>
+        </div>
+        <div class="ai-tooltip">Ask Arnav AI</div>
+    </div>
+
+    <div class="ai-modal" id="ai-modal">
+        <div class="ai-hologram"></div>
+        <div class="ai-container">
+            <div class="ai-header">
+                <div class="ai-avatar">
+                    <div class="avatar-core">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <div class="avatar-rings">
+                        <span></span><span></span><span></span>
+                    </div>
+                    <div class="ai-status"></div>
+                </div>
+                <div class="ai-info">
+                    <h3>Arnav AI</h3>
+                    <span class="ai-subtitle">Neural Network v2.0</span>
+                </div>
+                <button class="ai-close" id="ai-close"><i class="fas fa-times"></i></button>
+            </div>
+            
+            <div class="ai-chat" id="ai-chat">
+                <div class="ai-message ai-welcome">
+                    <div class="message-avatar"><i class="fas fa-robot"></i></div>
+                    <div class="message-content">
+                        <div class="message-bubble">
+                            <p>👋 Welcome to my digital universe! I'm Arnav's AI assistant. Ask me anything about his skills, projects, or interests!</p>
+                        </div>
+                        <span class="message-time">Just now</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="ai-suggestions" id="ai-suggestions">
+                <button class="suggestion-chip" data-question="Who is Arnav Mishra?">Who are you?</button>
+                <button class="suggestion-chip" data-question="What are your skills?">Skills</button>
+                <button class="suggestion-chip" data-question="How can I contact you?">Contact</button>
+                <button class="suggestion-chip" data-question="What is ARNAV VERSE?">ARNAV VERSE</button>
+            </div>
+            
+            <div class="ai-input-area">
+                <div class="ai-input-wrapper">
+                    <input type="text" id="ai-input" placeholder="Type your message..." autocomplete="off">
+                    <div class="input-scan"></div>
+                </div>
+                <button class="ai-send" id="ai-send">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+            </div>
+            
+            <div class="ai-typing" id="ai-typing">
+                <div class="typing-indicator">
+                    <span>AI is processing</span>
+                    <div class="typing-waves">
+                        <span></span><span></span><span></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <div class="loading-screen" id="loading">
         <div class="loader">
