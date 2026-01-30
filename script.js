@@ -274,4 +274,3 @@ document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
 console.log('%c🚀 Arnav Mishra 3D Portfolio', 'font-size: 24px; font-weight: bold; color: #00d4ff;');
 console.log('%cBuilt with pure awesomeness 💀', 'font-size: 14px; color: #ff00ff;');
 console.log('%cClick "Zero Gravity" for a wild ride!', 'font-size: 12px; color: #ffff00;');
-               
