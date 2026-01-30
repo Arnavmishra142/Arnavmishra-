@@ -201,21 +201,23 @@
 
     <div class="ai-modal-overlay" id="ai-modal">
         <div class="ai-modal-box">
-            <button class="ai-close" id="ai-close-btn"><i class="fas fa-times"></i></button>
+            <button class="ai-close" id="ai-close"><i class="fas fa-times"></i></button>
             
-            <h2 class="ai-title">SYSTEM ONLINE</h2>
-            <p class="ai-subtitle">Neural Interface Active. Select a command:</p>
+            <div class="ai-header">
+                <h2 class="ai-title">NEURAL CORE V1</h2>
+                <span class="ai-status-text">Online & Listening...</span>
+            </div>
 
-            <div class="ai-options">
-                <a href="#picks" class="ai-btn">
-                    <i class="fas fa-rocket"></i> View Projects
-                </a>
-                <a href="#about" class="ai-btn">
-                    <i class="fas fa-user-astronaut"></i> Explore Skills
-                </a>
-                <a href="https://wa.me/916393349498" target="_blank" class="ai-btn">
-                    <i class="fab fa-whatsapp"></i> Chat with Arnav
-                </a>
+            <div id="ai-chat-box" class="ai-chat-box">
+                <div class="ai-msg bot">
+                    Hello Arnav's Guest! I am the system AI. You can ask me about:
+                    <br>• Projects <br>• Skills <br>• Contact
+                </div>
+            </div>
+
+            <div class="ai-input-container">
+                <input type="text" id="ai-user-input" placeholder="Ask something..." autocomplete="off">
+                <button id="ai-send-btn"><i class="fas fa-paper-plane"></i></button>
             </div>
         </div>
     </div>
