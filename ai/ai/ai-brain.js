@@ -1,3 +1,6 @@
+alert("Bhai Main Zinda Hoon! 🤖");
+
+
 document.addEventListener('DOMContentLoaded', () => {
     // 1. INJECT HTML STRUCTURE (DHANCHA) AUTOMATICALLY
     // Isse tujhe index.html mein gandagi nahi karni padegi
