@@ -7,7 +7,6 @@ document.addEventListener('DOMContentLoaded', function() {
     initScrollAnimations();
     initZeroGravity();
     initClickEffects();
-    initAIAssistant();
 });
 
 function initLoader() {
@@ -263,164 +262,6 @@ function initClickEffects() {
     });
 }
 
-// AI ASSISTANT FUNCTIONALITY
-function initAIAssistant() {
-    const aiOrb = document.getElementById('ai-orb');
-    const aiPanel = document.getElementById('ai-panel');
-    const aiClose = document.getElementById('ai-close');
-    const aiInput = document.getElementById('ai-input');
-    const aiSend = document.getElementById('ai-send');
-    const aiMessages = document.getElementById('ai-messages');
-    const suggestionChips = document.querySelectorAll('.suggestion-chip');
-    
-    let isOpen = false;
-    
-    // Toggle panel
-    aiOrb.addEventListener('click', function() {
-        isOpen = !isOpen;
-        aiPanel.classList.toggle('active', isOpen);
-        if (isOpen) {
-            setTimeout(() => aiInput.focus(), 300);
-        }
-    });
-    
-    aiClose.addEventListener('click', function() {
-        isOpen = false;
-        aiPanel.classList.remove('active');
-    });
-    
-    // Simple knowledge base about Arnav
-    const knowledgeBase = {
-        greetings: ['hi', 'hello', 'hey', 'hola', 'namaste'],
-        who: ['who is arnav', 'who are you', 'what is this', 'tell me about arnav', 'who is he'],
-        what: ['what does he do', 'what is his work', 'developer', 'coding', 'skills'],
-        contact: ['contact', 'email', 'reach', 'whatsapp', 'message', 'connect'],
-        social: ['linkedin', 'twitter', 'instagram', 'chess', 'social media'],
-        projects: ['projects', 'work', 'portfolio', 'website', 'built'],
-        random: ['cool', 'nice', 'awesome', 'great', 'wow', 'amazing']
-    };
-    
-    const responses = {
-        greetings: [
-            "Hey there! 👋 I'm Nexus, Arnav's AI assistant. Welcome to his 3D universe!",
-            "Hello! Ready to explore Arnav's digital world?",
-            "Hi! I'm here to help you learn about Arnav. What would you like to know?"
-        ],
-        who: [
-            "Arnav Mishra is a creative developer who loves building cool 3D websites and innovative projects. He's passionate about turning ideas into reality through code.",
-            "Arnav is a developer, creator, and innovator. This 3D portfolio you're exploring right now? He built it from scratch!",
-            "He's a tech enthusiast who enjoys pushing boundaries and exploring new technologies. Always building something awesome!"
-        ],
-        what: [
-            "Arnav builds websites, web apps, and 3D experiences. He loves working with HTML, CSS, JavaScript, and Three.js for 3D stuff.",
-            "He's into frontend development, 3D web design, and creating immersive digital experiences. Pretty cool, right?",
-            "Coding is his superpower! He specializes in creating visually stunning and interactive websites."
-        ],
-        contact: [
-            "You can reach Arnav via WhatsApp - just click the 'Say Hello' button in the MAKE A MOVE section! Or check his social links.",
-            "The best way to contact him is through WhatsApp. There's a green button waiting for you in the MAKE A MOVE section!",
-            "Drop him a message on WhatsApp or connect through LinkedIn. He's pretty responsive!"
-        ],
-        social: [
-            "Arnav is on LinkedIn, X (Twitter), Instagram, and Chess.com. Check the 'Connect With Me' section for all links!",
-            "He's pretty active on social media. You can find all his profiles in the social section above!",
-            "Yes! He's on LinkedIn for professional stuff, Instagram for personal, and Chess.com for fun. Check the grid above!"
-        ],
-        projects: [
-            "This 3D portfolio is his latest project! He also has an 'Upside Down' section and a 'Live Concert' experience. Check the special links!",
-            "He built this entire 3D universe you're exploring right now. Pretty impressive, huh?",
-            "Besides this portfolio, he's always working on something new. The 'ARNAV VERSE' section shows his creative vision!"
-        ],
-        random: [
-            "Thanks! 😊 Arnav will be happy to hear that!",
-            "Appreciate it! This 3D world is his passion project.",
-            "Right? The zero gravity button is my favorite feature!"
-        ],
-        default: [
-            "Hmm, I'm not sure about that. Try asking who Arnav is, what he does, or how to contact him!",
-            "I don't have that info yet. But I can tell you he's a developer who loves building cool stuff!",
-            "Interesting question! I know Arnav is a creative developer. Want to know more about his work?"
-        ]
-    };
-    
-    function getResponse(input) {
-        input = input.toLowerCase().trim();
-        
-        for (let category in knowledgeBase) {
-            for (let keyword of knowledgeBase[category]) {
-                if (input.includes(keyword)) {
-                    const categoryResponses = responses[category];
-                    return categoryResponses[Math.floor(Math.random() * categoryResponses.length)];
-                }
-            }
-        }
-        
-        const defaultResponses = responses.default;
-        return defaultResponses[Math.floor(Math.random() * defaultResponses.length)];
-    }
-    
-    function addMessage(text, isUser = false) {
-        const messageDiv = document.createElement('div');
-        messageDiv.className = 'ai-message ' + (isUser ? 'ai-message-user' : 'ai-message-bot');
-        
-        const bubble = document.createElement('div');
-        bubble.className = 'message-bubble';
-        bubble.textContent = text;
-        
-        messageDiv.appendChild(bubble);
-        aiMessages.appendChild(messageDiv);
-        aiMessages.scrollTop = aiMessages.scrollHeight;
-    }
-    
-    function showTypingIndicator() {
-        const typingDiv = document.createElement('div');
-        typingDiv.className = 'ai-message ai-message-bot typing-container';
-        typingDiv.innerHTML = '<div class="typing-indicator"><span></span><span></span><span></span></div>';
-        aiMessages.appendChild(typingDiv);
-        aiMessages.scrollTop = aiMessages.scrollHeight;
-        return typingDiv;
-    }
-    
-    function handleSend() {
-        const text = aiInput.value.trim();
-        if (!text) return;
-        
-        addMessage(text, true);
-        aiInput.value = '';
-        
-        const typingIndicator = showTypingIndicator();
-        
-        setTimeout(() => {
-            typingIndicator.remove();
-            const response = getResponse(text);
-            addMessage(response);
-        }, 1000 + Math.random() * 500);
-    }
-    
-    aiSend.addEventListener('click', handleSend);
-    
-    aiInput.addEventListener('keypress', function(e) {
-        if (e.key === 'Enter') handleSend();
-    });
-    
-    suggestionChips.forEach(chip => {
-        chip.addEventListener('click', function() {
-            const question = this.getAttribute('data-question');
-            aiInput.value = question;
-            handleSend();
-        });
-    });
-    
-    // Initial greeting animation
-    setTimeout(() => {
-        if (!isOpen) {
-            aiOrb.style.animation = 'none';
-            aiOrb.offsetHeight; // Trigger reflow
-            aiOrb.style.animation = 'orbPulse 0.5s ease 3';
-        }
-    }, 3000);
-}
-
 document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
     anchor.addEventListener('click', function(e) {
         const href = this.getAttribute('href');
@@ -433,4 +274,4 @@ document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
 console.log('%c🚀 Arnav Mishra 3D Portfolio', 'font-size: 24px; font-weight: bold; color: #00d4ff;');
 console.log('%cBuilt with pure awesomeness 💀', 'font-size: 14px; color: #ff00ff;');
 console.log('%cClick "Zero Gravity" for a wild ride!', 'font-size: 12px; color: #ffff00;');
-console.log('%c🤖 Nexus AI Assistant Ready!', 'font-size: 12px; color: #00ff88;');
+               
