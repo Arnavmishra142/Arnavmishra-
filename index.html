@@ -196,5 +196,72 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="script.js"></script>
+    <!-- AI Assistant -->
+<div class="ai-orb" id="ai-orb">
+    <div class="ai-core">
+        <i class="fas fa-robot"></i>
+        <div class="ai-pulse"></div>
+    </div>
+    <div class="ai-tooltip">Ask Arnav AI</div>
+</div>
+
+<div class="ai-modal" id="ai-modal">
+    <div class="ai-container">
+        <div class="ai-header">
+            <div class="ai-avatar">
+                <i class="fas fa-brain"></i>
+                <div class="ai-status"></div>
+            </div>
+            <div class="ai-info">
+                <h3>Arnav AI</h3>
+                <span class="ai-subtitle">Neural Assistant v2.0</span>
+            </div>
+            <button class="ai-close" id="ai-close"><i class="fas fa-times"></i></button>
+        </div>
+        
+        <div class="ai-chat" id="ai-chat">
+            <div class="ai-message ai-welcome">
+                <div class="message-bubble">
+                    <p>👋 Welcome to my digital universe! I'm Arnav's AI assistant. Ask me anything about his skills, projects, or interests!</p>
+                </div>
+                <span class="message-time">Just now</span>
+            </div>
+        </div>
+        
+        <div class="ai-suggestions" id="ai-suggestions">
+            <button class="suggestion-chip" data-question="Who is Arnav Mishra?">Who are you?</button>
+            <button class="suggestion-chip" data-question="What are your skills?">Skills</button>
+            <button class="suggestion-chip" data-question="How can I contact you?">Contact</button>
+            <button class="suggestion-chip" data-question="What is ARNAV VERSE?">ARNAV VERSE</button>
+        </div>
+        
+        <div class="ai-input-area">
+            <div class="ai-input-wrapper">
+                <input type="text" id="ai-input" placeholder="Type your message..." autocomplete="off">
+                <div class="ai-input-glow"></div>
+            </div>
+            <button class="ai-send" id="ai-send">
+                <i class="fas fa-paper-plane"></i>
+                <div class="send-ripple"></div>
+            </button>
+        </div>
+        
+        <div class="ai-typing" id="ai-typing">
+            <span>AI is thinking</span>
+            <div class="typing-dots">
+                <div class="dot"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Holographic scan line effect -->
+    <div class="holo-scan"></div>
+</div>
+
+<!-- AI Particle Canvas -->
+<canvas id="ai-canvas"></canvas>
+    
 </body>
 </html>
