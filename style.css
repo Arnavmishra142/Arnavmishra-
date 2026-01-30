@@ -658,47 +658,29 @@ body {
     100% { filter: drop-shadow(0 0 30px var(--secondary)); }
 }
 
-/* 3D AI ASSISTANT STYLES */
-.ai-assistant {
-    position: fixed;
-    bottom: 30px;
-    right: 30px;
-    z-index: 1000;
-    font-family: 'Rajdhani', sans-serif;
-}
-
-.ai-orb-container {
-    width: 70px;
-    height: 70px;
-    position: relative;
-    cursor: pointer;
-    transition: transform 0.3s ease;
-}
-
-.ai-orb-container:hover {
-    transform: scale(1.1);
-}
-
-.ai-orb-core {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 30px;
-    height: 30px;
-    background: radial-gradient(circle at 30% 30%, var(--primary), var(--secondary));
-    border-radius: 50%;
-    box-shadow: 
-        0 0 20px var(--primary),
-        0 0 40px var(--secondary),
-        inset 0 0 10px rgba(255,255,255,0.5);
-    animation: orbPulse 2s infinite ease-in-out;
-}
-
-@keyframes orbPulse {
-    0%, 100% { 
-        transform: translate(-50%, -50%) scale(1);
-        box-shadow: 0 0 20px var(--primary), 0 0 40px var(--secondary);
+@media (max-width: 768px) {
+    .nav-3d { padding: 15px 20px; }
+    .nav-links {
+        position: fixed;
+        top: 70px; left: 0;
+        width: 100%;
+        flex-direction: column;
+        background: rgba(5, 5, 5, 0.98);
+        padding: 20px;
+        gap: 10px;
+        transform: translateY(-150%);
+        transition: transform 0.4s ease;
     }
-    50% { 
-        transform: 
+    .nav-links.active { transform: translateY(0); }
+    .nav-toggle { display: flex; }
+    .hero-3d, .social-3d-section, .move-section-3d, .special-links-3d, .about-3d, .picks-3d, .verse-3d { padding: 80px 20px; }
+    .hero-buttons { flex-direction: column; align-items: center; }
+    .btn-3d { width: 100%; max-width: 280px; justify-content: center; }
+    .footer-content { flex-direction: column; text-align: center; }
+    .orbit-container { width: 250px; height: 250px; }
+    .ring-1 { width: 120px; height: 120px; }
+    .ring-2 { width: 180px; height: 180px; }
+    .ring-3 { width: 240px; height: 240px; }
+}
+
+::-webkit-scrollbar { w
