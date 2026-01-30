@@ -274,4 +274,30 @@ document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
 console.log('%c🚀 Arnav Mishra 3D Portfolio', 'font-size: 24px; font-weight: bold; color: #00d4ff;');
 console.log('%cBuilt with pure awesomeness 💀', 'font-size: 14px; color: #ff00ff;');
 console.log('%cClick "Zero Gravity" for a wild ride!', 'font-size: 12px; color: #ffff00;');
-               
+/* ========================= */
+/* AI HOLOGRAM ASSISTANT */
+/* ========================= */
+
+const aiOrb = document.getElementById("ai-orb");
+const aiPanel = document.getElementById("ai-panel");
+const aiText = document.getElementById("ai-text");
+const aiClose = document.getElementById("ai-close");
+
+if (aiOrb) {
+    const responses = [
+        "Welcome back, Arnav. Reality is optional here.",
+        "Your 3D universe is running smoothly.",
+        "Tip: Add more projects to unlock higher impact.",
+        "Glitch Scents + Web Dev = unstoppable combo.",
+        "The Upside Down portal is active."
+    ];
+
+    aiOrb.addEventListener("click", () => {
+        aiPanel.style.display = "block";
+        aiText.innerText = responses[Math.floor(Math.random() * responses.length)];
+    });
+
+    aiClose.addEventListener("click", () => {
+        aiPanel.style.display = "none";
+    });
+}              
